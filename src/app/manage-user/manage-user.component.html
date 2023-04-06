@@ -1,0 +1,168 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">User Management</h1>
+        </div>
+        <!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Manage User</a></li>
+          </ol>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="card card-default">
+        <div class="card-header">
+          <h3 class="card-title">Users Details</h3>
+
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+          </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                  <thead>
+                    <tr>
+                      <th>Sr. No.</th>
+                      <th>Unit</th>
+                      <th>Rank</th>
+                      <th>User Name</th>
+                      <th>P.No.</th>
+                      <th>From Date</th>
+                      <th>To Date</th>
+                      <th>Role</th>
+                      <th>Status</th>
+                      <!-- <th>Action</th> -->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let user of usersWithRole | paginate :{itemsPerPage:10,currentPage:p}; let i = index">
+                      <td>{{10 *(p-1)+i+1}}</td>
+                      <td>{{user.unit}}</td>
+                      <td>{{user.rank}}</td>
+                      <td>{{user.name}}</td>
+                      <td>{{user.pno}}</td>
+                      <td>{{user.fromDate}}</td>
+                      <td>{{user.toDate}}</td>
+                      <td>{{user.role}}</td>
+                      <td>
+                        <span *ngIf="user.isActive == 1">Activated</span>
+                        <span *ngIf="user.isActive == 0">Deactivated</span>
+                      </td>
+                      <!-- <td>
+                        <button type="submit" class="btn btn-primary mr-2" (click)="saveUserData(formdata.value)"
+                          *ngIf="user.isActive == 0">Activate</button>
+                        <button type="submit" class="btn btn-danger mr-2" (click)="saveUserData(formdata.value)"
+                          *ngIf="user.isActive == 1">Deactivate</button>
+                      </td> -->
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="row mt-2">
+                <div class="col-sm-12 col-md-5">
+                  <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
+
+                  </div>
+                </div>
+                <div class="col-sm-12 col-md-7">
+                  <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                    <pagination-controls class="pagination float-right" (pageChange)="p = $event"></pagination-controls>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <form [formGroup]="formdata">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Units</label>
+                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="allCBUnits" bindLabel="descr"
+                    (change)="getUserInfo($event)" appendTo="body" placeholder="Select To Unit" formControlName="unit">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>CG P.No.</label>
+                  <ng-select class="form-control select2bs4" style="width: 100%" [disabled]="true" [items]="allUsers"
+                    bindLabel="pno" appendTo="body" placeholder="Select CG P.No." (change)="setOtherValues($event)"
+                    formControlName="pno"></ng-select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>User Name</label>
+                  <input type="text" class="form-control" id="fundAvailable" value="{{userName}}"
+                    formControlName="userName" readonly />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Rank</label>
+                  <input type="text" class="form-control" id="rank" value="{{rank}}" formControlName="rank" readonly />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Role</label>
+                  <ng-select class="form-control select2bs4" style="width: 100%" [disabled]="true" [items]="allRoles"
+                    bindLabel="roleName" appendTo="body" placeholder="Select CG P.No."
+                    formControlName="role"></ng-select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>From Date</label>
+                  <input type="date" class="form-control" id="Date" placeholder="Enter From Date"
+                    formControlName="fromDate" />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>To Date</label>
+                  <input type="date" class="form-control" id="Date" placeholder="Enter To Date"
+                    formControlName="toDate" />
+                </div>
+              </div>
+              <!-- /.col -->
+            </div>
+          </form>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+          <div class="row">
+            <button type="submit" class="btn btn-primary mr-2" (click)="saveUserData(formdata.value)">Save</button>
+          </div>
+        </div>
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->

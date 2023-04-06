@@ -1,0 +1,249 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Unti Rebase</h1>
+        </div>
+        <!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Unit Rebase</a></li>
+          </ol>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="card card-default">
+        <div class="card-header">
+          <h3 class="card-title">Unit Rebase</h3>
+
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+          </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+          <form [formGroup]="formdata">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Financial Year</label>
+                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="budgetFinYears"
+                    bindLabel="finYear" placeholder="Select Financial Year" formControlName="finYear">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Unit</label>
+                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="allCBUnits" bindLabel="descr"
+                    appendTo="body" placeholder="Select To Unit" formControlName="toUnit">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>From Station</label>
+                  <input type="text" class="form-control" id="frmStation" placeholder="Mumbai RHQ(W)" disabled />
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label style="opacity:0">.</label>
+                  <br>
+                  <button type="submit" class="btn btn-primary mr-2"><i class="fas fa-search"></i> Search</button>
+                </div>
+              </div>
+            </div>
+          </form>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                  <thead>
+                    <tr>
+                      <th>Unit</th>
+                      <th>F.Y.</th>
+                      <th>Sub Head</th>
+                      <th>Allocated</th>
+                      <th>Expenditure</th>
+                      <th>Balance</th>
+                      <th>Last CB Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>ICGS Sarang</td>
+                      <td>2022-23</td>
+                      <td>Office Expenses</td>
+                      <td>120000.00</td>
+                      <td>100000.00</td>
+                      <td>20000.00</td>
+                      <td>12/10/2022</td>
+                    </tr>
+                    <tr>
+                      <td>ICGS Sarang</td>
+                      <td>2022-23</td>
+                      <td>Office Expenses</td>
+                      <td>120000.00</td>
+                      <td>100000.00</td>
+                      <td>20000.00</td>
+                      <td>12/10/2022</td>
+                    </tr>
+                    <tr>
+                      <td>ICGS Sarang</td>
+                      <td>2022-23</td>
+                      <td>Office Expenses</td>
+                      <td>120000.00</td>
+                      <td>100000.00</td>
+                      <td>20000.00</td>
+                      <td>12/10/2022</td>
+                    </tr>
+                    <tr>
+                      <td>ICGS Sarang</td>
+                      <td>2022-23</td>
+                      <td>Office Expenses</td>
+                      <td>120000.00</td>
+                      <td>100000.00</td>
+                      <td>20000.00</td>
+                      <td>12/10/2022</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="row mt-2">
+                <div class="col-sm-12 col-md-5">
+                  <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
+                    Showing 1 to 10 of 57 entries
+                  </div>
+                </div>
+                <div class="col-sm-12 col-md-7">
+                  <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                    <ul class="pagination float-right">
+                      <li class="paginate_button page-item previous disabled" id="example2_previous">
+                        <a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+                      </li>
+                      <li class="paginate_button page-item active">
+                        <a href="#" aria-controls="example2" data-dt-idx="1" tabindex="0" class="page-link">1</a>
+                      </li>
+                      <li class="paginate_button page-item">
+                        <a href="#" aria-controls="example2" data-dt-idx="2" tabindex="0" class="page-link">2</a>
+                      </li>
+                      <li class="paginate_button page-item">
+                        <a href="#" aria-controls="example2" data-dt-idx="3" tabindex="0" class="page-link">3</a>
+                      </li>
+                      <li class="paginate_button page-item">
+                        <a href="#" aria-controls="example2" data-dt-idx="4" tabindex="0" class="page-link">4</a>
+                      </li>
+                      <li class="paginate_button page-item">
+                        <a href="#" aria-controls="example2" data-dt-idx="5" tabindex="0" class="page-link">5</a>
+                      </li>
+                      <li class="paginate_button page-item">
+                        <a href="#" aria-controls="example2" data-dt-idx="6" tabindex="0" class="page-link">6</a>
+                      </li>
+                      <li class="paginate_button page-item next" id="example2_next">
+                        <a href="#" aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!-- <div class="col-sm-12 col-md-12">
+                        <button type="submit" class="btn btn-primary mr-2 mb-2">Print</button>
+                        </div> -->
+              </div>
+            </div>
+          </div>
+          <!-- /.row -->
+
+          <form [formGroup]="formdataForToStation">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>To Station</label>
+                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="allStationsList"
+                    bindLabel="stationName" placeholder="Select To Station" formControlName="toStation">
+                  </ng-select>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Occurrence Date</label>
+                  <input type="date" class="form-control" id="OccurrenceDate" placeholder="Enter Occurrence Date"
+                    formControlName="occDate" />
+                </div>
+              </div>
+
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Authority Unit</label>
+                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="allCBUnits" bindLabel="descr"
+                    appendTo="body" placeholder="Select Authority Unit" formControlName="authUnit">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Authority</label>
+                  <input type="text" class="form-control" id="BalanceFund" placeholder="Enter Authority"
+                    formControlName="authority" />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Date</label>
+                  <input type="date" class="form-control" id="Date" placeholder="Enter Date" formControlName="date" />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="exampleInputFile">Document</label>
+                  <div class="input-group">
+                    <div class="custom-file">
+                      <!-- <input type="file" class="custom-file-input" id="exampleInputFile">
+                    <label class="custom-file-label" for="exampleInputFile">Choose file</label> -->
+                      <input type="file" class="custom-file-input" id="exampleInputFile"
+                        (change)="onChangeFile($event)">
+                      <label class="custom-file-label" for="exampleInputFile">Choose
+                        file</label>
+                    </div>
+                    <div class="input-group-append">
+                      <span class="input-group-text" (click)="uploadFile()">Upload</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+          <div class="row">
+            <button type="submit" class="btn btn-primary mr-2"
+              (click)="finallySubmitUnitRebase(formdata.value, formdataForToStation.value)">Submit</button>
+          </div>
+        </div>
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->

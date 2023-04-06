@@ -1,0 +1,289 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Budget Allocation</h1>
+        </div>
+        <!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Budget Allocation</a></li>
+          </ol>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="card card-default">
+        <div class="card-header">
+          <h3 class="card-title">Budget Allocation Unit Wise</h3>
+
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+          </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+          <form [formGroup]="formdata" (ngSubmit)="showList(formdata.value)">
+            <div class="row">
+
+              <div class="col-md-6">
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Financial Year</label>
+                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="budgetFinYears"
+                        bindLabel="finYear" placeholder="Select Financial Year" (change)="putInNewList()"
+                        formControlName="finYearName">
+                      </ng-select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Major Head</label>
+
+
+                      <ng-select class="form-control select2bs4" style="width: 100%" formControlName="majorHead"
+                        (change)="selectedMajorHead()">
+                        <!-- <ng-option value="">Year To</ng-option> -->
+                        <ng-option *ngFor="let n of majorHeadBySelectingUnit"
+                          value={{n.majorHead.majorHead}}>{{n.majorHead.majorHead}}</ng-option>
+                      </ng-select>
+
+
+
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>To Unit</label>
+                      <ng-select class="form-control select2bs4" style="width: 100%" formControlName="cbUnit"
+                        (change)="selectedUnit()">
+                        <!-- <ng-option value="">Year To</ng-option> -->
+                        <ng-option *ngFor="let n of arrayWithUnitMajorHeadAndSubHead"
+                          value={{n.cbUnits.cbUnit}}>{{n.cbUnits.descr}}</ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Minor Head</label>
+                      <!-- <ng-select class="form-control select2bs4" style="width: 100%" [items]="minorHead"
+                        bindLabel="minorHead" (change)="getAvailableFund($event)" placeholder="Select Minor Head"
+                        formControlName="cbUnit"> -->
+                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="minorHead"
+                        bindLabel="minorHead" placeholder="Select Minor Head" formControlName="minorHead">
+                      </ng-select>
+
+
+
+
+                    </div>
+                  </div>
+                  <div class=" col-md-6">
+                    <div class="form-group">
+                      <label>Remarks</label>
+                      <input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Remarks"
+                        formControlName="remarks" />
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="col-md-6">
+
+
+                <div class="card-body table-responsive p-0" style="height:202px;">
+                  <table class="table table-hover text-nowrap">
+                    <thead>
+                      <tr>
+                        <th>Sr No</th>
+                        <th>Sub Head</th>
+                        <th>Amount(crores)</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let subHeadData of subHeadBySelectingMajorHead; let i = index">
+
+                        <!-- <div *ngIf="subHeadData.remark == null"> -->
+
+
+
+                        <td>{{i+1}}</td>
+                        <td>{{subHeadData.subheadShort}}<input *ngIf=false value="DiwakarChauhan"></td>
+                        <!-- <td>
+                          {{subHeadData.subheadShort}}
+                        </td> -->
+                        <td>
+                          <div *ngIf="subHeadData.isActive == 1" (click)="asd(subHeadData, formdata.value,i)">
+                            Click here to enter amount
+                          </div>
+                          <div *ngIf="subHeadData.isActive == 0">
+                            <input type="text" class="form-control" id="Aallocationamount"
+                              placeholder="Please Enter Amount" formControlName="amount" />
+                          </div>
+
+                        </td>
+                        <td>
+                          <button type=" submit" class="btn btn-primary mr-2"
+                            (click)="addSubHeadValue(subHeadData, formdata.value, i)">Add</button>
+                        </td>
+                        <!-- </div> -->
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- <div class="col-md-6">
+                  <label style="opacity:0">.</label>
+                  <br>
+                  <button type="submit" class="btn btn-primary mr-2">Add</button>
+                </div> -->
+              </div>
+              <!-- /.col -->
+            </div>
+          </form>
+
+          <!-- /.row -->
+          <div class="row">
+            <div class="col-sm-12 mt-4">
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>F.Y.</th>
+                      <th>Unit</th>
+                      <th>Sub Head</th>
+                      <th>Amount</th>
+                      <th>Remarks</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="let newBudgetAllocation of newBudgetAllocationArray  | paginate :{itemsPerPage:10,currentPage:p}; let i = index">
+
+                      <td><input class="form-check-input" type="checkbox" id="check1" name="option1"
+                          value={{newBudgetAllocation.isChecked}} (click)="tableCheckBoxClicked(i)"></td>
+                      <td>{{newBudgetAllocation.financialYear.finYear}}</td>
+                      <td>{{newBudgetAllocation.unitName.descr}}</td>
+                      <td>{{newBudgetAllocation.subHeadName.subHeadDescr}}</td>
+                      <td>{{newBudgetAllocation.amount}}</td>
+                      <td>{{newBudgetAllocation.remarks}}</td>
+                    </tr>
+
+                  </tbody>
+                </table>
+
+              </div>
+              <div class="row mt-2">
+                <!-- <div class="col-sm-12 col-md-5">
+                  <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
+                    Showing 1 to 10 of {{length}} entries
+                  </div>
+                </div> -->
+
+
+                <div class="col-sm-12 col-md-12">
+                  <button type="submit" class="btn btn-danger mr-2 float-left"
+                    (click)="delteFromTable()">Delete</button>
+
+                  <pagination-controls (pageChange)="p = $event" class="pagination float-right"></pagination-controls>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-body table-responsive p-0 mt-4">
+            <table class="table table-hover text-nowrap">
+              <thead>
+                <tr>
+                  <!-- <th></th> -->
+                  <th>Auth Unit</th>
+                  <th>Authority</th>
+                  <th>Authority Date</th>
+                  <th>Remark</th>
+                  <th>Document Name</th>
+                  <th class="thhead">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let uploadData of uploadDocuments; let i = index">
+                  <!-- <td><input class="form-check-input" type="checkbox" id="check1" name="option1" value="001"></td> -->
+                  <td>
+                    <div class="form-group">
+                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="cbUnitForDocuments"
+                        bindLabel="descr" (change)="getAvailableFund($event)" appendTo="body"
+                        placeholder="Select To Unit" [(ngModel)]="uploadData.authUnit">
+                      </ng-select>
+                    </div>
+                  </td>
+                  <td><input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Authority"
+                      [(ngModel)]="uploadData.authority" name="{{uploadData.authority}}" /></td>
+                  <td><input type="date" class="form-control" id="date" [(ngModel)]="uploadData.authorityData" /></td>
+                  <td><input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Remarks"
+                      [(ngModel)]="uploadData.remarks" /></td>
+                  <td>
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="custom-file">
+                          <input type="file" class="custom-file-input" id="exampleInputFile"
+                            (change)="onChangeFile($event)">
+                          <label class="custom-file-label" for="exampleInputFile">Choose
+                            file</label>
+                        </div>
+                        <div class="input-group-append">
+                          <span class="input-group-text" (click)="uploadFile(i)">Upload</span>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <button type="submit" class="btn btn-danger float-left"
+                      (click)="deleteFieldValue(i)">Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="row mt-2">
+            <div class="col-sm-12 col-md-12">
+              <button type="submit" class="btn btn-primary mr-2 float-left" (click)="addFieldValue()">Add Row</button>
+            </div>
+          </div>
+
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+          <div class="row">
+            <button type="submit" class="btn btn-primary mr-2"
+              (click)="saveBudgetDataFn(saveBudgetData.value)">Submit</button>
+          </div>
+        </div>
+
+
+
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->

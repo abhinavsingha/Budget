@@ -1,0 +1,376 @@
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Dashboard</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Main row -->
+        <div class="row">
+          <section class="col-lg-12 connectedSortable">
+            <!-- Custom tabs (Charts with tabs)-->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="fas fa-filter mr-1"></i>
+                  Filter Data Unit Wise
+                </h3>
+                <!-- card tools -->
+                <div class="card-tools">
+                  <button type="button" class="btn btn-primary btn-sm daterange mr-2" title="Date range">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                  <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                </div>
+                <!-- /.card-tools -->
+              </div><!-- /.card-header -->
+              <div class="card-body">
+                <div class="tab-content p-0">
+                  <!-- Morris chart - Sales -->
+                  <div class="chart tab-pane active" id="revenue-chart"
+                       style="position: relative;">
+                       <form>
+                        <div class="row">
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label>Financial Year</label>
+                              <select class="form-control select2bs4" style="width: 100%">
+                                <option selected="selected">2022-23</option>
+                                <option>2021-22</option>
+                                <option>2020-21</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label>Unit</label>
+                              <select class="form-control select2bs4" style="width: 100%">
+                                <option selected="selected">RHQ(W)</option>
+                                <option>RHQ(E)</option>
+                                <option>RHQ(S)</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label>Sub Head</label>
+                              <select class="form-control select2bs4" style="width: 100%">
+                                <option selected="selected">Office Expenses</option>
+                                <option>Office Expenses 1</option>
+                                <option>Office Expenses 2</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                       </form>
+                   </div>
+                </div>
+              </div><!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+            <!-- /.card -->
+          </section>
+          <!-- Left col -->
+          <section class="col-lg-6 connectedSortable">
+            <!-- Custom tabs (Charts with tabs)-->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="fas fa-chart-pie mr-1"></i>
+                  Subhead Wise Expenditure
+                </h3>
+                <!-- card tools -->
+                <div class="card-tools">
+                  <button type="button" class="btn btn-primary btn-sm daterange mr-2" title="Date range">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                  <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                </div>
+                <!-- /.card-tools -->
+              </div><!-- /.card-header -->
+              <div class="card-body">
+                <div class="tab-content p-0">
+                  <!-- Morris chart - Sales -->
+                  <div class="chart tab-pane active" id="revenue-chart"
+                       style="position: relative; height: 300px;">
+                      <canvas id="my-chart" height="300" style="height: 300px;"></canvas>
+                   </div>
+                </div>
+              </div><!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+            <!-- /.card -->
+          </section>
+          <!-- /.Left col -->
+          <!-- right col (We are only adding the ID to make the widgets sortable)-->
+          <section class="col-lg-6 connectedSortable">
+            <!-- Custom tabs (Charts with tabs)-->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="fas fa-chart-pie mr-1"></i>
+                  Unit Wise Expenditure
+                </h3>
+                <!-- card tools -->
+                <div class="card-tools">
+                  <button type="button" class="btn btn-primary btn-sm daterange mr-2" title="Date range">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                  <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                </div>
+                <!-- /.card-tools -->
+              </div><!-- /.card-header -->
+              <div class="card-body">
+                <div class="tab-content p-0">
+                  <!-- Morris chart - Sales -->
+                  <div class="chart tab-pane active" id="revenue-chart"
+                       style="position: relative; height: 300px;">
+                      <canvas id="my-chart2" height="300" style="height: 300px;"></canvas>
+                   </div>
+                </div>
+              </div><!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+            <!-- /.card -->
+          </section>
+          <!-- right col -->
+          <section class="col-lg-12 connectedSortable">
+            <!-- Custom tabs (Charts with tabs)-->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="ion ion-clipboard mr-1"></i>
+                  Unit Wise Expenditure
+                </h3>
+                <!-- card tools -->
+                <div class="card-tools">
+                  <button type="button" class="btn btn-primary btn-sm daterange mr-2" title="Date range">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                  <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                </div>
+                <!-- /.card-tools -->
+              </div><!-- /.card-header -->
+              <div class="card-body">
+                <div class="tab-content p-0">
+                  <!-- Morris chart - Sales -->
+                  <div class="chart tab-pane active" id="revenue-chart"
+                       style="position: relative;">
+                       <div class="row">
+                        <div class="col-sm-12">
+                          <div class="card-body table-responsive p-0">
+                            <table class="table table-hover text-nowrap">
+                              <thead>
+                                <tr>
+                                  <th><input type="checkbox"> All</th>
+                                  <th>Unit</th>
+                                  <th>Rank</th>
+                                  <th>User Name</th>
+                                  <th>P.No.</th>
+                                  <th>User Id</th>
+                                  <th>From Date</th>
+                                  <th>To Date</th>
+                                  <th>Role</th>
+                                  <th>Status</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                     <tr>
+                                      <td><input type="checkbox"></td>
+                                      <td>2022-23</td>
+                                      <td>RHQ(W)</td>
+                                      <td>Office Expenses</td>
+                                      <td>2345</td>
+                                      <td>2334354</td>
+                                      <td>21/11/23</td>
+                                      <td>CGHQ to RHQ</td>
+                                      <td>CB Creator</td>
+                                      <td>Not Approved</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox"></td>
+                                      <td>2022-23</td>
+                                      <td>RHQ(W)</td>
+                                      <td>Office Expenses</td>
+                                      <td>2345</td>
+                                      <td>2334354</td>
+                                      <td>21/11/23</td>
+                                      <td>CGHQ to RHQ</td>
+                                      <td>System Admin</td>
+                                      <td>Approved</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox"></td>
+                                      <td>2022-23</td>
+                                      <td>RHQ(W)</td>
+                                      <td>Office Expenses</td>
+                                      <td>2345</td>
+                                      <td>2334354</td>
+                                      <td>21/11/23</td>
+                                      <td>CGHQ to RHQ</td>
+                                      <td>Unit Admin</td>
+                                      <td>Not Approved</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox"></td>
+                                      <td>2022-23</td>
+                                      <td>RHQ(W)</td>
+                                      <td>Office Expenses</td>
+                                      <td>2345</td>
+                                      <td>2334354</td>
+                                      <td>21/11/23</td>
+                                      <td>CGHQ to RHQ</td>
+                                      <td>Budget Manager</td>
+                                      <td>Not Approved</td>
+                                    </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          <div class="row mt-2">
+                            <div class="col-sm-12 col-md-5">
+                              <div
+                                class="dataTables_info"
+                                id="example2_info"
+                                role="status"
+                                aria-live="polite"
+                              >
+                                Showing 1 to 10 of 57 entries
+                              </div>
+                            </div>
+                            <div class="col-sm-12 col-md-7">
+                              <div
+                                class="dataTables_paginate paging_simple_numbers"
+                                id="example2_paginate"
+                              >
+                                <ul class="pagination float-right">
+                                  <li
+                                    class="paginate_button page-item previous disabled"
+                                    id="example2_previous"
+                                  >
+                                    <a
+                                      href="#"
+                                      aria-controls="example2"
+                                      data-dt-idx="0"
+                                      tabindex="0"
+                                      class="page-link"
+                                      >Previous</a
+                                    >
+                                  </li>
+                                  <li class="paginate_button page-item active">
+                                    <a
+                                      href="#"
+                                      aria-controls="example2"
+                                      data-dt-idx="1"
+                                      tabindex="0"
+                                      class="page-link"
+                                      >1</a
+                                    >
+                                  </li>
+                                  <li class="paginate_button page-item">
+                                    <a
+                                      href="#"
+                                      aria-controls="example2"
+                                      data-dt-idx="2"
+                                      tabindex="0"
+                                      class="page-link"
+                                      >2</a
+                                    >
+                                  </li>
+                                  <li class="paginate_button page-item">
+                                    <a
+                                      href="#"
+                                      aria-controls="example2"
+                                      data-dt-idx="3"
+                                      tabindex="0"
+                                      class="page-link"
+                                      >3</a
+                                    >
+                                  </li>
+                                  <li class="paginate_button page-item">
+                                    <a
+                                      href="#"
+                                      aria-controls="example2"
+                                      data-dt-idx="4"
+                                      tabindex="0"
+                                      class="page-link"
+                                      >4</a
+                                    >
+                                  </li>
+                                  <li class="paginate_button page-item">
+                                    <a
+                                      href="#"
+                                      aria-controls="example2"
+                                      data-dt-idx="5"
+                                      tabindex="0"
+                                      class="page-link"
+                                      >5</a
+                                    >
+                                  </li>
+                                  <li class="paginate_button page-item">
+                                    <a
+                                      href="#"
+                                      aria-controls="example2"
+                                      data-dt-idx="6"
+                                      tabindex="0"
+                                      class="page-link"
+                                      >6</a
+                                    >
+                                  </li>
+                                  <li
+                                    class="paginate_button page-item next"
+                                    id="example2_next"
+                                  >
+                                    <a
+                                      href="#"
+                                      aria-controls="example2"
+                                      data-dt-idx="7"
+                                      tabindex="0"
+                                      class="page-link"
+                                      >Next</a
+                                    >
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                   </div>
+                </div>
+              </div><!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+            <!-- /.card -->
+          </section>
+        </div>
+        <!-- /.row (main row) -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->

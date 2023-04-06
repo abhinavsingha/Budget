@@ -1,0 +1,171 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Inbox</h1>
+          </div>
+          <!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">Inbox</a></li>
+            </ol>
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="inbox">
+            <div class="card card-primary card-outline">
+              <div class="card-header">
+                <h3 class="card-title">Inbox</h3>
+
+                <div class="card-tools">
+                  <div class="input-group input-group-sm">
+                    <input type="text" class="form-control" placeholder="Search Requests">
+                    <div class="input-group-append">
+                      <div class="btn btn-primary">
+                        <i class="fas fa-search"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- /.card-tools -->
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body p-0">
+                <div class="mailbox-controls">
+                  <!-- /.btn-group -->
+                  <button type="button" class="btn btn-default btn-sm">
+                    <i class="fas fa-sync-alt"></i>
+                  </button>
+                  <div class="float-right">
+                    1-50/200
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-default btn-sm">
+                        <i class="fas fa-chevron-left"></i>
+                      </button>
+                      <button type="button" class="btn btn-default btn-sm">
+                        <i class="fas fa-chevron-right"></i>
+                      </button>
+                    </div>
+                    <!-- /.btn-group -->
+                  </div>
+                  <!-- /.float-right -->
+                </div>
+                <div class="table-responsive mailbox-messages">
+                  <table class="table table-hover table-striped">
+                    <tbody>
+                    <tr>
+                      <th>Serial No.</th>
+                      <th>Type</th>
+                      <th>Create Date</th>
+                      <th>Create By</th>
+                      <th>Unit Name</th>
+                    </tr>
+                    <tr *ngFor="let li of inboxList" id="htmlData">
+                      <td>{{li.serial}}</td>
+                      <td>{{li.type}}</td>
+                      <td>{{li.createDate}}</td>
+                      <td>{{li.createBy}}</td>
+                      <td>{{li.unitName}}</td>
+                    </tr>
+<!--                    <tr [routerLink]="['/budget-approval']">-->
+<!--                      <td class="mailbox-name"><a href="#">Alexander Pierce</a></td>-->
+<!--                      <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...-->
+<!--                      </td>-->
+<!--                      <td class="mailbox-attachment"></td>-->
+<!--                      <td class="mailbox-date">5 mins ago</td>-->
+<!--                    </tr>-->
+<!--                    <tr [routerLink]="['/contingent-bill-aprover']">-->
+<!--                      <td class="mailbox-name"><a href="#">Alexander PierceCB</a></td>-->
+<!--                      <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...-->
+<!--                      </td>-->
+<!--                      <td class="mailbox-attachment"></td>-->
+<!--                      <td class="mailbox-date">5 mins ago</td>-->
+<!--                    </tr>-->
+<!--                    <tr [routerLink]="['/budget-approval']">-->
+<!--                      <td class="mailbox-name"><a href="#">Alexander Pierce</a></td>-->
+<!--                      <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...-->
+<!--                      </td>-->
+<!--                      <td class="mailbox-attachment"></td>-->
+<!--                      <td class="mailbox-date">5 mins ago</td>-->
+<!--                    </tr>-->
+<!--                    <tr [routerLink]="['/budget-approval']">-->
+<!--                      <td class="mailbox-name"><a href="#">Alexander Pierce</a></td>-->
+<!--                      <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...-->
+<!--                      </td>-->
+<!--                      <td class="mailbox-attachment"></td>-->
+<!--                      <td class="mailbox-date">5 mins ago</td>-->
+<!--                    </tr>-->
+<!--                    <tr [routerLink]="['/budget-approval']">-->
+<!--                      <td class="mailbox-name"><a href="#">Alexander Pierce</a></td>-->
+<!--                      <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...-->
+<!--                      </td>-->
+<!--                      <td class="mailbox-attachment"></td>-->
+<!--                      <td class="mailbox-date">5 mins ago</td>-->
+<!--                    </tr>-->
+<!--                    <tr [routerLink]="['/budget-approval']">-->
+<!--                      <td class="mailbox-name"><a href="#">Alexander Pierce</a></td>-->
+<!--                      <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...-->
+<!--                      </td>-->
+<!--                      <td class="mailbox-attachment"></td>-->
+<!--                      <td class="mailbox-date">5 mins ago</td>-->
+<!--                    </tr>-->
+<!--                    <tr [routerLink]="['/budget-approval']">-->
+<!--                      <td class="mailbox-name"><a href="#">Alexander Pierce</a></td>-->
+<!--                      <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...-->
+<!--                      </td>-->
+<!--                      <td class="mailbox-attachment"></td>-->
+<!--                      <td class="mailbox-date">5 mins ago</td>-->
+<!--                    </tr>-->
+                    </tbody>
+                  </table>
+                  <!-- /.table -->
+                </div>
+                <!-- /.mail-box-messages -->
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer p-0">
+                <div class="mailbox-controls">
+                  <!-- /.btn-group -->
+                  <button type="button" class="btn btn-default btn-sm">
+                    <i class="fas fa-sync-alt"></i>
+                  </button>
+                  <div class="float-right">
+                    1-50/200
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-default btn-sm">
+                        <i class="fas fa-chevron-left"></i>
+                      </button>
+                      <button type="button" class="btn btn-default btn-sm">
+                        <i class="fas fa-chevron-right"></i>
+                      </button>
+                    </div>
+                    <!-- /.btn-group -->
+                  </div>
+                  <!-- /.float-right -->
+                </div>
+              </div>
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->

@@ -1,0 +1,25 @@
+<div class="wrapper">
+  <!-- Preloader -->
+  <!-- <div class="preloader flex-column justify-content-center align-items-center">
+    <img class="animation__shake" src="assets/img/icg_logo.png" alt="AdminLTELogo" width="150">
+    <p>Please Wait...</p>
+  </div> -->
+  <app-header *ngIf="isShow"></app-header>
+  <app-sidebar *ngIf="isShow"></app-sidebar>
+  <section>
+    <router-outlet (activate)="showHideNav($event)"></router-outlet>
+  </section>
+  <footer class="main-footer">
+    <strong>Copyright &copy; 2022-2023 <a href="https://icg.net.in" target="_blank">Indian Coast Gaurd</a>.</strong>
+    All rights reserved.
+    <div class="float-right d-none d-sm-inline-block">
+      <b>Version</b> 1.0.0
+    </div>
+  </footer>
+
+  <ngx-spinner type="ball-scale-multiple">
+    <p class="loading">Please wait...</p>
+  </ngx-spinner>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->

@@ -1,0 +1,131 @@
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <!-- Brand Logo -->
+  <a href="#" class="brand-link main-logo" [routerLink]="['/']">
+    <img src="assets/img/icg_logo.png" alt="icg Logo" class="brand-image" width="100px">
+  </a>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+        <li class="nav-item"
+          *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'|| userRole=='CB Creator'|| userRole=='CB Approver'|| userRole=='Viewer' || userRole=='System Admin' || userRole=='Unit Admin'">
+          <a href="#" class="nav-link" [routerLink]="['/dashboard']" [routerLinkActive]="['active']">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>
+              Dashboard
+            </p>
+          </a>
+        </li>
+        <!-- <li class="nav-item"> -->
+        <li class="nav-item"
+          *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'|| userRole=='CB Creator'|| userRole=='CB Approver'">
+          <a href="#" class="nav-link" [routerLink]="['/inbox']" [routerLinkActive]="['active']">
+            <i class="fas fa-inbox nav-icon"></i>
+            <p>Inbox</p>
+          </a>
+        </li>
+        <li class="nav-item"
+          *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'|| userRole=='CB Creator'|| userRole=='CB Approver'">
+          <a href="#" class="nav-link" [routerLink]="['/outbox']" [routerLinkActive]="['active']">
+            <i class="fas fa-paper-plane nav-icon"></i>
+            <p>Outbox</p>
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="userRole=='Budget Manager'">
+          <a href="" class="nav-link">
+            <i class="nav-icon fas fa-rupee-sign"></i>
+            <p>
+              Budget
+              <i class="fas fa-angle-left right"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="#" class="nav-link" [routerLink]="['/reciept']" [routerLinkActive]="['active']">
+                <i class="fas fa-file-alt nav-icon"></i>
+                <p>Reciept</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link" [routerLink]="['/budget-allocation']" [routerLinkActive]="['active']">
+                <i class="fas fa-network-wired nav-icon"></i>
+                <p>Allocation Unit Wise</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link" [routerLink]="['/budget-allocation-subheadwise']"
+                [routerLinkActive]="['active']">
+                <i class="fas fa-network-wired nav-icon"></i>
+                <p>Allocation Subhead Wise</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link" [routerLink]="['/revision']" [routerLinkActive]="['active']">
+                <i class="fas fas fa-file-signature nav-icon"></i>
+                <p>Revision</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="" class="nav-link" [routerLink]="['/budget-update']" [routerLinkActive]="['active']">
+                <i class="fas fa-edit	 nav-icon"></i>
+                <p>Budget Update</p>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a href="" class="nav-link" [routerLink]="['/budget-delete']" [routerLinkActive]="['active']">
+                <i class="fas fa-trash-alt nav-icon"></i>
+                <p>Budget Deletion</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item" *ngIf="userRole=='System Admin' || userRole=='Unit Admin'">
+          <a href="#" class="nav-link" [routerLink]="['/manage-users']" [routerLinkActive]="['active']">
+            <i class="fas fa-user-cog nav-icon"></i>
+            <p>Manage Users</p>
+          </a>
+        </li>
+        <li class="nav-item" *ngIf=" userRole=='CB Creator'">
+          <a href="#" class="nav-link" [routerLink]="['/new-contigent-bill']" [routerLinkActive]="['active']">
+            <i class="fas fa-file-alt nav-icon"></i>
+            <p>New Contingent Bill</p>
+          </a>
+        </li>
+        <li class="nav-item"
+          *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'|| userRole=='CB Creator'|| userRole=='CB Approver' || userRole=='Viewer'">
+          <a href="#" class="nav-link" [routerLink]="['/budget-allocation-report']" [routerLinkActive]="['active']">
+            <i class="fas fa-file-download nav-icon"></i>
+            <p>Budget Allocation Report</p>
+          </a>
+        </li>
+        <li class="nav-item " *ngIf="userRole=='Budget Manager' || userRole=='CB Creator'">
+          <a href="#" class="nav-link" [routerLink]="['/cda-parking']" [routerLinkActive]="['active']">
+            <i class="fas fa-coins nav-icon"></i>
+            <p>CDA Parking</p>
+          </a>
+        </li>
+        <li class="nav-item"
+          *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'|| userRole=='CB Creator'|| userRole=='CB Approver' || userRole=='Viewer'">
+          <a href="#" class="nav-link" [routerLink]="['/cda-parking-report']" [routerLinkActive]="['active']">
+            <i class="fas fa-file-invoice nav-icon"></i>
+            <p>CDA Parking Report</p>
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'">
+          <a href="#" class="nav-link" [routerLink]="['/unit-rebase']" [routerLinkActive]="['active']">
+            <i class="fas fa-ship nav-icon"></i>
+            <p>Unit Rebase</p>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
+  </div>
+  <!-- /.sidebar -->
+</aside>
