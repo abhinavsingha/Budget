@@ -20,7 +20,7 @@ export class InboxComponent implements OnInit {
   inboxList: InboxList[]=[];
 
   constructor(private datePipe: DatePipe,
-    private httpService: ApiCallingServiceService,private router: Router,private cons: ConstantsService) {}
+              private httpService: ApiCallingServiceService,private router: Router,private cons: ConstantsService) {}
   public userRole: any;
   ngOnInit(): void {
     this.userRole = localStorage.getItem('user_role');
@@ -50,8 +50,18 @@ export class InboxComponent implements OnInit {
       },
       (error) => {
         console.log(error);
-        }
+      }
     );
+  }
+  redirect(li:InboxList) {
+
+    if (li.type == "CB") {
+      this.router.navigate(['/contingent-bill-aprover'])
+      // window.location.href =;
+    } else if (li.type == "BG") {
+      this.router.navigate(['/budget-approval'])
+      // window.location.href = '/budget-approval';
+    }
   }
 
 

@@ -73,7 +73,7 @@
                       <th>Create By</th>
                       <th>Unit Name</th>
                     </tr>
-                    <tr *ngFor="let li of inboxList" id="htmlData">
+                    <tr *ngFor="let li of inboxList" id="htmlData" (click)="redirect(li)">
                       <td>{{li.serial}}</td>
                       <td>{{li.type}}</td>
                       <td>{{li.createDate}}</td>
