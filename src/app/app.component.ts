@@ -8,7 +8,7 @@ import { LoginComponent } from './login/login.component';
 })
 export class AppComponent {
   title = 'BMS';
-  isShow=false;
+  isShow=true;
   showHideNav(event:any){
     this.isShow= !(event instanceof LoginComponent);
   }
