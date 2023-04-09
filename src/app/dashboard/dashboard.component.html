@@ -33,6 +33,9 @@
                 </h3>
                 <!-- card tools -->
                 <div class="card-tools">
+                  <button type="button" class="btn btn-primary btn-sm daterange mr-2" title="Date range">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
                   <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
                     <i class="fas fa-minus"></i>
                   </button>
@@ -46,43 +49,34 @@
                        style="position: relative;">
                        <form>
                         <div class="row">
-                          <div class="col-md-3">
+                          <div class="col-md-4">
                             <div class="form-group">
                               <label>Financial Year</label>
-                              <ng-select class="form-control select2bs4" style="width: 100%" [items]="budgetFinYears"
-                        bindLabel="finYear" placeholder="Select Financial Year" formControlName="finYear"
-                        appendTo="body">
-                      </ng-select>
-                              <!-- <select class="form-control select2bs4" style="width: 100%">      //vaibhav -->
-                                <!-- <option selected="selected">2022-23</option>
+                              <select class="form-control select2bs4" style="width: 100%">
+                                <option selected="selected">2022-23</option>
                                 <option>2021-22</option>
-                                <option>2020-21</option> -->
-                              <!-- </select> -->
+                                <option>2020-21</option>
+                              </select>
                             </div>
                           </div>
-                          <div class="col-md-3">
+                          <div class="col-md-4">
                             <div class="form-group">
                               <label>Unit</label>
-                              <ng-select class="form-control select2bs4" style="width: 100%" [items]="allCBUnits"
-                            bindLabel="descr" appendTo="body"
-                            placeholder="Select To Unit">
-                          </ng-select>
+                              <select class="form-control select2bs4" style="width: 100%">
+                                <option selected="selected">RHQ(W)</option>
+                                <option>RHQ(E)</option>
+                                <option>RHQ(S)</option>
+                              </select>
                             </div>
                           </div>
-                          <div class="col-md-3">
+                          <div class="col-md-4">
                             <div class="form-group">
                               <label>Sub Head</label>
-                              <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeads"
-                        bindLabel="subHeadDescr" placeholder="Select Sub Head" formControlName="subHead"
-                        appendTo="body">
-                      </ng-select>
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <div class="form-group">
-                              <label style="opacity:0">.</label>
-                               <br>
-                              <button type="submit" class="btn btn-primary">Search</button>
+                              <select class="form-control select2bs4" style="width: 100%">
+                                <option selected="selected">Office Expenses</option>
+                                <option>Office Expenses 1</option>
+                                <option>Office Expenses 2</option>
+                              </select>
                             </div>
                           </div>
                         </div>
@@ -105,6 +99,9 @@
                 </h3>
                 <!-- card tools -->
                 <div class="card-tools">
+                  <button type="button" class="btn btn-primary btn-sm daterange mr-2" title="Date range">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
                   <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
                     <i class="fas fa-minus"></i>
                   </button>
@@ -136,6 +133,9 @@
                 </h3>
                 <!-- card tools -->
                 <div class="card-tools">
+                  <button type="button" class="btn btn-primary btn-sm daterange mr-2" title="Date range">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
                   <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
                     <i class="fas fa-minus"></i>
                   </button>
@@ -166,7 +166,9 @@
                 </h3>
                 <!-- card tools -->
                 <div class="card-tools">
-                  
+                  <button type="button" class="btn btn-primary btn-sm daterange mr-2" title="Date range">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
                   <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
                     <i class="fas fa-minus"></i>
                   </button>
@@ -184,51 +186,66 @@
                             <table class="table table-hover text-nowrap">
                               <thead>
                                 <tr>
+                                  <th><input type="checkbox"> All</th>
                                   <th>Unit</th>
-                                  <th>F.Y.</th>
-                                  <th>Sub Head</th>
-                                  <th>Allocated</th>
-                                  <th>Expenditure</th>
-                                  <th>Balance</th>
-                                  <th>Last CB Date</th>
+                                  <th>Rank</th>
+                                  <th>User Name</th>
+                                  <th>P.No.</th>
+                                  <th>User Id</th>
+                                  <th>From Date</th>
+                                  <th>To Date</th>
+                                  <th>Role</th>
+                                  <th>Status</th>
                                 </tr>
                               </thead>
                               <tbody>
                                      <tr>
-                                      <td>RHQ(W)</td>
+                                      <td><input type="checkbox"></td>
                                       <td>2022-23</td>
+                                      <td>RHQ(W)</td>
                                       <td>Office Expenses</td>
-                                      <td>23475</td>
-                                      <td>233434</td>
-                                      <td>166545</td>
+                                      <td>2345</td>
+                                      <td>2334354</td>
                                       <td>21/11/23</td>
+                                      <td>CGHQ to RHQ</td>
+                                      <td>CB Creator</td>
+                                      <td>Not Approved</td>
                                     </tr>
                                     <tr>
-                                      <td>RHQ(W)</td>
+                                      <td><input type="checkbox"></td>
                                       <td>2022-23</td>
+                                      <td>RHQ(W)</td>
                                       <td>Office Expenses</td>
-                                      <td>23475</td>
-                                      <td>233434</td>
-                                      <td>166545</td>
+                                      <td>2345</td>
+                                      <td>2334354</td>
                                       <td>21/11/23</td>
+                                      <td>CGHQ to RHQ</td>
+                                      <td>System Admin</td>
+                                      <td>Approved</td>
                                     </tr>
                                     <tr>
-                                      <td>RHQ(W)</td>
+                                      <td><input type="checkbox"></td>
                                       <td>2022-23</td>
+                                      <td>RHQ(W)</td>
                                       <td>Office Expenses</td>
-                                      <td>23475</td>
-                                      <td>233434</td>
-                                      <td>166545</td>
+                                      <td>2345</td>
+                                      <td>2334354</td>
                                       <td>21/11/23</td>
+                                      <td>CGHQ to RHQ</td>
+                                      <td>Unit Admin</td>
+                                      <td>Not Approved</td>
                                     </tr>
                                     <tr>
-                                      <td>RHQ(W)</td>
+                                      <td><input type="checkbox"></td>
                                       <td>2022-23</td>
+                                      <td>RHQ(W)</td>
                                       <td>Office Expenses</td>
-                                      <td>23475</td>
-                                      <td>233434</td>
-                                      <td>166545</td>
+                                      <td>2345</td>
+                                      <td>2334354</td>
                                       <td>21/11/23</td>
+                                      <td>CGHQ to RHQ</td>
+                                      <td>Budget Manager</td>
+                                      <td>Not Approved</td>
                                     </tr>
                               </tbody>
                             </table>
