@@ -1,61 +1,61 @@
 import { Component, OnInit } from '@angular/core';
 import * as $ from 'jquery';
-import {NgxSpinnerService} from 'ngx-spinner';
-import {ApiCallingServiceService} from "../services/api-calling/api-calling-service.service";
-import {ConstantsService} from "../services/constants/constants.service";
-import {CommonService} from "../services/common/common.service";
-import {FormControl, FormGroup} from "@angular/forms";
-import {DatePipe} from "@angular/common";
-import {SharedService} from "../services/shared/shared.service";
-import Swal from "sweetalert2";
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ApiCallingServiceService } from '../services/api-calling/api-calling-service.service';
+import { ConstantsService } from '../services/constants/constants.service';
+import { CommonService } from '../services/common/common.service';
+import { FormControl, FormGroup } from '@angular/forms';
+import { DatePipe } from '@angular/common';
+import { SharedService } from '../services/shared/shared.service';
+import Swal from 'sweetalert2';
 
-interface cb{
-  authGroupId:any;
-  onAccountOf:any;
-  authorityDetails:any;
-  contingentBilId:any;
-  budgetHeadID:any;
-  authUnitId:any;
-  cbUnitId:any;
+interface cb {
+  authGroupId: any;
+  onAccountOf: any;
+  authorityDetails: any;
+  contingentBilId: any;
+  budgetHeadID: any;
+  authUnitId: any;
+  cbUnitId: any;
   uploadFileDate: any;
-  finSerialNo:any;
+  finSerialNo: any;
   progressiveAmount: any;
   fileNo: any;
   fileDate: any;
   minorHead: any;
   cbUnit: any;
   finYearName: any;
-  majorHead:any;
-  subHead:any;
+  majorHead: any;
+  subHead: any;
   amount: any;
   file: any;
-  cbNo:any;
+  cbNo: any;
   cbDate: any;
-  remarks:any;
-  authority:any;
-  authorityUnit:any;
+  remarks: any;
+  authority: any;
+  authorityUnit: any;
   date: any;
   firmName: any;
-  invoiceNo:any;
-  invoiceDate:any;
-  invoiceFile:any;
-  returnRemarks:any;
-  status:any;
+  invoiceNo: any;
+  invoiceDate: any;
+  invoiceFile: any;
+  returnRemarks: any;
+  status: any;
   checked?: boolean;
-  budgetAllocated:any;
+  budgetAllocated: any;
 }
-class updateRequest{
-  status:any;
-  groupId:any;
-  remarks:any;
+class updateRequest {
+  status: any;
+  groupId: any;
+  remarks: any;
 }
 @Component({
   selector: 'app-contigent-bill-approver',
   templateUrl: './contigent-bill-approver.component.html',
-  styleUrls: ['./contigent-bill-approver.component.scss']
+  styleUrls: ['./contigent-bill-approver.component.scss'],
 })
-export class ContigentBillApproverComponent implements OnInit{
-
+export class ContigentBillApproverComponent implements OnInit {
+  p: number = 1;
   finYearData: any;
   cbUnitData: any;
   majorHeadData: any;
@@ -64,37 +64,39 @@ export class ContigentBillApproverComponent implements OnInit{
   subHeadData: any;
   budgetAllotted: any;
   expenditure: any;
-  constructor(private apiService: ApiCallingServiceService,
-              private cons: ConstantsService,
-              private SpinnerService: NgxSpinnerService,
-              private common: CommonService,private datePipe: DatePipe,private sharedService: SharedService) {
-  }
-  selectedCb:any;
-  cbList:cb[]=[];
-  disabled:boolean=true;
+  constructor(
+    private apiService: ApiCallingServiceService,
+    private cons: ConstantsService,
+    private SpinnerService: NgxSpinnerService,
+    private common: CommonService,
+    private datePipe: DatePipe,
+    private sharedService: SharedService
+  ) {}
+  selectedCb: any;
+  cbList: cb[] = [];
+  disabled: boolean = true;
   formdata = new FormGroup({
-    budgetAllocated: new FormControl,
-    minorHead: new FormControl, //
-    cbUnit: new FormControl,//
-    finYearName: new FormControl,
-    majorHead:new FormControl,
-    subHead:new FormControl,
-    amount: new FormControl("0"),
-    file: new FormControl,
-    cbNo:new FormControl,
-    cbDate: new FormControl,
-    remarks:new FormControl,
-    authority:new FormControl,
-    authorityUnit:new FormControl,
-    date: new FormControl,
-    firmName: new FormControl,
-    invoiceNo:new FormControl,
-    invoiceDate:new FormControl,
-    invoiceFile:new FormControl,
-    returnRemarks:new FormControl
+    budgetAllocated: new FormControl(),
+    minorHead: new FormControl(), //
+    cbUnit: new FormControl(), //
+    finYearName: new FormControl(),
+    majorHead: new FormControl(),
+    subHead: new FormControl(),
+    amount: new FormControl('0'),
+    file: new FormControl(),
+    cbNo: new FormControl(),
+    cbDate: new FormControl(),
+    remarks: new FormControl(),
+    authority: new FormControl(),
+    authorityUnit: new FormControl(),
+    date: new FormControl(),
+    firmName: new FormControl(),
+    invoiceNo: new FormControl(),
+    invoiceDate: new FormControl(),
+    invoiceFile: new FormControl(),
+    returnRemarks: new FormControl(),
   });
   ngOnInit(): void {
-
     $.getScript('assets/js/adminlte.js');
     this.getContingentBill();
     this.getMajorHead();
@@ -102,16 +104,18 @@ export class ContigentBillApproverComponent implements OnInit{
     this.getCgUnitData();
   }
   private getContingentBill() {
-    this.cbList=[];
+    this.cbList = [];
     this.apiService.getApi(this.cons.api.getCb).subscribe(
       (res) => {
         let result: { [key: string]: any } = res;
         console.log(result['response']);
-        let getCbList=result['response'];
+        let getCbList = result['response'];
 
-        for(let i=0;i<getCbList.length;i++){
-          let url =this.cons.api.getAvailableFund +'/' +getCbList[i].cbUnitId.cbUnit;
-          this.apiService.getApi(url).subscribe((res) => {
+        for (let i = 0; i < getCbList.length; i++) {
+          let url =
+            this.cons.api.getAvailableFund + '/' + getCbList[i].cbUnitId.cbUnit;
+          this.apiService.getApi(url).subscribe(
+            (res) => {
               let result: { [key: string]: any } = res;
               this.budgetAllotted = result['response'].fundAvailable;
             },
@@ -120,31 +124,39 @@ export class ContigentBillApproverComponent implements OnInit{
               this.SpinnerService.hide();
               //remove after test
               this.budgetAllotted = 0;
-              this.formdata.get('budgetAllocated')?.setValue(this.budgetAllotted);
+              this.formdata
+                .get('budgetAllocated')
+                ?.setValue(this.budgetAllotted);
             }
           );
-          const entry:cb= {
-            authGroupId:getCbList[i].authoritiesList[0].authGroupId,
-            onAccountOf:getCbList[i].onAccountOf,
-            authorityDetails:getCbList[i].authorityDetails,
-            authUnitId:getCbList[i].authoritiesList[0].authUnit,
+          const entry: cb = {
+            authGroupId: getCbList[i].authoritiesList[0].authGroupId,
+            onAccountOf: getCbList[i].onAccountOf,
+            authorityDetails: getCbList[i].authorityDetails,
+            authUnitId: getCbList[i].authoritiesList[0].authUnit,
             cbUnitId: getCbList[i].cbUnitId.cbUnit,
             uploadFileDate: getCbList[i].fileDate,
             finSerialNo: getCbList[i].finYear.serialNo,
             progressiveAmount: getCbList[i].progressiveAmount,
-            fileDate:  getCbList[i].fileDate,
+            fileDate: getCbList[i].fileDate,
             minorHead: getCbList[i].budgetHeadID.minorHead,
             cbUnit: getCbList[i].cbUnitId.descr,
             finYearName: getCbList[i].finYear.finYear,
-            majorHead:  getCbList[i].budgetHeadID.majorHead,
+            majorHead: getCbList[i].budgetHeadID.majorHead,
             subHead: getCbList[i].budgetHeadID.subHeadDescr,
             amount: getCbList[i].cbAmount,
             cbNo: getCbList[i].cbNo,
-            cbDate: this.datePipe.transform(new Date(getCbList[i].cbDate), 'yyyy-MM-dd'),
+            cbDate: this.datePipe.transform(
+              new Date(getCbList[i].cbDate),
+              'yyyy-MM-dd'
+            ),
             remarks: getCbList[i].remarks,
             authority: getCbList[i].authoritiesList[0].authority,
             authorityUnit: getCbList[i].authoritiesList[0].authUnit,
-            date: this.datePipe.transform(new Date(getCbList[i].authoritiesList[0].authDate), 'yyyy-MM-dd'),
+            date: this.datePipe.transform(
+              new Date(getCbList[i].authoritiesList[0].authDate),
+              'yyyy-MM-dd'
+            ),
             firmName: getCbList[i].vendorName,
             invoiceNo: getCbList[i].invoiceNO,
             invoiceDate: getCbList[i].invoiceDate,
@@ -152,14 +164,13 @@ export class ContigentBillApproverComponent implements OnInit{
             returnRemarks: getCbList[i].authoritiesList[0].remarks,
             status: getCbList[i].status,
             budgetAllocated: this.budgetAllotted,
-            checked:false,
-            fileNo:  getCbList[i].fileID,
+            checked: false,
+            fileNo: getCbList[i].fileID,
             file: getCbList[i].authoritiesList[0].docId,
-            budgetHeadID:getCbList[i].budgetHeadID,
-            contingentBilId:getCbList[i].cbId,
-
-          }
-          if(entry.authGroupId==this.sharedService.sharedValue)
+            budgetHeadID: getCbList[i].budgetHeadID,
+            contingentBilId: getCbList[i].cbId,
+          };
+          if (entry.authGroupId == this.sharedService.sharedValue)
             this.cbList.push(entry);
         }
       },
@@ -170,11 +181,13 @@ export class ContigentBillApproverComponent implements OnInit{
   }
   getFinancialYear() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getBudgetFinYear).subscribe((results) => {
-      this.SpinnerService.hide();
-      let result: { [key: string]: any } = results;
-      this.finYearData = result['response'];
-    });
+    this.apiService
+      .getApi(this.cons.api.getBudgetFinYear)
+      .subscribe((results) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = results;
+        this.finYearData = result['response'];
+      });
   }
   getCgUnitData() {
     this.SpinnerService.show();
@@ -185,55 +198,50 @@ export class ContigentBillApproverComponent implements OnInit{
     });
   }
   getMajorHead() {
-    this.apiService.getApi(this.cons.api.getMajorData)
-      .subscribe({
-        next: (v: object) => {
-          let result: { [key: string]: any } = v;
-          if (result['message'] == 'success') {
-            localStorage.setItem('newToken', result['response']['token']);
-            this.majorHeadData = result['response'].subHead;
-            this.minorHeadData = result['response'].subHead;
-            this.SpinnerService.hide();
-          } else {
-            this.common.faliureAlert('Please try later', result['message'], '');
-          }
-        },
-        error: (e) => {
-
-        },
-        complete: () => console.info('complete'),
-      });
-
+    this.apiService.getApi(this.cons.api.getMajorData).subscribe({
+      next: (v: object) => {
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          localStorage.setItem('newToken', result['response']['token']);
+          this.majorHeadData = result['response'].subHead;
+          this.minorHeadData = result['response'].subHead;
+          this.SpinnerService.hide();
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {},
+      complete: () => console.info('complete'),
+    });
   }
   getCheckedRows(cbNo: any) {
-    this.cbList.forEach((cbEntry) =>
-    {
-      if(cbEntry.cbNo==cbNo&&cbEntry.checked==false){
-        cbEntry.checked=true;
+    this.cbList.forEach((cbEntry) => {
+      if (cbEntry.cbNo == cbNo && cbEntry.checked == false) {
+        cbEntry.checked = true;
         this.updateFormdata(cbEntry);
-      }
-      else if(cbEntry.cbNo==cbNo&&cbEntry.checked==true)
-        cbEntry.checked=false;
-      if(cbEntry.checked)
-        console.log(cbEntry.cbNo+" ");
+      } else if (cbEntry.cbNo == cbNo && cbEntry.checked == true)
+        cbEntry.checked = false;
+      if (cbEntry.checked) console.log(cbEntry.cbNo + ' ');
     });
   }
   private updateFormdata(cbEntry: cb) {
-    for(let i=0;i<this.majorHeadData.length;i++){
-      let major=this.majorHeadData[i];
-      if(major.majorHead==cbEntry.majorHead){
+    for (let i = 0; i < this.majorHeadData.length; i++) {
+      let major = this.majorHeadData[i];
+      if (major.majorHead == cbEntry.majorHead) {
         this.formdata.get('majorHead')?.setValue(cbEntry.majorHead);
-        this.majorHead=major;
-        if(this.subHeadData == undefined){
+        this.majorHead = major;
+        if (this.subHeadData == undefined) {
           this.SpinnerService.show();
-          let url = this.cons.api.getAllSubHeadByMajorHead + '/' + this.majorHead.majorHead;
+          let url =
+            this.cons.api.getAllSubHeadByMajorHead +
+            '/' +
+            this.majorHead.majorHead;
           this.apiService.getApi(url).subscribe((results) => {
             let result: { [key: string]: any } = results;
-            this.subHeadData=result['response'];
+            this.subHeadData = result['response'];
             for (let i = 0; i < this.subHeadData.length; i++) {
               let sub = this.subHeadData[i];
               if (sub.subHeadDescr == cbEntry.subHead) {
-
                 this.formdata.get('subHead')?.setValue(sub);
               }
             }
@@ -257,41 +265,47 @@ export class ContigentBillApproverComponent implements OnInit{
     this.formdata.get('invoiceDate')?.setValue(cbEntry.invoiceDate);
     this.formdata.get('invoiceFile')?.setValue(cbEntry.invoiceFile);
     this.formdata.get('returnRemarks')?.setValue(cbEntry.returnRemarks);
-    for(let i=0;i<this.minorHeadData.length;i++){
-      if(this.minorHeadData[i].minorHead==cbEntry.minorHead){
+    for (let i = 0; i < this.minorHeadData.length; i++) {
+      if (this.minorHeadData[i].minorHead == cbEntry.minorHead) {
         this.formdata.get('minorHead')?.setValue(this.minorHeadData[i]);
       }
     }
-    for(let i=0;i<this.cbUnitData.length;i++){
-      if(this.cbUnitData[i].descr==cbEntry.cbUnit)
-        this.formdata.get('cbUnit')?.setValue(this.cbUnitData[i])
-      if(this.cbUnitData[i].unit==cbEntry.authorityUnit)
-        this.formdata.get('authorityUnit')?.setValue(this.cbUnitData[i])
+    for (let i = 0; i < this.cbUnitData.length; i++) {
+      if (this.cbUnitData[i].descr == cbEntry.cbUnit)
+        this.formdata.get('cbUnit')?.setValue(this.cbUnitData[i]);
+      if (this.cbUnitData[i].unit == cbEntry.authorityUnit)
+        this.formdata.get('authorityUnit')?.setValue(this.cbUnitData[i]);
     }
-    for(let i=0;i<this.finYearData.length;i++){
-      if(this.finYearData[i].finYear==cbEntry.finYearName)
+    for (let i = 0; i < this.finYearData.length; i++) {
+      if (this.finYearData[i].finYear == cbEntry.finYearName)
         this.formdata.get('finYearName')?.setValue(this.finYearData[i]);
-
     }
     this.formdata.get('file')?.setValue(cbEntry.file);
   }
   getBudgetAllotted() {
-    this.budgetAllotted=0;
+    this.budgetAllotted = 0;
     this.formdata.get('budgetAllocated')?.setValue(this.budgetAllotted);
     this.getExpenditure();
   }
   private getExpenditure() {
-    this.expenditure=0;
-    const proggressive=document.getElementById("Proggressive") as HTMLInputElement;
-    proggressive.setAttribute("value", this.expenditure.toString());
+    this.expenditure = 0;
+    const proggressive = document.getElementById(
+      'Proggressive'
+    ) as HTMLInputElement;
+    proggressive.setAttribute('value', this.expenditure.toString());
     this.updateExpenditure();
   }
   updateExpenditure() {
-    this.expenditure=this.expenditure+this.formdata.get('amount')?.value
-    const proggressive=document.getElementById("Proggressive") as HTMLInputElement;
-    proggressive.setAttribute("value", this.expenditure.toString());
-    const balance=document.getElementById("BalanceFund") as HTMLInputElement;
-    balance.setAttribute("value", (this.budgetAllotted-this.expenditure).toString());
+    this.expenditure = this.expenditure + this.formdata.get('amount')?.value;
+    const proggressive = document.getElementById(
+      'Proggressive'
+    ) as HTMLInputElement;
+    proggressive.setAttribute('value', this.expenditure.toString());
+    const balance = document.getElementById('BalanceFund') as HTMLInputElement;
+    balance.setAttribute(
+      'value',
+      (this.budgetAllotted - this.expenditure).toString()
+    );
   }
 
   confirmModel() {
@@ -310,23 +324,24 @@ export class ContigentBillApproverComponent implements OnInit{
     });
   }
   approveCb() {
-    for(let i=0;i<this.cbList.length;i++) {
+    for (let i = 0; i < this.cbList.length; i++) {
       // if(this.cbList[i].cbNo==this.formdata.get('cbNo')?.value){
       this.cbList[i].status = 'Approved';
     }
 
-        const update:updateRequest= {
-          status: this.cbList[0].status,
-          groupId: this.cbList[0].authGroupId,
-          remarks: undefined
-        }
-    this.apiService.postApi(this.cons.api.approveContingentBill, update).subscribe({
+    const update: updateRequest = {
+      status: this.cbList[0].status,
+      groupId: this.cbList[0].authGroupId,
+      remarks: undefined,
+    };
+    this.apiService
+      .postApi(this.cons.api.approveContingentBill, update)
+      .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
 
           if (result['message'] == 'success') {
-
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
@@ -338,9 +353,9 @@ export class ContigentBillApproverComponent implements OnInit{
         },
         complete: () => this.getContingentBill(),
       });
-    this.cbList=[];
+    this.cbList = [];
     this.getContingentBill();
-      // }
+    // }
     // }
     console.log(this.cbList);
   }
@@ -360,16 +375,16 @@ export class ContigentBillApproverComponent implements OnInit{
       }
     });
   }
-  returnCb(){
-    for(let i=0;i<this.cbList.length;i++){
+  returnCb() {
+    for (let i = 0; i < this.cbList.length; i++) {
       // if(this.cbList[i].cbNo==this.formdata.get('cbNo')?.value){
-        this.cbList[i].status='Rejected';
+      this.cbList[i].status = 'Rejected';
     }
-        const update:updateRequest= {
-          status: this.cbList[0].status,
-          groupId: this.cbList[0].authGroupId,
-          remarks: this.formdata.get('returnRemarks')?.value
-        }
+    const update: updateRequest = {
+      status: this.cbList[0].status,
+      groupId: this.cbList[0].authGroupId,
+      remarks: this.formdata.get('returnRemarks')?.value,
+    };
     this.apiService
       .postApi(this.cons.api.approveContingentBill, update)
       .subscribe({
@@ -388,23 +403,23 @@ export class ContigentBillApproverComponent implements OnInit{
         },
         complete: () => this.getContingentBill(),
       });
-      // }
+    // }
     // }
     console.log(this.cbList);
   }
 
   viewFile() {
-    this.apiService.getApi(this.cons.api.fileDownload+this.formdata.get('file')?.value).subscribe(
-      (res) => {
-        let result: { [key: string]: any } = res;
-        console.log(result['response']);
-
-      },
-            (error) => {
-              console.log(error);
-              this.SpinnerService.hide();}
-          );
-
+    this.apiService
+      .getApi(this.cons.api.fileDownload + this.formdata.get('file')?.value)
+      .subscribe(
+        (res) => {
+          let result: { [key: string]: any } = res;
+          console.log(result['response']);
+        },
+        (error) => {
+          console.log(error);
+          this.SpinnerService.hide();
+        }
+      );
   }
-
 }

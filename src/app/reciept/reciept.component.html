@@ -96,7 +96,7 @@
                     <tr *ngFor="let subHeadReciept of subHeadRecieptList; let i = index">
                       <td><ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeads"
                           bindLabel="subheadShort" (change)="getAvailableFund($event)" appendTo="body"
-                          placeholder="Select To Unit" [(ngModel)]="subHeadReciept.subHead">
+                          placeholder="Select Sub-Head" [(ngModel)]="subHeadReciept.subHead">
                         </ng-select></td>
                       <td>
                         <input type="number" class="form-control" id="Aallocationamount"

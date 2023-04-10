@@ -1,171 +1,158 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0">Outbox</h1>
-          </div>
-          <!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item"><a href="#">Outbox</a></li>
-            </ol>
-          </div>
-          <!-- /.col -->
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Outbox</h1>
         </div>
-        <!-- /.row -->
+        <!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Outbox</a></li>
+          </ol>
+        </div>
+        <!-- /.col -->
       </div>
-      <!-- /.container-fluid -->
+      <!-- /.row -->
     </div>
-    <!-- /.content-header -->
+    <!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
 
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <div class="inbox">
-            <div class="card card-primary card-outline">
-              <div class="card-header">
-                <h3 class="card-title">Outbox</h3>
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="inbox">
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <h3 class="card-title">Outbox</h3>
 
-                <div class="card-tools">
-                  <div class="input-group input-group-sm">
-                    <input type="text" class="form-control" placeholder="Search Requests">
-                    <div class="input-group-append">
-                      <div class="btn btn-primary">
-                        <i class="fas fa-search"></i>
-                      </div>
-                    </div>
+            <!-- <div class="card-tools">
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control" placeholder="Search Requests">
+                <div class="input-group-append">
+                  <div class="btn btn-primary">
+                    <i class="fas fa-search"></i>
                   </div>
                 </div>
-                <!-- /.card-tools -->
               </div>
-              <!-- /.card-header -->
-              <div class="card-body p-0">
-                <div class="mailbox-controls">
-                  <!-- /.btn-group -->
-                  <button type="button" class="btn btn-default btn-sm">
-                    <i class="fas fa-sync-alt"></i>
-                  </button>
-                  <div class="float-right">
-                    1-50/200
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-default btn-sm">
-                        <i class="fas fa-chevron-left"></i>
-                      </button>
-                      <button type="button" class="btn btn-default btn-sm">
-                        <i class="fas fa-chevron-right"></i>
-                      </button>
-                    </div>
-                    <!-- /.btn-group -->
-                  </div>
-                  <!-- /.float-right -->
+            </div> -->
+            <!-- /.card-tools -->
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body p-0">
+            <div class="row mt-2">
+              <div class="col-sm-12 col-md-5">
+                <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
+
                 </div>
-                <div class="table-responsive mailbox-messages">
-                  <table class="table table-hover table-striped">
-                    <tbody>
-                    <tr>
-                      <th>Serial No.</th>
-                      <th>Type</th>
-                      <th>Create Date</th>
-                      <th>Create By</th>
-                      <th>Unit Name</th>
-                    </tr>
-                    <tr *ngFor="let li of outboxList" id="htmlData">
-                      <td>{{li.serial}}</td>
-                      <td>{{li.type}}</td>
-                      <td>{{li.createDate}}</td>
-                      <td>{{li.createBy}}</td>
-                      <td>{{li.unitName}}</td>
-                    </tr>
-<!--                    <tr [routerLink]="['/budget-approval']">-->
-<!--                      <td class="mailbox-name"><a href="#">Alexander Pierce</a></td>-->
-<!--                      <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...-->
-<!--                      </td>-->
-<!--                      <td class="mailbox-attachment"></td>-->
-<!--                      <td class="mailbox-date">5 mins ago</td>-->
-<!--                    </tr>-->
-<!--                    <tr [routerLink]="['/budget-approval']">-->
-<!--                      <td class="mailbox-name"><a href="#">Alexander Pierce</a></td>-->
-<!--                      <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...-->
-<!--                      </td>-->
-<!--                      <td class="mailbox-attachment"></td>-->
-<!--                      <td class="mailbox-date">5 mins ago</td>-->
-<!--                    </tr>-->
-<!--                    <tr [routerLink]="['/budget-approval']">-->
-<!--                      <td class="mailbox-name"><a href="#">Alexander Pierce</a></td>-->
-<!--                      <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...-->
-<!--                      </td>-->
-<!--                      <td class="mailbox-attachment"></td>-->
-<!--                      <td class="mailbox-date">5 mins ago</td>-->
-<!--                    </tr>-->
-<!--                    <tr [routerLink]="['/budget-approval']">-->
-<!--                      <td class="mailbox-name"><a href="#">Alexander Pierce</a></td>-->
-<!--                      <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...-->
-<!--                      </td>-->
-<!--                      <td class="mailbox-attachment"></td>-->
-<!--                      <td class="mailbox-date">5 mins ago</td>-->
-<!--                    </tr>-->
-<!--                    <tr [routerLink]="['/budget-approval']">-->
-<!--                      <td class="mailbox-name"><a href="#">Alexander Pierce</a></td>-->
-<!--                      <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...-->
-<!--                      </td>-->
-<!--                      <td class="mailbox-attachment"></td>-->
-<!--                      <td class="mailbox-date">5 mins ago</td>-->
-<!--                    </tr>-->
-<!--                    <tr [routerLink]="['/budget-approval']">-->
-<!--                      <td class="mailbox-name"><a href="#">Alexander Pierce</a></td>-->
-<!--                      <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...-->
-<!--                      </td>-->
-<!--                      <td class="mailbox-attachment"></td>-->
-<!--                      <td class="mailbox-date">5 mins ago</td>-->
-<!--                    </tr>-->
-<!--                    <tr [routerLink]="['/budget-approval']">-->
-<!--                      <td class="mailbox-name"><a href="#">Alexander Pierce</a></td>-->
-<!--                      <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...-->
-<!--                      </td>-->
-<!--                      <td class="mailbox-attachment"></td>-->
-<!--                      <td class="mailbox-date">5 mins ago</td>-->
-<!--                    </tr>-->
-                    </tbody>
-                  </table>
-                  <!-- /.table -->
-                </div>
-                <!-- /.mail-box-messages -->
               </div>
-              <!-- /.card-body -->
-              <div class="card-footer p-0">
-                <div class="mailbox-controls">
-                  <!-- /.btn-group -->
-                  <button type="button" class="btn btn-default btn-sm">
-                    <i class="fas fa-sync-alt"></i>
-                  </button>
-                  <div class="float-right">
-                    1-50/200
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-default btn-sm">
-                        <i class="fas fa-chevron-left"></i>
-                      </button>
-                      <button type="button" class="btn btn-default btn-sm">
-                        <i class="fas fa-chevron-right"></i>
-                      </button>
-                    </div>
-                    <!-- /.btn-group -->
-                  </div>
-                  <!-- /.float-right -->
+              <div class="col-sm-12 col-md-7">
+                <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                  <pagination-controls class="pagination float-right" (pageChange)="p = $event"></pagination-controls>
                 </div>
               </div>
             </div>
-            <!-- /.card -->
+            <div class="table-responsive mailbox-messages">
+              <table class="table table-hover table-striped">
+                <tbody>
+                  <tr>
+                    <th>Serial No.</th>
+                    <th>Type</th>
+                    <th>Create Date</th>
+                    <th>Create By</th>
+                    <th>Unit Name</th>
+                  </tr>
+                  <tr *ngFor="let li of outboxList | paginate :{itemsPerPage:10,currentPage:p}; let i = index"
+                    id="htmlData">
+                    <td>{{10 *(p-1)+i+1}}</td>
+                    <td>{{li.type}}</td>
+                    <td>{{li.createDate}}</td>
+                    <td>{{li.createBy}}</td>
+                    <td>{{li.unitName}}</td>
+                  </tr>
+                  <!--                    <tr [routerLink]="['/budget-approval']">-->
+                  <!--                      <td class="mailbox-name"><a href="#">Alexander Pierce</a></td>-->
+                  <!--                      <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...-->
+                  <!--                      </td>-->
+                  <!--                      <td class="mailbox-attachment"></td>-->
+                  <!--                      <td class="mailbox-date">5 mins ago</td>-->
+                  <!--                    </tr>-->
+                  <!--                    <tr [routerLink]="['/budget-approval']">-->
+                  <!--                      <td class="mailbox-name"><a href="#">Alexander Pierce</a></td>-->
+                  <!--                      <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...-->
+                  <!--                      </td>-->
+                  <!--                      <td class="mailbox-attachment"></td>-->
+                  <!--                      <td class="mailbox-date">5 mins ago</td>-->
+                  <!--                    </tr>-->
+                  <!--                    <tr [routerLink]="['/budget-approval']">-->
+                  <!--                      <td class="mailbox-name"><a href="#">Alexander Pierce</a></td>-->
+                  <!--                      <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...-->
+                  <!--                      </td>-->
+                  <!--                      <td class="mailbox-attachment"></td>-->
+                  <!--                      <td class="mailbox-date">5 mins ago</td>-->
+                  <!--                    </tr>-->
+                  <!--                    <tr [routerLink]="['/budget-approval']">-->
+                  <!--                      <td class="mailbox-name"><a href="#">Alexander Pierce</a></td>-->
+                  <!--                      <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...-->
+                  <!--                      </td>-->
+                  <!--                      <td class="mailbox-attachment"></td>-->
+                  <!--                      <td class="mailbox-date">5 mins ago</td>-->
+                  <!--                    </tr>-->
+                  <!--                    <tr [routerLink]="['/budget-approval']">-->
+                  <!--                      <td class="mailbox-name"><a href="#">Alexander Pierce</a></td>-->
+                  <!--                      <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...-->
+                  <!--                      </td>-->
+                  <!--                      <td class="mailbox-attachment"></td>-->
+                  <!--                      <td class="mailbox-date">5 mins ago</td>-->
+                  <!--                    </tr>-->
+                  <!--                    <tr [routerLink]="['/budget-approval']">-->
+                  <!--                      <td class="mailbox-name"><a href="#">Alexander Pierce</a></td>-->
+                  <!--                      <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...-->
+                  <!--                      </td>-->
+                  <!--                      <td class="mailbox-attachment"></td>-->
+                  <!--                      <td class="mailbox-date">5 mins ago</td>-->
+                  <!--                    </tr>-->
+                  <!--                    <tr [routerLink]="['/budget-approval']">-->
+                  <!--                      <td class="mailbox-name"><a href="#">Alexander Pierce</a></td>-->
+                  <!--                      <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...-->
+                  <!--                      </td>-->
+                  <!--                      <td class="mailbox-attachment"></td>-->
+                  <!--                      <td class="mailbox-date">5 mins ago</td>-->
+                  <!--                    </tr>-->
+                </tbody>
+              </table>
+              <!-- /.table -->
+            </div>
+            <!-- /.mail-box-messages -->
           </div>
-          <!-- /.col -->
-        <!-- /.row -->
-      </div>
-      <!-- /.container-fluid -->
-    </section>
+          <!-- /.card-body -->
+          <div class="card-footer p-0">
+            <div class="row mt-2">
+              <div class="col-sm-12 col-md-5">
+                <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
 
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-7">
+                <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                  <pagination-controls class="pagination float-right" (pageChange)="p = $event"></pagination-controls>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.card -->
+      </div>
+      <!-- /.col -->
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->

@@ -104,7 +104,7 @@
                 <table class="table table-hover text-nowrap">
                   <thead>
                     <tr>
-                      <!-- <th><input type="checkbox"> All</th> -->
+                      <th>Sr. No.</th>
                       <th>F.Y.</th>
                       <th>Unit</th>
                       <th>Sub Head</th>
@@ -118,7 +118,7 @@
                   <tbody>
                     <tr
                       *ngFor="let buggetData of budgetDataList  | paginate :{itemsPerPage:10,currentPage:p} ; let i = index">
-                      <!-- <td><input type="checkbox"></td> -->
+                      <td>{{10 *(p-1)+i+1}}</td>
                       <td>{{buggetData.finYear.finYear}}</td>
                       <td>{{buggetData.toUnit.cgUnitShort}}</td>
                       <td>{{buggetData.subHead.subHeadDescr}}</td>
@@ -135,37 +135,12 @@
               <div class="row mt-2">
                 <div class="col-sm-12 col-md-5">
                   <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
-                    Showing 1 to 10 of 57 entries
+
                   </div>
                 </div>
                 <div class="col-sm-12 col-md-7">
                   <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
-                    <ul class="pagination float-right">
-                      <li class="paginate_button page-item previous disabled" id="example2_previous">
-                        <a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
-                      </li>
-                      <li class="paginate_button page-item active">
-                        <a href="#" aria-controls="example2" data-dt-idx="1" tabindex="0" class="page-link">1</a>
-                      </li>
-                      <li class="paginate_button page-item">
-                        <a href="#" aria-controls="example2" data-dt-idx="2" tabindex="0" class="page-link">2</a>
-                      </li>
-                      <li class="paginate_button page-item">
-                        <a href="#" aria-controls="example2" data-dt-idx="3" tabindex="0" class="page-link">3</a>
-                      </li>
-                      <li class="paginate_button page-item">
-                        <a href="#" aria-controls="example2" data-dt-idx="4" tabindex="0" class="page-link">4</a>
-                      </li>
-                      <li class="paginate_button page-item">
-                        <a href="#" aria-controls="example2" data-dt-idx="5" tabindex="0" class="page-link">5</a>
-                      </li>
-                      <li class="paginate_button page-item">
-                        <a href="#" aria-controls="example2" data-dt-idx="6" tabindex="0" class="page-link">6</a>
-                      </li>
-                      <li class="paginate_button page-item next" id="example2_next">
-                        <a href="#" aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
-                      </li>
-                    </ul>
+                    <pagination-controls class="pagination float-right" (pageChange)="p = $event"></pagination-controls>
                   </div>
                 </div>
               </div>

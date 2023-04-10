@@ -19,7 +19,7 @@ class InboxList {
 })
 export class InboxComponent implements OnInit {
   inboxList: InboxList[] = [];
-
+  p: number = 1;
   constructor(
     private datePipe: DatePipe,
     private apiService: ApiCallingServiceService,

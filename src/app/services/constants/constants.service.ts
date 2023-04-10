@@ -89,5 +89,8 @@ export class ConstantsService {
 
     approveBudgetOrReject:
       this.serviceUrl + 'budgetAllocation/approveBudgetOrReject',
+
+    getAllocationReportRevised:
+      this.serviceUrl + 'reportController/getAllocationReportRevised',
   };
 }
