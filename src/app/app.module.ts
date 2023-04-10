@@ -34,13 +34,28 @@ import { UnitRebaseComponent } from './unit-rebase/unit-rebase.component';
 
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { DatePipe } from '@angular/common';
-import {SharedService} from "./services/shared/shared.service";
+import { SharedService } from './services/shared/shared.service';
+
+// function initializeKeycloak(keycloak: KeycloakService) {
+//   return () =>
+//     keycloak.init({
+//       config: {
+//         url: 'http://localhost:8080/auth',
+//         realm: 'icgrms',
+//         clientId: 'budget',
+//       },
+//       initOptions: {
+//         onLoad: 'login-required',
+//         flow: 'standard',
+//       },
+//     });
+// }
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        url: 'http://localhost:8080/auth',
+        url: 'https://icg.net.in/auth/',
         realm: 'icgrms',
         clientId: 'budget',
       },
@@ -88,7 +103,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
     // MatTableModule,
     // NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' }),
   ],
-  providers: [SharedService,
+  providers: [
+    SharedService,
     DatePipe,
     {
       provide: APP_INITIALIZER,

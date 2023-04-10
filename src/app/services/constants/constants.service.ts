@@ -81,7 +81,13 @@ export class ConstantsService {
     getUiData: this.serviceUrl + 'dashBoard/getUiData',
 
     fileDownload: this.serviceUrl + 'fileUpload/getFilePath/',
+
     approveContingentBill:
       this.serviceUrl + 'contingentBillController/approveContingentBill',
+
+    getAlGroupId: this.serviceUrl + 'budgetAllocation/getAlGroupId',
+
+    approveBudgetOrReject:
+      this.serviceUrl + 'budgetAllocation/approveBudgetOrReject',
   };
 }

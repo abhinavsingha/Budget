@@ -92,7 +92,7 @@ thead {
   /* Handle */
   ::-webkit-scrollbar-thumb {
     background: #1f1955dc; 
-      border-radius:10px;
+      border-radius:50px;
   
   }
     
@@ -105,3 +105,5 @@ thead {
   a{
     cursor: pointer !important;
   }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

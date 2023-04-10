@@ -1,351 +1,238 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0">Budget Approval</h1>
-          </div>
-          <!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item"><a href="#">Budget Approval</a></li>
-            </ol>
-          </div>
-          <!-- /.col -->
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Budget Approval</h1>
         </div>
-        <!-- /.row -->
+        <!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Budget Approval</a></li>
+          </ol>
+        </div>
+        <!-- /.col -->
       </div>
-      <!-- /.container-fluid -->
+      <!-- /.row -->
     </div>
-    <!-- /.content-header -->
-  
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <div class="card card-default">
-          <div class="card-header">
-            <h3 class="card-title">Budget Approval</h3>
-  
-            <div class="card-tools">
-              <button
-                type="button"
-                class="btn btn-tool"
-                data-card-widget="collapse"
-              >
-                <i class="fas fa-minus"></i>
-              </button>
+    <!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="card card-default">
+        <div class="card-header">
+          <h3 class="card-title">Budget Approval</h3>
+
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+          </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+
+          <!-- <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Financial Year</label>
+                  <select class="form-control select2bs4" style="width: 100%">
+                    <option selected="selected">2022-23</option>
+                    <option>2021-22</option>
+                    <option>2020-21</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>To Unit</label>
+                  <select class="form-control select2bs4" style="width: 100%">
+                    <option selected="selected">RHQ(W)</option>
+                    <option>RHQ(E)</option>
+                    <option>RHQ(S)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Major Head</label>
+                  <select class="form-control select2bs4" style="width: 100%">
+                    <option selected="selected">2037</option>
+                    <option>2036</option>
+                    <option>2035</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Minor Head</label>
+                  <select class="form-control select2bs4" style="width: 100%">
+                    <option selected="selected">102</option>
+                    <option>103</option>
+                    <option>104</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Allocation Type</label>
+                  <select disabled class="form-control select2bs4" style="width: 100%">
+                    <option selected="selected">BE</option>
+                    <option>Initial</option>
+                    <option>Initial</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Remarks</label>
+                  <input disabled type="text" class="form-control" id="PrevAllocation" placeholder="CGHQ to RHQ" />
+                </div>
+              </div>
+
+              
+            </div> -->
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                  <thead>
+                    <tr>
+                      <!-- <th><input type="checkbox"> All</th> -->
+                      <th>F.Y.</th>
+                      <th>Unit</th>
+                      <th>Sub Head</th>
+                      <th>Type</th>
+                      <th>Fund Available(Crores)</th>
+                      <th>Fund Allocated(Crores)</th>
+                      <th>Balance Amount(Crores)</th>
+                      <th>Remarks</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="let buggetData of budgetDataList  | paginate :{itemsPerPage:10,currentPage:p} ; let i = index">
+                      <!-- <td><input type="checkbox"></td> -->
+                      <td>{{buggetData.finYear.finYear}}</td>
+                      <td>{{buggetData.toUnit.cgUnitShort}}</td>
+                      <td>{{buggetData.subHead.subHeadDescr}}</td>
+                      <td>{{buggetData.allocTypeId.allocDesc}}</td>
+                      <td>{{buggetData.allocationAmount}}</td>
+                      <td>{{buggetData.allocationAmount}}</td>
+                      <td>{{buggetData.allocationAmount}}</td>
+                      <td>{{buggetData.remarks}}</td>
+                    </tr>
+
+                  </tbody>
+                </table>
+              </div>
+              <div class="row mt-2">
+                <div class="col-sm-12 col-md-5">
+                  <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
+                    Showing 1 to 10 of 57 entries
+                  </div>
+                </div>
+                <div class="col-sm-12 col-md-7">
+                  <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                    <ul class="pagination float-right">
+                      <li class="paginate_button page-item previous disabled" id="example2_previous">
+                        <a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+                      </li>
+                      <li class="paginate_button page-item active">
+                        <a href="#" aria-controls="example2" data-dt-idx="1" tabindex="0" class="page-link">1</a>
+                      </li>
+                      <li class="paginate_button page-item">
+                        <a href="#" aria-controls="example2" data-dt-idx="2" tabindex="0" class="page-link">2</a>
+                      </li>
+                      <li class="paginate_button page-item">
+                        <a href="#" aria-controls="example2" data-dt-idx="3" tabindex="0" class="page-link">3</a>
+                      </li>
+                      <li class="paginate_button page-item">
+                        <a href="#" aria-controls="example2" data-dt-idx="4" tabindex="0" class="page-link">4</a>
+                      </li>
+                      <li class="paginate_button page-item">
+                        <a href="#" aria-controls="example2" data-dt-idx="5" tabindex="0" class="page-link">5</a>
+                      </li>
+                      <li class="paginate_button page-item">
+                        <a href="#" aria-controls="example2" data-dt-idx="6" tabindex="0" class="page-link">6</a>
+                      </li>
+                      <li class="paginate_button page-item next" id="example2_next">
+                        <a href="#" aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <!-- /.card-header -->
-          <div class="card-body">
-            <form>
-              <div class="row">
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label>Financial Year</label>
-                    <select class="form-control select2bs4" style="width: 100%">
-                      <option selected="selected">2022-23</option>
-                      <option>2021-22</option>
-                      <option>2020-21</option>
-                    </select>
-                  </div>
+          <!-- /.row -->
+          <form [formGroup]="formdata">
+            <div class="row">
+              <!-- <div class="col-md-4">
+                <div class="form-group">
+                  <label>Authority Unit</label>
+                  <select disabled class="form-control select2bs4" style="width: 100%">
+                    <option selected="selected">CGHQ</option>
+                    <option>RHQ(W)</option>
+                    <option>RHQ(S)</option>
+                  </select>
                 </div>
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label>To Unit</label>
-                    <select class="form-control select2bs4" style="width: 100%">
-                      <option selected="selected">RHQ(W)</option>
-                      <option>RHQ(E)</option>
-                      <option>RHQ(S)</option>
-                    </select>
-                  </div>
+              </div> -->
+              <!-- <div class="col-md-4">
+                <div class="form-group">
+                  <label>Authority</label>
+                  <input disabled type="text" class="form-control" id="BalanceFund" placeholder="BE/15/CGHQ" />
                 </div>
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label>Major Head</label>
-                    <select class="form-control select2bs4" style="width: 100%">
-                      <option selected="selected">2037</option>
-                      <option>2036</option>
-                      <option>2035</option>
-                    </select>
-                  </div>
+              </div> -->
+              <!-- <div class="col-md-4">
+                <div class="form-group">
+                  <label>Date</label>
+                  <input disabled type="date" class="form-control" id="Date" placeholder="23/02/23" />
                 </div>
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label>Minor Head</label>
-                    <select class="form-control select2bs4" style="width: 100%">
-                      <option selected="selected">102</option>
-                      <option>103</option>
-                      <option>104</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label>Allocation Type</label>
-                    <select disabled class="form-control select2bs4" style="width: 100%">
-                      <option selected="selected">BE</option>
-                      <option>Initial</option>
-                      <option>Initial</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label>Remarks</label>
-                    <input disabled
-                      type="text"
-                      class="form-control"
-                      id="PrevAllocation"
-                      placeholder="CGHQ to RHQ"
-                    />
-                  </div>
-                </div>
-
-                <!-- /.col -->
-              </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                      <div class="card-body table-responsive p-0">
-                        <table class="table table-hover text-nowrap">
-                          <thead>
-                            <tr>
-                              <th><input type="checkbox"> All</th>
-                              <th>F.Y.</th>
-                              <th>Unit</th>
-                              <th>Sub Head</th>
-                              <th>Type</th>
-                              <th>Fund Available(Crores)</th>
-                              <th>Fund Allocated(Crores)</th>
-                              <th>Balance Amount(Crores)</th>
-                              <th>Remarks</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                                 <tr>
-                                  <td><input type="checkbox"></td>
-                                  <td>2022-23</td>
-                                  <td>RHQ(W)</td>
-                                  <td>Office Expenses</td>
-                                  <td>BE</td>
-                                  <td>2.00</td>
-                                  <td>1.00</td>
-                                  <td>1.00</td>
-                                  <td>CGHQ to RHQ</td>
-                                </tr>
-                                <tr>
-                                  <td><input type="checkbox"></td>
-                                  <td>2022-23</td>
-                                  <td>RHQ(W)</td>
-                                  <td>Office Expenses</td>
-                                  <td>BE</td>
-                                  <td>2.00</td>
-                                  <td>1.00</td>
-                                  <td>1.00</td>
-                                  <td>CGHQ to RHQ</td>
-                                </tr>
-                                <tr>
-                                  <td><input type="checkbox"></td>
-                                  <td>2022-23</td>
-                                  <td>RHQ(W)</td>
-                                  <td>Office Expenses</td>
-                                  <td>BE</td>
-                                  <td>2.00</td>
-                                  <td>1.00</td>
-                                  <td>1.00</td>
-                                  <td>CGHQ to RHQ</td>
-                                </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div class="row mt-2">
-                        <div class="col-sm-12 col-md-5">
-                          <div
-                            class="dataTables_info"
-                            id="example2_info"
-                            role="status"
-                            aria-live="polite"
-                          >
-                            Showing 1 to 10 of 57 entries
-                          </div>
-                        </div>
-                        <div class="col-sm-12 col-md-7">
-                          <div
-                            class="dataTables_paginate paging_simple_numbers"
-                            id="example2_paginate"
-                          >
-                            <ul class="pagination float-right">
-                              <li
-                                class="paginate_button page-item previous disabled"
-                                id="example2_previous"
-                              >
-                                <a
-                                  href="#"
-                                  aria-controls="example2"
-                                  data-dt-idx="0"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >Previous</a
-                                >
-                              </li>
-                              <li class="paginate_button page-item active">
-                                <a
-                                  href="#"
-                                  aria-controls="example2"
-                                  data-dt-idx="1"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >1</a
-                                >
-                              </li>
-                              <li class="paginate_button page-item">
-                                <a
-                                  href="#"
-                                  aria-controls="example2"
-                                  data-dt-idx="2"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >2</a
-                                >
-                              </li>
-                              <li class="paginate_button page-item">
-                                <a
-                                  href="#"
-                                  aria-controls="example2"
-                                  data-dt-idx="3"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >3</a
-                                >
-                              </li>
-                              <li class="paginate_button page-item">
-                                <a
-                                  href="#"
-                                  aria-controls="example2"
-                                  data-dt-idx="4"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >4</a
-                                >
-                              </li>
-                              <li class="paginate_button page-item">
-                                <a
-                                  href="#"
-                                  aria-controls="example2"
-                                  data-dt-idx="5"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >5</a
-                                >
-                              </li>
-                              <li class="paginate_button page-item">
-                                <a
-                                  href="#"
-                                  aria-controls="example2"
-                                  data-dt-idx="6"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >6</a
-                                >
-                              </li>
-                              <li
-                                class="paginate_button page-item next"
-                                id="example2_next"
-                              >
-                                <a
-                                  href="#"
-                                  aria-controls="example2"
-                                  data-dt-idx="7"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >Next</a
-                                >
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-              <!-- /.row -->
-              <div class="row">
-              <div class="col-md-4">
-                  <div class="form-group">
-                    <label>Authority Unit</label>
-                    <select disabled class="form-control select2bs4" style="width: 100%">
-                      <option selected="selected">CGHQ</option>
-                      <option>RHQ(W)</option>
-                      <option>RHQ(S)</option>
-                    </select>
-                  </div>
-                </div>
-              <div class="col-md-4">
-                  <div class="form-group">
-                    <label>Authority</label>
-                    <input disabled
-                      type="text"
-                      class="form-control"
-                      id="BalanceFund"
-                      placeholder="BE/15/CGHQ"
-                    />
-                  </div>
-                </div>
-              <div class="col-md-4">
-                  <div class="form-group">
-                    <label>Date</label>
-                    <input disabled
-                      type="date"
-                      class="form-control"
-                      id="Date"
-                      placeholder="23/02/23"
-                    />
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label for="exampleInputFile">View Document</label>
-                    <div class="input-group">
+              </div> -->
+              <!-- <div class="col-md-4">
+                <div class="form-group">
+                  <label for="exampleInputFile">View Document</label>
+                  <div class="input-group">
                     <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="exampleInputFile" disabled>
-                    <label class="custom-file-label" for="exampleInputFile">Doc.pdf</label>
+                      <input type="file" class="custom-file-input" id="exampleInputFile" disabled>
+                      <label class="custom-file-label" for="exampleInputFile">Doc.pdf</label>
                     </div>
                     <div class="input-group-append">
-                    <span class="input-group-text docBtn" >View</span>
+                      <span class="input-group-text docBtn">View</span>
                     </div>
-                    </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label>Return Remarks</label>
-                    <input disabled
-                      type="text"
-                      class="form-control"
-                      id="PrevAllocation"
-                      placeholder="CGHQ to RHQ"
-                    />
                   </div>
                 </div>
+              </div> -->
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Approve/Return Remarks</label>
+                  <input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Remarks"
+                    formControlName="remarks" />
+                </div>
               </div>
-            </form>
-          </div>
-          <!-- /.card-body -->
-          <div class="card-footer">
-            <div class="row">
-              <button type="submit" class="btn btn-primary mr-2">Approve</button>
-              <button type="submit" class="btn btn-danger">Return</button>
             </div>
+          </form>
+        </div>
+        <!-- /.card-body -->
+        <div class=" card-footer">
+          <div class="row">
+            <button type="submit" class="btn btn-primary mr-2" (click)="approveForm(formdata.value)">Approve</button>
+            <button type="submit" class="btn btn-danger" (click)="returnForm(formdata.value)">Return</button>
           </div>
         </div>
-        <!-- /.row -->
       </div>
-      <!-- /.container-fluid -->
-    </section>
-  
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-  
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
