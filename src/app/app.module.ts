@@ -35,6 +35,11 @@ import { UnitRebaseComponent } from './unit-rebase/unit-rebase.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { DatePipe } from '@angular/common';
 import { SharedService } from './services/shared/shared.service';
+import { DialogComponent } from './dialog/dialog.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDialogModule } from '@angular/material/dialog';
 
 // function initializeKeycloak(keycloak: KeycloakService) {
 //   return () =>
@@ -88,6 +93,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     CdaParkingComponent,
     RecieptComponent,
     UnitRebaseComponent,
+    DialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -100,6 +106,10 @@ function initializeKeycloak(keycloak: KeycloakService) {
     NgxPaginationModule,
     BrowserAnimationsModule,
     KeycloakAngularModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDialogModule,
     // MatTableModule,
     // NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' }),
   ],

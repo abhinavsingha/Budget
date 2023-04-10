@@ -1,395 +1,323 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0">Contingent  Bill Approval</h1>
-          </div>
-          <!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item"><a href="#">Contingent Bill Approval</a></li>
-            </ol>
-          </div>
-          <!-- /.col -->
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Contingent Bill Approval</h1>
         </div>
-        <!-- /.row -->
+        <!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Contingent Bill Approval</a></li>
+          </ol>
+        </div>
+        <!-- /.col -->
       </div>
-      <!-- /.container-fluid -->
+      <!-- /.row -->
     </div>
-    <!-- /.content-header -->
+    <!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
 
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <div class="card card-default">
-          <div class="card-header">
-            <h3 class="card-title">Contingent Bill Details</h3>
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="card card-default">
+        <div class="card-header">
+          <h3 class="card-title">Contingent Bill Details</h3>
 
-            <div class="card-tools">
-              <button
-                type="button"
-                class="btn btn-tool"
-                data-card-widget="collapse"
-              >
-                <i class="fas fa-minus"></i>
-              </button>
-            </div>
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
           </div>
-          <!-- /.card-header -->
-          <div class="card-body">
-            <form [formGroup]="formdata">
-                <div class="row">
-                    <div class="col-sm-12">
-                      <div class="card-body table-responsive p-0">
-                        <table class="table table-hover text-nowrap">
-                          <thead>
-                            <tr>
-                              <th><input type="checkbox"> All</th>
-                              <th>F.Y.</th>
-                              <th>CB Unit</th>
-                              <th>Sub Head</th>
-                              <th>CB No.</th>
-                              <th>Amount</th>
-                              <th>CB Date</th>
-                              <th>Status</th>
-                              <th>CB Upload</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                                 <tr  *ngFor="let cb of cbList">
-                                  <td><input type="checkbox" value="{{cb.cbNo}}" (change)="getCheckedRows(cb.cbNo)"></td>
-                                  <td>{{cb.finYearName}}</td>
-                                   <td>{{cb.cbUnit}}</td>
-                                   <td>{{cb.subHead}}</td>
-                                   <td>{{cb.cbNo}}</td>
-                                   <td>{{cb.amount}}</td>
-                                   <td>{{cb.cbDate}}</td>
-                                   <td>{{cb.status}}</td>
-                                   <td><button type="submit" class="btn btn-primary">View</button></td>
-                                </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div class="row mt-2">
-                        <div class="col-sm-12 col-md-5">
-                          <div
-                            class="dataTables_info"
-                            id="example2_info"
-                            role="status"
-                            aria-live="polite"
-                          >
-                            Showing 1 to 10 of 57 entries
-                          </div>
-                        </div>
-                        <div class="col-sm-12 col-md-7">
-                          <div
-                            class="dataTables_paginate paging_simple_numbers"
-                            id="example2_paginate"
-                          >
-                            <ul class="pagination float-right">
-                              <li
-                                class="paginate_button page-item previous disabled"
-                                id="example2_previous"
-                              >
-                                <a
-                                  href="#"
-                                  aria-controls="example2"
-                                  data-dt-idx="0"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >Previous</a
-                                >
-                              </li>
-                              <li class="paginate_button page-item active">
-                                <a
-                                  href="#"
-                                  aria-controls="example2"
-                                  data-dt-idx="1"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >1</a
-                                >
-                              </li>
-                              <li class="paginate_button page-item">
-                                <a
-                                  href="#"
-                                  aria-controls="example2"
-                                  data-dt-idx="2"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >2</a
-                                >
-                              </li>
-                              <li class="paginate_button page-item">
-                                <a
-                                  href="#"
-                                  aria-controls="example2"
-                                  data-dt-idx="3"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >3</a
-                                >
-                              </li>
-                              <li class="paginate_button page-item">
-                                <a
-                                  href="#"
-                                  aria-controls="example2"
-                                  data-dt-idx="4"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >4</a
-                                >
-                              </li>
-                              <li class="paginate_button page-item">
-                                <a
-                                  href="#"
-                                  aria-controls="example2"
-                                  data-dt-idx="5"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >5</a
-                                >
-                              </li>
-                              <li class="paginate_button page-item">
-                                <a
-                                  href="#"
-                                  aria-controls="example2"
-                                  data-dt-idx="6"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >6</a
-                                >
-                              </li>
-                              <li
-                                class="paginate_button page-item next"
-                                id="example2_next"
-                              >
-                                <a
-                                  href="#"
-                                  aria-controls="example2"
-                                  data-dt-idx="7"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >Next</a
-                                >
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+          <form [formGroup]="formdata">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="card-body table-responsive p-0">
+                  <table class="table table-hover text-nowrap">
+                    <thead>
+                      <tr>
+                        <!-- <th><input type="checkbox"> All</th> -->
+                        <th>F.Y.</th>
+                        <th>CB Unit</th>
+                        <th>Sub Head</th>
+                        <th>CB No.</th>
+                        <th>Amount</th>
+                        <th>CB Date</th>
+                        <th>Status</th>
+                        <!-- <th>CB Upload</th> -->
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let cb of cbList">
+                        <!-- <td><input type="checkbox" value="{{cb.cbNo}}" (change)="getCheckedRows(cb.cbNo)"></td> -->
+                        <td>{{cb.finYearName}}</td>
+                        <td>{{cb.cbUnit}}</td>
+                        <td>{{cb.subHead}}</td>
+                        <td>{{cb.cbNo}}</td>
+                        <td>{{cb.amount}}</td>
+                        <td>{{cb.cbDate}}</td>
+                        <td>{{cb.status}}</td>
+                        <!-- <td><button type="submit" class="btn btn-primary">View</button></td> -->
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-sm-12 col-md-5">
+                    <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
+                      Showing 1 to 10 of 57 entries
                     </div>
                   </div>
-                  <div class="row">
-<!--                    <div class="col-md-4">-->
-<!--                      <div class="form-group">-->
-<!--                        <label>Financial Year</label>-->
-<!--                        <ng-select [readonly]="true" class="form-control select2bs4" style="width: 100%" [items]="finYearData"-->
-<!--                                   bindLabel="finYear" placeholder="Select Financial Year" formControlName="finYearName">-->
-<!--                        </ng-select>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                    <div class="col-md-4">-->
-<!--                      <div class="form-group">-->
-<!--                        <label>Major Head</label>-->
-<!--                        <ng-select [readonly]="true" name ="majorHead" [(ngModel)]="majorHead" class="form-control select2bs4" style="width: 100%" [items]="majorHeadData"-->
-<!--                                   bindLabel="majorHead" placeholder="Select Major Head" formControlName="majorHead">-->
-<!--                        </ng-select>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                    <div class="col-md-4">-->
-<!--                      <div class="form-group">-->
-<!--                        <label>Sub Head</label>-->
-<!--                        <ng-select [readonly]="true" name ="subHead" class="form-control select2bs4" style="width: 100%" [items]="subHeadData"-->
-<!--                                   bindLabel="subHeadDescr" placeholder="Select Sub Head" formControlName="subHead" >-->
-<!--                        </ng-select>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                    <div class="col-md-4">-->
-<!--                      <div class="form-group">-->
-<!--                        <label>CB Unit</label>-->
-<!--                        <ng-select [readonly]="true" class="form-control select2bs4" style="width: 100%" [items]="cbUnitData" bindLabel="descr"-->
-<!--                                   placeholder="Select Unit" formControlName="cbUnit" (change)="getBudgetAllotted()" >-->
-<!--                        </ng-select>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                    <div class="col-md-4">-->
-<!--                      <div class="form-group">-->
-<!--                        <label>Minor Head</label>-->
-<!--                        <ng-select [readonly]="true" name ="MinorHead" class="form-control select2bs4" style="width: 100%" [items]="minorHeadData"-->
-<!--                                   bindLabel="minorHead" placeholder="Select Minor Head" formControlName="minorHead">-->
-<!--                        </ng-select>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                    <div class="col-md-4">-->
-<!--                      <div class="form-group">-->
-<!--                        <label>Budget Alloted</label>-->
-<!--                        <input-->
-<!--                          formControlName="budgetAllocated"-->
-<!--                          type="number"-->
-<!--                          class="form-control"-->
-<!--                          id="budgetAllotted"-->
-<!--                          readonly-->
-<!--                        />-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                    <div class="col-md-4">-->
-<!--                      <div class="form-group">-->
-<!--                        <label>CB Amount</label>-->
-<!--                        <input-->
-<!--                          type="number"-->
-<!--                          class="form-control"-->
-<!--                          id="Amount"-->
-<!--                          placeholder="Enter Amount"-->
-<!--                          formControlName="amount"-->
-<!--                          (change)="updateExpenditure()"-->
-<!--                        />-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                    <div class="col-md-4">-->
-<!--                      <div class="form-group">-->
-<!--                        <label>Proggressive Expenditure Including This Bill</label>-->
-<!--                        <input-->
-<!--                          type="number"-->
-<!--                          class="form-control"-->
-<!--                          id="Proggressive"-->
-<!--                          readonly-->
-<!--                        />-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                    <div class="col-md-4">-->
-<!--                        <div class="form-group">-->
-<!--                          <label>Balance Fund</label>-->
-<!--                          <input-->
-<!--                            type="text"-->
-<!--                            class="form-control"-->
-<!--                            id="BalanceFund"-->
-<!--                            readonly-->
-<!--                          />-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                    <div class="col-md-4">-->
-<!--                        <div class="form-group">-->
-<!--                          <label>CB No.</label>-->
-<!--                          <input-->
-<!--                            type="text"-->
-<!--                            class="form-control"-->
-<!--                            id="PrevAllocation"-->
-<!--                            placeholder="Enter CB Number"-->
-<!--                            formControlName="cbNo"-->
-<!--                            readonly-->
-<!--                          />-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                      <div class="col-md-4">-->
-<!--                        <div class="form-group">-->
-<!--                          <label>CB Date</label>-->
-<!--                          <input type="date" class="form-control" id="cbDate" placeholder="Enter Date" formControlName="cbDate" readonly/>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                      <div class="col-md-4">-->
-<!--                        <div class="form-group">-->
-<!--                          <label>Remarks</label>-->
-<!--                          <input type="text" class="form-control" id="remarks" placeholder="Enter Remarks" formControlName="remarks" readonly/>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                      <div class="col-md-4">-->
-<!--                        <div class="form-group">-->
-<!--                          <label>Authority Unit</label>-->
-<!--                          <ng-select [readonly]="true" class="form-control select2bs4" style="width: 100%" [items]="cbUnitData" bindLabel="descr"-->
-<!--                                     formControlName="authorityUnit" placeholder="Select Authority Unit" >-->
-<!--                          </ng-select>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                      <div class="col-md-4">-->
-<!--                        <div class="form-group">-->
-<!--                          <label>Authority</label>-->
-<!--                          <input type="text" readonly class="form-control" id="authority" placeholder="Enter Remarks" formControlName="authority"/>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                      <div class="col-md-4">-->
-<!--                        <div class="form-group">-->
-<!--                          <label>Date</label>-->
-<!--                          <input type="date" readonly class="form-control" id="date" placeholder="Enter Date" formControlName="date"/>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                      <div class="col-md-4">-->
-<!--                        <div class="form-group">-->
-<!--                          <label for="File">View File</label>-->
-<!--                          <div class="input-group">-->
-<!--                          <div class="custom-file">-->
-<!--                            <input type="text" class="form-control" id="File" placeholder="FileName" formControlName="file" readonly/>-->
-<!--&lt;!&ndash;                            <input type="file" class="custom-file-input" id="InputFile" readonly formControlName="file" >&ndash;&gt;-->
-<!--&lt;!&ndash;                          <label class="custom-file-label" for="File">C://klkjdfkl/doc.pdf</label>&ndash;&gt;-->
-<!--                          </div>-->
-<!--                          <div class="input-group-append">-->
-<!--                          <span class="input-group-text" (click)="viewFile()">View</span>-->
-<!--                          </div>-->
-<!--                          </div>-->
-<!--                          </div>-->
-<!--                      </div>-->
-<!--                      <div class="col-md-4">-->
-<!--                        <div class="form-group">-->
-<!--                          <label>Firm Name</label>-->
-<!--                          <input type="text" class="form-control" readonly id="FirmName" placeholder="Enter Firm Name" formControlName="firmName"/>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                      <div class="col-md-4">-->
-<!--                        <div class="form-group">-->
-<!--                          <label>Invoice Number</label>-->
-<!--                          <input type="text" class="form-control" readonly id="invoiceNo" placeholder="Enter Invoice Number" formControlName="invoiceNo"/>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                      <div class="col-md-4">-->
-<!--                        <div class="form-group">-->
-<!--                          <label>Invoice Date</label>-->
-<!--                          <input type="date" class="form-control" readonly id="invoiceDate" placeholder="Enter Invoice Date" formControlName="invoiceDate" />-->
-<!--                        </div>-->
-<!--                      </div>-->
-
-<!--                      <div class="col-md-4">-->
-<!--                        <div class="form-group">-->
-<!--                          <label for="invoice">Invoice Upload</label>-->
-<!--                          <div class="input-group">-->
-<!--                          <div class="custom-file">-->
-<!--                            <input type="text" class="form-control" id="invoice" placeholder="FileName" formControlName="invoiceFile" readonly/>-->
-<!--&lt;!&ndash;                            <input type="text" readonly class="form-control" id="invoice" formControlName="invoiceFile">&ndash;&gt;-->
-<!--&lt;!&ndash;                          <label class="custom-file-label" placeholder="InvoiceFile" for="invoice"></label>&ndash;&gt;-->
-<!--                          </div>-->
-<!--                          <div class="input-group-append">-->
-<!--                          <span class="input-group-text">View</span>-->
-<!--                          </div>-->
-<!--                          </div>-->
-<!--                          </div>-->
-<!--                      </div>-->
-<!--                    -->
-
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label>Return Remarks</label>
-                          <input type="text" class="form-control" id="ReturnRemarks" placeholder="Return Remarks" formControlName="returnRemarks"/>
-                        </div>
-                      </div>
-                    <!-- /.col -->
+                  <div class="col-sm-12 col-md-7">
+                    <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                      <ul class="pagination float-right">
+                        <li class="paginate_button page-item previous disabled" id="example2_previous">
+                          <a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0"
+                            class="page-link">Previous</a>
+                        </li>
+                        <li class="paginate_button page-item active">
+                          <a href="#" aria-controls="example2" data-dt-idx="1" tabindex="0" class="page-link">1</a>
+                        </li>
+                        <li class="paginate_button page-item">
+                          <a href="#" aria-controls="example2" data-dt-idx="2" tabindex="0" class="page-link">2</a>
+                        </li>
+                        <li class="paginate_button page-item">
+                          <a href="#" aria-controls="example2" data-dt-idx="3" tabindex="0" class="page-link">3</a>
+                        </li>
+                        <li class="paginate_button page-item">
+                          <a href="#" aria-controls="example2" data-dt-idx="4" tabindex="0" class="page-link">4</a>
+                        </li>
+                        <li class="paginate_button page-item">
+                          <a href="#" aria-controls="example2" data-dt-idx="5" tabindex="0" class="page-link">5</a>
+                        </li>
+                        <li class="paginate_button page-item">
+                          <a href="#" aria-controls="example2" data-dt-idx="6" tabindex="0" class="page-link">6</a>
+                        </li>
+                        <li class="paginate_button page-item next" id="example2_next">
+                          <a href="#" aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
-            </form>
-          </div>
-          <!-- /.card-body -->
-          <div class="card-footer">
-            <div class="row">
-              <button type="button" class="btn btn-primary mr-2" (click)="confirmModel()">Approve</button>
-              <button type="button" class="btn btn-danger" (click)="confirmRejectModel()">Return</button>
+                </div>
+              </div>
             </div>
+            <div class="row">
+              <!--                    <div class="col-md-4">-->
+              <!--                      <div class="form-group">-->
+              <!--                        <label>Financial Year</label>-->
+              <!--                        <ng-select [readonly]="true" class="form-control select2bs4" style="width: 100%" [items]="finYearData"-->
+              <!--                                   bindLabel="finYear" placeholder="Select Financial Year" formControlName="finYearName">-->
+              <!--                        </ng-select>-->
+              <!--                      </div>-->
+              <!--                    </div>-->
+              <!--                    <div class="col-md-4">-->
+              <!--                      <div class="form-group">-->
+              <!--                        <label>Major Head</label>-->
+              <!--                        <ng-select [readonly]="true" name ="majorHead" [(ngModel)]="majorHead" class="form-control select2bs4" style="width: 100%" [items]="majorHeadData"-->
+              <!--                                   bindLabel="majorHead" placeholder="Select Major Head" formControlName="majorHead">-->
+              <!--                        </ng-select>-->
+              <!--                      </div>-->
+              <!--                    </div>-->
+              <!--                    <div class="col-md-4">-->
+              <!--                      <div class="form-group">-->
+              <!--                        <label>Sub Head</label>-->
+              <!--                        <ng-select [readonly]="true" name ="subHead" class="form-control select2bs4" style="width: 100%" [items]="subHeadData"-->
+              <!--                                   bindLabel="subHeadDescr" placeholder="Select Sub Head" formControlName="subHead" >-->
+              <!--                        </ng-select>-->
+              <!--                      </div>-->
+              <!--                    </div>-->
+              <!--                    <div class="col-md-4">-->
+              <!--                      <div class="form-group">-->
+              <!--                        <label>CB Unit</label>-->
+              <!--                        <ng-select [readonly]="true" class="form-control select2bs4" style="width: 100%" [items]="cbUnitData" bindLabel="descr"-->
+              <!--                                   placeholder="Select Unit" formControlName="cbUnit" (change)="getBudgetAllotted()" >-->
+              <!--                        </ng-select>-->
+              <!--                      </div>-->
+              <!--                    </div>-->
+              <!--                    <div class="col-md-4">-->
+              <!--                      <div class="form-group">-->
+              <!--                        <label>Minor Head</label>-->
+              <!--                        <ng-select [readonly]="true" name ="MinorHead" class="form-control select2bs4" style="width: 100%" [items]="minorHeadData"-->
+              <!--                                   bindLabel="minorHead" placeholder="Select Minor Head" formControlName="minorHead">-->
+              <!--                        </ng-select>-->
+              <!--                      </div>-->
+              <!--                    </div>-->
+              <!--                    <div class="col-md-4">-->
+              <!--                      <div class="form-group">-->
+              <!--                        <label>Budget Alloted</label>-->
+              <!--                        <input-->
+              <!--                          formControlName="budgetAllocated"-->
+              <!--                          type="number"-->
+              <!--                          class="form-control"-->
+              <!--                          id="budgetAllotted"-->
+              <!--                          readonly-->
+              <!--                        />-->
+              <!--                      </div>-->
+              <!--                    </div>-->
+              <!--                    <div class="col-md-4">-->
+              <!--                      <div class="form-group">-->
+              <!--                        <label>CB Amount</label>-->
+              <!--                        <input-->
+              <!--                          type="number"-->
+              <!--                          class="form-control"-->
+              <!--                          id="Amount"-->
+              <!--                          placeholder="Enter Amount"-->
+              <!--                          formControlName="amount"-->
+              <!--                          (change)="updateExpenditure()"-->
+              <!--                        />-->
+              <!--                      </div>-->
+              <!--                    </div>-->
+              <!--                    <div class="col-md-4">-->
+              <!--                      <div class="form-group">-->
+              <!--                        <label>Proggressive Expenditure Including This Bill</label>-->
+              <!--                        <input-->
+              <!--                          type="number"-->
+              <!--                          class="form-control"-->
+              <!--                          id="Proggressive"-->
+              <!--                          readonly-->
+              <!--                        />-->
+              <!--                      </div>-->
+              <!--                    </div>-->
+              <!--                    <div class="col-md-4">-->
+              <!--                        <div class="form-group">-->
+              <!--                          <label>Balance Fund</label>-->
+              <!--                          <input-->
+              <!--                            type="text"-->
+              <!--                            class="form-control"-->
+              <!--                            id="BalanceFund"-->
+              <!--                            readonly-->
+              <!--                          />-->
+              <!--                        </div>-->
+              <!--                      </div>-->
+              <!--                    <div class="col-md-4">-->
+              <!--                        <div class="form-group">-->
+              <!--                          <label>CB No.</label>-->
+              <!--                          <input-->
+              <!--                            type="text"-->
+              <!--                            class="form-control"-->
+              <!--                            id="PrevAllocation"-->
+              <!--                            placeholder="Enter CB Number"-->
+              <!--                            formControlName="cbNo"-->
+              <!--                            readonly-->
+              <!--                          />-->
+              <!--                        </div>-->
+              <!--                      </div>-->
+              <!--                      <div class="col-md-4">-->
+              <!--                        <div class="form-group">-->
+              <!--                          <label>CB Date</label>-->
+              <!--                          <input type="date" class="form-control" id="cbDate" placeholder="Enter Date" formControlName="cbDate" readonly/>-->
+              <!--                        </div>-->
+              <!--                      </div>-->
+              <!--                      <div class="col-md-4">-->
+              <!--                        <div class="form-group">-->
+              <!--                          <label>Remarks</label>-->
+              <!--                          <input type="text" class="form-control" id="remarks" placeholder="Enter Remarks" formControlName="remarks" readonly/>-->
+              <!--                        </div>-->
+              <!--                      </div>-->
+              <!--                      <div class="col-md-4">-->
+              <!--                        <div class="form-group">-->
+              <!--                          <label>Authority Unit</label>-->
+              <!--                          <ng-select [readonly]="true" class="form-control select2bs4" style="width: 100%" [items]="cbUnitData" bindLabel="descr"-->
+              <!--                                     formControlName="authorityUnit" placeholder="Select Authority Unit" >-->
+              <!--                          </ng-select>-->
+              <!--                        </div>-->
+              <!--                      </div>-->
+              <!--                      <div class="col-md-4">-->
+              <!--                        <div class="form-group">-->
+              <!--                          <label>Authority</label>-->
+              <!--                          <input type="text" readonly class="form-control" id="authority" placeholder="Enter Remarks" formControlName="authority"/>-->
+              <!--                        </div>-->
+              <!--                      </div>-->
+              <!--                      <div class="col-md-4">-->
+              <!--                        <div class="form-group">-->
+              <!--                          <label>Date</label>-->
+              <!--                          <input type="date" readonly class="form-control" id="date" placeholder="Enter Date" formControlName="date"/>-->
+              <!--                        </div>-->
+              <!--                      </div>-->
+              <!--                      <div class="col-md-4">-->
+              <!--                        <div class="form-group">-->
+              <!--                          <label for="File">View File</label>-->
+              <!--                          <div class="input-group">-->
+              <!--                          <div class="custom-file">-->
+              <!--                            <input type="text" class="form-control" id="File" placeholder="FileName" formControlName="file" readonly/>-->
+              <!--&lt;!&ndash;                            <input type="file" class="custom-file-input" id="InputFile" readonly formControlName="file" >&ndash;&gt;-->
+              <!--&lt;!&ndash;                          <label class="custom-file-label" for="File">C://klkjdfkl/doc.pdf</label>&ndash;&gt;-->
+              <!--                          </div>-->
+              <!--                          <div class="input-group-append">-->
+              <!--                          <span class="input-group-text" (click)="viewFile()">View</span>-->
+              <!--                          </div>-->
+              <!--                          </div>-->
+              <!--                          </div>-->
+              <!--                      </div>-->
+              <!--                      <div class="col-md-4">-->
+              <!--                        <div class="form-group">-->
+              <!--                          <label>Firm Name</label>-->
+              <!--                          <input type="text" class="form-control" readonly id="FirmName" placeholder="Enter Firm Name" formControlName="firmName"/>-->
+              <!--                        </div>-->
+              <!--                      </div>-->
+              <!--                      <div class="col-md-4">-->
+              <!--                        <div class="form-group">-->
+              <!--                          <label>Invoice Number</label>-->
+              <!--                          <input type="text" class="form-control" readonly id="invoiceNo" placeholder="Enter Invoice Number" formControlName="invoiceNo"/>-->
+              <!--                        </div>-->
+              <!--                      </div>-->
+              <!--                      <div class="col-md-4">-->
+              <!--                        <div class="form-group">-->
+              <!--                          <label>Invoice Date</label>-->
+              <!--                          <input type="date" class="form-control" readonly id="invoiceDate" placeholder="Enter Invoice Date" formControlName="invoiceDate" />-->
+              <!--                        </div>-->
+              <!--                      </div>-->
+
+              <!--                      <div class="col-md-4">-->
+              <!--                        <div class="form-group">-->
+              <!--                          <label for="invoice">Invoice Upload</label>-->
+              <!--                          <div class="input-group">-->
+              <!--                          <div class="custom-file">-->
+              <!--                            <input type="text" class="form-control" id="invoice" placeholder="FileName" formControlName="invoiceFile" readonly/>-->
+              <!--&lt;!&ndash;                            <input type="text" readonly class="form-control" id="invoice" formControlName="invoiceFile">&ndash;&gt;-->
+              <!--&lt;!&ndash;                          <label class="custom-file-label" placeholder="InvoiceFile" for="invoice"></label>&ndash;&gt;-->
+              <!--                          </div>-->
+              <!--                          <div class="input-group-append">-->
+              <!--                          <span class="input-group-text">View</span>-->
+              <!--                          </div>-->
+              <!--                          </div>-->
+              <!--                          </div>-->
+              <!--                      </div>-->
+              <!--                    -->
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Return Remarks</label>
+                  <input type="text" class="form-control" id="ReturnRemarks" placeholder="Return Remarks"
+                    formControlName="returnRemarks" />
+                </div>
+              </div>
+              <!-- /.col -->
+            </div>
+          </form>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+          <div class="row">
+            <button type="button" class="btn btn-primary mr-2" (click)="confirmModel()">Approve</button>
+            <button type="button" class="btn btn-danger" (click)="confirmRejectModel()">Return</button>
           </div>
         </div>
-        <!-- /.row -->
       </div>
-      <!-- /.container-fluid -->
-    </section>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </section>
 
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
