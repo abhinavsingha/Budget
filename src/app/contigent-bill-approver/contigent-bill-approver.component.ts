@@ -6,6 +6,8 @@ import {ConstantsService} from "../services/constants/constants.service";
 import {CommonService} from "../services/common/common.service";
 import {FormControl, FormGroup} from "@angular/forms";
 import {DatePipe} from "@angular/common";
+import {SharedService} from "../services/shared/shared.service";
+import Swal from "sweetalert2";
 
 interface cb{
   authGroupId:any;
@@ -45,6 +47,7 @@ interface cb{
 class updateRequest{
   status:any;
   groupId:any;
+  remarks:any;
 }
 @Component({
   selector: 'app-contigent-bill-approver',
@@ -61,10 +64,10 @@ export class ContigentBillApproverComponent implements OnInit{
   subHeadData: any;
   budgetAllotted: any;
   expenditure: any;
-  constructor(private httpService: ApiCallingServiceService,
+  constructor(private apiService: ApiCallingServiceService,
               private cons: ConstantsService,
               private SpinnerService: NgxSpinnerService,
-              private common: CommonService,private datePipe: DatePipe,) {
+              private common: CommonService,private datePipe: DatePipe,private sharedService: SharedService) {
   }
   selectedCb:any;
   cbList:cb[]=[];
@@ -99,7 +102,8 @@ export class ContigentBillApproverComponent implements OnInit{
     this.getCgUnitData();
   }
   private getContingentBill() {
-    this.httpService.getApi(this.cons.api.getCb).subscribe(
+    this.cbList=[];
+    this.apiService.getApi(this.cons.api.getCb).subscribe(
       (res) => {
         let result: { [key: string]: any } = res;
         console.log(result['response']);
@@ -107,7 +111,7 @@ export class ContigentBillApproverComponent implements OnInit{
 
         for(let i=0;i<getCbList.length;i++){
           let url =this.cons.api.getAvailableFund +'/' +getCbList[i].cbUnitId.cbUnit;
-          this.httpService.getApi(url).subscribe((res) => {
+          this.apiService.getApi(url).subscribe((res) => {
               let result: { [key: string]: any } = res;
               this.budgetAllotted = result['response'].fundAvailable;
             },
@@ -155,7 +159,8 @@ export class ContigentBillApproverComponent implements OnInit{
             contingentBilId:getCbList[i].cbId,
 
           }
-          this.cbList.push(entry);
+          if(entry.authGroupId==this.sharedService.sharedValue)
+            this.cbList.push(entry);
         }
       },
       (error) => {
@@ -164,56 +169,37 @@ export class ContigentBillApproverComponent implements OnInit{
     );
   }
   getFinancialYear() {
-    const tokenValueHeader = localStorage.getItem('newToken');
     this.SpinnerService.show();
-    var comboJson = null;
-    //console.log(JSON.stringify(comboJson) + ' ======');
-    this.httpService.getApi(this.cons.api.getBudgetFinYear).subscribe((results) => {
+    this.apiService.getApi(this.cons.api.getBudgetFinYear).subscribe((results) => {
       this.SpinnerService.hide();
-
       let result: { [key: string]: any } = results;
       this.finYearData = result['response'];
     });
   }
   getCgUnitData() {
-    const tokenValueHeader = localStorage.getItem('newToken');
     this.SpinnerService.show();
-    var comboJson = null;
-    // console.log(JSON.stringify(comboJson) + ' ======');
-    this.httpService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
+    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
       this.SpinnerService.hide();
-
       let result: { [key: string]: any } = res;
       this.cbUnitData = result['response'];
     });
   }
   getMajorHead() {
-    this.httpService.getApi(this.cons.api.getMajorData)
+    this.apiService.getApi(this.cons.api.getMajorData)
       .subscribe({
         next: (v: object) => {
           let result: { [key: string]: any } = v;
-          // console.log("userdetail............" + JSON.stringify(v));
           if (result['message'] == 'success') {
-            // console.log(
-            //   'asdasd === ' +
-            //   result['response'].subHead +
-            //   '=== token === ' +
-            //   result['response']['token']
-            // );
             localStorage.setItem('newToken', result['response']['token']);
             this.majorHeadData = result['response'].subHead;
             this.minorHeadData = result['response'].subHead;
-            // console.log('major======'+this.majorHeadData+'  minor========'+this.minorHeadData);
             this.SpinnerService.hide();
           } else {
-            this.common.faliureAlert(
-              'Please try later',
-              result['message'],
-              ''
-            );
+            this.common.faliureAlert('Please try later', result['message'], '');
           }
         },
         error: (e) => {
+
         },
         complete: () => console.info('complete'),
       });
@@ -226,14 +212,10 @@ export class ContigentBillApproverComponent implements OnInit{
         cbEntry.checked=true;
         this.updateFormdata(cbEntry);
       }
-      else if(cbEntry.cbNo==cbNo&&cbEntry.checked==true){
+      else if(cbEntry.cbNo==cbNo&&cbEntry.checked==true)
         cbEntry.checked=false;
-      }
-      if(cbEntry.checked){
-
-
+      if(cbEntry.checked)
         console.log(cbEntry.cbNo+" ");
-      }
     });
   }
   private updateFormdata(cbEntry: cb) {
@@ -245,7 +227,7 @@ export class ContigentBillApproverComponent implements OnInit{
         if(this.subHeadData == undefined){
           this.SpinnerService.show();
           let url = this.cons.api.getAllSubHeadByMajorHead + '/' + this.majorHead.majorHead;
-          this.httpService.getApi(url).subscribe((results) => {
+          this.apiService.getApi(url).subscribe((results) => {
             let result: { [key: string]: any } = results;
             this.subHeadData=result['response'];
             for (let i = 0; i < this.subHeadData.length; i++) {
@@ -294,18 +276,6 @@ export class ContigentBillApproverComponent implements OnInit{
     this.formdata.get('file')?.setValue(cbEntry.file);
   }
   getBudgetAllotted() {
-    // this.SpinnerService.show();
-    // let url=this.cons.api.getAvailableFund+'/'+this.formdata.get('cbUnit')?.value.unit;
-    // this.httpService.getApi(url).subscribe((res) => {
-    //   this.SpinnerService.hide();
-    //   let result: { [key: string]: any } = res;
-    //   this.budgetAllotted = result['response'].fundAvailable;
-    //   this.SpinnerService.hide();
-    // const budgetAlloted=document.getElementById("budgetAllotted") as HTMLInputElement;
-    //   budgetAlloted.setAttribute("value", this.budgetAllotted.toString());
-    //   this.getExpenditure();
-    // });
-
     this.budgetAllotted=0;
     this.formdata.get('budgetAllocated')?.setValue(this.budgetAllotted);
     this.getExpenditure();
@@ -323,63 +293,108 @@ export class ContigentBillApproverComponent implements OnInit{
     const balance=document.getElementById("BalanceFund") as HTMLInputElement;
     balance.setAttribute("value", (this.budgetAllotted-this.expenditure).toString());
   }
-  approveCb() {
-    for(let i=0;i<this.cbList.length;i++){
-      if(this.cbList[i].cbNo==this.formdata.get('cbNo')?.value){
-        this.cbList[i].status='Approved';
 
+  confirmModel() {
+    Swal.fire({
+      title: 'Are you sure you want to Approve this Batch?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, submit it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.approveCb();
+      }
+    });
+  }
+  approveCb() {
+    for(let i=0;i<this.cbList.length;i++) {
+      // if(this.cbList[i].cbNo==this.formdata.get('cbNo')?.value){
+      this.cbList[i].status = 'Approved';
+    }
 
         const update:updateRequest= {
-          status: this.cbList[i].status,
-          groupId: this.cbList[i].authGroupId
+          status: this.cbList[0].status,
+          groupId: this.cbList[0].authGroupId,
+          remarks: undefined
         }
-        this.httpService.postApi(this.cons.api.approveContingentBill,update).subscribe({
-          next: (v: object) => {
-            let result: { [key: string]: any } = v;
-            if (result['message'] == 'success') {
-              this.common.successAlert(
-                'Success',
-                result['response']['msg'],
-                'success'
-              );
-            } else {
-              this.common.faliureAlert('Please try later', result['message'], '');
-            }
-          },
-        });
-      }
-    }
+    this.apiService.postApi(this.cons.api.approveContingentBill, update).subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+
+          if (result['message'] == 'success') {
+
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => this.getContingentBill(),
+      });
+    this.cbList=[];
+    this.getContingentBill();
+      // }
+    // }
     console.log(this.cbList);
+  }
+
+  confirmRejectModel() {
+    Swal.fire({
+      title: 'Are you sure you want to Reject this Batch?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, submit it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.approveCb();
+      }
+    });
   }
   returnCb(){
     for(let i=0;i<this.cbList.length;i++){
-      if(this.cbList[i].cbNo==this.formdata.get('cbNo')?.value){
+      // if(this.cbList[i].cbNo==this.formdata.get('cbNo')?.value){
         this.cbList[i].status='Rejected';
-        const update:updateRequest= {
-          status: this.cbList[i].status,
-          groupId: this.cbList[i].authGroupId
-        }
-        this.httpService.postApi(this.cons.api.approveContingentBill,update).subscribe({
-          next: (v: object) => {
-            let result: { [key: string]: any } = v;
-            if (result['message'] == 'success') {
-              this.common.successAlert(
-                'Success',
-                result['response']['msg'],
-                'success'
-              );
-            } else {
-              this.common.faliureAlert('Please try later', result['message'], '');
-            }
-          },
-        });
-      }
     }
+        const update:updateRequest= {
+          status: this.cbList[0].status,
+          groupId: this.cbList[0].authGroupId,
+          remarks: this.formdata.get('returnRemarks')?.value
+        }
+    this.apiService
+      .postApi(this.cons.api.approveContingentBill, update)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => this.getContingentBill(),
+      });
+      // }
+    // }
     console.log(this.cbList);
   }
 
   viewFile() {
-    this.httpService.getApi(this.cons.api.fileDownload+this.formdata.get('file')?.value).subscribe(
+    this.apiService.getApi(this.cons.api.fileDownload+this.formdata.get('file')?.value).subscribe(
       (res) => {
         let result: { [key: string]: any } = res;
         console.log(result['response']);

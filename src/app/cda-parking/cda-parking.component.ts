@@ -76,7 +76,7 @@ export class CdaParkingComponent implements OnInit {
   authorityDate: any;
   @ViewChild('authFileInput')authFileInput: any;
   private authFile: any;
-  constructor(private httpService: ApiCallingServiceService,
+  constructor(private apiService: ApiCallingServiceService,
               private cons: ConstantsService,
               private SpinnerService: NgxSpinnerService,
               private common: CommonService) {
@@ -88,7 +88,7 @@ export class CdaParkingComponent implements OnInit {
     //   "budgetFinancialYearId": "01",
     //   "budgetHeadId": ""
     // };
-    // this.httpService.postApi(this.cons.api.getDashboardData,postdata).subscribe((results) => {
+    // this.apiService.postApi(this.cons.api.getDashboardData,postdata).subscribe((results) => {
     //     this.SpinnerService.hide();
     //     $.getScript('assets/js/adminlte.js');
     //     // this.dummydata();
@@ -111,7 +111,7 @@ export class CdaParkingComponent implements OnInit {
   getFinancialYear() {
     const tokenValueHeader = localStorage.getItem('newToken');
     this.SpinnerService.show();
-    this.httpService.getApi(this.cons.api.getBudgetFinYear).subscribe((results) => {
+    this.apiService.getApi(this.cons.api.getBudgetFinYear).subscribe((results) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = results;
         this.finYearData = result['response'];
@@ -124,7 +124,7 @@ export class CdaParkingComponent implements OnInit {
   getCgUnitData() {
     this.SpinnerService.show();
     var comboJson = null;
-    this.httpService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
+    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
       this.SpinnerService.hide();
       let result: { [key: string]: any } = res;
       this.cbUnitData = result['response'];
@@ -135,7 +135,7 @@ export class CdaParkingComponent implements OnInit {
   }
   private getMajorHead() {
     // const userJson = {userRoleId: "ICGS Delhi", userName: "kya hai ye", userUnitId: "000015"}
-    this.httpService.getApi(this.cons.api.getMajorData)
+    this.apiService.getApi(this.cons.api.getMajorData)
       .subscribe({
         next: (v: object) => {
           let result: { [key: string]: any } = v;
@@ -162,7 +162,7 @@ export class CdaParkingComponent implements OnInit {
   setSubHead(){
     this.SpinnerService.show();
     let url = this.cons.api.getAllSubHeadByMajorHead + '/' + this.majorHead.majorHead;
-    this.httpService.getApi(url).subscribe((results) => {
+    this.apiService.getApi(url).subscribe((results) => {
       let result: { [key: string]: any } = results;
       this.subHeadData=result['response'];
       this.SpinnerService.hide();
@@ -173,7 +173,7 @@ export class CdaParkingComponent implements OnInit {
   }
 
   private getBudgetType() {
-    this.httpService.getApi(this.cons.api.getAllocationTypeData)
+    this.apiService.getApi(this.cons.api.getAllocationTypeData)
       .subscribe({
         next: (v: object) => {
           let result: { [key: string]: any } = v;
@@ -202,7 +202,7 @@ export class CdaParkingComponent implements OnInit {
     console.log(this.authorityFile);
     formData.append('file', file);
     this.SpinnerService.show();
-    this.httpService.postApi(this.cons.api.fileUpload, formData).subscribe({
+    this.apiService.postApi(this.cons.api.fileUpload, formData).subscribe({
       next: (v: object) => {
         let result: { [key: string]: any } = v;
         if (result['message'] == 'success') {
@@ -229,7 +229,7 @@ export class CdaParkingComponent implements OnInit {
   getCdaData(){
     this.SpinnerService.show();
     // let url=this.cons.api.getCdaData+'/'+this.formdata.get('cbUnit')?.value.unit;
-    this.httpService.getApi(this.cons.api.getCdaData).subscribe((res) => {
+    this.apiService.getApi(this.cons.api.getCdaData).subscribe((res) => {
       this.SpinnerService.hide();
       let result: { [key: string]: any } = res;
       this.cdaData = result['response'];
@@ -393,7 +393,7 @@ export class CdaParkingComponent implements OnInit {
     console.log(cdaReq);
 
     this.SpinnerService.show();
-    this.httpService.postApi(this.cons.api.saveCdaParkingData, cdaReq).subscribe({
+    this.apiService.postApi(this.cons.api.saveCdaParkingData, cdaReq).subscribe({
       next: (v: object) => {
         let result: { [key: string]: any } = v;
         if (result['message'] == 'success') {

@@ -34,6 +34,7 @@ import { UnitRebaseComponent } from './unit-rebase/unit-rebase.component';
 
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { DatePipe } from '@angular/common';
+import {SharedService} from "./services/shared/shared.service";
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -87,7 +88,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     // MatTableModule,
     // NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' }),
   ],
-  providers: [
+  providers: [SharedService,
     DatePipe,
     {
       provide: APP_INITIALIZER,
