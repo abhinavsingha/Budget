@@ -127,13 +127,14 @@
                     formControlName="cbDate" />
                 </div>
               </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Remarks</label>
-                  <input type="text" class="form-control" id="remarks" placeholder="Enter Remarks"
-                    formControlName="remarks" />
-                </div>
-              </div>
+<!--              <div class="col-md-4">-->
+<!--                <div class="form-group">-->
+<!--                  <label>Remarks</label>-->
+<!--                  <input type="text" class="form-control" id="remarks" placeholder="Enter Remarks"-->
+<!--                    formControlName="remarks" />-->
+<!--                </div>-->
+<!--              </div>-->
+
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Authority Unit</label>
@@ -220,14 +221,27 @@
                     formControlName="fileDate" />
                 </div>
               </div>
-
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>On Account Of</label>
+                  <textarea type="text" class="form-control" id="onAccOf" placeholder="Quarterly payment(3rd Qtr) towars hiring of Designer/Developer IT Manpower(Project SDOT)" formControlName="onAccOf"></textarea>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Authority Details</label>
+                  <textarea type="text" class="form-control" id="authDetail" placeholder="S1.10.1 of Shedule-10 of DFPCG-2017 vide Govt. of India, Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017" formControlName="authDetail"></textarea>
+                </div>
+              </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Return Remarks</label>
                   <input type="text" class="form-control" id="ReturnRemarks" placeholder="Return Remarks"
                     formControlName="returnRemarks" />
                 </div>
+
               </div>
+
               <div class="col-md-6">
                 <button type="button" class="btn btn-primary mr-2" (click)="updateList()">Update CB</button>
                 <button type="button" class="btn btn-primary" (click)="addToList()">Save CB</button>

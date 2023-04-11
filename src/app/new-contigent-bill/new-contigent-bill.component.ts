@@ -31,6 +31,8 @@ class cbReport {
   categoryCode: any;
 }
 class newCb {
+  onAccOf:any;
+  authDetail:any;
   contingentBilId: any;
   budgetHeadID: any;
   authUnitId: any;
@@ -49,7 +51,7 @@ class newCb {
   file: any;
   cbNo: any;
   cbDate: any;
-  remarks: any;
+  // remarks: any;
   authority: any;
   authorityUnit: any;
   date: any;
@@ -112,6 +114,8 @@ export class NewContigentBillComponent implements OnInit {
   fundAvailable: any;
   cbList: newCb[] = [];
   formdata = new FormGroup({
+    onAccOf:new FormControl('Quarterly payment(3rd Qtr) towars hiring of Designer/Developer IT Manpower(Project SDOT)'),
+    authDetail:new FormControl('S1.10.1 of Shedule-10 of DFPCG-2017 vide Govt. of India, Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017'),
     fileNo: new FormControl(),
     fileDate: new FormControl(),
     budgetAllocated: new FormControl(),
@@ -124,7 +128,7 @@ export class NewContigentBillComponent implements OnInit {
     file: new FormControl(),
     cbNo: new FormControl(),
     cbDate: new FormControl(),
-    remarks: new FormControl(),
+    // remarks: new FormControl(),
     authority: new FormControl(),
     authorityUnit: new FormControl(),
     date: new FormControl(),
@@ -278,6 +282,8 @@ export class NewContigentBillComponent implements OnInit {
     }
     if (undefinedValues.length == 0) {
       const cb: newCb = {
+        onAccOf:this.formdata.get('onAccOf')?.value,
+        authDetail:this.formdata.get('authDetail')?.value,
         authUnitId: this.formdata.get('authorityUnit')?.value.unit,
         cbUnitId: this.formdata.get('cbUnit')?.value.unit,
         finSerialNo: this.formdata.get('finYearName')?.value.serialNo,
@@ -291,7 +297,7 @@ export class NewContigentBillComponent implements OnInit {
         file: this.browseFile,
         cbNo: this.formdata.get('cbNo')?.value,
         cbDate: this.formdata.get('cbDate')?.value,
-        remarks: this.formdata.get('remarks')?.value,
+        // remarks: this.formdata.get('remarks')?.value,
         authority: this.formdata.get('authority')?.value,
         authorityUnit: this.formdata.get('authorityUnit')?.value.cgUnitShort,
         date: this.formdata.get('date')?.value,
@@ -575,7 +581,7 @@ export class NewContigentBillComponent implements OnInit {
     // this.formdata.get('file')?.setValue(cbEntry.file);
     this.formdata.get('cbNo')?.setValue(cbEntry.cbNo);
     this.formdata.get('cbDate')?.setValue(cbEntry.cbDate);
-    this.formdata.get('remarks')?.setValue(cbEntry.remarks);
+    // this.formdata.get('remarks')?.setValue(cbEntry.remarks);
     this.formdata.get('authority')?.setValue(cbEntry.authority);
     this.formdata.get('date')?.setValue(cbEntry.date);
     this.formdata.get('firmName')?.setValue(cbEntry.firmName);
@@ -623,7 +629,7 @@ export class NewContigentBillComponent implements OnInit {
             this.formdata.get('majorHead')?.value.majorHead;
           this.cbList[i].minorHead =
             this.formdata.get('minorHead')?.value.minorHead;
-          this.cbList[i].remarks = this.formdata.get('remarks')?.value;
+          // this.cbList[i].remarks = this.formdata.get('remarks')?.value;
           this.cbList[i].returnRemarks =
             this.formdata.get('returnRemarks')?.value;
           this.cbList[i].budgetAllocated = 'pending';
@@ -655,7 +661,7 @@ export class NewContigentBillComponent implements OnInit {
             cbUnitId: this.cbList[i].cbUnitId,
             fileNumber: this.cbList[i].fileNo,
             progressiveAmount: this.cbList[i].progressiveAmount,
-            remark: this.cbList[i].remarks,
+            remark: ' ',
             vendorName: this.cbList[i].firmName,
             invoiceNo: this.cbList[i].invoiceNo,
             docUploadDate: this.cbList[i].uploadFileDate,
@@ -701,10 +707,9 @@ export class NewContigentBillComponent implements OnInit {
             file: this.browseFile,
             cbNo: this.formdata.get('cbNo')?.value,
             cbDate: this.formdata.get('cbDate')?.value,
-            remarks: this.formdata.get('remarks')?.value,
+            // remarks: this.formdata.get('remarks')?.value,
             authority: this.formdata.get('authority')?.value,
-            authorityUnit:
-              this.formdata.get('authorityUnit')?.value.cgUnitShort,
+            authorityUnit: this.formdata.get('authorityUnit')?.value.cgUnitShort,
             date: this.formdata.get('date')?.value,
             firmName: this.formdata.get('firmName')?.value,
             invoiceNo: this.formdata.get('invoiceNo')?.value,
@@ -720,6 +725,8 @@ export class NewContigentBillComponent implements OnInit {
             authorityId: undefined,
             budgetHeadID: '123',
             contingentBilId: undefined,
+            onAccOf: this.formdata.get('onAccOf')?.value,
+            authDetail: this.formdata.get('authDetail')?.value
           };
           this.cbList[i] = entry;
         } else {
@@ -746,9 +753,8 @@ export class NewContigentBillComponent implements OnInit {
       };
       const authList: authList[] = [auth];
       const cb: submitCb = {
-        onAccountOf: 'Expenditure on account of Quaterly Payment',
-        authorityDetails:
-          'Sl. 10.1 of Schedule -10 of DFPCG-2017 vide Govt. of India , Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017',
+        onAccountOf: this.cbList[i].onAccOf,
+        authorityDetails:this.cbList[i].authDetail,
         budgetHeadId: budgetId,
         budgetFinancialYearId: this.cbList[i].finSerialNo,
         cbAmount: this.cbList[i].amount,
@@ -756,7 +762,7 @@ export class NewContigentBillComponent implements OnInit {
         cbUnitId: this.cbList[i].cbUnitId,
         fileNumber: this.cbList[i].fileNo,
         progressiveAmount: this.cbList[i].progressiveAmount,
-        remark: this.cbList[i].remarks,
+        remark: ' ',
         vendorName: this.cbList[i].firmName,
         invoiceNo: this.cbList[i].invoiceNo,
         docUploadDate: this.cbList[i].uploadFileDate,
