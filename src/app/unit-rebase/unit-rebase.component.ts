@@ -40,6 +40,7 @@ export class UnitRebaseComponent {
   });
 
   ngOnInit(): void {
+    $.getScript('assets/js/adminlte.js');
     this.getBudgetFinYear();
     this.getCgUnitData();
     this.getAllStation();

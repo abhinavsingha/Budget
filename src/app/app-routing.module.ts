@@ -20,7 +20,7 @@ import { UnitRebaseComponent } from './unit-rebase/unit-rebase.component';
 
 const routes: Routes = [
   // { path: '', component: LoginComponent },
-  { path: 'dashboard', component: DashboardComponent },
+  { path: '', component: DashboardComponent },
   { path: 'budget-allocation', component: BudgetAllocationComponent },
   { path: 'budget-update', component: BudgetUpdateComponent },
   { path: 'budget-delete', component: BudgetDeleteComponent },
@@ -42,7 +42,7 @@ const routes: Routes = [
     component: BudgetAllocationSubheadwiseComponent,
   },
   {
-    path: '',
+    path: 'revision',
     component: RevisionComponent,
   },
   {

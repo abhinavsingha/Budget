@@ -48,6 +48,7 @@ export class RevisionComponent {
   });
 
   ngOnInit(): void {
+    $.getScript('assets/js/adminlte.js');
     this.getBudgetFinYear();
     this.getSubHeadsData();
     this.getCgUnitData();

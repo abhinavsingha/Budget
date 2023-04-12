@@ -34,6 +34,7 @@ export class RecieptComponent {
   subHeadRecieptList: any[] = [];
 
   ngOnInit(): void {
+    $.getScript('assets/js/adminlte.js');
     this.getBudgetFinYear();
     this.getCgUnitData();
     this.getAllocationTypeData();

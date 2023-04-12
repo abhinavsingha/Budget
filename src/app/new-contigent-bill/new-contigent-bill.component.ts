@@ -31,8 +31,8 @@ import Swal from 'sweetalert2';
 //   categoryCode: any;
 // }
 class newCb {
-  onAccOf:any;
-  authDetail:any;
+  onAccOf: any;
+  authDetail: any;
   contingentBilId: any;
   budgetHeadID: any;
   authUnitId: any;
@@ -114,8 +114,12 @@ export class NewContigentBillComponent implements OnInit {
   fundAvailable: any;
   cbList: newCb[] = [];
   formdata = new FormGroup({
-    onAccOf:new FormControl('Quarterly payment(3rd Qtr) towars hiring of Designer/Developer IT Manpower(Project SDOT)'),
-    authDetail:new FormControl('S1.10.1 of Shedule-10 of DFPCG-2017 vide Govt. of India, Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017'),
+    onAccOf: new FormControl(
+      'Quarterly payment(3rd Qtr) towars hiring of Designer/Developer IT Manpower(Project SDOT)'
+    ),
+    authDetail: new FormControl(
+      'S1.10.1 of Shedule-10 of DFPCG-2017 vide Govt. of India, Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017'
+    ),
     fileNo: new FormControl(),
     fileDate: new FormControl(),
     budgetAllocated: new FormControl(),
@@ -156,11 +160,11 @@ export class NewContigentBillComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    $.getScript('assets/js/adminlte.js');
     this.getMajorHead();
     this.getFinancialYear();
     this.getCgUnitData();
   }
-
 
   addToList() {
     const undefinedValues: string[] = [];
@@ -183,8 +187,8 @@ export class NewContigentBillComponent implements OnInit {
     }
     if (undefinedValues.length == 0) {
       const cb: newCb = {
-        onAccOf:this.formdata.get('onAccOf')?.value,
-        authDetail:this.formdata.get('authDetail')?.value,
+        onAccOf: this.formdata.get('onAccOf')?.value,
+        authDetail: this.formdata.get('authDetail')?.value,
         authUnitId: this.formdata.get('authorityUnit')?.value.unit,
         cbUnitId: this.formdata.get('cbUnit')?.value.unit,
         finSerialNo: this.formdata.get('finYearName')?.value.serialNo,
@@ -338,10 +342,14 @@ export class NewContigentBillComponent implements OnInit {
       Swal.fire('Invalid amount. Enter Number');
     } else {
       // this.expenditure = parseFloat(this.expenditure) + this.billAmount;
-      this.formdata.get('progressive')?.setValue(parseFloat(this.expenditure) + this.billAmount);
+      this.formdata
+        .get('progressive')
+        ?.setValue(parseFloat(this.expenditure) + this.billAmount);
       this.formdata
         .get('balance')
-        ?.setValue(this.budgetAllotted - (parseFloat(this.expenditure) + this.billAmount));
+        ?.setValue(
+          this.budgetAllotted - (parseFloat(this.expenditure) + this.billAmount)
+        );
     }
   }
   browseFile() {
@@ -381,7 +389,6 @@ export class NewContigentBillComponent implements OnInit {
       },
       complete: () => this.SpinnerService.hide(),
     });
-
   }
   invoiceUpload() {
     const file: File = this.invoiceFileInput.nativeElement.files[0];
@@ -610,7 +617,8 @@ export class NewContigentBillComponent implements OnInit {
             cbDate: this.formdata.get('cbDate')?.value,
             // remarks: this.formdata.get('remarks')?.value,
             authority: this.formdata.get('authority')?.value,
-            authorityUnit: this.formdata.get('authorityUnit')?.value.cgUnitShort,
+            authorityUnit:
+              this.formdata.get('authorityUnit')?.value.cgUnitShort,
             date: this.formdata.get('date')?.value,
             firmName: this.formdata.get('firmName')?.value,
             invoiceNo: this.formdata.get('invoiceNo')?.value,
@@ -627,7 +635,7 @@ export class NewContigentBillComponent implements OnInit {
             budgetHeadID: '123',
             contingentBilId: undefined,
             onAccOf: this.formdata.get('onAccOf')?.value,
-            authDetail: this.formdata.get('authDetail')?.value
+            authDetail: this.formdata.get('authDetail')?.value,
           };
           this.cbList[i] = entry;
         } else {
@@ -655,7 +663,7 @@ export class NewContigentBillComponent implements OnInit {
       const authList: authList[] = [auth];
       const cb: submitCb = {
         onAccountOf: this.cbList[i].onAccOf,
-        authorityDetails:this.cbList[i].authDetail,
+        authorityDetails: this.cbList[i].authDetail,
         budgetHeadId: budgetId,
         budgetFinancialYearId: this.cbList[i].finSerialNo,
         cbAmount: this.cbList[i].amount,
@@ -687,7 +695,6 @@ export class NewContigentBillComponent implements OnInit {
           next: (v: object) => {
             let result: { [key: string]: any } = v;
             if (result['message'] == 'success') {
-
               this.common.successAlert(
                 'Success',
                 result['response']['msg'],

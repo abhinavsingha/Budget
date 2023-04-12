@@ -29,6 +29,7 @@ export class InboxComponent implements OnInit {
   ) {}
   public userRole: any;
   ngOnInit(): void {
+    $.getScript('assets/js/adminlte.js');
     this.userRole = localStorage.getItem('user_role');
     if (this.userRole == 'sys_Admin') {
       this.router.navigateByUrl('/dashboard');

@@ -27,6 +27,8 @@ export class HeaderComponent {
   roleHeading: any;
 
   ngOnInit(): void {
+    debugger;
+    $.getScript('assets/js/adminlte.js');
     let nr = localStorage.getItem('userDetails');
 
     // if (nr != null) {

@@ -52,6 +52,7 @@ export class ManageUserComponent {
   });
 
   ngOnInit(): void {
+    $.getScript('assets/js/adminlte.js');
     this.getAllUser();
     this.getAllRole();
     this.getCgUnitData();
@@ -218,7 +219,7 @@ export class ManageUserComponent {
 
         if (result['message'] == 'success') {
           // This is for the data saving the data into upper table
-          // this.pushDataInMainList(formDataValue);
+          this.pushDataInMainList(formDataValue);
           this.refresh();
           this.formdata.reset();
           this.common.successAlert(

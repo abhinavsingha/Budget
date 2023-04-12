@@ -102,6 +102,7 @@ export class BudgetAllocationComponent implements OnInit {
 
   token: any;
   ngOnInit(): void {
+    $.getScript('assets/js/adminlte.js');
     // this.keycloakService.getToken().then((token) => {
     //   this.token = token;
     //   this.getUserDetails(this.token);
