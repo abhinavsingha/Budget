@@ -264,7 +264,8 @@
                         <th>Amount</th>
                         <th>CB Date</th>
                         <th>Status</th>
-                        <th>CB Upload</th>
+                        <th></th>
+
                       </tr>
                     </thead>
                     <tbody>
@@ -277,8 +278,12 @@
                         <td>{{cb.amount}}</td>
                         <td>{{cb.cbDate}}</td>
                         <td>{{cb.status}}</td>
-                        <!-- <td><button type="button" class="btn btn-primary mr-2" >Download</button><button type="button" class="btn btn-primary" (click)="setReport(cb)">View</button></td> -->
-                        <td><button type="submit" class="btn btn-primary">View</button></td>
+<!--                         <td><button type="button" class="btn btn-primary mr-2" >Download</button><button type="button" class="btn btn-primary">View</button></td> -->
+                        <td><button type="button" *ngIf="cb.status !== 'Approved'" (click)="updateFormdata(cb)" class="btn btn-primary">View</button>
+                        <button type="button" *ngIf="cb.status === 'Approved'" (click)="downloadBill(cb.cbNo)" class="btn btn-primary">Download</button>
+
+<!--                        <td><button type="submit" class="btn btn-primary">View</button></td>-->
+                        <button type="button" *ngIf="cb.status === 'Approved'" (click)="uploadBill(cb.cbNo)" class="btn btn-secondary">upload</button></td>
                       </tr>
                     </tbody>
                   </table>

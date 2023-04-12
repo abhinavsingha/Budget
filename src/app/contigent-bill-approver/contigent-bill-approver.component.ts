@@ -112,6 +112,7 @@ export class ContigentBillApproverComponent implements OnInit {
         let getCbList = result['response'];
 
         for (let i = 0; i < getCbList.length; i++) {
+          console.log('interation :'+i);
           let url =
             this.cons.api.getAvailableFund + '/' + getCbList[i].cbUnitId.cbUnit;
           this.apiService.getApi(url).subscribe(
@@ -224,7 +225,7 @@ export class ContigentBillApproverComponent implements OnInit {
       if (cbEntry.checked) console.log(cbEntry.cbNo + ' ');
     });
   }
-  private updateFormdata(cbEntry: cb) {
+   updateFormdata(cbEntry: cb) {
     for (let i = 0; i < this.majorHeadData.length; i++) {
       let major = this.majorHeadData[i];
       if (major.majorHead == cbEntry.majorHead) {
@@ -371,7 +372,7 @@ export class ContigentBillApproverComponent implements OnInit {
       confirmButtonText: 'Yes, submit it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.approveCb();
+        this.returnCb();
       }
     });
   }

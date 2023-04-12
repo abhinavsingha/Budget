@@ -164,6 +164,7 @@ export class NewContigentBillComponent implements OnInit {
     this.getMajorHead();
     this.getFinancialYear();
     this.getCgUnitData();
+    this.getDashboardData();
   }
 
   addToList() {
@@ -427,7 +428,7 @@ export class NewContigentBillComponent implements OnInit {
     this.cbList.forEach((cbEntry) => {
       if (cbEntry.cbNo == cbNo && cbEntry.checked == false) {
         cbEntry.checked = true;
-        this.updateFormdata(cbEntry);
+        // this.updateFormdata(cbEntry);
       } else if (cbEntry.cbNo == cbNo && cbEntry.checked == true) {
         cbEntry.checked = false;
         this.formdata.reset();
@@ -437,7 +438,7 @@ export class NewContigentBillComponent implements OnInit {
       }
     });
   }
-  private updateFormdata(cbEntry: newCb) {
+   updateFormdata(cbEntry: newCb) {
     console.log('cbentry' + cbEntry);
     for (let i = 0; i < this.majorHeadData.length; i++) {
       let major = this.majorHeadData[i];
@@ -540,7 +541,7 @@ export class NewContigentBillComponent implements OnInit {
           // this.cbList[i].remarks = this.formdata.get('remarks')?.value;
           this.cbList[i].returnRemarks =
             this.formdata.get('returnRemarks')?.value;
-          this.cbList[i].budgetAllocated = 'pending';
+          // this.cbList[i].budgetAllocated = 'pending';
           this.cbList[i].subHead =
             this.formdata.get('subHead')?.value.subHeadDescr;
           //call api to update cb
@@ -647,7 +648,8 @@ export class NewContigentBillComponent implements OnInit {
   submitList() {
     const submitList: submitCb[] = [];
     for (let i = 0; i < this.cbList.length; i++) {
-      let budgetId: string = '';
+      if(this.cbList[i].checked){
+        let budgetId: string = '';
       for (let j = 0; j < this.majorHeadData.length; j++) {
         if (this.majorHeadData[j].majorHead == this.cbList[i].majorHead)
           budgetId = this.majorHeadData[j].budgetCodeId;
@@ -684,7 +686,7 @@ export class NewContigentBillComponent implements OnInit {
         contingentBilId: undefined,
       };
       if (this.cbList[i].status == 'pending') submitList.push(cb);
-    }
+    }}
     if (submitList.length == 0) {
       Swal.fire('Add more Data');
     } else {
@@ -733,108 +735,110 @@ export class NewContigentBillComponent implements OnInit {
     });
   }
 
-  // private getDashboardData() {
-  //   this.SpinnerService.show();
-  //   const postdata = {
-  //     unitId: '000467',
-  //     budgetFinancialYearId: '01',
-  //     budgetHeadId: '',
-  //   };
-  //   this.apiService
-  //     .postApi(this.cons.api.getDashboardData, postdata)
-  //     .subscribe(
-  //       (results) => {
-  //         this.SpinnerService.hide();
-  //         $.getScript('assets/js/adminlte.js');
-  //         this.getMajorHead();
-  //         this.getFinancialYear();
-  //         this.getCgUnitData();
-  //         // this.dummydata();
-  //         let result: { [key: string]: any } = results;
-  //         console.log(result['response']);
-  //         this.SpinnerService.show();
-  //         this.apiService.getApi(this.cons.api.getCb).subscribe(
-  //           (res) => {
-  //             this.SpinnerService.hide();
-  //             let result: { [key: string]: any } = res;
-  //             console.log(result['response']);
-  //             let getCbList = result['response'];
-  //
-  //             for (let i = 0; i < getCbList.length; i++) {
-  //               let url =
-  //                 this.cons.api.getAvailableFund +
-  //                 '/' +
-  //                 getCbList[i].cbUnitId.cbUnit;
-  //               console.log(url);
-  //               this.SpinnerService.show();
-  //               this.apiService.getApi(url).subscribe(
-  //                 (res) => {
-  //
-  //                   let result: { [key: string]: any } = res;
-  //                   this.budgetAllotted = result['response'].fundAvailable;
-  //                   const entry: newCb = {
-  //                     authUnitId: getCbList[i].authoritiesList[0].authUnit,
-  //                     cbUnitId: getCbList[i].cbUnitId.cbUnit,
-  //                     uploadFileDate: getCbList[i].fileDate,
-  //                     finSerialNo: getCbList[i].finYear.serialNo,
-  //                     progressiveAmount: getCbList[i].progressiveAmount,
-  //                     fileDate: getCbList[i].fileDate,
-  //                     minorHead: getCbList[i].budgetHeadID.minorHead,
-  //                     cbUnit: getCbList[i].cbUnitId.cgUnitShort,
-  //                     finYearName: getCbList[i].finYear.finYear,
-  //                     majorHead: getCbList[i].budgetHeadID.majorHead,
-  //                     subHead: getCbList[i].budgetHeadID.subHeadDescr,
-  //                     amount: getCbList[i].cbAmount,
-  //                     cbNo: getCbList[i].cbNo,
-  //                     cbDate: this.datePipe.transform(
-  //                       new Date(getCbList[i].cbDate),
-  //                       'yyyy-MM-dd'
-  //                     ),
-  //                     remarks: getCbList[i].remarks,
-  //                     authority: getCbList[i].authoritiesList[0].authority,
-  //                     authorityUnit: getCbList[i].authoritiesList[0].authUnit,
-  //                     date: this.datePipe.transform(
-  //                       new Date(getCbList[i].authoritiesList[0].authDate),
-  //                       'yyyy-MM-dd'
-  //                     ),
-  //                     firmName: getCbList[i].vendorName,
-  //                     invoiceNo: getCbList[i].invoiceNO,
-  //                     invoiceDate: getCbList[i].invoiceDate,
-  //                     invoiceFile: getCbList[i].fileID,
-  //                     returnRemarks: getCbList[i].authoritiesList[0].remarks,
-  //                     status: getCbList[i].status,
-  //                     budgetAllocated: this.budgetAllotted,
-  //                     checked: false,
-  //                     fileNo: getCbList[i].fileID,
-  //                     file: getCbList[i].authoritiesList[0].docId,
-  //                     budgetHeadID: getCbList[i].budgetHeadID,
-  //                     contingentBilId: getCbList[i].cbId,
-  //                     authorityId: getCbList[i].authoritiesList[0].authorityId,
-  //                   };
-  //
-  //                   this.cbList.push(entry);
-  //                   this.SpinnerService.hide();
-  //                   },
-  //                 (error) => {
-  //                   console.log(error);
-  //                   this.SpinnerService.hide();
-  //                   //remove after test
-  //                   this.budgetAllotted = 0;
-  //                 }
-  //               );
-  //             }
-  //           },
-  //           (error) => {
-  //             console.log(error);
-  //           }
-  //         );
-  //       },
-  //       (error) => {
-  //         console.log(error);
-  //         // this.SpinnerService.hide();
-  //       }
-  //     );
-  // }
+  private getDashboardData() {
+    this.SpinnerService.show();
+    const postdata = {
+      unitId: '000467',
+      budgetFinancialYearId: '01',
+      budgetHeadId: '',
+    };
+    this.apiService
+      .postApi(this.cons.api.getDashboardData, postdata)
+      .subscribe(
+        (results) => {
+          this.SpinnerService.hide();
+          $.getScript('assets/js/adminlte.js');
+          this.getMajorHead();
+          this.getFinancialYear();
+          this.getCgUnitData();
+          // this.dummydata();
+          let result: { [key: string]: any } = results;
+          console.log(result['response']);
+          this.SpinnerService.show();
+          this.apiService.getApi(this.cons.api.getCb).subscribe(
+            (res) => {
+              this.SpinnerService.hide();
+              let result: { [key: string]: any } = res;
+              console.log(result['response']);
+              let getCbList = result['response'];
+
+              for (let i = 0; i < getCbList.length; i++) {
+                let url =
+                  this.cons.api.getAvailableFund +
+                  '/' +
+                  getCbList[i].cbUnitId.cbUnit;
+                console.log(url);
+                this.SpinnerService.show();
+                this.apiService.getApi(url).subscribe(
+                  (res) => {
+
+                    let result: { [key: string]: any } = res;
+                    this.budgetAllotted = result['response'].fundAvailable;
+                    const entry: newCb = {
+                      authUnitId: getCbList[i].authoritiesList[0].authUnit,
+                      cbUnitId: getCbList[i].cbUnitId.cbUnit,
+                      uploadFileDate: getCbList[i].fileDate,
+                      finSerialNo: getCbList[i].finYear.serialNo,
+                      progressiveAmount: getCbList[i].progressiveAmount,
+                      fileDate: getCbList[i].fileDate,
+                      minorHead: getCbList[i].budgetHeadID.minorHead,
+                      cbUnit: getCbList[i].cbUnitId.cgUnitShort,
+                      finYearName: getCbList[i].finYear.finYear,
+                      majorHead: getCbList[i].budgetHeadID.majorHead,
+                      subHead: getCbList[i].budgetHeadID.subHeadDescr,
+                      amount: getCbList[i].cbAmount,
+                      cbNo: getCbList[i].cbNo,
+                      cbDate: this.datePipe.transform(
+                        new Date(getCbList[i].cbDate),
+                        'yyyy-MM-dd'
+                      ),
+                      // remarks: getCbList[i].remarks,
+                      authority: getCbList[i].authoritiesList[0].authority,
+                      authorityUnit: getCbList[i].authoritiesList[0].authUnit,
+                      date: this.datePipe.transform(
+                        new Date(getCbList[i].authoritiesList[0].authDate),
+                        'yyyy-MM-dd'
+                      ),
+                      firmName: getCbList[i].vendorName,
+                      invoiceNo: getCbList[i].invoiceNO,
+                      invoiceDate: getCbList[i].invoiceDate,
+                      invoiceFile: getCbList[i].fileID,
+                      returnRemarks: getCbList[i].authoritiesList[0].remarks,
+                      status: getCbList[i].status,
+                      budgetAllocated: this.budgetAllotted,
+                      checked: false,
+                      fileNo: getCbList[i].fileID,
+                      file: getCbList[i].authoritiesList[0].docId,
+                      budgetHeadID: getCbList[i].budgetHeadID,
+                      contingentBilId: getCbList[i].cbId,
+                      authorityId: getCbList[i].authoritiesList[0].authorityId,
+                      onAccOf: getCbList[i].onAccountOf,
+                      authDetail: getCbList[i].authorityDetails
+                    };
+
+                    this.cbList.push(entry);
+                    this.SpinnerService.hide();
+                    },
+                  (error) => {
+                    console.log(error);
+                    this.SpinnerService.hide();
+                    //remove after test
+                    this.budgetAllotted = 0;
+                  }
+                );
+              }
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+        },
+        (error) => {
+          console.log(error);
+          // this.SpinnerService.hide();
+        }
+      );
+  }
   // generatePdf(cb:cbReport){
   //   const documentDefinition: TDocumentDefinitions = {
   //     content: [
@@ -927,4 +931,12 @@ export class NewContigentBillComponent implements OnInit {
   //   this.generatePdf(report);
   //   console.log(cb);
   // }
+
+  downloadBill(cbNo: any) {
+
+  }
+
+  uploadBill(cbNo: any) {
+
+  }
 }
