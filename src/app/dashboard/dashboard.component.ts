@@ -4,6 +4,7 @@ import { ConstantsService } from '../services/constants/constants.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CommonService } from '../services/common/common.service';
 import { ApiCallingServiceService } from '../services/api-calling/api-calling-service.service';
+import Swal from 'sweetalert2';
 
 
 
@@ -37,7 +38,10 @@ export class DashboardComponent implements OnInit{
 dasboardData:any;
 unitWiseExpenditureList:UnitWiseExpenditureList[]=[];
 
+
   allCBUnits: any[] = [];
+
+  budgetListData: any[] = [];
 
   submitted = false;
 
@@ -47,8 +51,23 @@ unitWiseExpenditureList:UnitWiseExpenditureList[]=[];
 
 
   formdata = new FormGroup({
-    finYear: new FormControl('Select Financial Year', Validators.required),
-    subHead: new FormControl(),})
+    finYear: new FormControl(),
+    subHead: new FormControl(),
+    cbUnit: new FormControl(),});
+
+
+
+  updateBudgetFormData = new FormGroup({
+      transactionId: new FormControl(),
+      majorHead: new FormControl(),
+      subHead: new FormControl(),
+      minorHead: new FormControl(),
+      fundAvailable: new FormControl(),
+      preAllocation: new FormControl(),
+      allocationType: new FormControl(),
+      revisedAmount: new FormControl(),
+      balanceFund: new FormControl(),
+    });
 
 
 
@@ -141,9 +160,9 @@ unitWiseExpenditureList:UnitWiseExpenditureList[]=[];
             //   }
             // }
             const dataEntry:UnitWiseExpenditureList= {
-              unit: this.dasboardData.unitWiseExpenditureList[i].unit,
-              financialYear: this.dasboardData.unitWiseExpenditureList[i].financialYearId,
-              subhead: this.dasboardData.unitWiseExpenditureList[i].subHead,
+              unit: this.dasboardData.unitWiseExpenditureList[i].unit.descr,
+              financialYear: this.dasboardData.unitWiseExpenditureList[i].financialYearId.finYear,
+              subhead: this.dasboardData.unitWiseExpenditureList[i].subHead.subHeadDescr,
               allocated: this.dasboardData.unitWiseExpenditureList[i].allocatedAmount,
               expenditure: 0,
               lastCbDate: this.dasboardData.unitWiseExpenditureList[i].lastCBDate
@@ -166,6 +185,55 @@ unitWiseExpenditureList:UnitWiseExpenditureList[]=[];
       complete: () => console.info('complete'),
     });
   }
+
+
+  searchData() {
+    this.unitWiseExpenditureList=[];
+    this.SpinnerService.show();
+
+    this.apiService.postApi(this.cons.api.getDashBoardDta,null).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+
+        if (result['message'] == 'success') {
+          this.dasboardData = result['response'];
+          for(let i=0;i<this.dasboardData.unitWiseExpenditureList.length;i++){
+            const dataEntry:UnitWiseExpenditureList= {
+              unit: this.dasboardData.unitWiseExpenditureList[i].unit.descr,
+              financialYear: this.dasboardData.unitWiseExpenditureList[i].financialYearId.finYear,
+              subhead: this.dasboardData.unitWiseExpenditureList[i].subHead.subHeadDescr,
+              allocated: this.dasboardData.unitWiseExpenditureList[i].allocatedAmount,
+              expenditure: 0,
+              lastCbDate: this.dasboardData.unitWiseExpenditureList[i].lastCBDate
+            }
+
+            this.unitWiseExpenditureList.push(dataEntry);
+          }
+          for(let i=0;i<this.unitWiseExpenditureList.length;i++){
+      
+            if(this.formdata.get('finYear')?.value.finYear!=this.unitWiseExpenditureList[i].financialYear||this.formdata.get('cbUnit')?.value.descr!=this.unitWiseExpenditureList[i].unit||this.formdata.get('subHead')?.value.subHeadDescr!=this.unitWiseExpenditureList[i].subhead){
+              debugger;
+              this.unitWiseExpenditureList.pop();
+            }
+          }
+          // console.log('DATA>>>>>>>'+this.dasboardData);
+          // this.draw();
+        this.SpinnerService.hide();  // debugger;
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+
+      complete: () => console.info('complete'),
+    });
+  }
+
 
 
 
@@ -325,5 +393,74 @@ const config2: ChartConfiguration = {
 const chartItem2: ChartItem = document.getElementById('my-chart2') as ChartItem
 new Chart(chartItem2, config2)
 }
+
+confirmModel(data: any) {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, Delete it!',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.finallySubmit(data);
+    }
+  });
+}
+
+
+finallySubmit(data: any) {
+  this.SpinnerService.show();
+  var newSubmitJson = data;
+  debugger;
+  this.apiService
+    .postApi(this.cons.api.getDashBoardDta, newSubmitJson)
+    .subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.common.successAlert(
+            'Success',
+            result['response']['msg'],
+            'success'
+          );
+          this.budgetListData[this.mainIndexValue].allocationAmount =
+            this.changeRevisedAmount;
+          this.updateBudgetFormData.reset();
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
+}
+mainIndexValue: any;
+
+
+
+changeRevisedAmount: any;
+
+  updateBudgetAllocationFund(updateBudgetFormDataValue: any) {
+    // this.budgetListData.splice(index, 1);
+
+    this.changeRevisedAmount = updateBudgetFormDataValue.revisedAmount;
+
+    let submitJson = {
+      transactionId: updateBudgetFormDataValue.transactionId,
+      amount: updateBudgetFormDataValue.revisedAmount,
+    };
+
+    this.confirmModel(submitJson);
+  }
+
+
 
 }

@@ -30,16 +30,29 @@
           <h3 class="card-title">Users Details</h3>
 
           <div class="card-tools">
-            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-              <i class="fas fa-minus"></i>
-            </button>
+            <div class="input-group input-group-sm">
+              <!-- <input type="text" class="form-control" placeholder="Search Requests"> -->
+              <input type="text" [(ngModel)]="searchText" name="search" class="form-control form-control-user search"
+                placeholder="Search by P.No.">
+              <div class="input-group-append">
+                <div class="btn btn-primary">
+                  <i class="fas fa-search"></i>
+                </div>
+              </div>
+            </div>
           </div>
+          <!-- /.card-tools -->
         </div>
         <!-- /.card-header -->
         <div class="card-body">
 
           <div class="row">
             <div class="col-sm-12">
+
+
+
+
+
               <div class="card-body table-responsive p-0">
                 <table class="table table-hover text-nowrap">
                   <thead>
@@ -53,11 +66,12 @@
                       <th>To Date</th>
                       <th>Role</th>
                       <th>Status</th>
-                      <!-- <th>Action</th> -->
+                      <th>Action</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr *ngFor="let user of usersWithRole | paginate :{itemsPerPage:10,currentPage:p}; let i = index">
+                  <tbody *ngIf="searchText == ''">
+                    <tr
+                      *ngFor="let user of usersWithRole  | searchPipe: searchText | paginate :{itemsPerPage:10,currentPage:p}; let i = index">
                       <td>{{10 *(p-1)+i+1}}</td>
                       <td>{{user.unit}}</td>
                       <td>{{user.rank}}</td>
@@ -70,12 +84,35 @@
                         <span *ngIf="user.isActive == 1">Activated</span>
                         <span *ngIf="user.isActive == 0">Deactivated</span>
                       </td>
-                      <!-- <td>
+                      <td>
                         <button type="submit" class="btn btn-primary mr-2" (click)="saveUserData(formdata.value)"
                           *ngIf="user.isActive == 0">Activate</button>
                         <button type="submit" class="btn btn-danger mr-2" (click)="saveUserData(formdata.value)"
                           *ngIf="user.isActive == 1">Deactivate</button>
-                      </td> -->
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tbody *ngIf="searchText != '' ">
+                    <tr
+                      *ngFor="let user of usersWithRole  | searchPipe: searchText | paginate :{itemsPerPage:10,currentPage:p}; let i = index">
+                      <td>{{10 *(p-1)+i+1}}</td>
+                      <td>{{user.unit}}</td>
+                      <td>{{user.rank}}</td>
+                      <td>{{user.name}}</td>
+                      <td>{{user.pno}}</td>
+                      <td>{{user.fromDate}}</td>
+                      <td>{{user.toDate}}</td>
+                      <td>{{user.role}}</td>
+                      <td>
+                        <span *ngIf="user.isActive == 1">Activated</span>
+                        <span *ngIf="user.isActive == 0">Deactivated</span>
+                      </td>
+                      <td>
+                        <button type="submit" class="btn btn-primary mr-2" (click)="saveUserData(formdata.value)"
+                          *ngIf="user.isActive == 0">Activate</button>
+                        <button type="submit" class="btn btn-danger mr-2" (click)="saveUserData(formdata.value)"
+                          *ngIf="user.isActive == 1">Deactivate</button>
+                      </td>
                     </tr>
                   </tbody>
                 </table>

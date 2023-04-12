@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as $ from 'jquery';
-import { DialogComponent } from '../dialog/dialog.component';
+// import { DialogComponent } from '../dialog/dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
@@ -41,9 +41,9 @@ export class BudgetApproverComponent implements OnInit {
   ) {}
 
   openDialog() {
-    this.matDialog.open(DialogComponent, {
-      width: '350px',
-    });
+    // this.matDialog.open(DialogComponent, {
+    //   width: '350px',
+    // });
   }
 
   getAlGroupId(groupId: any) {

@@ -35,11 +35,13 @@ import { UnitRebaseComponent } from './unit-rebase/unit-rebase.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { DatePipe } from '@angular/common';
 import { SharedService } from './services/shared/shared.service';
-import { DialogComponent } from './dialog/dialog.component';
-import { MatIconModule } from '@angular/material/icon';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatDialogModule } from '@angular/material/dialog';
+import { SearchPipePipe } from './services/searchPipe/search-pipe.pipe';
+
+// import { DialogComponent } from './dialog/dialog.component';
+// import { MatIconModule } from '@angular/material/icon';
+// import { MatFormFieldModule } from '@angular/material/form-field';
+// import { MatInputModule } from '@angular/material/input';
+// import { MatDialogModule } from '@angular/material/dialog';
 
 // function initializeKeycloak(keycloak: KeycloakService) {
 //   return () =>
@@ -60,8 +62,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        // url: 'http://localhost:8080/auth',
-        url: 'https://icg.net.in/auth/',
+        url: 'http://localhost:8080/auth',
+        // url: 'https://icg.net.in/auth/',
         realm: 'icgrms',
         clientId: 'budget',
       },
@@ -95,7 +97,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
     CdaParkingComponent,
     RecieptComponent,
     UnitRebaseComponent,
-    DialogComponent,
+    SearchPipePipe,
+    // DialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -108,26 +111,27 @@ function initializeKeycloak(keycloak: KeycloakService) {
     NgxPaginationModule,
     BrowserAnimationsModule,
     KeycloakAngularModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDialogModule,
+    // MatIconModule,
+    // MatFormFieldModule,
+    // MatInputModule,
+    // MatDialogModule,
     // MatTableModule,
     // NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' }),
   ],
   providers: [
     SharedService,
     DatePipe,
+    SearchPipePipe,
     {
       provide: APP_INITIALIZER,
       useFactory: initializeKeycloak,
       multi: true,
       deps: [KeycloakService],
     },
-    {
-      provide: LocationStrategy,
-      useClass: HashLocationStrategy,
-    },
+    // {
+    //   provide: LocationStrategy,
+    //   useClass: HashLocationStrategy,
+    // },
   ],
   bootstrap: [AppComponent],
 })

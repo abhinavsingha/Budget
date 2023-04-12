@@ -38,16 +38,22 @@
                   </button>
                 </div>
                 <!-- /.card-tools -->
+                <!-- <div [formGroup]="myGroup">
+                  <input formControlName="firstName">
+                </div> -->
+
+
               </div><!-- /.card-header -->
               <div class="card-body">
-                <div class="tab-content p-0">
+                <form  [formGroup]="formdata">
+                  <div class="tab-content p-0">
                   <!-- Morris chart - Sales -->
                   <div class="chart tab-pane active" id="revenue-chart0"
                        style="position: relative;">
                        <form>
                         <div class="row">
                           <div class="col-md-3">
-                            <div class="form-group">
+                            <div class="form-group" [formGroup]="formdata">
                               <label>Financial Year</label>
                               <ng-select class="form-control select2bs4" style="width: 100%" [items]="budgetFinYears"
                         bindLabel="finYear" placeholder="Select Financial Year" formControlName="finYear"
@@ -61,16 +67,17 @@
                             </div>
                           </div>
                           <div class="col-md-3">
-                            <div class="form-group">
+                            <div class="form-group" [formGroup]="formdata" >
                               <label>Unit</label>
                               <ng-select class="form-control select2bs4" style="width: 100%" [items]="allCBUnits"
                             bindLabel="descr" appendTo="body"
-                            placeholder="Select To Unit">
+                            placeholder="Select To Unit"  formControlName="cbUnit"
+                            appendTo="body">
                           </ng-select>
                             </div>
                           </div>
                           <div class="col-md-3">
-                            <div class="form-group">
+                            <div class="form-group" [formGroup]="formdata">
                               <label>Sub Head</label>
                               <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeads"
                         bindLabel="subHeadDescr" placeholder="Select Sub Head" formControlName="subHead"
@@ -82,13 +89,17 @@
                             <div class="form-group">
                               <label style="opacity:0">.</label>
                                <br>
-                              <button type="submit" class="btn btn-primary">Search</button>
+                               <!-- <button type="submit" class="btn btn-primary mr-2"><i class="fas fa-search"></i> Search</button> -->
+                               <td><button type="submit" class="btn btn-primary mr-2" (click)="searchData()"><i
+                                class="fas fa-search"></i>
+                                Search</button></td>
                             </div>
                           </div>
                         </div>
                        </form>
                    </div>
                 </div>
+                </form>
               </div><!-- /.card-body -->
             </div>
             <!-- /.card -->

@@ -516,7 +516,6 @@ export class BudgetAllocationComponent implements OnInit {
   file: any;
 
   onChangeFile(event: any) {
-    debugger;
     if (event.target.files.length > 0) {
       this.file = event.target.files[0];
     }
@@ -901,14 +900,11 @@ export class BudgetAllocationComponent implements OnInit {
 
   addFieldValue() {
     this.uploadDocuments.push(new UploadDocuments());
-    debugger;
   }
 
   deleteFieldValue(index: any) {
     this.uploadDocuments.splice(index, 1);
   }
 
-  rowUploadData(data: any) {
-    debugger;
-  }
+  rowUploadData(data: any) {}
 }

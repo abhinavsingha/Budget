@@ -153,7 +153,7 @@ export class HeaderComponent {
   getDashBoardDta() {
     this.SpinnerService.show();
     var newSubmitJson = null;
-    debugger;
+
     this.apiService
       .postApi(this.cons.api.getDashBoardDta, newSubmitJson)
       .subscribe({

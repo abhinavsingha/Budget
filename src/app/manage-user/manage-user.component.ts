@@ -41,6 +41,8 @@ export class ManageUserComponent {
 
   p: number = 1;
 
+  searchText: any = '';
+
   formdata = new FormGroup({
     unit: new FormControl(),
     pno: new FormControl(),
@@ -91,7 +93,7 @@ export class ManageUserComponent {
         debugger;
         let valueFromAPI: any[] = result['response'];
         for (var i = 0; i < valueFromAPI.length; i++) {
-          let userRole: any[] = valueFromAPI[0].role;
+          let userRole: any[] = valueFromAPI[i].role;
           for (var j = 0; j < userRole.length; j++) {
             this.usersWithRole.push({
               unit: valueFromAPI[i].unit,

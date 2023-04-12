@@ -9,6 +9,7 @@ import { Injectable, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CommonService } from '../services/common/common.service';
 import Swal from 'sweetalert2';
+import { InboxComponent } from '../inbox/inbox.component';
 
 @Component({
   selector: 'app-sidebar',
@@ -17,6 +18,10 @@ import Swal from 'sweetalert2';
 })
 export class SidebarComponent {
   public userRole: any;
+
+  inbox: any;
+
+  outbox: any;
 
   ngOnInit(): void {
     debugger;
@@ -60,6 +65,8 @@ export class SidebarComponent {
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
             this.userRole = result['response'].userDetails.role[0].roleName;
+            this.inbox = result['response'].inbox;
+            this.outbox = result['response'].outBox;
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
