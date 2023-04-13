@@ -90,7 +90,6 @@ export class ManageUserComponent {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         // this.usersWithRole = result['response'];
-        debugger;
         let valueFromAPI: any[] = result['response'];
         for (var i = 0; i < valueFromAPI.length; i++) {
           let userRole: any[] = valueFromAPI[i].role;
@@ -103,11 +102,13 @@ export class ManageUserComponent {
               fromDate: valueFromAPI[i].fromDate,
               toDate: valueFromAPI[i].toDate,
               role: valueFromAPI[i].role[j].roleName,
+              roleId: valueFromAPI[i].role[j].roleId,
               isActive: 1,
+              pid: valueFromAPI[i].pid,
             });
           }
         }
-        debugger;
+
         this.SpinnerService.hide();
       } else {
         this.common.faliureAlert('Please try later', result['message'], '');
@@ -206,7 +207,6 @@ export class ManageUserComponent {
   }
 
   finallySubmit(data: any, formDataValue: any) {
-    debugger;
     this.SpinnerService.show();
     // var newSubmitJson = this.submitJson;
     var newSubmitJson = data;
@@ -250,5 +250,69 @@ export class ManageUserComponent {
       .then(() => {
         this._router.navigate([decodeURI(this._location.path())]);
       });
+  }
+
+  deactivateUserRole(user: any, indexValue: any) {
+    this.deactivateUserRoleConfirmModel(user, indexValue - 1);
+  }
+
+  deactivateUserRoleConfirmModel(data: any, formDataValue: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, submit it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.deactivateUserRoleFinallySubmit(data, formDataValue);
+      }
+    });
+  }
+
+  deactivateUserRoleFinallySubmit(data: any, indexValue: any) {
+    this.SpinnerService.show();
+    // var newSubmitJson = this.submitJson;
+
+    let submitJson = {
+      pid: data.pid,
+      roleId: data.roleId,
+    };
+    this.apiService
+      .postApi(this.cons.api.updateUserRole, submitJson)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+
+          // console.log(JSON.stringify(result) + " =submitJson");
+
+          if (result['message'] == 'success') {
+            // This is for the data saving the data into upper table
+
+            this.usersWithRole.splice(indexValue, 1);
+            // this.pushDataInMainList(formDataValue);
+            // this.refresh();
+            // this.formdata.reset();
+            this.common.successAlert(
+              'Success',
+              result['response']['msg'],
+              'success'
+            );
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
+
+    // this.common.successAlert('Success', 'Finally submitted', 'success');
   }
 }

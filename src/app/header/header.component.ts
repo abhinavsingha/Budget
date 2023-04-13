@@ -27,7 +27,6 @@ export class HeaderComponent {
   roleHeading: any;
 
   ngOnInit(): void {
-    debugger;
     $.getScript('assets/js/adminlte.js');
     let nr = localStorage.getItem('userDetails');
 
@@ -76,7 +75,7 @@ export class HeaderComponent {
   finallySubmit(data: any) {
     // this.SpinnerService.show();
     var newSubmitJson = data;
-    debugger;
+
     this.apiService
       .getApi(this.cons.api.getUiData + '/' + data.roleId)
       .subscribe((res) => {

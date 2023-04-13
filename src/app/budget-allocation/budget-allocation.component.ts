@@ -570,7 +570,6 @@ export class BudgetAllocationComponent implements OnInit {
 
     this.newBudgetAllocationArray;
     this.uploadDocuments;
-    debugger;
 
     this.saveBudgetDataList.push(data);
 

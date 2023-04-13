@@ -71,7 +71,7 @@ export class BudgetAllocationReportComponent implements OnInit {
 
   searchData(formData: any) {
     this.SpinnerService.show();
-    debugger;
+
     let submitJson = {
       budgetFinancialYearId: formData.finYear.serialNo,
       unitId: formData.toUnit.cbUnit,

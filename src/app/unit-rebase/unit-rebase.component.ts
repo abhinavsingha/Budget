@@ -158,7 +158,7 @@ export class UnitRebaseComponent {
   finallySubmit(data: any) {
     this.SpinnerService.show();
     var newSubmitJson = data;
-    debugger;
+
     this.apiService.postApi(this.cons.api.saveRebase, newSubmitJson).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
@@ -226,7 +226,6 @@ export class UnitRebaseComponent {
   }
 
   finallySubmitUnitRebase(formdata: any, formdataForToStation: any) {
-    debugger;
     let submitJson = {
       budgetFinanciaYearId: formdata.finYear.serialNo,
       toUnitId: formdata.toUnit.cbUnit,

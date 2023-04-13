@@ -70,7 +70,7 @@ export class BudgetUpdateComponent {
 
   getCgUnitData() {
     this.SpinnerService.show();
-    debugger;
+
     this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
@@ -143,7 +143,7 @@ export class BudgetUpdateComponent {
   finallySubmit(data: any) {
     this.SpinnerService.show();
     var newSubmitJson = data;
-    debugger;
+
     this.apiService
       .postApi(this.cons.api.updateBudgetAllocation, newSubmitJson)
       .subscribe({

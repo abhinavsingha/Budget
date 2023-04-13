@@ -237,7 +237,7 @@ export class RecieptComponent {
     // this.budgetAllocationArray;
     this.uploadDocuments;
     this.subHeadRecieptList;
-    debugger;
+
     let authRequestsList: any[] = [];
     let budgetRequest: any[] = [];
 

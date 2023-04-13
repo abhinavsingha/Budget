@@ -92,5 +92,7 @@ export class ConstantsService {
 
     getAllocationReportRevised:
       this.serviceUrl + 'reportController/getAllocationReportRevised',
+
+    updateUserRole: this.serviceUrl + 'mangeUser/updateUserRole',
   };
 }

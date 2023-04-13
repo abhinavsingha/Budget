@@ -118,7 +118,7 @@ export class BudgetAllocationSubheadwiseComponent {
 
   getCgUnitData() {
     this.SpinnerService.show();
-    debugger;
+
     this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
@@ -161,7 +161,6 @@ export class BudgetAllocationSubheadwiseComponent {
   moveDataToNextGrid(formDataValue: any) {
     // this.subHeadWiseUnitList.push(new SubHeadWiseUnitList());
     this.subHeadWiseUnitList.splice(0, 0, new SubHeadWiseUnitList());
-    debugger;
   }
 
   OnlyNumbersAllowed(event: any): boolean {
@@ -231,7 +230,6 @@ export class BudgetAllocationSubheadwiseComponent {
     this.formdata.reset();
     this.getNewEmptyEntries();
     this.newFormGroup();
-    debugger;
   }
 
   tableCheckBoxClicked(index: any) {
@@ -256,7 +254,6 @@ export class BudgetAllocationSubheadwiseComponent {
   file: any;
 
   onChangeFile(event: any) {
-    debugger;
     if (event.target.files.length > 0) {
       this.file = event.target.files[0];
     }
@@ -311,7 +308,6 @@ export class BudgetAllocationSubheadwiseComponent {
 
   addFieldValue() {
     this.uploadDocuments.push(new UploadDocuments());
-    debugger;
   }
 
   delteFromTable() {
@@ -335,7 +331,6 @@ export class BudgetAllocationSubheadwiseComponent {
 
     let authRequestsList: any[] = [];
     let budgetRequest: any[] = [];
-    debugger;
 
     for (var i = 0; i < this.budgetAllocationArray.length; i++) {
       budgetRequest.push({

@@ -6,8 +6,6 @@ import { CommonService } from '../services/common/common.service';
 import { ApiCallingServiceService } from '../services/api-calling/api-calling-service.service';
 import Swal from 'sweetalert2';
 
-
-
 import {
   FormArray,
   FormBuilder,
@@ -16,28 +14,27 @@ import {
   Validators,
 } from '@angular/forms';
 import { Chart, registerables, ChartConfiguration, ChartItem } from 'chart.js';
-class UnitWiseExpenditureList{
-  unit:any;
-  financialYear:any;
-  subhead:any;
-  allocated:any;
-  expenditure:any;
-  lastCbDate:any;
+class UnitWiseExpenditureList {
+  unit: any;
+  financialYear: any;
+  subhead: any;
+  allocated: any;
+  expenditure: any;
+  lastCbDate: any;
 }
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
-export class DashboardComponent implements OnInit{
+export class DashboardComponent implements OnInit {
   // vaibhav
   budgetFinYears: any[] = [];
   Units: any[] = [];
   subHeads: any[] = [];
 
-dasboardData:any;
-unitWiseExpenditureList:UnitWiseExpenditureList[]=[];
-
+  dasboardData: any;
+  unitWiseExpenditureList: UnitWiseExpenditureList[] = [];
 
   allCBUnits: any[] = [];
 
@@ -48,41 +45,33 @@ unitWiseExpenditureList:UnitWiseExpenditureList[]=[];
   p: number = 1;
   length: number = 0;
 
-
-
   formdata = new FormGroup({
     finYear: new FormControl(),
     subHead: new FormControl(),
-    cbUnit: new FormControl(),});
-
-
+    cbUnit: new FormControl(),
+  });
 
   updateBudgetFormData = new FormGroup({
-      transactionId: new FormControl(),
-      majorHead: new FormControl(),
-      subHead: new FormControl(),
-      minorHead: new FormControl(),
-      fundAvailable: new FormControl(),
-      preAllocation: new FormControl(),
-      allocationType: new FormControl(),
-      revisedAmount: new FormControl(),
-      balanceFund: new FormControl(),
-    });
-
-
-
-
-
+    transactionId: new FormControl(),
+    majorHead: new FormControl(),
+    subHead: new FormControl(),
+    minorHead: new FormControl(),
+    fundAvailable: new FormControl(),
+    preAllocation: new FormControl(),
+    allocationType: new FormControl(),
+    revisedAmount: new FormControl(),
+    balanceFund: new FormControl(),
+  });
 
   ngOnInit(): void {
-
     // ngOnInit(): void {
-      this.getBudgetFinYear();
-      this.getSubHeadsData();
-      this.getCgUnitData();
-      this.getDashBoardDta();
+    this.getBudgetFinYear();
+    this.getSubHeadsData();
+    this.getCgUnitData();
+    this.getDashBoardDta();
 
-    $.getScript('assets/main.js');}
+    $.getScript('assets/main.js');
+  }
   constructor(
     private SpinnerService: NgxSpinnerService,
     private cons: ConstantsService,
@@ -91,9 +80,6 @@ unitWiseExpenditureList:UnitWiseExpenditureList[]=[];
     private common: CommonService
   ) {}
   // vaibhav
-
-
-
 
   getBudgetFinYear() {
     this.SpinnerService.show();
@@ -108,7 +94,6 @@ unitWiseExpenditureList:UnitWiseExpenditureList[]=[];
     });
   }
 
-
   getCgUnitData() {
     this.SpinnerService.show();
     this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
@@ -121,7 +106,6 @@ unitWiseExpenditureList:UnitWiseExpenditureList[]=[];
       }
     });
   }
-
 
   getSubHeadsData() {
     this.SpinnerService.show();
@@ -139,14 +123,18 @@ unitWiseExpenditureList:UnitWiseExpenditureList[]=[];
   getDashBoardDta() {
     this.SpinnerService.show();
 
-    this.apiService.postApi(this.cons.api.getDashBoardDta,null).subscribe({
+    this.apiService.postApi(this.cons.api.getDashBoardDta, null).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
 
         if (result['message'] == 'success') {
           this.dasboardData = result['response'];
-          for(let i=0;i<this.dasboardData.unitWiseExpenditureList.length;i++){
+          for (
+            let i = 0;
+            i < this.dasboardData.unitWiseExpenditureList.length;
+            i++
+          ) {
             // let unit='';
             // let finyear='';
             // for(let j=0;j<this.allCBUnits.length;j++){
@@ -159,20 +147,25 @@ unitWiseExpenditureList:UnitWiseExpenditureList[]=[];
             //     finyear=this.budgetFinYears[j].finYear;
             //   }
             // }
-            const dataEntry:UnitWiseExpenditureList= {
+            const dataEntry: UnitWiseExpenditureList = {
               unit: this.dasboardData.unitWiseExpenditureList[i].unit.descr,
-              financialYear: this.dasboardData.unitWiseExpenditureList[i].financialYearId.finYear,
-              subhead: this.dasboardData.unitWiseExpenditureList[i].subHead.subHeadDescr,
-              allocated: this.dasboardData.unitWiseExpenditureList[i].allocatedAmount,
+              financialYear:
+                this.dasboardData.unitWiseExpenditureList[i].financialYearId
+                  .finYear,
+              subhead:
+                this.dasboardData.unitWiseExpenditureList[i].subHead
+                  .subHeadDescr,
+              allocated:
+                this.dasboardData.unitWiseExpenditureList[i].allocatedAmount,
               expenditure: 0,
-              lastCbDate: this.dasboardData.unitWiseExpenditureList[i].lastCBDate
-            }
+              lastCbDate:
+                this.dasboardData.unitWiseExpenditureList[i].lastCBDate,
+            };
             this.unitWiseExpenditureList.push(dataEntry);
           }
 
-          console.log('DATA>>>>>>>'+this.dasboardData);
+          console.log('DATA>>>>>>>' + this.dasboardData);
           this.draw();
-          debugger;
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
@@ -186,40 +179,54 @@ unitWiseExpenditureList:UnitWiseExpenditureList[]=[];
     });
   }
 
-
   searchData() {
-    this.unitWiseExpenditureList=[];
+    this.unitWiseExpenditureList = [];
     this.SpinnerService.show();
 
-    this.apiService.postApi(this.cons.api.getDashBoardDta,null).subscribe({
+    this.apiService.postApi(this.cons.api.getDashBoardDta, null).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
 
         if (result['message'] == 'success') {
           this.dasboardData = result['response'];
-          for(let i=0;i<this.dasboardData.unitWiseExpenditureList.length;i++){
-            const dataEntry:UnitWiseExpenditureList= {
+          for (
+            let i = 0;
+            i < this.dasboardData.unitWiseExpenditureList.length;
+            i++
+          ) {
+            const dataEntry: UnitWiseExpenditureList = {
               unit: this.dasboardData.unitWiseExpenditureList[i].unit.descr,
-              financialYear: this.dasboardData.unitWiseExpenditureList[i].financialYearId.finYear,
-              subhead: this.dasboardData.unitWiseExpenditureList[i].subHead.subHeadDescr,
-              allocated: this.dasboardData.unitWiseExpenditureList[i].allocatedAmount,
+              financialYear:
+                this.dasboardData.unitWiseExpenditureList[i].financialYearId
+                  .finYear,
+              subhead:
+                this.dasboardData.unitWiseExpenditureList[i].subHead
+                  .subHeadDescr,
+              allocated:
+                this.dasboardData.unitWiseExpenditureList[i].allocatedAmount,
               expenditure: 0,
-              lastCbDate: this.dasboardData.unitWiseExpenditureList[i].lastCBDate
-            }
+              lastCbDate:
+                this.dasboardData.unitWiseExpenditureList[i].lastCBDate,
+            };
 
             this.unitWiseExpenditureList.push(dataEntry);
           }
-          for(let i=0;i<this.unitWiseExpenditureList.length;i++){
-      
-            if(this.formdata.get('finYear')?.value.finYear!=this.unitWiseExpenditureList[i].financialYear||this.formdata.get('cbUnit')?.value.descr!=this.unitWiseExpenditureList[i].unit||this.formdata.get('subHead')?.value.subHeadDescr!=this.unitWiseExpenditureList[i].subhead){
-              debugger;
+          for (let i = 0; i < this.unitWiseExpenditureList.length; i++) {
+            if (
+              this.formdata.get('finYear')?.value.finYear !=
+                this.unitWiseExpenditureList[i].financialYear ||
+              this.formdata.get('cbUnit')?.value.descr !=
+                this.unitWiseExpenditureList[i].unit ||
+              this.formdata.get('subHead')?.value.subHeadDescr !=
+                this.unitWiseExpenditureList[i].subhead
+            ) {
               this.unitWiseExpenditureList.pop();
             }
           }
           // console.log('DATA>>>>>>>'+this.dasboardData);
           // this.draw();
-        this.SpinnerService.hide();  // debugger;
+          this.SpinnerService.hide(); // debugger;
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
@@ -234,52 +241,49 @@ unitWiseExpenditureList:UnitWiseExpenditureList[]=[];
     });
   }
 
-
-
-
-  draw():void {
-
+  draw(): void {
     Chart.register(...registerables);
-//     const data = {
-//       labels: ['OE','SM','WS','OT','DT','RT','PU','PL','AP','MW', 'PS', 'ME', 'IT'],
-//       datasets: [{
-//         label: 'Expenditure(Lakhs)',
-//         backgroundColor: 'rgba(60,141,188,0.9)',
-//         borderColor: 'rgba(60,141,188,0.8)',
-//         pointRadius: false,
-//         pointColor: '#3b8bba',
-//         pointStrokeColor: 'rgba(60,141,188,1)',
-//         pointHighlightFill: '#fff',
-//         pointHighlightStroke: 'rgba(60,141,188,1)',
-//         data: [58, 68, 40, 59, 86, 67, 90, 70, 75, 70, 80, 55, 66]
-//       },
-//     {
-//       label: 'Allocated(Lakhs)',
-//       backgroundColor: 'rgba(210, 214, 222, 1)',
-//       borderColor: 'rgba(210, 214, 222, 1)',
-//       pointRadius: false,
-//       pointColor: 'rgba(210, 214, 222, 1)',
-//       pointStrokeColor: '#c1c7d1',
-//       pointHighlightFill: '#fff',
-//       pointHighlightStroke: 'rgba(220,220,220,1)',
-//       data: [58, 45, 50, 39, 46, 57, 60, 50, 65, 60, 60, 35, 46]
-//
-//     }
-//     ]
-// };
+    //     const data = {
+    //       labels: ['OE','SM','WS','OT','DT','RT','PU','PL','AP','MW', 'PS', 'ME', 'IT'],
+    //       datasets: [{
+    //         label: 'Expenditure(Lakhs)',
+    //         backgroundColor: 'rgba(60,141,188,0.9)',
+    //         borderColor: 'rgba(60,141,188,0.8)',
+    //         pointRadius: false,
+    //         pointColor: '#3b8bba',
+    //         pointStrokeColor: 'rgba(60,141,188,1)',
+    //         pointHighlightFill: '#fff',
+    //         pointHighlightStroke: 'rgba(60,141,188,1)',
+    //         data: [58, 68, 40, 59, 86, 67, 90, 70, 75, 70, 80, 55, 66]
+    //       },
+    //     {
+    //       label: 'Allocated(Lakhs)',
+    //       backgroundColor: 'rgba(210, 214, 222, 1)',
+    //       borderColor: 'rgba(210, 214, 222, 1)',
+    //       pointRadius: false,
+    //       pointColor: 'rgba(210, 214, 222, 1)',
+    //       pointStrokeColor: '#c1c7d1',
+    //       pointHighlightFill: '#fff',
+    //       pointHighlightStroke: 'rgba(220,220,220,1)',
+    //       data: [58, 45, 50, 39, 46, 57, 60, 50, 65, 60, 60, 35, 46]
+    //
+    //     }
+    //     ]
+    // };
     const data = {
       labels: this.dasboardData.subHeadWiseExpenditure.subhead,
-      datasets: [{
-        label: 'Expenditure(Lakhs)',
-        backgroundColor: 'rgba(60,141,188,0.9)',
-        borderColor: 'rgba(60,141,188,0.8)',
-        pointRadius: false,
-        pointColor: '#3b8bba',
-        pointStrokeColor: 'rgba(60,141,188,1)',
-        pointHighlightFill: '#fff',
-        pointHighlightStroke: 'rgba(60,141,188,1)',
-        data: this.dasboardData.subHeadWiseExpenditure.expenditureSubHead
-      },
+      datasets: [
+        {
+          label: 'Expenditure(Lakhs)',
+          backgroundColor: 'rgba(60,141,188,0.9)',
+          borderColor: 'rgba(60,141,188,0.8)',
+          pointRadius: false,
+          pointColor: '#3b8bba',
+          pointStrokeColor: 'rgba(60,141,188,1)',
+          pointHighlightFill: '#fff',
+          pointHighlightStroke: 'rgba(60,141,188,1)',
+          data: this.dasboardData.subHeadWiseExpenditure.expenditureSubHead,
+        },
         {
           label: 'Allocated(Lakhs)',
           backgroundColor: 'rgba(210, 214, 222, 1)',
@@ -289,74 +293,74 @@ unitWiseExpenditureList:UnitWiseExpenditureList[]=[];
           pointStrokeColor: '#c1c7d1',
           pointHighlightFill: '#fff',
           pointHighlightStroke: 'rgba(220,220,220,1)',
-          data: this.dasboardData.subHeadWiseExpenditure.allocatedSubHead
-
-        }
-      ]
+          data: this.dasboardData.subHeadWiseExpenditure.allocatedSubHead,
+        },
+      ],
     };
-const options = {
-  maintainAspectRatio: false,
-  responsive: true,
-  legend: {
-    display: false
-  },
-  scales: {
-    y: {
-      beginAtZero: true,
-      display: true
-    }
-  }
-}
-const config: ChartConfiguration = {
-  type: 'bar',
-  data: data,
-  options: options
-}
-const chartItem: ChartItem = document.getElementById('my-chart') as ChartItem
-new Chart(chartItem, config)
+    const options = {
+      maintainAspectRatio: false,
+      responsive: true,
+      legend: {
+        display: false,
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          display: true,
+        },
+      },
+    };
+    const config: ChartConfiguration = {
+      type: 'bar',
+      data: data,
+      options: options,
+    };
+    const chartItem: ChartItem = document.getElementById(
+      'my-chart'
+    ) as ChartItem;
+    new Chart(chartItem, config);
 
-
-
-// const data2 = {
-//   labels: ['CGHQ','RHQ(W)','RHQ(NW)','RHQ(NE)','RHQ(E)','RHQ(A&N)'],
-//   datasets: [{
-//     label: 'Expenditure(Lakhs)',
-//     backgroundColor: 'rgba(60,141,188,0.9)',
-//     borderColor: 'rgba(60,141,188,0.8)',
-//     pointRadius: false,
-//     pointColor: '#3b8bba',
-//     pointStrokeColor: 'rgba(60,141,188,1)',
-//     pointHighlightFill: '#fff',
-//     pointHighlightStroke: 'rgba(60,141,188,1)',
-//     data: [58, 68, 40, 59, 86, 67]
-//   },
-// {
-//   label: 'Allocated(Lakhs)',
-//   backgroundColor: 'rgba(210, 214, 222, 1)',
-//   borderColor: 'rgba(210, 214, 222, 1)',
-//   pointRadius: false,
-//   pointColor: 'rgba(210, 214, 222, 1)',
-//   pointStrokeColor: '#c1c7d1',
-//   pointHighlightFill: '#fff',
-//   pointHighlightStroke: 'rgba(220,220,220,1)',
-//   data: [38, 45, 50, 39, 46, 57]
-//
-// }
-// ]
-// };
+    // const data2 = {
+    //   labels: ['CGHQ','RHQ(W)','RHQ(NW)','RHQ(NE)','RHQ(E)','RHQ(A&N)'],
+    //   datasets: [{
+    //     label: 'Expenditure(Lakhs)',
+    //     backgroundColor: 'rgba(60,141,188,0.9)',
+    //     borderColor: 'rgba(60,141,188,0.8)',
+    //     pointRadius: false,
+    //     pointColor: '#3b8bba',
+    //     pointStrokeColor: 'rgba(60,141,188,1)',
+    //     pointHighlightFill: '#fff',
+    //     pointHighlightStroke: 'rgba(60,141,188,1)',
+    //     data: [58, 68, 40, 59, 86, 67]
+    //   },
+    // {
+    //   label: 'Allocated(Lakhs)',
+    //   backgroundColor: 'rgba(210, 214, 222, 1)',
+    //   borderColor: 'rgba(210, 214, 222, 1)',
+    //   pointRadius: false,
+    //   pointColor: 'rgba(210, 214, 222, 1)',
+    //   pointStrokeColor: '#c1c7d1',
+    //   pointHighlightFill: '#fff',
+    //   pointHighlightStroke: 'rgba(220,220,220,1)',
+    //   data: [38, 45, 50, 39, 46, 57]
+    //
+    // }
+    // ]
+    // };
     const data2 = {
       labels: this.dasboardData.unitWiseExpenditure.unitWise,
-      datasets: [{
-        label: 'Expenditure(Lakhs)',
-        backgroundColor: 'rgba(60,141,188,0.9)',
-        borderColor: 'rgba(60,141,188,0.8)',
-        pointRadius: false,
-        pointColor: '#3b8bba',
-        pointStrokeColor: 'rgba(60,141,188,1)',
-        pointHighlightFill: '#fff',
-        pointHighlightStroke: 'rgba(60,141,188,1)',
-        data:this.dasboardData.unitWiseExpenditure.expenditureUnit
-      },
+      datasets: [
+        {
+          label: 'Expenditure(Lakhs)',
+          backgroundColor: 'rgba(60,141,188,0.9)',
+          borderColor: 'rgba(60,141,188,0.8)',
+          pointRadius: false,
+          pointColor: '#3b8bba',
+          pointStrokeColor: 'rgba(60,141,188,1)',
+          pointHighlightFill: '#fff',
+          pointHighlightStroke: 'rgba(60,141,188,1)',
+          data: this.dasboardData.unitWiseExpenditure.expenditureUnit,
+        },
         {
           label: 'Allocated(Lakhs)',
           backgroundColor: 'rgba(210, 214, 222, 1)',
@@ -366,87 +370,85 @@ new Chart(chartItem, config)
           pointStrokeColor: '#c1c7d1',
           pointHighlightFill: '#fff',
           pointHighlightStroke: 'rgba(220,220,220,1)',
-          data: this.dasboardData.unitWiseExpenditure.allocatedUnit
-
-        }
-      ]
+          data: this.dasboardData.unitWiseExpenditure.allocatedUnit,
+        },
+      ],
     };
-const options2 = {
-  maintainAspectRatio: false,
-  responsive: true,
-  legend: {
-    display: false
-  },
-  scales: {
-    y: {
-      beginAtZero: true,
-      display: true
-    }
+    const options2 = {
+      maintainAspectRatio: false,
+      responsive: true,
+      legend: {
+        display: false,
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          display: true,
+        },
+      },
+    };
+    const config2: ChartConfiguration = {
+      type: 'bar',
+      data: data2,
+      options: options2,
+    };
+
+    const chartItem2: ChartItem = document.getElementById(
+      'my-chart2'
+    ) as ChartItem;
+    new Chart(chartItem2, config2);
   }
-}
-const config2: ChartConfiguration = {
-  type: 'bar',
-  data: data2,
-  options: options2
-}
 
-const chartItem2: ChartItem = document.getElementById('my-chart2') as ChartItem
-new Chart(chartItem2, config2)
-}
-
-confirmModel(data: any) {
-  Swal.fire({
-    title: 'Are you sure?',
-    text: "You won't be able to revert this!",
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Yes, Delete it!',
-  }).then((result) => {
-    if (result.isConfirmed) {
-      this.finallySubmit(data);
-    }
-  });
-}
-
-
-finallySubmit(data: any) {
-  this.SpinnerService.show();
-  var newSubmitJson = data;
-  debugger;
-  this.apiService
-    .postApi(this.cons.api.getDashBoardDta, newSubmitJson)
-    .subscribe({
-      next: (v: object) => {
-        this.SpinnerService.hide();
-        let result: { [key: string]: any } = v;
-        if (result['message'] == 'success') {
-          this.common.successAlert(
-            'Success',
-            result['response']['msg'],
-            'success'
-          );
-          this.budgetListData[this.mainIndexValue].allocationAmount =
-            this.changeRevisedAmount;
-          this.updateBudgetFormData.reset();
-        } else {
-          this.common.faliureAlert('Please try later', result['message'], '');
-        }
-      },
-      error: (e) => {
-        this.SpinnerService.hide();
-        console.error(e);
-        this.common.faliureAlert('Error', e['error']['message'], 'error');
-      },
-      complete: () => console.info('complete'),
+  confirmModel(data: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.finallySubmit(data);
+      }
     });
-}
-mainIndexValue: any;
+  }
 
+  finallySubmit(data: any) {
+    this.SpinnerService.show();
+    var newSubmitJson = data;
 
+    this.apiService
+      .postApi(this.cons.api.getDashBoardDta, newSubmitJson)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            this.common.successAlert(
+              'Success',
+              result['response']['msg'],
+              'success'
+            );
+            this.budgetListData[this.mainIndexValue].allocationAmount =
+              this.changeRevisedAmount;
+            this.updateBudgetFormData.reset();
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
+  }
+  mainIndexValue: any;
 
-changeRevisedAmount: any;
+  changeRevisedAmount: any;
 
   updateBudgetAllocationFund(updateBudgetFormDataValue: any) {
     // this.budgetListData.splice(index, 1);
@@ -460,7 +462,4 @@ changeRevisedAmount: any;
 
     this.confirmModel(submitJson);
   }
-
-
-
 }

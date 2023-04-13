@@ -24,7 +24,6 @@ export class SidebarComponent {
   outbox: any;
 
   ngOnInit(): void {
-    debugger;
     $.getScript('assets/js/adminlte.js');
     // this.userRole = localStorage.getItem('user_role');
     // console.log('Role of user == ' + this.userRole);
@@ -56,7 +55,7 @@ export class SidebarComponent {
   getDashBoardDta() {
     this.SpinnerService.show();
     var newSubmitJson = null;
-    debugger;
+
     this.apiService
       .postApi(this.cons.api.getDashBoardDta, newSubmitJson)
       .subscribe({

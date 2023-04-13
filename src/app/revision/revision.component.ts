@@ -140,7 +140,6 @@ export class RevisionComponent {
       this.totalExistingAmount +
       this.budgetRevisionUnitList[index].existingAmount;
     //Step2-> Get Allocation Fund By API by SubHead and Financial Year
-    debugger;
 
     //Step3-> Get All Unit By SubHead Selected
     this.selectedCBUnits = structuredClone(this.allCBUnits);
@@ -158,7 +157,6 @@ export class RevisionComponent {
   moveDataToNextGrid(formDataValue: any) {
     // this.subHeadWiseUnitList.push(new SubHeadWiseUnitList());
     this.budgetRevisionUnitList.splice(0, 0, new BudgetRevisionUnitList());
-    debugger;
   }
 
   uploadDocuments: any[] = [];
@@ -174,7 +172,6 @@ export class RevisionComponent {
   file: any;
 
   onChangeFile(event: any) {
-    debugger;
     if (event.target.files.length > 0) {
       this.file = event.target.files[0];
     }
@@ -229,7 +226,6 @@ export class RevisionComponent {
 
   addFieldValue() {
     this.uploadDocuments.push(new UploadDocuments());
-    debugger;
   }
 
   revisionAmount(index: any) {
