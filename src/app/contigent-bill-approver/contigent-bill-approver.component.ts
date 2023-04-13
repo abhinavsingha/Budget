@@ -70,7 +70,7 @@ export class ContigentBillApproverComponent implements OnInit {
     private SpinnerService: NgxSpinnerService,
     private common: CommonService,
     private datePipe: DatePipe,
-    private sharedService: SharedService
+    public sharedService: SharedService
   ) {}
   selectedCb: any;
   cbList: cb[] = [];

@@ -37,16 +37,20 @@ export class InboxComponent implements OnInit {
     this.getInboxList();
   }
   redirect(li: InboxList) {
+
     if (li.groupId != null || li.groupId != undefined) {
       localStorage.setItem('group_id', li.groupId);
+
     }
 
     if (li.type == 'CB') {
       this.sharedService.sharedValue = li.groupId;
+      this.sharedService.redirectedFrom = 'inbox';
       this.router.navigate(['/contingent-bill-aprover']);
       // window.location.href =;
     } else if (li.type == 'BG') {
       this.router.navigate(['/budget-approval']);
+      this.sharedService.redirectedFrom = 'inbox';
       // window.location.href = '/budget-approval';
     }
   }

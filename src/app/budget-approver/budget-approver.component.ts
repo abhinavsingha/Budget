@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as $ from 'jquery';
 // import { DialogComponent } from '../dialog/dialog.component';
-import { MatDialog } from '@angular/material/dialog';
+// import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
 import { ApiCallingServiceService } from '../services/api-calling/api-calling-service.service';
@@ -10,6 +10,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CommonService } from '../services/common/common.service';
 import Swal from 'sweetalert2';
+import {SharedService} from "../services/shared/shared.service";
 
 @Component({
   selector: 'app-budget-approver',
@@ -31,13 +32,14 @@ export class BudgetApproverComponent implements OnInit {
   }
 
   constructor(
-    private matDialog: MatDialog,
+    // private matDialog: MatDialog,
     private SpinnerService: NgxSpinnerService,
     private cons: ConstantsService,
     private apiService: ApiCallingServiceService,
     private formBuilder: FormBuilder,
     private common: CommonService,
-    private router: Router
+    private router: Router,
+    public sharedService:SharedService
   ) {}
 
   openDialog() {

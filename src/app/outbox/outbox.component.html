@@ -67,7 +67,7 @@
                     <th>Unit Name</th>
                   </tr>
                   <tr *ngFor="let li of outboxList | paginate :{itemsPerPage:10,currentPage:p}; let i = index"
-                    id="htmlData">
+                    id="htmlData" (click)="redirect(li)">
                     <td>{{10 *(p-1)+i+1}}</td>
                     <td>{{li.type}}</td>
                     <td>{{li.createDate}}</td>
