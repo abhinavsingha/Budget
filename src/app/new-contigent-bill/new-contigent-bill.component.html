@@ -265,6 +265,7 @@
                         <th>CB Date</th>
                         <th>Status</th>
                         <th></th>
+                        <th></th>
 
                       </tr>
                     </thead>
@@ -280,10 +281,28 @@
                         <td>{{cb.status}}</td>
 <!--                         <td><button type="button" class="btn btn-primary mr-2" >Download</button><button type="button" class="btn btn-primary">View</button></td> -->
                         <td><button type="button" *ngIf="cb.status !== 'Approved'" (click)="updateFormdata(cb)" class="btn btn-primary">View</button>
-                        <button type="button" *ngIf="cb.status === 'Approved'" (click)="downloadBill(cb.cbNo)" class="btn btn-primary">Download</button>
+                        <button type="button" *ngIf="cb.status === 'Approved'" (click)="downloadBill(cb)" class="btn btn-primary">Download</button>
 
 <!--                        <td><button type="submit" class="btn btn-primary">View</button></td>-->
-                        <button type="button" *ngIf="cb.status === 'Approved'" (click)="uploadBill(cb.cbNo)" class="btn btn-secondary">upload</button></td>
+                          </td><td>
+                          <div class="input-group" *ngIf="cb.status === 'Approved'">
+                            <div class="custom-file">
+                              <input type="file" class="custom-file-input"
+                                     #uploadFileInput>
+                              <label class="custom-file-label" for="invoice">Choose file</label>
+                            </div>
+                            <div class="input-group-append">
+                              <span class="input-group-text" style="cursor: pointer" (click)="uploadBill(cb)">Upload</span>
+                            </div>
+                          </div>
+                        </td>
+
+<!--                          <div>-->
+<!--                          <input type="file" class="custom-file-input" (change)="onFileInputChange($event)"-->
+<!--                                 #uploadFileInput>-->
+<!--                          <span *ngIf="cb.status === 'Approved'" class="input-group-text" style="cursor: pointer" (click)="uploadBill(cb)">Upload</span>-->
+<!--&lt;!&ndash;                          <button type="button" *ngIf="cb.status === 'Approved'" (click)="uploadBill(cb.cbNo)" class="btn btn-secondary">upload</button>-->
+<!--                        &ndash;&gt;</div></td>-->
                       </tr>
                     </tbody>
                   </table>

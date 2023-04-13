@@ -225,7 +225,7 @@ export class ContigentBillApproverComponent implements OnInit {
       if (cbEntry.checked) console.log(cbEntry.cbNo + ' ');
     });
   }
-   updateFormdata(cbEntry: cb) {
+  updateFormdata(cbEntry: cb) {
     for (let i = 0; i < this.majorHeadData.length; i++) {
       let major = this.majorHeadData[i];
       if (major.majorHead == cbEntry.majorHead) {
@@ -409,18 +409,22 @@ export class ContigentBillApproverComponent implements OnInit {
     console.log(this.cbList);
   }
 
-  viewFile() {
+  viewFile(file:string) {
     this.apiService
-      .getApi(this.cons.api.fileDownload + this.formdata.get('file')?.value)
+      .getApi(this.cons.api.fileDownload + this.formdata.get(file)?.value)
       .subscribe(
         (res) => {
           let result: { [key: string]: any } = res;
-          console.log(result['response']);
+          this.openPdfUrlInNewTab(result['response'].pathURL);
+          console.log(result['response'].pathURL);
         },
         (error) => {
           console.log(error);
           this.SpinnerService.hide();
         }
       );
+  }
+  openPdfUrlInNewTab(pdfUrl: string): void {
+    window.open(pdfUrl, '_blank');
   }
 }

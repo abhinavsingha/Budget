@@ -94,5 +94,7 @@ export class ConstantsService {
       this.serviceUrl + 'reportController/getAllocationReportRevised',
 
     updateUserRole: this.serviceUrl + 'mangeUser/updateUserRole',
+     getCbRevisedReport: this.serviceUrl + 'reportController/getCbRevisedReport',
+    updateFinalStatus: this.serviceUrl + 'contingentBillController/updateFinalStatus',
   };
 }

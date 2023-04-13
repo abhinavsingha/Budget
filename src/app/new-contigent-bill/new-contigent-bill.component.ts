@@ -3,6 +3,7 @@ import { ApiCallingServiceService } from '../services/api-calling/api-calling-se
 import { ConstantsService } from '../services/constants/constants.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CommonService } from '../services/common/common.service';
+
 // import * as pdfMake from 'pdfmake/build/pdfmake';
 // import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 // (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
@@ -11,6 +12,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 // import {TDocumentDefinitions} from "pdfmake/interfaces";
 import Swal from 'sweetalert2';
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import * as FileSaver from "file-saver";
 
 // class cbReport {
 //   quarterStartDate: string | undefined;
@@ -64,6 +67,8 @@ class newCb {
   checked?: boolean;
   budgetAllocated: any;
   authorityId: any;
+  invoicePath:any;
+  authGroupId:any;
 }
 class submitCb {
   invoiceDocId: any;
@@ -103,6 +108,7 @@ class authList {
 export class NewContigentBillComponent implements OnInit {
   @ViewChild('browseFileInput') browseFileInput: any;
   @ViewChild('invoiceFileInput') invoiceFileInput: any;
+  @ViewChild('uploadFileInput') uploadFileInput:any;
   finYearData: any;
   subHeadData: any;
   cbUnitData: any;
@@ -151,7 +157,9 @@ export class NewContigentBillComponent implements OnInit {
   fileName = '';
   invoice: any;
   private uploadFileDate: any;
+  private invoicePath: any;
   constructor(
+    private http: HttpClient,
     private apiService: ApiCallingServiceService,
     private cons: ConstantsService,
     private SpinnerService: NgxSpinnerService,
@@ -212,7 +220,7 @@ export class NewContigentBillComponent implements OnInit {
         invoiceDate: this.formdata.get('invoiceDate')?.value,
         invoiceFile: this.invoice,
         returnRemarks: this.formdata.get('returnRemarks')?.value,
-        status: 'pending',
+        status: 'Pending for Submission',
         checked: false,
         progressiveAmount: this.formdata.get('progressive')?.value,
         fileNo: this.formdata.get('fileNo')?.value,
@@ -221,6 +229,8 @@ export class NewContigentBillComponent implements OnInit {
         authorityId: undefined,
         budgetHeadID: '123',
         contingentBilId: undefined,
+        invoicePath: this.invoicePath,
+        authGroupId: undefined
       };
 
       let flag = false;
@@ -410,6 +420,7 @@ export class NewContigentBillComponent implements OnInit {
             'success'
           );
           this.invoice = result['response'].uploadDocId;
+          this.invoicePath=result['response'].uploadPathUrl;
           this.SpinnerService.hide();
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
@@ -438,7 +449,7 @@ export class NewContigentBillComponent implements OnInit {
       }
     });
   }
-   updateFormdata(cbEntry: newCb) {
+  updateFormdata(cbEntry: newCb) {
     console.log('cbentry' + cbEntry);
     for (let i = 0; i < this.majorHeadData.length; i++) {
       let major = this.majorHeadData[i];
@@ -496,7 +507,9 @@ export class NewContigentBillComponent implements OnInit {
     this.formdata.get('firmName')?.setValue(cbEntry.firmName);
     this.formdata.get('invoiceNo')?.setValue(cbEntry.invoiceNo);
     this.formdata.get('invoiceDate')?.setValue(cbEntry.invoiceDate);
-    // this.formdata.get('invoiceFile')?.setValue(cbEntry.invoiceFile);
+    this.viewFile(cbEntry.file);
+    this.openPdfUrlInNewTab(cbEntry.invoicePath);
+
     this.formdata.get('returnRemarks')?.setValue(cbEntry.returnRemarks);
     for (let i = 0; i < this.minorHeadData.length; i++) {
       if (this.minorHeadData[i].minorHead == cbEntry.minorHead) {
@@ -517,33 +530,24 @@ export class NewContigentBillComponent implements OnInit {
           this.cbList[i].status == 'Pending' ||
           this.cbList[i].status == 'Rejected'
         ) {
-          this.cbList[i].budgetAllocated =
-            this.formdata.get('budgetAllocated')?.value;
+          this.cbList[i].budgetAllocated = this.formdata.get('budgetAllocated')?.value;
           this.cbList[i].amount = this.formdata.get('amount')?.value;
           this.cbList[i].authority = this.formdata.get('authority')?.value;
-          this.cbList[i].authorityUnit =
-            this.formdata.get('authorityUnit')?.value.cgUnitShort;
+          this.cbList[i].authorityUnit = this.formdata.get('authorityUnit')?.value.cgUnitShort;
           this.cbList[i].cbDate = this.formdata.get('cbDate')?.value;
-          this.cbList[i].cbUnit =
-            this.formdata.get('cbUnit')?.value.cgUnitShort;
+          this.cbList[i].cbUnit = this.formdata.get('cbUnit')?.value.cgUnitShort;
           this.cbList[i].date = this.formdata.get('date')?.value;
           this.cbList[i].file = this.formdata.get('file')?.value;
-          this.cbList[i].finYearName =
-            this.formdata.get('finYearName')?.value.finYear;
+          this.cbList[i].finYearName = this.formdata.get('finYearName')?.value.finYear;
           this.cbList[i].firmName = this.formdata.get('firmName')?.value;
           this.cbList[i].invoiceDate = this.formdata.get('invoiceDate')?.value;
           this.cbList[i].invoiceFile = this.formdata.get('invoiceFile')?.value;
           this.cbList[i].invoiceNo = this.formdata.get('invoiceNo')?.value;
-          this.cbList[i].majorHead =
-            this.formdata.get('majorHead')?.value.majorHead;
-          this.cbList[i].minorHead =
-            this.formdata.get('minorHead')?.value.minorHead;
-          // this.cbList[i].remarks = this.formdata.get('remarks')?.value;
-          this.cbList[i].returnRemarks =
-            this.formdata.get('returnRemarks')?.value;
-          // this.cbList[i].budgetAllocated = 'pending';
-          this.cbList[i].subHead =
-            this.formdata.get('subHead')?.value.subHeadDescr;
+          this.cbList[i].majorHead = this.formdata.get('majorHead')?.value.majorHead;
+          this.cbList[i].minorHead = this.formdata.get('minorHead')?.value.minorHead;
+          this.cbList[i].returnRemarks = this.formdata.get('returnRemarks')?.value;
+          this.cbList[i].subHead = this.formdata.get('subHead')?.value.subHeadDescr;
+          this.cbList[i].status = 'Pending';
           //call api to update cb
 
           const updateAuthority: authList = {
@@ -589,6 +593,11 @@ export class NewContigentBillComponent implements OnInit {
               next: (v: object) => {
                 let result: { [key: string]: any } = v;
                 if (result['message'] == 'success') {
+                  this.common.successAlert(
+                    'Success',
+                    result['response']['msg'],
+                    'success'
+                  );
                   console.log(result['response']);
                   this.SpinnerService.hide();
                 } else {
@@ -601,7 +610,7 @@ export class NewContigentBillComponent implements OnInit {
                 }
               },
             });
-        } else if (this.cbList[i].status == 'pending') {
+        } else if (this.cbList[i].status == 'Pending for Submission') {
           let entry: newCb = {
             authUnitId: this.formdata.get('authorityUnit')?.value.unit,
             cbUnitId: this.formdata.get('cbUnit')?.value.unit,
@@ -618,15 +627,14 @@ export class NewContigentBillComponent implements OnInit {
             cbDate: this.formdata.get('cbDate')?.value,
             // remarks: this.formdata.get('remarks')?.value,
             authority: this.formdata.get('authority')?.value,
-            authorityUnit:
-              this.formdata.get('authorityUnit')?.value.cgUnitShort,
+            authorityUnit: this.formdata.get('authorityUnit')?.value.cgUnitShort,
             date: this.formdata.get('date')?.value,
             firmName: this.formdata.get('firmName')?.value,
             invoiceNo: this.formdata.get('invoiceNo')?.value,
             invoiceDate: this.formdata.get('invoiceDate')?.value,
             invoiceFile: this.invoice,
             returnRemarks: this.formdata.get('returnRemarks')?.value,
-            status: 'pending',
+            status: 'Pending for Submission',
             checked: false,
             progressiveAmount: this.formdata.get('progressive')?.value,
             fileNo: this.formdata.get('fileNo')?.value,
@@ -637,6 +645,8 @@ export class NewContigentBillComponent implements OnInit {
             contingentBilId: undefined,
             onAccOf: this.formdata.get('onAccOf')?.value,
             authDetail: this.formdata.get('authDetail')?.value,
+            invoicePath: undefined,
+            authGroupId: undefined
           };
           this.cbList[i] = entry;
         } else {
@@ -650,43 +660,44 @@ export class NewContigentBillComponent implements OnInit {
     for (let i = 0; i < this.cbList.length; i++) {
       if(this.cbList[i].checked){
         let budgetId: string = '';
-      for (let j = 0; j < this.majorHeadData.length; j++) {
-        if (this.majorHeadData[j].majorHead == this.cbList[i].majorHead)
-          budgetId = this.majorHeadData[j].budgetCodeId;
+        for (let j = 0; j < this.majorHeadData.length; j++) {
+          if (this.majorHeadData[j].majorHead == this.cbList[i].majorHead)
+            budgetId = this.majorHeadData[j].budgetCodeId;
+        }
+        const auth: authList = {
+          authDocId: this.cbList[i].file,
+          authority: this.cbList[i].authority,
+          authUnitId: this.cbList[i].authUnitId,
+          authDate: this.cbList[i].date,
+          authorityId: undefined,
+          remarks: this.cbList[i].returnRemarks,
+        };
+        const authList: authList[] = [auth];
+        const cb: submitCb = {
+          onAccountOf: this.cbList[i].onAccOf,
+          authorityDetails: this.cbList[i].authDetail,
+          budgetHeadId: budgetId,
+          budgetFinancialYearId: this.cbList[i].finSerialNo,
+          cbAmount: this.cbList[i].amount,
+          cbNumber: this.cbList[i].cbNo,
+          cbUnitId: this.cbList[i].cbUnitId,
+          fileNumber: this.cbList[i].fileNo,
+          progressiveAmount: this.cbList[i].progressiveAmount,
+          remark: ' ',
+          vendorName: this.cbList[i].firmName,
+          invoiceNo: this.cbList[i].invoiceNo,
+          docUploadDate: this.cbList[i].uploadFileDate,
+          fileDate: this.cbList[i].fileDate,
+          cbDate: this.cbList[i].cbDate,
+          invoiceDate: this.cbList[i].invoiceDate,
+          invoiceUploadId: this.cbList[i].invoiceFile,
+          invoiceDocId: this.cbList[i].invoiceFile,
+          authList: authList,
+          contingentBilId: undefined,
+        };
+        submitList.push(cb);
       }
-      const auth: authList = {
-        authDocId: this.cbList[i].file,
-        authority: this.cbList[i].authority,
-        authUnitId: this.cbList[i].authUnitId,
-        authDate: this.cbList[i].date,
-        authorityId: undefined,
-        remarks: this.cbList[i].returnRemarks,
-      };
-      const authList: authList[] = [auth];
-      const cb: submitCb = {
-        onAccountOf: this.cbList[i].onAccOf,
-        authorityDetails: this.cbList[i].authDetail,
-        budgetHeadId: budgetId,
-        budgetFinancialYearId: this.cbList[i].finSerialNo,
-        cbAmount: this.cbList[i].amount,
-        cbNumber: this.cbList[i].cbNo,
-        cbUnitId: this.cbList[i].cbUnitId,
-        fileNumber: this.cbList[i].fileNo,
-        progressiveAmount: this.cbList[i].progressiveAmount,
-        remark: ' ',
-        vendorName: this.cbList[i].firmName,
-        invoiceNo: this.cbList[i].invoiceNo,
-        docUploadDate: this.cbList[i].uploadFileDate,
-        fileDate: this.cbList[i].fileDate,
-        cbDate: this.cbList[i].cbDate,
-        invoiceDate: this.cbList[i].invoiceDate,
-        invoiceUploadId: this.cbList[i].invoiceFile,
-        invoiceDocId: this.cbList[i].invoiceFile,
-        authList: authList,
-        contingentBilId: undefined,
-      };
-      if (this.cbList[i].status == 'pending') submitList.push(cb);
-    }}
+    }
     if (submitList.length == 0) {
       Swal.fire('Add more Data');
     } else {
@@ -813,12 +824,14 @@ export class NewContigentBillComponent implements OnInit {
                       contingentBilId: getCbList[i].cbId,
                       authorityId: getCbList[i].authoritiesList[0].authorityId,
                       onAccOf: getCbList[i].onAccountOf,
-                      authDetail: getCbList[i].authorityDetails
+                      authDetail: getCbList[i].authorityDetails,
+                      invoicePath: getCbList[i].invoiceUploadId.pathURL,
+                      authGroupId: getCbList[i].authoritiesList[0].authGroupId
                     };
 
                     this.cbList.push(entry);
                     this.SpinnerService.hide();
-                    },
+                  },
                   (error) => {
                     console.log(error);
                     this.SpinnerService.hide();
@@ -932,11 +945,128 @@ export class NewContigentBillComponent implements OnInit {
   //   console.log(cb);
   // }
 
-  downloadBill(cbNo: any) {
-
+  downloadBill(cb: any) {
+    console.log(cb)
+    let json={
+      "authGroupId":cb.authGroupId
+    }
+    this.SpinnerService.show();
+    this.apiService.postApi(this.cons.api.getCbRevisedReport,json).subscribe(
+      (results) => {
+        let result: { [key: string]: any } = results;
+        this.downloadPdf(result['response'][0].path);
+      },
+      (error) => {
+        console.log(error);
+        this.SpinnerService.hide();
+      }
+    );
   }
 
-  uploadBill(cbNo: any) {
 
+  uploadBill(cb: any) {
+    const file: File = this.uploadFileInput.nativeElement.files[0];
+    console.log(file);
+    const formData = new FormData();
+    console.log(this.formdata.get('file')?.value);
+    formData.append('file', file);
+    this.SpinnerService.show();
+    this.apiService.postApi(this.cons.api.fileUpload, formData).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+
+        if (result['message'] == 'success') {
+          this.common.successAlert(
+            'Success',
+            result['response']['msg'],
+            'success'
+          );
+          let json={
+            "docId": result['response'].uploadDocId,
+            "groupId": cb.authGroupId
+          }
+          this.apiService.postApi(this.cons.api.updateFinalStatus, json).subscribe({
+            next: (v: object) => {
+              this.SpinnerService.hide();
+              let result: { [key: string]: any } = v;
+
+              if (result['message'] == 'success') {
+                this.common.successAlert(
+                  'Success',
+                  result['response']['msg'],
+                  'success'
+                );
+                this.SpinnerService.hide();
+              } else {
+                this.common.faliureAlert('Please try later', result['message'], '');
+                this.SpinnerService.hide();
+              }
+            },
+            error: (e) => {
+              this.SpinnerService.hide();
+              console.error(e);
+              this.common.faliureAlert('Error', e['error']['message'], 'error');
+            },
+            complete: () => this.SpinnerService.hide(),
+          });
+
+
+
+
+
+
+
+
+
+
+          this.SpinnerService.hide();
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+          this.SpinnerService.hide();
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => this.SpinnerService.hide(),
+    });
+  }
+
+  viewFile(file:string) {
+    this.apiService
+      .getApi(this.cons.api.fileDownload + file)
+      .subscribe(
+        (res) => {
+          let result: { [key: string]: any } = res;
+          this.openPdfUrlInNewTab(result['response'].pathURL);
+          console.log(result['response'].pathURL);
+        },
+        (error) => {
+          console.log(error);
+          this.SpinnerService.hide();
+        }
+      );
+  }
+  openPdfUrlInNewTab(pdfUrl: string): void {
+    window.open(pdfUrl, '_blank');
+  }
+  downloadPdf(pdfUrl: string): void {
+     this.http.get(pdfUrl, { responseType: 'blob' }).subscribe((blob: Blob) => {
+    //   this.http.get('https://icg.net.in/bmsreport/1681376372803.pdf', { responseType: 'blob' }).subscribe((blob: Blob) => {
+      this.SpinnerService.hide();
+       FileSaver.saveAs(blob, 'document.pdf');
+    }, error => {
+       this.SpinnerService.hide();
+      console.error('Failed to download PDF:', error);
+    });
+  }
+  onFileInputChange(event: any) {
+    // Handle file input change event
+    const file = event.target.files[0];
+    // You can access the selected file here and perform any desired operations
+    console.log('Selected file:', file);
   }
 }
