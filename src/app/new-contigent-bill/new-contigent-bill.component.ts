@@ -14,6 +14,8 @@ import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import * as FileSaver from "file-saver";
+import {Router} from "@angular/router";
+import {SharedService} from "../services/shared/shared.service";
 
 // class cbReport {
 //   quarterStartDate: string | undefined;
@@ -119,6 +121,9 @@ export class NewContigentBillComponent implements OnInit {
   minorHead: any;
   fundAvailable: any;
   cbList: newCb[] = [];
+  formData=new FormGroup({
+    uploadFile: new FormControl()
+  })
   formdata = new FormGroup({
     onAccOf: new FormControl(
       'Quarterly payment(3rd Qtr) towars hiring of Designer/Developer IT Manpower(Project SDOT)'
@@ -126,6 +131,11 @@ export class NewContigentBillComponent implements OnInit {
     authDetail: new FormControl(
       'S1.10.1 of Shedule-10 of DFPCG-2017 vide Govt. of India, Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017'
     ),
+    amount: new FormControl('0'),
+    progressive: new FormControl(0),
+    balance: new FormControl(0),
+
+
     fileNo: new FormControl(),
     fileDate: new FormControl(),
     budgetAllocated: new FormControl(),
@@ -134,7 +144,6 @@ export class NewContigentBillComponent implements OnInit {
     finYearName: new FormControl(),
     majorHead: new FormControl(),
     subHead: new FormControl(),
-    amount: new FormControl('0'),
     file: new FormControl(),
     cbNo: new FormControl(),
     cbDate: new FormControl(),
@@ -147,8 +156,7 @@ export class NewContigentBillComponent implements OnInit {
     invoiceDate: new FormControl(),
     invoiceFile: new FormControl(),
     returnRemarks: new FormControl(),
-    progressive: new FormControl(0),
-    balance: new FormControl(0),
+
   });
   budgetAllotted: any;
   billAmount: number = 0;
@@ -159,6 +167,8 @@ export class NewContigentBillComponent implements OnInit {
   private uploadFileDate: any;
   private invoicePath: any;
   constructor(
+    public sharedService: SharedService,
+    private router: Router,
     private http: HttpClient,
     private apiService: ApiCallingServiceService,
     private cons: ConstantsService,
@@ -172,7 +182,12 @@ export class NewContigentBillComponent implements OnInit {
     this.getMajorHead();
     this.getFinancialYear();
     this.getCgUnitData();
-    this.getDashboardData();
+    // this.getDashboardData();
+    this.getMajorHead();
+    this.getFinancialYear();
+    this.getCgUnitData();
+    this.getCBData();
+    console.log('NEWCB');
   }
 
   addToList() {
@@ -242,12 +257,14 @@ export class NewContigentBillComponent implements OnInit {
       if (!flag) {
         this.cbList.push(cb);
         this.formdata.reset();
-        // this.browseFileInput.nativeElement.reset();
+        this.formdata.get('onAccOf')?.setValue('Quarterly payment(3rd Qtr) towars hiring of Designer/Developer IT Manpower(Project SDOT)');
+        this.formdata.get('authDetail')?.setValue('S1.10.1 of Shedule-10 of DFPCG-2017 vide Govt. of India, Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017');
+        this.formdata.get('amount')?.setValue('0')
+        this.formdata.get('progressive')?.setValue(0)
+        this.formdata.get('balance')?.setValue(0)
       }
-      // console.log(this.cbList);
     } else {
       Swal.fire('Enter missing data');
-      // console.log(undefinedValues)
     }
   }
   getFinancialYear() {
@@ -443,6 +460,11 @@ export class NewContigentBillComponent implements OnInit {
       } else if (cbEntry.cbNo == cbNo && cbEntry.checked == true) {
         cbEntry.checked = false;
         this.formdata.reset();
+        this.formdata.get('onAccOf')?.setValue('Quarterly payment(3rd Qtr) towars hiring of Designer/Developer IT Manpower(Project SDOT)');
+        this.formdata.get('authDetail')?.setValue('S1.10.1 of Shedule-10 of DFPCG-2017 vide Govt. of India, Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017');
+        this.formdata.get('amount')?.setValue('0')
+        this.formdata.get('progressive')?.setValue(0)
+        this.formdata.get('balance')?.setValue(0)
       }
       if (cbEntry.checked) {
         console.log(cbEntry.cbNo + ' ');
@@ -713,6 +735,8 @@ export class NewContigentBillComponent implements OnInit {
                 result['response']['msg'],
                 'success'
               );
+              this.getDashboardData();
+              // this.reloadModule1();
               console.log(result['response']);
               this.SpinnerService.hide();
             } else {
@@ -726,6 +750,11 @@ export class NewContigentBillComponent implements OnInit {
           },
         });
       this.formdata.reset();
+      this.formdata.get('onAccOf')?.setValue('Quarterly payment(3rd Qtr) towars hiring of Designer/Developer IT Manpower(Project SDOT)');
+      this.formdata.get('authDetail')?.setValue('S1.10.1 of Shedule-10 of DFPCG-2017 vide Govt. of India, Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017');
+      this.formdata.get('amount')?.setValue('0')
+      this.formdata.get('progressive')?.setValue(0)
+      this.formdata.get('balance')?.setValue(0)
     }
     this.SpinnerService.hide();
     console.log(submitList);
@@ -745,110 +774,26 @@ export class NewContigentBillComponent implements OnInit {
       }
     });
   }
-
   private getDashboardData() {
-    this.SpinnerService.show();
-    const postdata = {
-      unitId: '000467',
-      budgetFinancialYearId: '01',
-      budgetHeadId: '',
-    };
+    // this.SpinnerService.show();
     this.apiService
-      .postApi(this.cons.api.getDashboardData, postdata)
+      .postApi(this.cons.api.getDashboardData, null)
       .subscribe(
         (results) => {
           this.SpinnerService.hide();
           $.getScript('assets/js/adminlte.js');
-          this.getMajorHead();
-          this.getFinancialYear();
-          this.getCgUnitData();
+
           // this.dummydata();
           let result: { [key: string]: any } = results;
-          console.log(result['response']);
-          this.SpinnerService.show();
-          this.apiService.getApi(this.cons.api.getCb).subscribe(
-            (res) => {
-              this.SpinnerService.hide();
-              let result: { [key: string]: any } = res;
-              console.log(result['response']);
-              let getCbList = result['response'];
-
-              for (let i = 0; i < getCbList.length; i++) {
-                let url =
-                  this.cons.api.getAvailableFund +
-                  '/' +
-                  getCbList[i].cbUnitId.cbUnit;
-                console.log(url);
-                this.SpinnerService.show();
-                this.apiService.getApi(url).subscribe(
-                  (res) => {
-
-                    let result: { [key: string]: any } = res;
-                    this.budgetAllotted = result['response'].fundAvailable;
-                    const entry: newCb = {
-                      authUnitId: getCbList[i].authoritiesList[0].authUnit,
-                      cbUnitId: getCbList[i].cbUnitId.cbUnit,
-                      uploadFileDate: getCbList[i].fileDate,
-                      finSerialNo: getCbList[i].finYear.serialNo,
-                      progressiveAmount: getCbList[i].progressiveAmount,
-                      fileDate: getCbList[i].fileDate,
-                      minorHead: getCbList[i].budgetHeadID.minorHead,
-                      cbUnit: getCbList[i].cbUnitId.cgUnitShort,
-                      finYearName: getCbList[i].finYear.finYear,
-                      majorHead: getCbList[i].budgetHeadID.majorHead,
-                      subHead: getCbList[i].budgetHeadID.subHeadDescr,
-                      amount: getCbList[i].cbAmount,
-                      cbNo: getCbList[i].cbNo,
-                      cbDate: this.datePipe.transform(
-                        new Date(getCbList[i].cbDate),
-                        'yyyy-MM-dd'
-                      ),
-                      // remarks: getCbList[i].remarks,
-                      authority: getCbList[i].authoritiesList[0].authority,
-                      authorityUnit: getCbList[i].authoritiesList[0].authUnit,
-                      date: this.datePipe.transform(
-                        new Date(getCbList[i].authoritiesList[0].authDate),
-                        'yyyy-MM-dd'
-                      ),
-                      firmName: getCbList[i].vendorName,
-                      invoiceNo: getCbList[i].invoiceNO,
-                      invoiceDate: getCbList[i].invoiceDate,
-                      invoiceFile: getCbList[i].fileID,
-                      returnRemarks: getCbList[i].authoritiesList[0].remarks,
-                      status: getCbList[i].status,
-                      budgetAllocated: this.budgetAllotted,
-                      checked: false,
-                      fileNo: getCbList[i].fileID,
-                      file: getCbList[i].authoritiesList[0].docId,
-                      budgetHeadID: getCbList[i].budgetHeadID,
-                      contingentBilId: getCbList[i].cbId,
-                      authorityId: getCbList[i].authoritiesList[0].authorityId,
-                      onAccOf: getCbList[i].onAccountOf,
-                      authDetail: getCbList[i].authorityDetails,
-                      invoicePath: getCbList[i].invoiceUploadId.pathURL,
-                      authGroupId: getCbList[i].authoritiesList[0].authGroupId
-                    };
-
-                    this.cbList.push(entry);
-                    this.SpinnerService.hide();
-                  },
-                  (error) => {
-                    console.log(error);
-                    this.SpinnerService.hide();
-                    //remove after test
-                    this.budgetAllotted = 0;
-                  }
-                );
-              }
-            },
-            (error) => {
-              console.log(error);
-            }
-          );
+          if (result['message'] == 'success') {
+            // this.userRole = result['response'].userDetails.role[0].roleName;
+            this.sharedService.inbox = result['response'].inbox;
+            this.sharedService.outbox = result['response'].outBox;
+          }
         },
         (error) => {
           console.log(error);
-          // this.SpinnerService.hide();
+          this.SpinnerService.hide();
         }
       );
   }
@@ -962,8 +907,6 @@ export class NewContigentBillComponent implements OnInit {
       }
     );
   }
-
-
   uploadBill(cb: any) {
     const file: File = this.uploadFileInput.nativeElement.files[0];
     console.log(file);
@@ -1034,7 +977,6 @@ export class NewContigentBillComponent implements OnInit {
       complete: () => this.SpinnerService.hide(),
     });
   }
-
   viewFile(file:string) {
     this.apiService
       .getApi(this.cons.api.fileDownload + file)
@@ -1068,5 +1010,93 @@ export class NewContigentBillComponent implements OnInit {
     const file = event.target.files[0];
     // You can access the selected file here and perform any desired operations
     console.log('Selected file:', file);
+  }
+  // reloadModule1() {
+  //   this.router.navigateByUrl('/sidebar', { skipLocationChange: true }).then(() => {
+  //     this.router.navigate(['/sidebar']);
+  //     this.router.navigate(['/new-contigent-bill']);
+  //   });
+  // }
+  private getCBData() {
+    this.apiService.getApi(this.cons.api.getCb).subscribe(
+      (res) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = res;
+        console.log(result['response']);
+        let getCbList = result['response'];
+
+        for (let i = 0; i < getCbList.length; i++) {
+          let url =
+            this.cons.api.getAvailableFund +
+            '/' +
+            getCbList[i].cbUnitId.cbUnit;
+          console.log(url);
+          this.SpinnerService.show();
+          this.apiService.getApi(url).subscribe(
+            (res) => {
+
+              let result: { [key: string]: any } = res;
+              this.budgetAllotted = result['response'].fundAvailable;
+              const entry: newCb = {
+                authUnitId: getCbList[i].authoritiesList[0].authUnit,
+                cbUnitId: getCbList[i].cbUnitId.cbUnit,
+                uploadFileDate: getCbList[i].fileDate,
+                finSerialNo: getCbList[i].finYear.serialNo,
+                progressiveAmount: getCbList[i].progressiveAmount,
+                fileDate: getCbList[i].fileDate,
+                minorHead: getCbList[i].budgetHeadID.minorHead,
+                cbUnit: getCbList[i].cbUnitId.cgUnitShort,
+                finYearName: getCbList[i].finYear.finYear,
+                majorHead: getCbList[i].budgetHeadID.majorHead,
+                subHead: getCbList[i].budgetHeadID.subHeadDescr,
+                amount: getCbList[i].cbAmount,
+                cbNo: getCbList[i].cbNo,
+                cbDate: this.datePipe.transform(
+                  new Date(getCbList[i].cbDate),
+                  'yyyy-MM-dd'
+                ),
+                // remarks: getCbList[i].remarks,
+                authority: getCbList[i].authoritiesList[0].authority,
+                authorityUnit: getCbList[i].authoritiesList[0].authUnit,
+                date: this.datePipe.transform(
+                  new Date(getCbList[i].authoritiesList[0].authDate),
+                  'yyyy-MM-dd'
+                ),
+                firmName: getCbList[i].vendorName,
+                invoiceNo: getCbList[i].invoiceNO,
+                invoiceDate: getCbList[i].invoiceDate,
+                invoiceFile: getCbList[i].fileID,
+                returnRemarks: getCbList[i].authoritiesList[0].remarks,
+                status: getCbList[i].status,
+                budgetAllocated: this.budgetAllotted,
+                checked: false,
+                fileNo: getCbList[i].fileID,
+                file: getCbList[i].authoritiesList[0].docId,
+                budgetHeadID: getCbList[i].budgetHeadID,
+                contingentBilId: getCbList[i].cbId,
+                authorityId: getCbList[i].authoritiesList[0].authorityId,
+                onAccOf: getCbList[i].onAccountOf,
+                authDetail: getCbList[i].authorityDetails,
+                invoicePath: getCbList[i].invoiceUploadId.pathURL,
+                authGroupId: getCbList[i].authoritiesList[0].authGroupId
+              };
+
+              this.cbList.push(entry);
+              this.SpinnerService.hide();
+            },
+            (error) => {
+              console.log(error);
+              this.SpinnerService.hide();
+              //remove after test
+              this.budgetAllotted = 0;
+            }
+          );
+        }
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
   }
 }

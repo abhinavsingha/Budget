@@ -286,9 +286,9 @@
 <!--                        <td><button type="submit" class="btn btn-primary">View</button></td>-->
                           </td><td>
                           <div class="input-group" *ngIf="cb.status === 'Approved'">
-                            <div class="custom-file">
+                            <div class="custom-file" [formGroup]="formData">
                               <input type="file" class="custom-file-input"
-                                     #uploadFileInput>
+                                     #uploadFileInput formControlName="uploadFile">
                               <label class="custom-file-label" for="invoice">Choose file</label>
                             </div>
                             <div class="input-group-append">

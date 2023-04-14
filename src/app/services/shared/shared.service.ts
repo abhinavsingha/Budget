@@ -4,5 +4,7 @@ import { Injectable } from '@angular/core';
 export class SharedService {
   public sharedValue: string|undefined; // Property to hold the shared value
   public redirectedFrom: string|undefined;
+  public inbox:any;
+  public outbox:any;
   constructor() { }
 }

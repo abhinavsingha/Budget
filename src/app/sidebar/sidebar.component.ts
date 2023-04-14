@@ -10,6 +10,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CommonService } from '../services/common/common.service';
 import Swal from 'sweetalert2';
 import { InboxComponent } from '../inbox/inbox.component';
+import {SharedService} from "../services/shared/shared.service";
 
 @Component({
   selector: 'app-sidebar',
@@ -34,10 +35,12 @@ export class SidebarComponent {
     //   localStorage.removeItem('foo');
     //   localStorage.setItem('user_role', 'Admin');
     // }
+    console.log('SIDEBAR')
     this.getDashBoardDta();
   }
 
   constructor(
+    public sharedService: SharedService,
     private keycloakService: KeycloakService,
     private SpinnerService: NgxSpinnerService,
     private cons: ConstantsService,
@@ -66,6 +69,8 @@ export class SidebarComponent {
             this.userRole = result['response'].userDetails.role[0].roleName;
             this.inbox = result['response'].inbox;
             this.outbox = result['response'].outBox;
+            this.sharedService.inbox = result['response'].inbox;
+            this.sharedService.outbox = result['response'].outBox;
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
