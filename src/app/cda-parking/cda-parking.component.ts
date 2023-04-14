@@ -421,7 +421,13 @@ export class CdaParkingComponent implements OnInit {
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
             console.log(result['response']);
+
             this.SpinnerService.hide();
+            this.common.successAlert(
+              'Success',
+              result['response']['msg'],
+              'success'
+            );
           } else {
             this.SpinnerService.hide();
             this.common.faliureAlert('Please try later', result['message'], '');
