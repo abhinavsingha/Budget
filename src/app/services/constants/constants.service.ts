@@ -94,7 +94,18 @@ export class ConstantsService {
       this.serviceUrl + 'reportController/getAllocationReportRevised',
 
     updateUserRole: this.serviceUrl + 'mangeUser/updateUserRole',
-     getCbRevisedReport: this.serviceUrl + 'reportController/getCbRevisedReport',
-    updateFinalStatus: this.serviceUrl + 'contingentBillController/updateFinalStatus',
+
+    getCbRevisedReport: this.serviceUrl + 'reportController/getCbRevisedReport',
+
+    updateFinalStatus:
+      this.serviceUrl + 'contingentBillController/updateFinalStatus',
+
+    getFilterData: this.serviceUrl + 'budgetFilterApi/getFilterData',
+
+    saveFilterData: this.serviceUrl + 'budgetFilterApi/saveFilterData',
+
+    deleteDataByPid: this.serviceUrl + 'budgetFilterApi/deleteDataByPid',
+
+    deleteData: this.serviceUrl + 'budgetFilterApi/deleteData',
   };
 }

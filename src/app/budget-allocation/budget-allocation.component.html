@@ -46,23 +46,20 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Financial Year</label>
-                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="budgetFinYears"
-                        bindLabel="finYear" placeholder="Select Financial Year" (change)="putInNewList()"
-                        formControlName="finYearName">
+                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="budgetFinYearsNew"
+                        bindLabel="finYear" placeholder="Select Financial Year" formControlName="finYearId"
+                        (change)="toUnitAndMajorHeadReset()">
                       </ng-select>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Major Head</label>
-
-
-                      <ng-select class="form-control select2bs4" style="width: 100%" formControlName="majorHead"
-                        (change)="selectedMajorHead()">
-                        <!-- <ng-option value="">Year To</ng-option> -->
-                        <ng-option *ngFor="let n of majorHeadBySelectingUnit"
-                          value={{n.majorHead.majorHead}}>{{n.majorHead.majorHead}}</ng-option>
+                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="majorDataNew"
+                        bindLabel="majorHead" placeholder="Select Major Head" formControlName="majorHeadId"
+                        (change)="getAllSubHeadByFinYearMajorHeadAndUnit(formdata.value)">
                       </ng-select>
+
 
 
 
@@ -71,11 +68,9 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>To Unit</label>
-                      <ng-select class="form-control select2bs4" style="width: 100%" formControlName="cbUnit"
-                        (change)="selectedUnit()">
-                        <!-- <ng-option value="">Year To</ng-option> -->
-                        <ng-option *ngFor="let n of arrayWithUnitMajorHeadAndSubHead"
-                          value={{n.cbUnits.cbUnit}}>{{n.cbUnits.descr}}</ng-option>
+                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="allCBUnitsNew"
+                        bindLabel="descr" appendTo="body" placeholder="Select To Unit" formControlName="unitId"
+                        (change)="majorHeadReset()">
                       </ng-select>
                     </div>
                   </div>
@@ -85,9 +80,8 @@
                       <!-- <ng-select class="form-control select2bs4" style="width: 100%" [items]="minorHead"
                         bindLabel="minorHead" (change)="getAvailableFund($event)" placeholder="Select Minor Head"
                         formControlName="cbUnit"> -->
-                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="minorHead"
-                        bindLabel="minorHead" placeholder="Select Minor Head" formControlName="minorHead">
-                      </ng-select>
+                      <input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Minor Head"
+                        value="asdf" formControlName="minorHeadId" readonly />
 
 
 
@@ -118,25 +112,28 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let subHeadData of subHeadBySelectingMajorHead; let i = index">
+                      <tr *ngFor="let subHeadData of subHeadFilterDatas; let i = index">
 
                         <!-- <div *ngIf="subHeadData.remark == null"> -->
 
 
 
                         <td>{{i+1}}</td>
-                        <td>{{subHeadData.subheadShort}}<input *ngIf=false value="DiwakarChauhan"></td>
-                        <!-- <td>
-                          {{subHeadData.subheadShort}}
-                        </td> -->
+                        <!-- <td>{{subHeadData.subheadShort}}<input *ngIf=false value="DiwakarChauhan"></td> -->
                         <td>
-                          <div *ngIf="subHeadData.isActive == 1" (click)="asd(subHeadData, formdata.value,i)">
+                          {{subHeadData.subheadShort}}
+                        </td>
+                        <td>
+                          <!-- <div *ngIf="subHeadData.isActive == 1" (click)="asd(subHeadData, formdata.value,i)">
                             Click here to enter amount
                           </div>
                           <div *ngIf="subHeadData.isActive == 0">
                             <input type="text" class="form-control" id="Aallocationamount"
                               placeholder="Please Enter Amount" formControlName="amount" />
-                          </div>
+                          </div> -->
+
+                          <input type="number" [(ngModel)]="subHeadData.amount" [ngModelOptions]="{standalone: true}"
+                            id="Aallocationamount" placeholder="Please Enter Amount" />
 
                         </td>
                         <td>
@@ -165,38 +162,34 @@
                 <table class="table table-hover text-nowrap">
                   <thead>
                     <tr>
-                      <th></th>
+                      <th>Sr. No.</th>
                       <th>F.Y.</th>
                       <th>Unit</th>
                       <th>Sub Head</th>
                       <th>Amount</th>
                       <th>Remarks</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr
-                      *ngFor="let newBudgetAllocation of newBudgetAllocationArray  | paginate :{itemsPerPage:10,currentPage:p}; let i = index">
+                      *ngFor="let newBudgetAllocation of tableData  | paginate :{itemsPerPage:10,currentPage:p}; let i = index">
 
-                      <td><input class="form-check-input" type="checkbox" id="check1" name="option1"
-                          value={{newBudgetAllocation.isChecked}} (click)="tableCheckBoxClicked(i)"></td>
+                      <td>{{i+1}}</td>
                       <td>{{newBudgetAllocation.financialYear.finYear}}</td>
                       <td>{{newBudgetAllocation.unitName.descr}}</td>
-                      <td>{{newBudgetAllocation.subHeadName.subHeadDescr}}</td>
-                      <td>{{newBudgetAllocation.amount}}</td>
+                      <td>{{newBudgetAllocation.selectedSubHead.subHeadDescr}}</td>
+                      <td>{{newBudgetAllocation.selectedSubHead.amount}}</td>
                       <td>{{newBudgetAllocation.remarks}}</td>
+                      <button type=" submit" class="btn btn-danger mr-2"
+                        (click)="deleteRowFromTableData(newBudgetAllocation,i)">Delete</button>
                     </tr>
 
                   </tbody>
                 </table>
 
               </div>
-              <div class="row mt-2">
-                <!-- <div class="col-sm-12 col-md-5">
-                  <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
-                    Showing 1 to 10 of {{length}} entries
-                  </div>
-                </div> -->
-
+              <!-- <div class="row mt-2">
 
                 <div class="col-sm-12 col-md-12">
                   <button type="submit" class="btn btn-danger mr-2 float-left"
@@ -205,7 +198,7 @@
                   <pagination-controls (pageChange)="p = $event" class="pagination float-right"></pagination-controls>
 
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
 

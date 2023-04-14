@@ -72,6 +72,10 @@ export class BudgetAllocationComponent implements OnInit {
     subHeadAmount: new FormControl(), //
     majorHead: new FormControl(),
     minorHead: new FormControl(),
+    finYearId: new FormControl(),
+    majorHeadId: new FormControl(),
+    unitId: new FormControl(),
+    minorHeadId: new FormControl(),
   });
 
   subHeadTableData = new FormGroup({
@@ -102,7 +106,6 @@ export class BudgetAllocationComponent implements OnInit {
 
   token: any;
   ngOnInit(): void {
-    $.getScript('assets/js/adminlte.js');
     // this.keycloakService.getToken().then((token) => {
     //   this.token = token;
     //   this.getUserDetails(this.token);
@@ -116,11 +119,18 @@ export class BudgetAllocationComponent implements OnInit {
     // this.cgwwaUserDetails = JSON.parse(
     //   localStorage.getItem("cgwwaUserDetails") || ""
     // );
+    this.getBudgetFinYear();
+    this.getCgUnitDataNew();
+    this.getMajorDataNew();
+
     this.getUserDetails('');
     this.getUnitDatas();
 
+    this.deleteDataByPid();
+
     this.uploadDocuments.push(new UploadDocuments());
 
+    $.getScript('assets/js/adminlte.js');
     $.getScript('assets/main.js');
   }
 
@@ -568,9 +578,9 @@ export class BudgetAllocationComponent implements OnInit {
     // saveBudgetDataList: any[] = [];
     // newBudgetDataSaveList: any[] = [];
 
-    this.newBudgetAllocationArray;
+    this.tableData;
     this.uploadDocuments;
-
+    debugger;
     this.saveBudgetDataList.push(data);
 
     var newBudgetAllocationListSubArray = [];
@@ -578,14 +588,13 @@ export class BudgetAllocationComponent implements OnInit {
     let authRequestsList: any[] = [];
     let budgetRequest: any[] = [];
 
-    for (var i = 0; i < this.newBudgetAllocationArray.length; i++) {
+    for (var i = 0; i < this.tableData.length; i++) {
       budgetRequest.push({
-        budgetFinanciaYearId:
-          this.newBudgetAllocationArray[i].financialYear.serialNo,
-        toUnitId: this.newBudgetAllocationArray[i].unitName.unit,
-        subHeadId: this.newBudgetAllocationArray[i].subHeadName.budgetCodeId,
-        amount: this.newBudgetAllocationArray[i].amount,
-        remark: this.newBudgetAllocationArray[i].remarks,
+        budgetFinanciaYearId: this.tableData[i].financialYear.serialNo,
+        toUnitId: this.tableData[i].unitName.unit,
+        subHeadId: this.tableData[i].selectedSubHead.budgetCodeId,
+        amount: this.tableData[i].selectedSubHead.amount,
+        remark: this.tableData[i].remarks,
         allocationTypeId: 'ALL_101',
       });
     }
@@ -604,12 +613,6 @@ export class BudgetAllocationComponent implements OnInit {
       authRequests: authRequestsList,
       budgetRequest: budgetRequest,
     };
-
-    // var submitJson = {
-    //   authorityUnit: 'Diwakar',
-    // };
-
-    // newBudgetDataSaveList
 
     this.confirmModel(this.submitJson);
   }
@@ -653,7 +656,11 @@ export class BudgetAllocationComponent implements OnInit {
             this.arrayWithUnitMajorHeadAndSubHead = [];
             this.minorHead = [];
             this.subHeadBySelectingMajorHead = [];
+            this.formdata.reset();
+            this.tableData = [];
             this.uploadDocuments.push(new UploadDocuments());
+            this.deleteDataByPid();
+            this.subHeadFilterDatas = [];
             this.common.successAlert(
               'Success',
               result['response']['msg'],
@@ -772,66 +779,121 @@ export class BudgetAllocationComponent implements OnInit {
     // this.subHeadBySelectingMajorHead =
   }
 
+  tableData: any[] = [];
+
   addSubHeadValue(data: any, formDataValue: any, subHeadIndex: any) {
-    this.formdata.controls['amount'].setValue(null);
-    const newarrayWithUnitMajorHeadAndSubHead =
-      this.arrayWithUnitMajorHeadAndSubHead;
-    const majorHead = data.majorHead;
-    const subHead = data.budgetCodeId;
-    const cbUnit = formDataValue.cbUnit;
-
-    let cbUnitIndex = 0;
-
-    for (var i = 0; i < this.arrayWithUnitMajorHeadAndSubHead.length; i++) {
-      if (this.arrayWithUnitMajorHeadAndSubHead[i].cbUnits.cbUnit == cbUnit) {
-        const newObj = structuredClone(
-          this.arrayWithUnitMajorHeadAndSubHead[i]
-        );
-        cbUnitIndex = i;
-        if (majorHead == '2037') {
-          newObj.majorHeads[0].subHeads.splice(subHeadIndex, 1);
-          this.arrayWithUnitMajorHeadAndSubHead[i] = newObj;
-          this.subHeadBySelectingMajorHead =
-            this.arrayWithUnitMajorHeadAndSubHead[i].majorHeads[0].subHeads;
-          this.showSubHeadDataIntoNextGrid(
-            formDataValue.finYearName,
-            this.arrayWithUnitMajorHeadAndSubHead[i].cbUnits,
-            data,
-            formDataValue.amount,
-            formDataValue.remarks
-          );
-        } else if (majorHead == '4047') {
-          newObj.majorHeads[1].subHeads.splice(subHeadIndex, 1);
-          this.arrayWithUnitMajorHeadAndSubHead[i] = newObj;
-          this.subHeadBySelectingMajorHead =
-            this.arrayWithUnitMajorHeadAndSubHead[i].majorHeads[1].subHeads;
-          this.showSubHeadDataIntoNextGrid(
-            formDataValue.finYearName,
-            this.arrayWithUnitMajorHeadAndSubHead[i].cbUnits,
-            data,
-            formDataValue.amount,
-            formDataValue.remarks
-          );
-        }
-        break;
-      }
+    if (
+      data.amount == undefined ||
+      formDataValue.remarks == null ||
+      formDataValue.finYearId == null ||
+      formDataValue.unitId == null ||
+      formDataValue.majorHeadId == null
+    ) {
+      this.common.faliureAlert(
+        'Please try again.',
+        'Please fill mandatory data.',
+        ''
+      );
+      return;
     }
+
+    this.SpinnerService.show();
+    let submitJson = {
+      finYearId: formDataValue.finYearId.serialNo,
+      codeSubHeadId: data.codeSubHeadId,
+      unitId: formDataValue.unitId.cbUnit,
+      codeMajorHeadId: data.majorHead,
+    };
+
+    this.apiService
+      .postApi(this.cons.api.saveFilterData, submitJson)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+
+          if (result['message'] == 'success') {
+            this.subHeadFilterDatas = result['response'].subHeads;
+            this.tableData.push({
+              financialYear: formDataValue.finYearId,
+              unitName: formDataValue.unitId,
+              selectedSubHead: data,
+              remarks: formDataValue.remarks,
+            });
+
+            if (this.subHeadFilterDatas != undefined) {
+              for (let i = 0; i < this.subHeadFilterDatas.length; i++) {
+                this.subHeadFilterDatas[i].amount = undefined;
+              }
+            }
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
+
+    // this.formdata.controls['amount'].setValue(null);
+    // const newarrayWithUnitMajorHeadAndSubHead =
+    //   this.arrayWithUnitMajorHeadAndSubHead;
+    // const majorHead = data.majorHead;
+    // const subHead = data.budgetCodeId;
+    // const cbUnit = formDataValue.cbUnit;
+
+    // let cbUnitIndex = 0;
+
+    // for (var i = 0; i < this.arrayWithUnitMajorHeadAndSubHead.length; i++) {
+    //   if (this.arrayWithUnitMajorHeadAndSubHead[i].cbUnits.cbUnit == cbUnit) {
+    //     const newObj = structuredClone(
+    //       this.arrayWithUnitMajorHeadAndSubHead[i]
+    //     );
+    //     cbUnitIndex = i;
+    //     if (majorHead == '2037') {
+    //       newObj.majorHeads[0].subHeads.splice(subHeadIndex, 1);
+    //       this.arrayWithUnitMajorHeadAndSubHead[i] = newObj;
+    //       this.subHeadBySelectingMajorHead =
+    //         this.arrayWithUnitMajorHeadAndSubHead[i].majorHeads[0].subHeads;
+    //       this.showSubHeadDataIntoNextGrid(
+    //         formDataValue.finYearName,
+    //         this.arrayWithUnitMajorHeadAndSubHead[i].cbUnits,
+    //         data,
+    //         formDataValue.amount,
+    //         formDataValue.remarks
+    //       );
+    //     } else if (majorHead == '4047') {
+    //       newObj.majorHeads[1].subHeads.splice(subHeadIndex, 1);
+    //       this.arrayWithUnitMajorHeadAndSubHead[i] = newObj;
+    //       this.subHeadBySelectingMajorHead =
+    //         this.arrayWithUnitMajorHeadAndSubHead[i].majorHeads[1].subHeads;
+    //       this.showSubHeadDataIntoNextGrid(
+    //         formDataValue.finYearName,
+    //         this.arrayWithUnitMajorHeadAndSubHead[i].cbUnits,
+    //         data,
+    //         formDataValue.amount,
+    //         formDataValue.remarks
+    //       );
+    //     }
+    //     break;
+    //   }
+    // }
   }
 
   showSubHeadDataIntoNextGrid(
     financialYear: any,
     unit: any,
     subHead: any,
-    amount: any,
     remarks: any
   ) {
     this.newBudgetAllocationArray.push({
       financialYear: financialYear,
       unitName: unit,
-      subHeadName: subHead,
-      amount: amount,
+      selectedSubHead: subHead,
       remarks: remarks,
-      isChecked: false,
     });
   }
 
@@ -906,4 +968,183 @@ export class BudgetAllocationComponent implements OnInit {
   }
 
   rowUploadData(data: any) {}
+
+  budgetFinYearsNew: any[] = [];
+  getBudgetFinYear() {
+    this.SpinnerService.show();
+    this.apiService.getApi(this.cons.api.getBudgetFinYear).subscribe((res) => {
+      let result: { [key: string]: any } = res;
+      if (result['message'] == 'success') {
+        this.budgetFinYearsNew = result['response'];
+        this.SpinnerService.hide();
+      } else {
+        this.common.faliureAlert('Please try later', result['message'], '');
+      }
+    });
+  }
+
+  allCBUnitsNew: any[] = [];
+  getCgUnitDataNew() {
+    this.SpinnerService.show();
+
+    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
+      let result: { [key: string]: any } = res;
+      if (result['message'] == 'success') {
+        this.allCBUnitsNew = result['response'];
+        this.SpinnerService.hide();
+      } else {
+        this.common.faliureAlert('Please try later', result['message'], '');
+      }
+    });
+  }
+
+  majorDataNew: any[] = [];
+  getMajorDataNew() {
+    this.SpinnerService.show();
+    this.apiService.getApi(this.cons.api.getMajorData).subscribe((res) => {
+      let result: { [key: string]: any } = res;
+      if (result['message'] == 'success') {
+        this.majorDataNew = result['response'].subHead;
+        this.SpinnerService.hide();
+      } else {
+        this.common.faliureAlert('Please try later', result['message'], '');
+      }
+    });
+  }
+
+  subHeadFilterDatas: any[] = [];
+
+  // minorHeadAutoSelect: any;
+
+  getAllSubHeadByFinYearMajorHeadAndUnit(formdataValue: any) {
+    if (formdataValue.finYearId == null || formdataValue.unitId == null) {
+      this.formdata.patchValue({
+        majorHeadId: [],
+        finYearId: [],
+        unitId: [],
+      });
+
+      this.common.faliureAlert(
+        'Please try again...!',
+        'Please select Financial Year and To Unit.',
+        ''
+      );
+      return;
+    }
+
+    this.SpinnerService.show();
+
+    this.count = 1;
+    this.countFinYear = 1;
+
+    // this.minorHeadAutoSelect = formdataValue.majorHeadId.minorHead;
+
+    this.formdata.patchValue({
+      minorHeadId: formdataValue.majorHeadId.minorHead,
+    });
+
+    let submitJson = {
+      finyearId: formdataValue.finYearId.serialNo,
+      majorHead: formdataValue.majorHeadId.majorHead,
+      unitId: formdataValue.unitId.cbUnit,
+    };
+
+    this.apiService.postApi(this.cons.api.getFilterData, submitJson).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+
+        if (result['message'] == 'success') {
+          this.subHeadFilterDatas = result['response'].subHeads;
+
+          if (this.subHeadFilterDatas != undefined) {
+            for (let i = 0; i < this.subHeadFilterDatas.length; i++) {
+              this.subHeadFilterDatas[i].amount = undefined;
+            }
+          }
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
+  }
+
+  count: any = 0;
+  majorHeadReset() {
+    if (this.count > 0) {
+      this.formdata.patchValue({
+        majorHeadId: [],
+      });
+      this.count = 0;
+    }
+    this.subHeadFilterDatas = [];
+  }
+
+  countFinYear: any = 0;
+  toUnitAndMajorHeadReset() {
+    if (this.countFinYear > 0) {
+      this.formdata.patchValue({
+        majorHeadId: [],
+        unitId: [],
+      });
+      this.countFinYear = 0;
+    }
+    this.subHeadFilterDatas = [];
+  }
+
+  deleteDataByPid() {
+    this.SpinnerService.show();
+    this.apiService.getApi(this.cons.api.deleteDataByPid).subscribe((res) => {
+      let result: { [key: string]: any } = res;
+      if (result['message'] == 'success') {
+        this.SpinnerService.hide();
+      } else {
+        this.common.faliureAlert('Please try later', result['message'], '');
+      }
+    });
+  }
+
+  deleteRowFromTableData(tableSingleData: any, indexValue: any) {
+    this.SpinnerService.show();
+
+    let submitJson = {
+      finyearId: tableSingleData.financialYear.serialNo,
+      majorHead: tableSingleData.selectedSubHead.majorHead,
+      unitId: tableSingleData.unitName.cbUnit,
+      subHeadId: tableSingleData.selectedSubHead.codeSubHeadId,
+    };
+
+    this.apiService.postApi(this.cons.api.deleteData, submitJson).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+
+        if (result['message'] == 'success') {
+          this.subHeadFilterDatas = result['response'].subHeads;
+
+          this.tableData.splice(indexValue, 1);
+
+          if (this.subHeadFilterDatas != undefined) {
+            for (let i = 0; i < this.subHeadFilterDatas.length; i++) {
+              this.subHeadFilterDatas[i].amount = undefined;
+            }
+          }
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
+  }
 }
