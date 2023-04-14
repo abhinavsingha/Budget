@@ -114,7 +114,7 @@ export class ContigentBillApproverComponent implements OnInit {
         for (let i = 0; i < getCbList.length; i++) {
           console.log('interation :'+i);
           let url =
-            this.cons.api.getAvailableFund + '/' + getCbList[i].cbUnitId.cbUnit;
+            this.cons.api.getAvailableFund + '/' + getCbList[i].cbUnitId.unit;
           this.apiService.getApi(url).subscribe(
             (res) => {
               let result: { [key: string]: any } = res;
@@ -135,7 +135,7 @@ export class ContigentBillApproverComponent implements OnInit {
             onAccountOf: getCbList[i].onAccountOf,
             authorityDetails: getCbList[i].authorityDetails,
             authUnitId: getCbList[i].authoritiesList[0].authUnit,
-            cbUnitId: getCbList[i].cbUnitId.cbUnit,
+            cbUnitId: getCbList[i].cbUnitId.unit,
             uploadFileDate: getCbList[i].fileDate,
             finSerialNo: getCbList[i].finYear.serialNo,
             progressiveAmount: getCbList[i].progressiveAmount,
