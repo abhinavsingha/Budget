@@ -38,6 +38,8 @@ import { DatePipe } from '@angular/common';
 import { SharedService } from './services/shared/shared.service';
 import { SearchPipePipe } from './services/searchPipe/search-pipe.pipe';
 
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+
 // import { DialogComponent } from './dialog/dialog.component';
 // import { MatIconModule } from '@angular/material/icon';
 // import { MatFormFieldModule } from '@angular/material/form-field';
@@ -113,6 +115,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     NgxPaginationModule,
     BrowserAnimationsModule,
     KeycloakAngularModule,
+    NgxExtendedPdfViewerModule,
     // MatIconModule,
     // MatFormFieldModule,
     // MatInputModule,

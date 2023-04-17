@@ -12,10 +12,10 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 // import {TDocumentDefinitions} from "pdfmake/interfaces";
 import Swal from 'sweetalert2';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import * as FileSaver from "file-saver";
-import {Router} from "@angular/router";
-import {SharedService} from "../services/shared/shared.service";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import * as FileSaver from 'file-saver';
+import { Router } from '@angular/router';
+import { SharedService } from '../services/shared/shared.service';
 
 // class cbReport {
 //   quarterStartDate: string | undefined;
@@ -69,8 +69,8 @@ class newCb {
   checked?: boolean;
   budgetAllocated: any;
   authorityId: any;
-  invoicePath:any;
-  authGroupId:any;
+  invoicePath: any;
+  authGroupId: any;
 }
 class submitCb {
   invoiceDocId: any;
@@ -110,7 +110,7 @@ class authList {
 export class NewContigentBillComponent implements OnInit {
   @ViewChild('browseFileInput') browseFileInput: any;
   @ViewChild('invoiceFileInput') invoiceFileInput: any;
-  @ViewChild('uploadFileInput') uploadFileInput:any;
+  @ViewChild('uploadFileInput') uploadFileInput: any;
   finYearData: any;
   subHeadData: any;
   cbUnitData: any;
@@ -121,9 +121,9 @@ export class NewContigentBillComponent implements OnInit {
   minorHead: any;
   fundAvailable: any;
   cbList: newCb[] = [];
-  formData=new FormGroup({
-    uploadFile: new FormControl()
-  })
+  formData = new FormGroup({
+    uploadFile: new FormControl(),
+  });
   formdata = new FormGroup({
     onAccOf: new FormControl(
       'Quarterly payment(3rd Qtr) towars hiring of Designer/Developer IT Manpower(Project SDOT)'
@@ -134,7 +134,6 @@ export class NewContigentBillComponent implements OnInit {
     amount: new FormControl('0'),
     progressive: new FormControl(0),
     balance: new FormControl(0),
-
 
     fileNo: new FormControl(),
     fileDate: new FormControl(),
@@ -156,7 +155,6 @@ export class NewContigentBillComponent implements OnInit {
     invoiceDate: new FormControl(),
     invoiceFile: new FormControl(),
     returnRemarks: new FormControl(),
-
   });
   budgetAllotted: any;
   billAmount: number = 0;
@@ -245,7 +243,7 @@ export class NewContigentBillComponent implements OnInit {
         budgetHeadID: '123',
         contingentBilId: undefined,
         invoicePath: this.invoicePath,
-        authGroupId: undefined
+        authGroupId: undefined,
       };
 
       let flag = false;
@@ -257,11 +255,19 @@ export class NewContigentBillComponent implements OnInit {
       if (!flag) {
         this.cbList.push(cb);
         this.formdata.reset();
-        this.formdata.get('onAccOf')?.setValue('Quarterly payment(3rd Qtr) towars hiring of Designer/Developer IT Manpower(Project SDOT)');
-        this.formdata.get('authDetail')?.setValue('S1.10.1 of Shedule-10 of DFPCG-2017 vide Govt. of India, Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017');
-        this.formdata.get('amount')?.setValue('0')
-        this.formdata.get('progressive')?.setValue(0)
-        this.formdata.get('balance')?.setValue(0)
+        this.formdata
+          .get('onAccOf')
+          ?.setValue(
+            'Quarterly payment(3rd Qtr) towars hiring of Designer/Developer IT Manpower(Project SDOT)'
+          );
+        this.formdata
+          .get('authDetail')
+          ?.setValue(
+            'S1.10.1 of Shedule-10 of DFPCG-2017 vide Govt. of India, Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017'
+          );
+        this.formdata.get('amount')?.setValue('0');
+        this.formdata.get('progressive')?.setValue(0);
+        this.formdata.get('balance')?.setValue(0);
       }
     } else {
       Swal.fire('Enter missing data');
@@ -437,7 +443,7 @@ export class NewContigentBillComponent implements OnInit {
             'success'
           );
           this.invoice = result['response'].uploadDocId;
-          this.invoicePath=result['response'].uploadPathUrl;
+          this.invoicePath = result['response'].uploadPathUrl;
           this.SpinnerService.hide();
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
@@ -460,11 +466,19 @@ export class NewContigentBillComponent implements OnInit {
       } else if (cbEntry.cbNo == cbNo && cbEntry.checked == true) {
         cbEntry.checked = false;
         this.formdata.reset();
-        this.formdata.get('onAccOf')?.setValue('Quarterly payment(3rd Qtr) towars hiring of Designer/Developer IT Manpower(Project SDOT)');
-        this.formdata.get('authDetail')?.setValue('S1.10.1 of Shedule-10 of DFPCG-2017 vide Govt. of India, Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017');
-        this.formdata.get('amount')?.setValue('0')
-        this.formdata.get('progressive')?.setValue(0)
-        this.formdata.get('balance')?.setValue(0)
+        this.formdata
+          .get('onAccOf')
+          ?.setValue(
+            'Quarterly payment(3rd Qtr) towars hiring of Designer/Developer IT Manpower(Project SDOT)'
+          );
+        this.formdata
+          .get('authDetail')
+          ?.setValue(
+            'S1.10.1 of Shedule-10 of DFPCG-2017 vide Govt. of India, Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017'
+          );
+        this.formdata.get('amount')?.setValue('0');
+        this.formdata.get('progressive')?.setValue(0);
+        this.formdata.get('balance')?.setValue(0);
       }
       if (cbEntry.checked) {
         console.log(cbEntry.cbNo + ' ');
@@ -472,6 +486,7 @@ export class NewContigentBillComponent implements OnInit {
     });
   }
   updateFormdata(cbEntry: newCb) {
+    debugger;
     console.log('cbentry' + cbEntry);
     for (let i = 0; i < this.majorHeadData.length; i++) {
       let major = this.majorHeadData[i];
@@ -552,23 +567,31 @@ export class NewContigentBillComponent implements OnInit {
           this.cbList[i].status == 'Pending' ||
           this.cbList[i].status == 'Rejected'
         ) {
-          this.cbList[i].budgetAllocated = this.formdata.get('budgetAllocated')?.value;
+          this.cbList[i].budgetAllocated =
+            this.formdata.get('budgetAllocated')?.value;
           this.cbList[i].amount = this.formdata.get('amount')?.value;
           this.cbList[i].authority = this.formdata.get('authority')?.value;
-          this.cbList[i].authorityUnit = this.formdata.get('authorityUnit')?.value.cgUnitShort;
+          this.cbList[i].authorityUnit =
+            this.formdata.get('authorityUnit')?.value.cgUnitShort;
           this.cbList[i].cbDate = this.formdata.get('cbDate')?.value;
-          this.cbList[i].cbUnit = this.formdata.get('cbUnit')?.value.cgUnitShort;
+          this.cbList[i].cbUnit =
+            this.formdata.get('cbUnit')?.value.cgUnitShort;
           this.cbList[i].date = this.formdata.get('date')?.value;
           this.cbList[i].file = this.formdata.get('file')?.value;
-          this.cbList[i].finYearName = this.formdata.get('finYearName')?.value.finYear;
+          this.cbList[i].finYearName =
+            this.formdata.get('finYearName')?.value.finYear;
           this.cbList[i].firmName = this.formdata.get('firmName')?.value;
           this.cbList[i].invoiceDate = this.formdata.get('invoiceDate')?.value;
           this.cbList[i].invoiceFile = this.formdata.get('invoiceFile')?.value;
           this.cbList[i].invoiceNo = this.formdata.get('invoiceNo')?.value;
-          this.cbList[i].majorHead = this.formdata.get('majorHead')?.value.majorHead;
-          this.cbList[i].minorHead = this.formdata.get('minorHead')?.value.minorHead;
-          this.cbList[i].returnRemarks = this.formdata.get('returnRemarks')?.value;
-          this.cbList[i].subHead = this.formdata.get('subHead')?.value.subHeadDescr;
+          this.cbList[i].majorHead =
+            this.formdata.get('majorHead')?.value.majorHead;
+          this.cbList[i].minorHead =
+            this.formdata.get('minorHead')?.value.minorHead;
+          this.cbList[i].returnRemarks =
+            this.formdata.get('returnRemarks')?.value;
+          this.cbList[i].subHead =
+            this.formdata.get('subHead')?.value.subHeadDescr;
           this.cbList[i].status = 'Pending';
           //call api to update cb
 
@@ -649,7 +672,8 @@ export class NewContigentBillComponent implements OnInit {
             cbDate: this.formdata.get('cbDate')?.value,
             // remarks: this.formdata.get('remarks')?.value,
             authority: this.formdata.get('authority')?.value,
-            authorityUnit: this.formdata.get('authorityUnit')?.value.cgUnitShort,
+            authorityUnit:
+              this.formdata.get('authorityUnit')?.value.cgUnitShort,
             date: this.formdata.get('date')?.value,
             firmName: this.formdata.get('firmName')?.value,
             invoiceNo: this.formdata.get('invoiceNo')?.value,
@@ -668,7 +692,7 @@ export class NewContigentBillComponent implements OnInit {
             onAccOf: this.formdata.get('onAccOf')?.value,
             authDetail: this.formdata.get('authDetail')?.value,
             invoicePath: undefined,
-            authGroupId: undefined
+            authGroupId: undefined,
           };
           this.cbList[i] = entry;
         } else {
@@ -680,7 +704,7 @@ export class NewContigentBillComponent implements OnInit {
   submitList() {
     const submitList: submitCb[] = [];
     for (let i = 0; i < this.cbList.length; i++) {
-      if(this.cbList[i].checked){
+      if (this.cbList[i].checked) {
         let budgetId: string = '';
         for (let j = 0; j < this.majorHeadData.length; j++) {
           if (this.majorHeadData[j].majorHead == this.cbList[i].majorHead)
@@ -750,11 +774,19 @@ export class NewContigentBillComponent implements OnInit {
           },
         });
       this.formdata.reset();
-      this.formdata.get('onAccOf')?.setValue('Quarterly payment(3rd Qtr) towars hiring of Designer/Developer IT Manpower(Project SDOT)');
-      this.formdata.get('authDetail')?.setValue('S1.10.1 of Shedule-10 of DFPCG-2017 vide Govt. of India, Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017');
-      this.formdata.get('amount')?.setValue('0')
-      this.formdata.get('progressive')?.setValue(0)
-      this.formdata.get('balance')?.setValue(0)
+      this.formdata
+        .get('onAccOf')
+        ?.setValue(
+          'Quarterly payment(3rd Qtr) towars hiring of Designer/Developer IT Manpower(Project SDOT)'
+        );
+      this.formdata
+        .get('authDetail')
+        ?.setValue(
+          'S1.10.1 of Shedule-10 of DFPCG-2017 vide Govt. of India, Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017'
+        );
+      this.formdata.get('amount')?.setValue('0');
+      this.formdata.get('progressive')?.setValue(0);
+      this.formdata.get('balance')?.setValue(0);
     }
     this.SpinnerService.hide();
     console.log(submitList);
@@ -776,26 +808,24 @@ export class NewContigentBillComponent implements OnInit {
   }
   private getDashboardData() {
     // this.SpinnerService.show();
-    this.apiService
-      .postApi(this.cons.api.getDashboardData, null)
-      .subscribe(
-        (results) => {
-          this.SpinnerService.hide();
-          $.getScript('assets/js/adminlte.js');
+    this.apiService.postApi(this.cons.api.getDashboardData, null).subscribe(
+      (results) => {
+        this.SpinnerService.hide();
+        $.getScript('assets/js/adminlte.js');
 
-          // this.dummydata();
-          let result: { [key: string]: any } = results;
-          if (result['message'] == 'success') {
-            // this.userRole = result['response'].userDetails.role[0].roleName;
-            this.sharedService.inbox = result['response'].inbox;
-            this.sharedService.outbox = result['response'].outBox;
-          }
-        },
-        (error) => {
-          console.log(error);
-          this.SpinnerService.hide();
+        // this.dummydata();
+        let result: { [key: string]: any } = results;
+        if (result['message'] == 'success') {
+          // this.userRole = result['response'].userDetails.role[0].roleName;
+          this.sharedService.inbox = result['response'].inbox;
+          this.sharedService.outbox = result['response'].outBox;
         }
-      );
+      },
+      (error) => {
+        console.log(error);
+        this.SpinnerService.hide();
+      }
+    );
   }
   // generatePdf(cb:cbReport){
   //   const documentDefinition: TDocumentDefinitions = {
@@ -891,12 +921,12 @@ export class NewContigentBillComponent implements OnInit {
   // }
 
   downloadBill(cb: any) {
-    console.log(cb)
-    let json={
-      "authGroupId":cb.authGroupId
-    }
+    console.log(cb);
+    let json = {
+      authGroupId: cb.authGroupId,
+    };
     this.SpinnerService.show();
-    this.apiService.postApi(this.cons.api.getCbRevisedReport,json).subscribe(
+    this.apiService.postApi(this.cons.api.getCbRevisedReport, json).subscribe(
       (results) => {
         let result: { [key: string]: any } = results;
         this.downloadPdf(result['response'][0].path);
@@ -925,43 +955,44 @@ export class NewContigentBillComponent implements OnInit {
             result['response']['msg'],
             'success'
           );
-          let json={
-            "docId": result['response'].uploadDocId,
-            "groupId": cb.authGroupId
-          }
-          this.apiService.postApi(this.cons.api.updateFinalStatus, json).subscribe({
-            next: (v: object) => {
-              this.SpinnerService.hide();
-              let result: { [key: string]: any } = v;
+          let json = {
+            docId: result['response'].uploadDocId,
+            groupId: cb.authGroupId,
+          };
+          this.apiService
+            .postApi(this.cons.api.updateFinalStatus, json)
+            .subscribe({
+              next: (v: object) => {
+                this.SpinnerService.hide();
+                let result: { [key: string]: any } = v;
 
-              if (result['message'] == 'success') {
-                this.common.successAlert(
-                  'Success',
-                  result['response']['msg'],
-                  'success'
+                if (result['message'] == 'success') {
+                  this.common.successAlert(
+                    'Success',
+                    result['response']['msg'],
+                    'success'
+                  );
+                  this.SpinnerService.hide();
+                } else {
+                  this.common.faliureAlert(
+                    'Please try later',
+                    result['message'],
+                    ''
+                  );
+                  this.SpinnerService.hide();
+                }
+              },
+              error: (e) => {
+                this.SpinnerService.hide();
+                console.error(e);
+                this.common.faliureAlert(
+                  'Error',
+                  e['error']['message'],
+                  'error'
                 );
-                this.SpinnerService.hide();
-              } else {
-                this.common.faliureAlert('Please try later', result['message'], '');
-                this.SpinnerService.hide();
-              }
-            },
-            error: (e) => {
-              this.SpinnerService.hide();
-              console.error(e);
-              this.common.faliureAlert('Error', e['error']['message'], 'error');
-            },
-            complete: () => this.SpinnerService.hide(),
-          });
-
-
-
-
-
-
-
-
-
+              },
+              complete: () => this.SpinnerService.hide(),
+            });
 
           this.SpinnerService.hide();
         } else {
@@ -977,33 +1008,34 @@ export class NewContigentBillComponent implements OnInit {
       complete: () => this.SpinnerService.hide(),
     });
   }
-  viewFile(file:string) {
-    this.apiService
-      .getApi(this.cons.api.fileDownload + file)
-      .subscribe(
-        (res) => {
-          let result: { [key: string]: any } = res;
-          this.openPdfUrlInNewTab(result['response'].pathURL);
-          console.log(result['response'].pathURL);
-        },
-        (error) => {
-          console.log(error);
-          this.SpinnerService.hide();
-        }
-      );
+  viewFile(file: string) {
+    this.apiService.getApi(this.cons.api.fileDownload + file).subscribe(
+      (res) => {
+        let result: { [key: string]: any } = res;
+        this.openPdfUrlInNewTab(result['response'].pathURL);
+        console.log(result['response'].pathURL);
+      },
+      (error) => {
+        console.log(error);
+        this.SpinnerService.hide();
+      }
+    );
   }
   openPdfUrlInNewTab(pdfUrl: string): void {
     window.open(pdfUrl, '_blank');
   }
   downloadPdf(pdfUrl: string): void {
-     this.http.get(pdfUrl, { responseType: 'blob' }).subscribe((blob: Blob) => {
-    //   this.http.get('https://icg.net.in/bmsreport/1681376372803.pdf', { responseType: 'blob' }).subscribe((blob: Blob) => {
-      this.SpinnerService.hide();
-       FileSaver.saveAs(blob, 'document.pdf');
-    }, error => {
-       this.SpinnerService.hide();
-      console.error('Failed to download PDF:', error);
-    });
+    this.http.get(pdfUrl, { responseType: 'blob' }).subscribe(
+      (blob: Blob) => {
+        //   this.http.get('https://icg.net.in/bmsreport/1681376372803.pdf', { responseType: 'blob' }).subscribe((blob: Blob) => {
+        this.SpinnerService.hide();
+        FileSaver.saveAs(blob, 'document.pdf');
+      },
+      (error) => {
+        this.SpinnerService.hide();
+        console.error('Failed to download PDF:', error);
+      }
+    );
   }
   onFileInputChange(event: any) {
     // Handle file input change event
@@ -1027,14 +1059,11 @@ export class NewContigentBillComponent implements OnInit {
 
         for (let i = 0; i < getCbList.length; i++) {
           let url =
-            this.cons.api.getAvailableFund +
-            '/' +
-            getCbList[i].cbUnitId.unit;
+            this.cons.api.getAvailableFund + '/' + getCbList[i].cbUnitId.unit;
           console.log(url);
           this.SpinnerService.show();
           this.apiService.getApi(url).subscribe(
             (res) => {
-
               let result: { [key: string]: any } = res;
               this.budgetAllotted = result['response'].fundAvailable;
               const entry: newCb = {
@@ -1078,7 +1107,7 @@ export class NewContigentBillComponent implements OnInit {
                 onAccOf: getCbList[i].onAccountOf,
                 authDetail: getCbList[i].authorityDetails,
                 invoicePath: getCbList[i].invoiceUploadId.pathURL,
-                authGroupId: getCbList[i].authoritiesList[0].authGroupId
+                authGroupId: getCbList[i].authoritiesList[0].authGroupId,
               };
 
               this.cbList.push(entry);
@@ -1097,6 +1126,5 @@ export class NewContigentBillComponent implements OnInit {
         console.log(error);
       }
     );
-
   }
 }

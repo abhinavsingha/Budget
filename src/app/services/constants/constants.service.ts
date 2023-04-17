@@ -13,8 +13,11 @@ export class ConstantsService {
   api = {
     getDataBudgetAllocation:
       this.serviceUrl + 'budgetAllocation/getDataBudgetAllocation',
+
     getAvailableFund: this.serviceUrl + 'budgetAllocation/getAvailableFund',
+
     fileUpload: this.serviceUrl + 'fileUpload/uploadFile',
+
     saveBudgetAllocation:
       this.serviceUrl + 'budgetAllocation/saveBudgetAllocation',
 
@@ -116,5 +119,12 @@ export class ConstantsService {
 
     getCdaParkingReport:
       this.serviceUrl + 'reportController/getCdaParkingReport',
+
+    getBudgetReciptFilter:
+      this.serviceUrl + 'budgetRecipet/getBudgetReciptFilter',
+
+    budgetRecipetSave: this.serviceUrl + 'budgetRecipet/budgetRecipetSave',
+
+    getBudgetRecipt: this.serviceUrl + 'budgetRecipet/getBudgetRecipt',
   };
 }

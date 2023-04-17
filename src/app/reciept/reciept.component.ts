@@ -8,6 +8,7 @@ import { Injectable, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CommonService } from '../services/common/common.service';
 import Swal from 'sweetalert2';
+import { UploadDocuments } from '../model/upload-documents';
 
 @Component({
   selector: 'app-reciept',
@@ -29,10 +30,20 @@ export class RecieptComponent {
   subHeadList: any[] = [];
   allocationTypeList: any[] = [];
 
+  finalTableData: any[] = [];
+
+  uploadDocuments: any[] = [];
+  cbUnitForDocuments: any[] = [];
+
+  submitJson: any;
+
   ngOnInit(): void {
     this.getBudgetFinYear();
     this.majorDataNew();
     this.getAllocationTypeData();
+    this.uploadDocuments.push(new UploadDocuments());
+    this.getUnitDatas();
+    this.getBudgetRecipt();
     $.getScript('assets/main.js');
   }
 
@@ -70,6 +81,33 @@ export class RecieptComponent {
     });
   }
 
+  getUnitDatas() {
+    this.SpinnerService.show();
+    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
+      let result: { [key: string]: any } = res;
+      if (result['message'] == 'success') {
+        this.cbUnitForDocuments = result['response'];
+        this.SpinnerService.hide();
+      } else {
+        this.common.faliureAlert('Please try later', result['message'], '');
+      }
+    });
+  }
+
+  getBudgetRecipt() {
+    this.SpinnerService.show();
+    this.apiService.getApi(this.cons.api.getBudgetRecipt).subscribe((res) => {
+      let result: { [key: string]: any } = res;
+      if (result['message'] == 'success') {
+        this.finalTableData = result['response'].budgetResponseist;
+
+        this.SpinnerService.hide();
+      } else {
+        this.common.faliureAlert('Please try later', result['message'], '');
+      }
+    });
+  }
+
   getAllocationTypeData() {
     this.SpinnerService.show();
     this.apiService
@@ -85,45 +123,147 @@ export class RecieptComponent {
       });
   }
 
-  getAllSubHeadByMajorHead(data: any) {
-    this.SpinnerService.show();
-    this.apiService
-      .getApi(this.cons.api.getAllSubHeadByMajorHead + '/' + data)
-      .subscribe((res) => {
-        let result: { [key: string]: any } = res;
-        if (result['message'] == 'success') {
-          this.subHeadList = result['response'];
-          for (let i = 0; i < this.subHeadList.length; i++) {
-            this.subHeadList[i].be = undefined;
-            this.subHeadList[i].re = undefined;
-            this.subHeadList[i].ma = undefined;
-            this.subHeadList[i].sg = undefined;
-            this.subHeadList[i].voa = undefined;
-          }
+  // getAllSubHeadByMajorHead(data: any) {
+  //   this.SpinnerService.show();
+  //   this.apiService
+  //     .getApi(this.cons.api.getAllSubHeadByMajorHead + '/' + data)
+  //     .subscribe((res) => {
+  //       let result: { [key: string]: any } = res;
+  //       if (result['message'] == 'success') {
+  //         this.subHeadList = result['response'];
+  //         for (let i = 0; i < this.subHeadList.length; i++) {
+  //           this.subHeadList[i].be = undefined;
+  //           this.subHeadList[i].re = undefined;
+  //           this.subHeadList[i].ma = undefined;
+  //           this.subHeadList[i].sg = undefined;
+  //           this.subHeadList[i].voa = undefined;
+  //         }
 
-          this.SpinnerService.hide();
-        } else {
-          this.common.faliureAlert('Please try later', result['message'], '');
-        }
-      });
-  }
+  //         this.SpinnerService.hide();
+  //       } else {
+  //         this.common.faliureAlert('Please try later', result['message'], '');
+  //       }
+  //     });
+  // }
 
-  majorHeadChange(selectedMajorHead: any) {
+  majorHeadChange(selectedMajorHead: any, formdataValue: any) {
     //Step-1 => Auto select Minor-Head
     this.formdata.patchValue({
       minorHead: selectedMajorHead.minorHead,
     });
 
     // Step-2 => Get all sub head by major head cuz we need to set the sub head in next table
-    this.getAllSubHeadByMajorHead(selectedMajorHead.majorHead);
+    this.getAllSubHeadByMajorHead(selectedMajorHead.majorHead, formdataValue);
+  }
+  file: any;
+
+  onChangeFile(event: any) {
+    if (event.target.files.length > 0) {
+      this.file = event.target.files[0];
+    }
+  }
+  uploadFileResponse: any;
+  uploadFile(index: any) {
+    const formData = new FormData();
+    formData.append('file', this.file);
+
+    this.SpinnerService.show();
+
+    this.apiService.postApi(this.cons.api.fileUpload, formData).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+
+        if (result['message'] == 'success') {
+          // this.newSubcList = [];
+          this.uploadFileResponse = '';
+          // this.newSubcArr = [];
+          this.uploadFileResponse = result['response'];
+          console.log(
+            'upload file data ======= ' +
+              JSON.stringify(this.uploadFileResponse) +
+              ' =submitJson'
+          );
+
+          this.uploadDocuments[index].uploadDocId =
+            this.uploadFileResponse.uploadDocId;
+
+          this.common.successAlert(
+            'Success',
+            result['response']['msg'],
+            'success'
+          );
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
+  }
+
+  deleteFieldValue(index: any) {
+    this.uploadDocuments.splice(index, 1);
+  }
+
+  addFieldValue() {
+    this.uploadDocuments.push(new UploadDocuments());
+  }
+
+  selectedFinYear: any;
+  getAllSubHeadByMajorHead(formData: any, formdataValue: any) {
+    this.SpinnerService.show();
+
+    let submitJson = {
+      majorHeadId: formData,
+      budgetFinancialYearId: formdataValue.finYear.serialNo,
+    };
+
+    this.selectedFinYear = formdataValue.finYear.serialNo;
+
+    this.apiService
+      .postApi(this.cons.api.getBudgetReciptFilter, submitJson)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            this.subHeadList = result['response'].budgetData;
+
+            for (let i = 0; i < this.subHeadList.length; i++) {
+              this.subHeadList[i].codeSubHeadId =
+                this.subHeadList[i].budgetHead.codeSubHeadId;
+              this.subHeadList[i].subHeadDescr =
+                this.subHeadList[i].budgetHead.subHeadDescr;
+              this.subHeadList[i].budgetCodeId =
+                this.subHeadList[i].budgetHead.budgetCodeId;
+              this.subHeadList[i].amount = '';
+            }
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
   }
 
   isSelectedRE: boolean = false;
   isSelectedMA: boolean = false;
   isSectedSG: boolean = false;
   isSectedVOA: boolean = false;
+  finalSelectedAllocationType: any = {};
 
   allocationTypeChange(selectedAllocationType: any) {
+    this.finalSelectedAllocationType = selectedAllocationType;
     if (selectedAllocationType.allocType == 'RE') {
       this.isSelectedRE = true;
       this.isSelectedMA = false;
@@ -150,5 +290,103 @@ export class RecieptComponent {
       this.isSectedSG = false;
       this.isSectedVOA = false;
     }
+  }
+
+  saveBudgetRecipt() {
+    let authRequestsList: any[] = [];
+    let budgetRequest: any[] = [];
+
+    for (var i = 0; i < this.subHeadList.length; i++) {
+      budgetRequest.push({
+        budgetHeadId: this.subHeadList[i].budgetHead.budgetCodeId,
+        allocationAmount: this.subHeadList[i].amount,
+      });
+    }
+
+    for (var i = 0; i < this.uploadDocuments.length; i++) {
+      authRequestsList.push({
+        authUnitId: this.uploadDocuments[i].authUnit.unit,
+        authority: this.uploadDocuments[i].authority,
+        authDate: this.uploadDocuments[i].authorityData,
+        remark: this.uploadDocuments[i].remarks,
+        authDocId: this.uploadDocuments[i].uploadDocId,
+      });
+    }
+
+    this.submitJson = {
+      budgetFinancialYearId: this.selectedFinYear,
+      allocationTypeId: this.finalSelectedAllocationType.allocTypeId,
+      authListData: authRequestsList,
+      receiptSubRequests: budgetRequest,
+    };
+
+    this.confirmModel(this.submitJson);
+  }
+
+  confirmModel(data: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, submit it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.finallySubmit(this.submitJson);
+      }
+    });
+  }
+
+  finallySubmit(data: any) {
+    this.SpinnerService.show();
+    // var newSubmitJson = this.submitJson;
+    var newSubmitJson = data;
+    console.log(JSON.stringify(newSubmitJson) + ' =submitJson for save budget');
+
+    this.apiService
+      .postApi(this.cons.api.budgetRecipetSave, newSubmitJson)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+
+          // console.log(JSON.stringify(result) + " =submitJson");
+
+          if (result['message'] == 'success') {
+            // this.newSubcList = [];
+            // this.newSubcArr = [];
+            this.common.successAlert(
+              'Success',
+              result['response']['msg'],
+              'success'
+            );
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
+
+    // this.common.successAlert('Success', 'Finally submitted', 'success');
+  }
+
+  // pdfurl = '';
+  // (path: any) {
+  //   // this.serdebugger
+  //   let blob: Blob = path.authList[0].docId.pathURL as Blob;
+  //   // let url = window.URL.createObjectURL(blob);
+  //   this.pdfurl = path.authList[0].docId.pathURL;
+  //   debugger;
+  // }
+
+  previewURL(path: any) {
+    window.open(path.authList[0].docId.pathURL, '_blank');
   }
 }
