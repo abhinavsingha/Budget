@@ -55,7 +55,7 @@
                       <label>Sub Head</label>
                       <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeads"
                         bindLabel="subHeadDescr" placeholder="Select Sub Head" formControlName="subHead"
-                        (change)="getAvailableFund($event,'')"></ng-select>
+                        (change)="getAvailableFund($event,formdata.value)"></ng-select>
                     </div>
                   </div>
                   <div class="col-md-6">
@@ -77,21 +77,21 @@
                     <div class="form-group">
                       <label>Fund Available</label>
                       <input type="number" class="form-control" id="PrevAllocation" placeholder="2.22"
-                        formControlName="remarks" readonly />
+                        formControlName="fundAvailable" readonly />
                     </div>
                   </div>
                   <div class=" col-md-6">
                     <div class="form-group">
                       <label>RE(Additional/Withdrawl)</label>
                       <input type="number" class="form-control" id="PrevAllocation" placeholder="0.24"
-                        formControlName="remarks" readonly />
+                        formControlName="reallocateFund" readonly />
                     </div>
                   </div>
                   <div class=" col-md-6">
                     <div class="form-group">
                       <label>Balance Fund</label>
                       <input type="number" class="form-control" id="PrevAllocation" placeholder="7.432"
-                        formControlName="remarks" readonly />
+                        formControlName="balanceFund" readonly />
                     </div>
                   </div>
                   <div class="col-md-6">
@@ -131,7 +131,8 @@
                       </td>
                       <td><input type="number" class="form-control" id="Aallocationamount"
                           placeholder="Please Revised Amount" [(ngModel)]="subHeadWiseUnit.revisionAmount"
-                          (keyup)="revisionAmount(i)" (change)="revisionAmount(i)" /></td>
+                          (keyup)="revisionAmount(i)" (change)="revisionAmount(i)"
+                          [ngModelOptions]="{standalone: true}" /></td>
                       <td>
                         <span *ngIf="!subHeadWiseUnit.isSelected">-</span>
                         <span *ngIf="subHeadWiseUnit.isSelected">{{subHeadWiseUnit.revisiedAmount}}</span>
@@ -141,10 +142,10 @@
                   </tbody>
                   <tfoot>
                     <tr>
-                      <td>Total</td>
+                      <!-- <td>Total</td>
                       <td>{{totalExistingAmount}}</td>
                       <td>{{totlaRevisionAmount}}</td>
-                      <td>38.00</td>
+                      <td>38.00</td> -->
                       <td><button type="submit" class="btn btn-primary mr-2"
                           (click)="moveDataToNextGrid(formdata.value)">Add Row</button></td>
                     </tr>

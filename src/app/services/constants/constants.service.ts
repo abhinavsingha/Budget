@@ -107,5 +107,14 @@ export class ConstantsService {
     deleteDataByPid: this.serviceUrl + 'budgetFilterApi/deleteDataByPid',
 
     deleteData: this.serviceUrl + 'budgetFilterApi/deleteData',
+
+    getAvailableFundData:
+      this.serviceUrl + 'budgetAllocation/getAvailableFundData',
+
+    getBudgetRevisionData:
+      this.serviceUrl + 'budgetAllocation/getBudgetRevisionData',
+
+    getCdaParkingReport:
+      this.serviceUrl + 'reportController/getCdaParkingReport',
   };
 }

@@ -52,19 +52,7 @@
                       </ng-select>
                     </div>
                   </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Major Head</label>
-                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="majorDataNew"
-                        bindLabel="majorHead" placeholder="Select Major Head" formControlName="majorHeadId"
-                        (change)="getAllSubHeadByFinYearMajorHeadAndUnit(formdata.value)">
-                      </ng-select>
 
-
-
-
-                    </div>
-                  </div>
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>To Unit</label>
@@ -74,6 +62,17 @@
                       </ng-select>
                     </div>
                   </div>
+
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Major Head</label>
+                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="majorDataNew"
+                        bindLabel="majorHead" placeholder="Select Major Head" formControlName="majorHeadId"
+                        (change)="getAllSubHeadByFinYearMajorHeadAndUnit(formdata.value)">
+                      </ng-select>
+                    </div>
+                  </div>
+
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Minor Head</label>

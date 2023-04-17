@@ -580,7 +580,7 @@ export class BudgetAllocationComponent implements OnInit {
 
     this.tableData;
     this.uploadDocuments;
-    debugger;
+
     this.saveBudgetDataList.push(data);
 
     var newBudgetAllocationListSubArray = [];
@@ -638,7 +638,7 @@ export class BudgetAllocationComponent implements OnInit {
     // var newSubmitJson = this.submitJson;
     var newSubmitJson = data;
     console.log(JSON.stringify(newSubmitJson) + ' =submitJson for save budget');
-
+    debugger;
     this.apiService
       .postApi(this.cons.api.saveBudgetAllocationUnitWise, newSubmitJson)
       .subscribe({
@@ -960,6 +960,7 @@ export class BudgetAllocationComponent implements OnInit {
   }
 
   addFieldValue() {
+    debugger;
     this.uploadDocuments.push(new UploadDocuments());
   }
 
@@ -1015,15 +1016,34 @@ export class BudgetAllocationComponent implements OnInit {
   subHeadFilterDatas: any[] = [];
 
   // minorHeadAutoSelect: any;
-
   getAllSubHeadByFinYearMajorHeadAndUnit(formdataValue: any) {
-    if (formdataValue.finYearId == null || formdataValue.unitId == null) {
+    this.count = 1;
+    this.countFinYear = 1;
+
+    if (
+      formdataValue.majorHeadId == null ||
+      formdataValue.majorHeadId.length == 0
+    ) {
+      this.formdata.patchValue({
+        majorHeadId: [],
+        minorHeadId: '',
+      });
+      this.subHeadFilterDatas = [];
+      return;
+    }
+
+    if (
+      formdataValue.finYearId == null ||
+      formdataValue.unitId == null ||
+      formdataValue.unitId.length == 0 ||
+      formdataValue.finYearId.length == 0
+    ) {
       this.formdata.patchValue({
         majorHeadId: [],
         finYearId: [],
         unitId: [],
+        minorHeadId: '',
       });
-
       this.common.faliureAlert(
         'Please try again...!',
         'Please select Financial Year and To Unit.',
@@ -1033,9 +1053,6 @@ export class BudgetAllocationComponent implements OnInit {
     }
 
     this.SpinnerService.show();
-
-    this.count = 1;
-    this.countFinYear = 1;
 
     // this.minorHeadAutoSelect = formdataValue.majorHeadId.minorHead;
 
@@ -1080,6 +1097,7 @@ export class BudgetAllocationComponent implements OnInit {
     if (this.count > 0) {
       this.formdata.patchValue({
         majorHeadId: [],
+        minorHeadId: '',
       });
       this.count = 0;
     }
@@ -1092,6 +1110,7 @@ export class BudgetAllocationComponent implements OnInit {
       this.formdata.patchValue({
         majorHeadId: [],
         unitId: [],
+        minorHeadId: '',
       });
       this.countFinYear = 0;
     }

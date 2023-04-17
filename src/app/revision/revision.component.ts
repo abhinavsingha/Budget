@@ -45,15 +45,17 @@ export class RevisionComponent {
     currentAllocation: new FormControl(),
     balanceFund: new FormControl(),
     remarks: new FormControl('', Validators.required),
+    reallocateFund: new FormControl(),
   });
 
   ngOnInit(): void {
     $.getScript('assets/js/adminlte.js');
     this.getBudgetFinYear();
     this.getSubHeadsData();
-    this.getCgUnitData();
+    // this.getCgUnitData();
     this.getNewEmptyEntries();
     this.getUnitDatas();
+    this.getAvailableFundData();
     this.uploadDocuments.push(new UploadDocuments());
     $.getScript('assets/main.js');
   }
@@ -76,6 +78,7 @@ export class RevisionComponent {
       fundAvailable: new FormControl(),
       currentAllocation: new FormControl(),
       balanceFund: new FormControl(),
+      reallocateFund: new FormControl(),
       remarks: new FormControl('', Validators.required),
     });
   }
@@ -98,6 +101,26 @@ export class RevisionComponent {
         this.common.faliureAlert('Please try later', result['message'], '');
       }
     });
+  }
+
+  getAvailableFundData() {
+    this.SpinnerService.show();
+    this.apiService
+      .getApi(this.cons.api.getAvailableFundData)
+      .subscribe((res) => {
+        let result: { [key: string]: any } = res;
+        if (result['message'] == 'success') {
+          debugger;
+          this.formdata.patchValue({
+            fundAvailable: result['response'].fundAvailable,
+            reallocateFund: '0.0',
+            balanceFund: '0.0',
+          });
+          this.SpinnerService.hide();
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      });
   }
 
   getSubHeadsData() {
@@ -126,23 +149,23 @@ export class RevisionComponent {
     });
   }
 
-  getAvailableFund(event: any, index: any) {
+  getAvailableFund(event: any, formDataValue: any) {
     //Step1:-> Selected Major Data and Minor Data automatically
-    this.formdata.patchValue({
-      majorHead: event.majorHead,
-      minorHead: event.minorHead,
-    });
+    // this.formdata.patchValue({
+    //   majorHead: event.majorHead,
+    //   minorHead: event.minorHead,
+    // });
 
-    this.budgetRevisionUnitList[index].isSelected = true;
-    this.budgetRevisionUnitList[index].existingAmount = 30;
+    // this.budgetRevisionUnitList[index].isSelected = true;
+    // this.budgetRevisionUnitList[index].existingAmount = 30;
 
-    this.totalExistingAmount =
-      this.totalExistingAmount +
-      this.budgetRevisionUnitList[index].existingAmount;
+    // this.totalExistingAmount =
+    //   this.totalExistingAmount +
+    //   this.budgetRevisionUnitList[index].existingAmount;
     //Step2-> Get Allocation Fund By API by SubHead and Financial Year
 
     //Step3-> Get All Unit By SubHead Selected
-    this.selectedCBUnits = structuredClone(this.allCBUnits);
+    // this.selectedCBUnits = structuredClone(this.allCBUnits);
     // debugger;
     // for (var i = 0; i < this.selectedCBUnits.length; i++) {
     //   let subHeadWiseUnit = new SubHeadWiseUnitList();
@@ -152,6 +175,40 @@ export class RevisionComponent {
     //   subHeadWiseUnit.unit = this.selectedCBUnits[i].descr;
     //   this.subHeadWiseUnitList.push(subHeadWiseUnit);
     // }
+
+    debugger;
+    let submitJson = {
+      budgetFinancialYearId: formDataValue.finYear.serialNo,
+      subHead: event.budgetCodeId,
+    };
+
+    this.apiService
+      .postApi(this.cons.api.getBudgetRevisionData, submitJson)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+
+          if (result['message'] == 'success') {
+            this.allCBUnits = result['response'];
+            // this.subHeadFilterDatas = result['response'].subHeads;
+            // this.tableData.splice(indexValue, 1);
+            // if (this.subHeadFilterDatas != undefined) {
+            //   for (let i = 0; i < this.subHeadFilterDatas.length; i++) {
+            //     this.subHeadFilterDatas[i].amount = undefined;
+            //   }
+            // }
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
   }
 
   moveDataToNextGrid(formDataValue: any) {

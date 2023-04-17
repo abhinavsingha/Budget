@@ -40,14 +40,14 @@
 
           <div class="row">
             <div class="col-md-6">
-              <form [formGroup]="formdata" (ngSubmit)="saveFirstForm()">
+              <form [formGroup]="formdata" (ngSubmit)="saveFirstForm(formdata.value)">
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Financial Year</label>
                       <ng-select class="form-control select2bs4" style="width: 100%" [items]="budgetFinYears"
-                        bindLabel="finYear" placeholder="Select Financial Year" formControlName="finYear"
-                        [ngClass]="{'is-invalid' : submitted && formdata.controls.finYear.errors}">
+                        bindLabel="finYear" placeholder="Select Financial Year" formControlName="finYear">
+                        <!-- [ngClass]="{'is-invalid' : submitted && formdata.controls.finYear.errors}" -->
                       </ng-select>
                     </div>
                   </div>

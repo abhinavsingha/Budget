@@ -39,7 +39,7 @@ export class BudgetAllocationSubheadwiseComponent {
   submitJson: any;
 
   formdata = new FormGroup({
-    finYear: new FormControl('Select Financial Year', Validators.required),
+    finYear: new FormControl(),
     subHead: new FormControl(),
     majorHead: new FormControl(),
     minorHead: new FormControl(),
@@ -78,7 +78,7 @@ export class BudgetAllocationSubheadwiseComponent {
 
   newFormGroup() {
     this.formdata = new FormGroup({
-      finYear: new FormControl('Select Financial Year', Validators.required),
+      finYear: new FormControl(),
       subHead: new FormControl(),
       majorHead: new FormControl(),
       minorHead: new FormControl(),
@@ -171,7 +171,21 @@ export class BudgetAllocationSubheadwiseComponent {
     return true;
   }
 
-  saveFirstForm() {
+  saveFirstForm(formDataValue: any) {
+    if (
+      formDataValue.finYear == null ||
+      formDataValue.subHead == null ||
+      formDataValue.allocationType == null ||
+      formDataValue.remarks == null
+    ) {
+      this.common.faliureAlert(
+        'Please try again',
+        'Please fill the required data.',
+        ''
+      );
+      return;
+    }
+
     this.submitted = true;
     if (this.formdata.invalid) {
       return;

@@ -17,11 +17,13 @@ import { RevisionComponent } from './revision/revision.component';
 import { CdaParkingComponent } from './cda-parking/cda-parking.component';
 import { RecieptComponent } from './reciept/reciept.component';
 import { UnitRebaseComponent } from './unit-rebase/unit-rebase.component';
+import { CdaParkingReportComponent } from './cda-parking-report/cda-parking-report.component';
 
 const routes: Routes = [
   // { path: '', component: LoginComponent },
+  // { path: '', component: DashboardComponent },
   { path: 'dashboard', component: DashboardComponent },
-  { path: '', component: BudgetAllocationComponent },
+  { path: 'budget-allocation', component: BudgetAllocationComponent },
   { path: 'budget-update', component: BudgetUpdateComponent },
   { path: 'budget-delete', component: BudgetDeleteComponent },
   { path: 'inbox', component: InboxComponent },
@@ -50,6 +52,10 @@ const routes: Routes = [
     component: CdaParkingComponent,
   },
   {
+    path: '',
+    component: RecieptComponent,
+  },
+  {
     path: 'reciept',
     component: RecieptComponent,
   },
@@ -57,6 +63,7 @@ const routes: Routes = [
     path: 'unit-rebase',
     component: UnitRebaseComponent,
   },
+  { path: 'cda-parking-report', component: CdaParkingReportComponent },
 ];
 
 @NgModule({

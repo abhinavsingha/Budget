@@ -31,6 +31,7 @@ import { RevisionComponent } from './revision/revision.component';
 import { CdaParkingComponent } from './cda-parking/cda-parking.component';
 import { RecieptComponent } from './reciept/reciept.component';
 import { UnitRebaseComponent } from './unit-rebase/unit-rebase.component';
+import { CdaParkingReportComponent } from './cda-parking-report/cda-parking-report.component';
 
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { DatePipe } from '@angular/common';
@@ -98,6 +99,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     RecieptComponent,
     UnitRebaseComponent,
     SearchPipePipe,
+    CdaParkingReportComponent,
     // DialogComponent,
   ],
   imports: [
@@ -128,10 +130,10 @@ function initializeKeycloak(keycloak: KeycloakService) {
       multi: true,
       deps: [KeycloakService],
     },
-    {
-      provide: LocationStrategy,
-      useClass: HashLocationStrategy,
-    },
+    // {
+    //   provide: LocationStrategy,
+    //   useClass: HashLocationStrategy,
+    // },
   ],
   bootstrap: [AppComponent],
 })
