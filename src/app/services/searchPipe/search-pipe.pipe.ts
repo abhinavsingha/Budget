@@ -23,10 +23,12 @@ export class SearchPipePipe implements PipeTransform {
     // }));
 
     return items.filter((it) => {
+      debugger;
       return (
         it.unit.toLowerCase().includes(searchText.toLowerCase()) ||
         it.role.toLowerCase().includes(searchText.toLowerCase()) ||
         it.name.toLowerCase().includes(searchText.toLowerCase()) ||
+        it.finYear.finYear.includes(searchText.toLowerCase()) ||
         it.pno.includes(searchText)
       );
     });

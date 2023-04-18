@@ -65,8 +65,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        url: 'http://localhost:8080/auth',
-        // url: 'https://icg.net.in/auth/',
+        // url: 'http://localhost:8080/auth',
+        url: 'https://icg.net.in/auth/',
         realm: 'icgrms',
         clientId: 'budget',
       },

@@ -39,6 +39,10 @@ export class RecieptComponent {
 
   autoSelectedAllocationType: any;
 
+  searchText: any = '';
+
+  p: number = 1;
+
   ngOnInit(): void {
     this.getBudgetFinYear();
     this.majorDataNew();
@@ -125,30 +129,42 @@ export class RecieptComponent {
       });
   }
 
-  // getAllSubHeadByMajorHead(data: any) {
-  //   this.SpinnerService.show();
-  //   this.apiService
-  //     .getApi(this.cons.api.getAllSubHeadByMajorHead + '/' + data)
-  //     .subscribe((res) => {
-  //       let result: { [key: string]: any } = res;
-  //       if (result['message'] == 'success') {
-  //         this.subHeadList = result['response'];
-  //         for (let i = 0; i < this.subHeadList.length; i++) {
-  //           this.subHeadList[i].be = undefined;
-  //           this.subHeadList[i].re = undefined;
-  //           this.subHeadList[i].ma = undefined;
-  //           this.subHeadList[i].sg = undefined;
-  //           this.subHeadList[i].voa = undefined;
-  //         }
-
-  //         this.SpinnerService.hide();
-  //       } else {
-  //         this.common.faliureAlert('Please try later', result['message'], '');
-  //       }
-  //     });
-  // }
-
   majorHeadChange(selectedMajorHead: any, formdataValue: any) {
+    debugger;
+
+    if (selectedMajorHead == undefined || selectedMajorHead == null) {
+      this.formdata.reset();
+      this.isSelectedRE = false;
+      this.isSelectedMA = false;
+      this.isSectedSG = false;
+      this.isSectedVOA = false;
+      this.isUpdate = false;
+      this.autoSelectedAllocationType = null;
+      this.subHeadList = [];
+      this.uploadDocuments = [];
+      this.uploadDocuments.push(new UploadDocuments());
+      return;
+    }
+
+    if (formdataValue.finYear == null || formdataValue.finYear == undefined) {
+      this.common.faliureAlert(
+        'Please try again.',
+        'Please select Financial Year.',
+        ''
+      );
+      this.formdata.reset();
+      this.isSelectedRE = false;
+      this.isSelectedMA = false;
+      this.isSectedSG = false;
+      this.isSectedVOA = false;
+      this.isUpdate = false;
+      this.autoSelectedAllocationType = null;
+      this.subHeadList = [];
+      this.uploadDocuments = [];
+      this.uploadDocuments.push(new UploadDocuments());
+      return;
+    }
+
     //Step-1 => Auto select Minor-Head
     this.formdata.patchValue({
       minorHead: selectedMajorHead.minorHead,
@@ -221,7 +237,7 @@ export class RecieptComponent {
     };
 
     this.selectedFinYear = formdataValue.finYear.serialNo;
-    debugger;
+
     this.apiService
       .postApi(this.cons.api.getBudgetReciptFilter, submitJson)
       .subscribe({
@@ -230,6 +246,7 @@ export class RecieptComponent {
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
             this.isUpdate = false;
+            this.autoSelectedAllocationType = null;
             this.subHeadList = result['response'].budgetData;
             for (let i = 0; i < this.subHeadList.length; i++) {
               this.subHeadList[i].codeSubHeadId =
@@ -292,7 +309,7 @@ export class RecieptComponent {
   saveBudgetRecipt() {
     let authRequestsList: any[] = [];
     let budgetRequest: any[] = [];
-    debugger;
+
     for (var i = 0; i < this.subHeadList.length; i++) {
       budgetRequest.push({
         budgetHeadId: this.subHeadList[i].budgetHead.budgetCodeId,
@@ -383,6 +400,17 @@ export class RecieptComponent {
 
           if (result['message'] == 'success') {
             this.getBudgetRecipt();
+            this.isSelectedRE = false;
+            this.isSelectedMA = false;
+            this.isSectedSG = false;
+            this.isSectedVOA = false;
+            this.isUpdate = false;
+            this.autoSelectedAllocationType = null;
+            this.subHeadList = [];
+            this.uploadDocuments = [];
+            this.uploadDocuments.push(new UploadDocuments());
+            this.formdata.reset();
+            this.common.successAlert('Success', 'Finally submitted', 'success');
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
@@ -410,7 +438,11 @@ export class RecieptComponent {
     this.SpinnerService.show();
     this.isUpdate = true;
 
-    // AU_ID1681724260012
+    this.formdata.patchValue({
+      finYear: data.finYear,
+      majorHead: data.subHead,
+      minorHead: data.subHead.minorHead,
+    });
 
     this.allocationTypeChange(data.allocTypeId);
 
@@ -469,7 +501,16 @@ export class RecieptComponent {
   }
 
   changeFinYear() {
-    // thisisUpdate
+    this.isSelectedRE = false;
+    this.isSelectedMA = false;
+    this.isSectedSG = false;
+    this.isSectedVOA = false;
     this.isUpdate = false;
+    this.autoSelectedAllocationType = null;
+    this.subHeadList = [];
+    this.formdata.patchValue({
+      minorHead: '',
+      majorHead: null,
+    });
   }
 }
