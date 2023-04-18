@@ -80,7 +80,7 @@ class submitCb {
   budgetFinancialYearId: any;
   cbAmount: any;
   cbNumber: any;
-  unitId: any;
+  unit: any;
   cbDate: any;
   fileDate: any;
   fileNumber: any;
@@ -615,7 +615,7 @@ export class NewContigentBillComponent implements OnInit {
             budgetFinancialYearId: this.cbList[i].finSerialNo,
             cbAmount: this.cbList[i].amount,
             cbNumber: this.cbList[i].cbNo,
-            unitId: this.cbList[i].unitId,
+            unit: this.cbList[i].unitId,
             fileNumber: this.cbList[i].fileNo,
             progressiveAmount: this.cbList[i].progressiveAmount,
             remark: ' ',
@@ -725,7 +725,7 @@ export class NewContigentBillComponent implements OnInit {
           budgetFinancialYearId: this.cbList[i].finSerialNo,
           cbAmount: this.cbList[i].amount,
           cbNumber: this.cbList[i].cbNo,
-          unitId: this.cbList[i].unitId,
+          unit: this.cbList[i].unitId,
           fileNumber: this.cbList[i].fileNo,
           progressiveAmount: this.cbList[i].progressiveAmount,
           remark: ' ',
