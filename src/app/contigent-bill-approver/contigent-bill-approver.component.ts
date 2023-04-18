@@ -114,7 +114,7 @@ export class ContigentBillApproverComponent implements OnInit {
         for (let i = 0; i < getCbList.length; i++) {
           console.log('interation :' + i);
           let url =
-            this.cons.api.getAvailableFund + '/' + getCbList[i].unitId.unit;
+            this.cons.api.getAvailableFund + '/' + getCbList[i].cbUnitId.unit;
           this.apiService.getApi(url).subscribe(
             (res) => {
               let result: { [key: string]: any } = res;
@@ -135,13 +135,13 @@ export class ContigentBillApproverComponent implements OnInit {
             onAccountOf: getCbList[i].onAccountOf,
             authorityDetails: getCbList[i].authorityDetails,
             authUnitId: getCbList[i].authoritiesList[0].authUnit,
-            unitId: getCbList[i].unitId.unit,
+            unitId: getCbList[i].cbUnitId.unit,
             uploadFileDate: getCbList[i].fileDate,
             finSerialNo: getCbList[i].finYear.serialNo,
             progressiveAmount: getCbList[i].progressiveAmount,
             fileDate: getCbList[i].fileDate,
             minorHead: getCbList[i].budgetHeadID.minorHead,
-            unit: getCbList[i].unitId.descr,
+            unit: getCbList[i].cbUnitId.descr,
             finYearName: getCbList[i].finYear.finYear,
             majorHead: getCbList[i].budgetHeadID.majorHead,
             subHead: getCbList[i].budgetHeadID.subHeadDescr,
@@ -173,6 +173,7 @@ export class ContigentBillApproverComponent implements OnInit {
           };
           if (entry.authGroupId == this.sharedService.sharedValue)
             this.cbList.push(entry);
+          console.log(entry+"      ||     "+this.cbList);
         }
       },
       (error) => {
