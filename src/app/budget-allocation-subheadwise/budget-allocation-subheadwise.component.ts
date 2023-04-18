@@ -15,6 +15,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import {SharedService} from "../services/shared/shared.service";
 
 @Component({
   selector: 'app-budget-allocation-subheadwise',
@@ -62,6 +63,7 @@ export class BudgetAllocationSubheadwiseComponent {
   }
 
   constructor(
+    private sharedService:SharedService,
     private SpinnerService: NgxSpinnerService,
     private cons: ConstantsService,
     private apiService: ApiCallingServiceService,
@@ -415,6 +417,7 @@ export class BudgetAllocationSubheadwiseComponent {
               result['response']['msg'],
               'success'
             );
+            this.getDashboardData();
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
@@ -428,5 +431,26 @@ export class BudgetAllocationSubheadwiseComponent {
       });
 
     // this.common.successAlert('Success', 'Finally submitted', 'success');
+  }
+  private getDashboardData() {
+    // this.SpinnerService.show();
+    this.apiService.postApi(this.cons.api.getDashboardData, null).subscribe(
+      (results) => {
+        this.SpinnerService.hide();
+        $.getScript('assets/js/adminlte.js');
+
+        // this.dummydata();
+        let result: { [key: string]: any } = results;
+        if (result['message'] == 'success') {
+          // this.userRole = result['response'].userDetails.role[0].roleName;
+          this.sharedService.inbox = result['response'].inbox;
+          this.sharedService.outbox = result['response'].outBox;
+        }
+      },
+      (error) => {
+        console.log(error);
+        this.SpinnerService.hide();
+      }
+    );
   }
 }
