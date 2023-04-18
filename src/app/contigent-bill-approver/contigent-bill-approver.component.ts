@@ -16,14 +16,14 @@ interface cb {
   contingentBilId: any;
   budgetHeadID: any;
   authUnitId: any;
-  cbUnitId: any;
+  unitId: any;
   uploadFileDate: any;
   finSerialNo: any;
   progressiveAmount: any;
   fileNo: any;
   fileDate: any;
   minorHead: any;
-  cbUnit: any;
+  unit: any;
   finYearName: any;
   majorHead: any;
   subHead: any;
@@ -57,7 +57,7 @@ class updateRequest {
 export class ContigentBillApproverComponent implements OnInit {
   p: number = 1;
   finYearData: any;
-  cbUnitData: any;
+  unitData: any;
   majorHeadData: any;
   minorHeadData: any;
   majorHead: any;
@@ -78,7 +78,7 @@ export class ContigentBillApproverComponent implements OnInit {
   formdata = new FormGroup({
     budgetAllocated: new FormControl(),
     minorHead: new FormControl(), //
-    cbUnit: new FormControl(), //
+    unit: new FormControl(), //
     finYearName: new FormControl(),
     majorHead: new FormControl(),
     subHead: new FormControl(),
@@ -112,9 +112,9 @@ export class ContigentBillApproverComponent implements OnInit {
         let getCbList = result['response'];
 
         for (let i = 0; i < getCbList.length; i++) {
-          console.log('interation :'+i);
+          console.log('interation :' + i);
           let url =
-            this.cons.api.getAvailableFund + '/' + getCbList[i].cbUnitId.unit;
+            this.cons.api.getAvailableFund + '/' + getCbList[i].unitId.unit;
           this.apiService.getApi(url).subscribe(
             (res) => {
               let result: { [key: string]: any } = res;
@@ -135,13 +135,13 @@ export class ContigentBillApproverComponent implements OnInit {
             onAccountOf: getCbList[i].onAccountOf,
             authorityDetails: getCbList[i].authorityDetails,
             authUnitId: getCbList[i].authoritiesList[0].authUnit,
-            cbUnitId: getCbList[i].cbUnitId.unit,
+            unitId: getCbList[i].unitId.unit,
             uploadFileDate: getCbList[i].fileDate,
             finSerialNo: getCbList[i].finYear.serialNo,
             progressiveAmount: getCbList[i].progressiveAmount,
             fileDate: getCbList[i].fileDate,
             minorHead: getCbList[i].budgetHeadID.minorHead,
-            cbUnit: getCbList[i].cbUnitId.descr,
+            unit: getCbList[i].unitId.descr,
             finYearName: getCbList[i].finYear.finYear,
             majorHead: getCbList[i].budgetHeadID.majorHead,
             subHead: getCbList[i].budgetHeadID.subHeadDescr,
@@ -195,7 +195,7 @@ export class ContigentBillApproverComponent implements OnInit {
     this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
       this.SpinnerService.hide();
       let result: { [key: string]: any } = res;
-      this.cbUnitData = result['response'];
+      this.unitData = result['response'];
     });
   }
   getMajorHead() {
@@ -271,11 +271,11 @@ export class ContigentBillApproverComponent implements OnInit {
         this.formdata.get('minorHead')?.setValue(this.minorHeadData[i]);
       }
     }
-    for (let i = 0; i < this.cbUnitData.length; i++) {
-      if (this.cbUnitData[i].descr == cbEntry.cbUnit)
-        this.formdata.get('cbUnit')?.setValue(this.cbUnitData[i]);
-      if (this.cbUnitData[i].unit == cbEntry.authorityUnit)
-        this.formdata.get('authorityUnit')?.setValue(this.cbUnitData[i]);
+    for (let i = 0; i < this.unitData.length; i++) {
+      if (this.unitData[i].descr == cbEntry.unit)
+        this.formdata.get('unit')?.setValue(this.unitData[i]);
+      if (this.unitData[i].unit == cbEntry.authorityUnit)
+        this.formdata.get('authorityUnit')?.setValue(this.unitData[i]);
     }
     for (let i = 0; i < this.finYearData.length; i++) {
       if (this.finYearData[i].finYear == cbEntry.finYearName)
@@ -409,7 +409,7 @@ export class ContigentBillApproverComponent implements OnInit {
     console.log(this.cbList);
   }
 
-  viewFile(file:string) {
+  viewFile(file: string) {
     this.apiService
       .getApi(this.cons.api.fileDownload + this.formdata.get(file)?.value)
       .subscribe(

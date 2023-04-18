@@ -23,6 +23,7 @@ const routes: Routes = [
   // { path: '', component: LoginComponent },
   // { path: '', component: DashboardComponent },
   { path: 'dashboard', component: DashboardComponent },
+  { path: '', component: DashboardComponent },
   { path: 'budget-allocation', component: BudgetAllocationComponent },
   { path: 'budget-update', component: BudgetUpdateComponent },
   { path: 'budget-delete', component: BudgetDeleteComponent },
@@ -51,10 +52,10 @@ const routes: Routes = [
     path: 'cda-parking',
     component: CdaParkingComponent,
   },
-  {
-    path: '',
-    component: RecieptComponent,
-  },
+  // {
+  //   path: '',
+  //   component: RecieptComponent,
+  // },
   {
     path: 'reciept',
     component: RecieptComponent,

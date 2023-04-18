@@ -18,7 +18,7 @@ import Swal from 'sweetalert2';
 export class BudgetUpdateComponent {
   budgetFinYears: any[] = [];
 
-  allCBUnits: any[] = [];
+  allunits: any[] = [];
 
   budgetListData: any[] = [];
 
@@ -74,7 +74,7 @@ export class BudgetUpdateComponent {
     this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
-        this.allCBUnits = result['response'];
+        this.allunits = result['response'];
         this.SpinnerService.hide();
       } else {
         this.common.faliureAlert('Please try later', result['message'], '');
@@ -87,7 +87,7 @@ export class BudgetUpdateComponent {
 
     let submitJson = {
       budgetFinancialYearId: formData.finYear.serialNo,
-      toUnitId: formData.toUnit.cbUnit,
+      toUnitId: formData.toUnit.unit,
       subHead: null,
     };
 

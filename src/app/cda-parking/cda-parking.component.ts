@@ -48,7 +48,7 @@ class cdaTableData {
 })
 export class CdaParkingComponent implements OnInit {
   cdaTableData: cdaTableData[] = [];
-  cbUnitData: any;
+  unitData: any;
   finYearData: any;
   majorHeadData: any;
   minorHeadData: any;
@@ -59,7 +59,7 @@ export class CdaParkingComponent implements OnInit {
     BalanceAvailable: new FormControl(),
     budgetType: new FormControl(),
     minorHead: new FormControl(), //
-    cbUnit: new FormControl(), //
+    unit: new FormControl(), //
     finYearName: new FormControl(),
     majorHead: new FormControl(),
     subHead: new FormControl(),
@@ -132,7 +132,7 @@ export class CdaParkingComponent implements OnInit {
       (res) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = res;
-        this.cbUnitData = result['response'];
+        this.unitData = result['response'];
       },
       (error) => {
         console.log(error);
@@ -225,7 +225,7 @@ export class CdaParkingComponent implements OnInit {
   }
   getCdaData() {
     this.SpinnerService.show();
-    // let url=this.cons.api.getCdaData+'/'+this.formdata.get('cbUnit')?.value.unit;
+    // let url=this.cons.api.getCdaData+'/'+this.formdata.get('unit')?.value.unit;
     this.apiService.getApi(this.cons.api.getCdaData).subscribe(
       (res) => {
         this.SpinnerService.hide();

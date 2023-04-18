@@ -61,7 +61,7 @@ export class BudgetAllocationComponent implements OnInit {
   formdata = new FormGroup({
     finYearName: new FormControl(), //
     subHead: new FormControl(), //
-    cbUnit: new FormControl(), //
+    unit: new FormControl(), //
     prevAllocation: new FormControl(this.previousAllocation),
     amount: new FormControl(),
     remarks: new FormControl(),
@@ -236,7 +236,7 @@ export class BudgetAllocationComponent implements OnInit {
     for (var i = 0; i < this.cgUnits.length; i++) {
       this.arrayWithUnitMajorHeadAndSubHead.push({
         descr: this.cgUnits[i].descr,
-        cbUnits: this.cgUnits[i],
+        units: this.cgUnits[i],
         majorHeads: majorHeadWithSubHeads,
       });
     }
@@ -252,9 +252,9 @@ export class BudgetAllocationComponent implements OnInit {
     this.formdata.controls['majorHead'].setValue('');
     this.formdata.controls['amount'].setValue(null);
     this.subHeadBySelectingMajorHead = [];
-    const fasd = this.formdata.value.cbUnit;
+    const fasd = this.formdata.value.unit;
     var unitIndex = this.arrayWithUnitMajorHeadAndSubHead.findIndex(
-      (a: { cbUnits: any }) => a.cbUnits.cbUnit == fasd
+      (a: { units: any }) => a.units.unit == fasd
     );
 
     if (unitIndex > -1) {
@@ -307,7 +307,7 @@ export class BudgetAllocationComponent implements OnInit {
 
   getAllSubHeadByMajorHeads(data: any, formDataValue: any) {
     //step1:- Must select the Unit before selecting the Major Head
-    if (formDataValue.cbUnit == null) {
+    if (formDataValue.unit == null) {
       this.subHeads = [];
       this.formdata.reset();
       this.common.warningAlert(
@@ -319,10 +319,10 @@ export class BudgetAllocationComponent implements OnInit {
     }
 
     //step2:- Check if the subhead is froweded to the next grid wrt unit
-    if (formDataValue.cbUnit != null) {
+    if (formDataValue.unit != null) {
       if (this.subHeadArrayWithoutUnit.length > 0) {
         const found = this.subHeadArrayWithoutUnit.find((obj) => {
-          return obj.cbUnit.cbUnit === formDataValue.cbUnit.cbUnit;
+          return obj.unit.unit === formDataValue.unit.unit;
         });
 
         if (found != undefined) {
@@ -452,7 +452,7 @@ export class BudgetAllocationComponent implements OnInit {
     var comboJson = null;
     console.log(JSON.stringify(comboJson) + ' ======');
     this.apiService
-      .getApi(this.cons.api.getAvailableFund + '/' + cgUnit.cbUnit)
+      .getApi(this.cons.api.getAvailableFund + '/' + cgUnit.unit)
       .subscribe((res) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = res;
@@ -482,12 +482,12 @@ export class BudgetAllocationComponent implements OnInit {
 
     for (var i = 0; i < this.subHeadArrayWithoutUnit.length; i++) {
       // var unitIndex = this.cgUnits.findIndex(
-      //   (a: { unit: any }) => a.unit == this.newBudgetAllocationList[i].cbUnit
+      //   (a: { unit: any }) => a.unit == this.newBudgetAllocationList[i].unit
       // );
       // console.log('index == ' + unitIndex);
       this.newBudgetAllocationArray.push({
         financialYear: this.subHeadArrayWithoutUnit[i].finYearName.finYear,
-        unitName: this.subHeadArrayWithoutUnit[i].cbUnit.descr,
+        unitName: this.subHeadArrayWithoutUnit[i].unit.descr,
         subHeadName:
           this.subHeadArrayWithoutUnit[i].selectedSubHead.subHeadDescr,
         amount: this.subHeadArrayWithoutUnit[i].filledAmount,
@@ -510,7 +510,7 @@ export class BudgetAllocationComponent implements OnInit {
     } else {
       this.newSubHeadsArray.push({
         subHeads: this.subHeads,
-        unit: this.subHeadArrayWithoutUnit[0].cbUnit.cbUnit,
+        unit: this.subHeadArrayWithoutUnit[0].unit.unit,
       });
     }
   }
@@ -730,7 +730,7 @@ export class BudgetAllocationComponent implements OnInit {
       selectedSubHead: checkedSubHeadData,
       filledAmount: inputBoxValue,
       finYearName: formData.finYearName,
-      cbUnit: formData.cbUnit,
+      unit: formData.unit,
       remarks: formData.remarks,
     });
   }
@@ -743,20 +743,20 @@ export class BudgetAllocationComponent implements OnInit {
     ];
     const majorHead = data.majorHead;
     const subHead = data.budgetCodeId;
-    const cbUnit = unitMajorHeadAndSubHead.cbUnit;
+    const unit = unitMajorHeadAndSubHead.unit;
 
-    let cbUnitIndex = 0;
+    let unitIndex = 0;
 
     // very Important
     // const newObj = structuredClone(newarrayWithUnitMajorHeadAndSubHead[0]);
     // // const newObj = Object.assign({}, newarrayWithUnitMajorHeadAndSubHead[0]);
-    // newarrayWithUnitMajorHeadAndSubHead[0].cbUnits.isFlag = '0';
+    // newarrayWithUnitMajorHeadAndSubHead[0].units.isFlag = '0';
 
     // newObj.majorHeads[0].subHeads[0].isActive = 0;
     // newarrayWithUnitMajorHeadAndSubHead[0] = newObj;
 
     for (var i = 0; i < this.arrayWithUnitMajorHeadAndSubHead.length; i++) {
-      if (this.arrayWithUnitMajorHeadAndSubHead[i].cbUnits.cbUnit == cbUnit) {
+      if (this.arrayWithUnitMajorHeadAndSubHead[i].units.unit == unit) {
         const newObj = structuredClone(
           this.arrayWithUnitMajorHeadAndSubHead[i]
         );
@@ -801,7 +801,7 @@ export class BudgetAllocationComponent implements OnInit {
     let submitJson = {
       finYearId: formDataValue.finYearId.serialNo,
       codeSubHeadId: data.codeSubHeadId,
-      unitId: formDataValue.unitId.cbUnit,
+      unitId: formDataValue.unitId.unit,
       codeMajorHeadId: data.majorHead,
     };
 
@@ -843,16 +843,16 @@ export class BudgetAllocationComponent implements OnInit {
     //   this.arrayWithUnitMajorHeadAndSubHead;
     // const majorHead = data.majorHead;
     // const subHead = data.budgetCodeId;
-    // const cbUnit = formDataValue.cbUnit;
+    // const unit = formDataValue.unit;
 
-    // let cbUnitIndex = 0;
+    // let unitIndex = 0;
 
     // for (var i = 0; i < this.arrayWithUnitMajorHeadAndSubHead.length; i++) {
-    //   if (this.arrayWithUnitMajorHeadAndSubHead[i].cbUnits.cbUnit == cbUnit) {
+    //   if (this.arrayWithUnitMajorHeadAndSubHead[i].units.unit == unit) {
     //     const newObj = structuredClone(
     //       this.arrayWithUnitMajorHeadAndSubHead[i]
     //     );
-    //     cbUnitIndex = i;
+    //     unitIndex = i;
     //     if (majorHead == '2037') {
     //       newObj.majorHeads[0].subHeads.splice(subHeadIndex, 1);
     //       this.arrayWithUnitMajorHeadAndSubHead[i] = newObj;
@@ -860,7 +860,7 @@ export class BudgetAllocationComponent implements OnInit {
     //         this.arrayWithUnitMajorHeadAndSubHead[i].majorHeads[0].subHeads;
     //       this.showSubHeadDataIntoNextGrid(
     //         formDataValue.finYearName,
-    //         this.arrayWithUnitMajorHeadAndSubHead[i].cbUnits,
+    //         this.arrayWithUnitMajorHeadAndSubHead[i].units,
     //         data,
     //         formDataValue.amount,
     //         formDataValue.remarks
@@ -872,7 +872,7 @@ export class BudgetAllocationComponent implements OnInit {
     //         this.arrayWithUnitMajorHeadAndSubHead[i].majorHeads[1].subHeads;
     //       this.showSubHeadDataIntoNextGrid(
     //         formDataValue.finYearName,
-    //         this.arrayWithUnitMajorHeadAndSubHead[i].cbUnits,
+    //         this.arrayWithUnitMajorHeadAndSubHead[i].units,
     //         data,
     //         formDataValue.amount,
     //         formDataValue.remarks
@@ -914,8 +914,8 @@ export class BudgetAllocationComponent implements OnInit {
       for (var j = 0; j < unitIndex.length; j++) {
         for (var i = 0; i < this.arrayWithUnitMajorHeadAndSubHead.length; i++) {
           if (
-            this.arrayWithUnitMajorHeadAndSubHead[i].cbUnits.cbUnit ==
-            unitIndex[j].unitName.cbUnit
+            this.arrayWithUnitMajorHeadAndSubHead[i].units.unit ==
+            unitIndex[j].unitName.unit
           ) {
             const newObj = structuredClone(
               this.arrayWithUnitMajorHeadAndSubHead[i]
@@ -949,13 +949,13 @@ export class BudgetAllocationComponent implements OnInit {
     }
   }
 
-  cbUnitForDocuments: any[] = [];
+  unitForDocuments: any[] = [];
   getUnitDatas() {
     this.SpinnerService.show();
     this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
       this.SpinnerService.hide();
       let result: { [key: string]: any } = res;
-      this.cbUnitForDocuments = result['response'];
+      this.unitForDocuments = result['response'];
     });
   }
 
@@ -984,14 +984,14 @@ export class BudgetAllocationComponent implements OnInit {
     });
   }
 
-  allCBUnitsNew: any[] = [];
+  allunitsNew: any[] = [];
   getCgUnitDataNew() {
     this.SpinnerService.show();
 
     this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
-        this.allCBUnitsNew = result['response'];
+        this.allunitsNew = result['response'];
         this.SpinnerService.hide();
       } else {
         this.common.faliureAlert('Please try later', result['message'], '');
@@ -1059,11 +1059,11 @@ export class BudgetAllocationComponent implements OnInit {
     this.formdata.patchValue({
       minorHeadId: formdataValue.majorHeadId.minorHead,
     });
-
+    debugger;
     let submitJson = {
       finyearId: formdataValue.finYearId.serialNo,
       majorHead: formdataValue.majorHeadId.majorHead,
-      unitId: formdataValue.unitId.cbUnit,
+      unitId: formdataValue.unitId.unit,
     };
 
     this.apiService.postApi(this.cons.api.getFilterData, submitJson).subscribe({
@@ -1135,7 +1135,7 @@ export class BudgetAllocationComponent implements OnInit {
     let submitJson = {
       finyearId: tableSingleData.financialYear.serialNo,
       majorHead: tableSingleData.selectedSubHead.majorHead,
-      unitId: tableSingleData.unitName.cbUnit,
+      unitId: tableSingleData.unitName.unit,
       subHeadId: tableSingleData.selectedSubHead.codeSubHeadId,
     };
 

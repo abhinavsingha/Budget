@@ -23,8 +23,8 @@ import {
 export class RevisionComponent {
   budgetFinYears: any[] = [];
   subHeads: any[] = [];
-  allCBUnits: any[] = [];
-  selectedCBUnits: any[] = [];
+  allunits: any[] = [];
+  selectedunits: any[] = [];
   budgetRevisionUnitList: any[] = [];
   allocationType: any[] = [];
 
@@ -141,7 +141,7 @@ export class RevisionComponent {
     this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
-        this.allCBUnits = result['response'];
+        this.allunits = result['response'];
         this.SpinnerService.hide();
       } else {
         this.common.faliureAlert('Please try later', result['message'], '');
@@ -165,14 +165,14 @@ export class RevisionComponent {
     //Step2-> Get Allocation Fund By API by SubHead and Financial Year
 
     //Step3-> Get All Unit By SubHead Selected
-    // this.selectedCBUnits = structuredClone(this.allCBUnits);
+    // this.selectedunits = structuredClone(this.allunits);
     // debugger;
-    // for (var i = 0; i < this.selectedCBUnits.length; i++) {
+    // for (var i = 0; i < this.selectedunits.length; i++) {
     //   let subHeadWiseUnit = new SubHeadWiseUnitList();
     //   subHeadWiseUnit.id = 0;
     //   subHeadWiseUnit.amount = 0;
     //   subHeadWiseUnit.isSelected = false;
-    //   subHeadWiseUnit.unit = this.selectedCBUnits[i].descr;
+    //   subHeadWiseUnit.unit = this.selectedunits[i].descr;
     //   this.subHeadWiseUnitList.push(subHeadWiseUnit);
     // }
 
@@ -190,7 +190,7 @@ export class RevisionComponent {
           let result: { [key: string]: any } = v;
 
           if (result['message'] == 'success') {
-            this.allCBUnits = result['response'];
+            this.allunits = result['response'];
             // this.subHeadFilterDatas = result['response'].subHeads;
             // this.tableData.splice(indexValue, 1);
             // if (this.subHeadFilterDatas != undefined) {
@@ -217,13 +217,13 @@ export class RevisionComponent {
   }
 
   uploadDocuments: any[] = [];
-  cbUnitForDocuments: any[] = [];
+  unitForDocuments: any[] = [];
   getUnitDatas() {
     this.SpinnerService.show();
     this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
       this.SpinnerService.hide();
       let result: { [key: string]: any } = res;
-      this.cbUnitForDocuments = result['response'];
+      this.unitForDocuments = result['response'];
     });
   }
   file: any;

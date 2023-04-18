@@ -41,14 +41,14 @@ class newCb {
   contingentBilId: any;
   budgetHeadID: any;
   authUnitId: any;
-  cbUnitId: any;
+  unitId: any;
   uploadFileDate: any;
   finSerialNo: any;
   progressiveAmount: any;
   fileNo: any;
   fileDate: any;
   minorHead: any;
-  cbUnit: any;
+  unit: any;
   finYearName: any;
   majorHead: any;
   subHead: any;
@@ -80,7 +80,7 @@ class submitCb {
   budgetFinancialYearId: any;
   cbAmount: any;
   cbNumber: any;
-  cbUnitId: any;
+  unitId: any;
   cbDate: any;
   fileDate: any;
   fileNumber: any;
@@ -113,7 +113,7 @@ export class NewContigentBillComponent implements OnInit {
   @ViewChild('uploadFileInput') uploadFileInput: any;
   finYearData: any;
   subHeadData: any;
-  cbUnitData: any;
+  unitData: any;
   minorHeadData: any;
   majorHeadData: any;
   subHead: any;
@@ -139,7 +139,7 @@ export class NewContigentBillComponent implements OnInit {
     fileDate: new FormControl(),
     budgetAllocated: new FormControl(),
     minorHead: new FormControl(), //
-    cbUnit: new FormControl(), //
+    unit: new FormControl(), //
     finYearName: new FormControl(),
     majorHead: new FormControl(),
     subHead: new FormControl(),
@@ -212,11 +212,11 @@ export class NewContigentBillComponent implements OnInit {
         onAccOf: this.formdata.get('onAccOf')?.value,
         authDetail: this.formdata.get('authDetail')?.value,
         authUnitId: this.formdata.get('authorityUnit')?.value.unit,
-        cbUnitId: this.formdata.get('cbUnit')?.value.unit,
+        unitId: this.formdata.get('unit')?.value.unit,
         finSerialNo: this.formdata.get('finYearName')?.value.serialNo,
         budgetAllocated: this.formdata.get('budgetAllocated')?.value,
         minorHead: this.formdata.get('minorHead')?.value.minorHead,
-        cbUnit: this.formdata.get('cbUnit')?.value.cgUnitShort,
+        unit: this.formdata.get('unit')?.value.cgUnitShort,
         finYearName: this.formdata.get('finYearName')?.value.finYear,
         majorHead: this.formdata.get('majorHead')?.value.majorHead,
         subHead: this.formdata.get('subHead')?.value.subHeadDescr,
@@ -295,7 +295,7 @@ export class NewContigentBillComponent implements OnInit {
       (res) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = res;
-        this.cbUnitData = result['response'];
+        this.unitData = result['response'];
       },
       (error) => {
         console.log(error);
@@ -346,7 +346,7 @@ export class NewContigentBillComponent implements OnInit {
     let url =
       this.cons.api.getAvailableFund +
       '/' +
-      this.formdata.get('cbUnit')?.value.unit;
+      this.formdata.get('unit')?.value.unit;
     this.apiService.getApi(url).subscribe(
       (res) => {
         this.SpinnerService.hide();
@@ -521,14 +521,14 @@ export class NewContigentBillComponent implements OnInit {
       }
     }
     this.formdata.get('amount')?.setValue(cbEntry.amount);
-    for (let i = 0; i < this.cbUnitData.length; i++) {
-      if (this.cbUnitData[i].cgUnitShort == cbEntry.cbUnit)
-        this.formdata.get('cbUnit')?.setValue(this.cbUnitData[i]);
+    for (let i = 0; i < this.unitData.length; i++) {
+      if (this.unitData[i].cgUnitShort == cbEntry.unit)
+        this.formdata.get('unit')?.setValue(this.unitData[i]);
       if (
-        this.cbUnitData[i].cgUnitShort == cbEntry.authorityUnit ||
-        this.cbUnitData[i].unit == cbEntry.authorityUnit
+        this.unitData[i].cgUnitShort == cbEntry.authorityUnit ||
+        this.unitData[i].unit == cbEntry.authorityUnit
       )
-        this.formdata.get('authorityUnit')?.setValue(this.cbUnitData[i]);
+        this.formdata.get('authorityUnit')?.setValue(this.unitData[i]);
     }
     this.formdata.get('budgetAllocated')?.setValue(cbEntry.budgetAllocated);
     this.formdata.get('progressive')?.setValue(cbEntry.progressiveAmount);
@@ -574,8 +574,7 @@ export class NewContigentBillComponent implements OnInit {
           this.cbList[i].authorityUnit =
             this.formdata.get('authorityUnit')?.value.cgUnitShort;
           this.cbList[i].cbDate = this.formdata.get('cbDate')?.value;
-          this.cbList[i].cbUnit =
-            this.formdata.get('cbUnit')?.value.cgUnitShort;
+          this.cbList[i].unit = this.formdata.get('unit')?.value.cgUnitShort;
           this.cbList[i].date = this.formdata.get('date')?.value;
           this.cbList[i].file = this.formdata.get('file')?.value;
           this.cbList[i].finYearName =
@@ -616,7 +615,7 @@ export class NewContigentBillComponent implements OnInit {
             budgetFinancialYearId: this.cbList[i].finSerialNo,
             cbAmount: this.cbList[i].amount,
             cbNumber: this.cbList[i].cbNo,
-            cbUnitId: this.cbList[i].cbUnitId,
+            unitId: this.cbList[i].unitId,
             fileNumber: this.cbList[i].fileNo,
             progressiveAmount: this.cbList[i].progressiveAmount,
             remark: ' ',
@@ -658,11 +657,11 @@ export class NewContigentBillComponent implements OnInit {
         } else if (this.cbList[i].status == 'Pending for Submission') {
           let entry: newCb = {
             authUnitId: this.formdata.get('authorityUnit')?.value.unit,
-            cbUnitId: this.formdata.get('cbUnit')?.value.unit,
+            unitId: this.formdata.get('unit')?.value.unit,
             finSerialNo: this.formdata.get('finYearName')?.value.serialNo,
             budgetAllocated: this.formdata.get('budgetAllocated')?.value,
             minorHead: this.formdata.get('minorHead')?.value.minorHead,
-            cbUnit: this.formdata.get('cbUnit')?.value.cgUnitShort,
+            unit: this.formdata.get('unit')?.value.cgUnitShort,
             finYearName: this.formdata.get('finYearName')?.value.finYear,
             majorHead: this.formdata.get('majorHead')?.value.majorHead,
             subHead: this.formdata.get('subHead')?.value.subHeadDescr,
@@ -726,7 +725,7 @@ export class NewContigentBillComponent implements OnInit {
           budgetFinancialYearId: this.cbList[i].finSerialNo,
           cbAmount: this.cbList[i].amount,
           cbNumber: this.cbList[i].cbNo,
-          cbUnitId: this.cbList[i].cbUnitId,
+          unitId: this.cbList[i].unitId,
           fileNumber: this.cbList[i].fileNo,
           progressiveAmount: this.cbList[i].progressiveAmount,
           remark: ' ',
@@ -1059,7 +1058,7 @@ export class NewContigentBillComponent implements OnInit {
 
         for (let i = 0; i < getCbList.length; i++) {
           let url =
-            this.cons.api.getAvailableFund + '/' + getCbList[i].cbUnitId.unit;
+            this.cons.api.getAvailableFund + '/' + getCbList[i].unitId.unit;
           console.log(url);
           this.SpinnerService.show();
           this.apiService.getApi(url).subscribe(
@@ -1068,13 +1067,13 @@ export class NewContigentBillComponent implements OnInit {
               this.budgetAllotted = result['response'].fundAvailable;
               const entry: newCb = {
                 authUnitId: getCbList[i].authoritiesList[0].authUnit,
-                cbUnitId: getCbList[i].cbUnitId.unit,
+                unitId: getCbList[i].unitId.unit,
                 uploadFileDate: getCbList[i].fileDate,
                 finSerialNo: getCbList[i].finYear.serialNo,
                 progressiveAmount: getCbList[i].progressiveAmount,
                 fileDate: getCbList[i].fileDate,
                 minorHead: getCbList[i].budgetHeadID.minorHead,
-                cbUnit: getCbList[i].cbUnitId.cgUnitShort,
+                unit: getCbList[i].unitId.cgUnitShort,
                 finYearName: getCbList[i].finYear.finYear,
                 majorHead: getCbList[i].budgetHeadID.majorHead,
                 subHead: getCbList[i].budgetHeadID.subHeadDescr,

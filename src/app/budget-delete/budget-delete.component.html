@@ -51,7 +51,7 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label>To Unit</label>
-                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="allCBUnits" bindLabel="descr"
+                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="allunits" bindLabel="descr"
                     appendTo="body" placeholder="Select To Unit" formControlName="toUnit">
                   </ng-select>
                 </div>
@@ -94,7 +94,7 @@
                       <td>{{bugetData.allocationAmount}}</td>
                       <td>{{bugetData.remarks}}</td>
                       <td><button type="submit" class="btn btn-primary mr-2" (click)="deleteSelectedBudget(i,
-                        bugetData.toUnit.cbUnit, bugetData.transactionId)"><i class="fas fa-trash"></i>
+                        bugetData.toUnit.unit, bugetData.transactionId)"><i class="fas fa-trash"></i>
                           Delete</button></td>
                     </tr>
                   </tbody>

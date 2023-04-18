@@ -24,8 +24,8 @@ import {
 export class BudgetAllocationSubheadwiseComponent {
   budgetFinYears: any[] = [];
   subHeads: any[] = [];
-  allCBUnits: any[] = [];
-  selectedCBUnits: any[] = [];
+  allunits: any[] = [];
+  selectedunits: any[] = [];
   subHeadWiseUnitList: any[] = [];
   allocationType: any[] = [];
 
@@ -122,7 +122,7 @@ export class BudgetAllocationSubheadwiseComponent {
     this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
-        this.allCBUnits = result['response'];
+        this.allunits = result['response'];
         this.SpinnerService.hide();
       } else {
         this.common.faliureAlert('Please try later', result['message'], '');
@@ -155,7 +155,7 @@ export class BudgetAllocationSubheadwiseComponent {
     //Step2-> Get Allocation Fund By API by SubHead and Financial Year
 
     //Step3-> Get All Unit By SubHead Selected
-    this.selectedCBUnits = structuredClone(this.allCBUnits);
+    this.selectedunits = structuredClone(this.allunits);
   }
 
   moveDataToNextGrid(formDataValue: any) {
@@ -256,13 +256,13 @@ export class BudgetAllocationSubheadwiseComponent {
   }
 
   uploadDocuments: any[] = [];
-  cbUnitForDocuments: any[] = [];
+  unitForDocuments: any[] = [];
   getUnitDatas() {
     this.SpinnerService.show();
     this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
       this.SpinnerService.hide();
       let result: { [key: string]: any } = res;
-      this.cbUnitForDocuments = result['response'];
+      this.unitForDocuments = result['response'];
     });
   }
   file: any;

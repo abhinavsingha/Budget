@@ -1,370 +1,303 @@
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
 
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0">Dashboard</h1>
-          </div><!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-            </ol>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Dashboard</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
 
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <!-- Main row -->
-        <div class="row">
-          <section class="col-lg-12 connectedSortable">
-            <!-- Custom tabs (Charts with tabs)-->
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">
-                  <i class="fas fa-filter mr-1"></i>
-                  Filter Data Unit Wise
-                </h3>
-                <!-- card tools -->
-                <div class="card-tools">
-                  <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                </div>
-                <!-- /.card-tools -->
-                <!-- <div [formGroup]="myGroup">
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <!-- Main row -->
+      <div class="row">
+        <section class="col-lg-12 connectedSortable">
+          <!-- Custom tabs (Charts with tabs)-->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fas fa-filter mr-1"></i>
+                Filter Data Unit Wise
+              </h3>
+              <!-- card tools -->
+              <div class="card-tools">
+                <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+              </div>
+              <!-- /.card-tools -->
+              <!-- <div [formGroup]="myGroup">
                   <input formControlName="firstName">
                 </div> -->
 
 
-              </div><!-- /.card-header -->
-              <div class="card-body">
-                <form  [formGroup]="formdata">
-                  <div class="tab-content p-0">
+            </div><!-- /.card-header -->
+            <div class="card-body">
+              <form [formGroup]="formdata">
+                <div class="tab-content p-0">
                   <!-- Morris chart - Sales -->
-                  <div class="chart tab-pane active" id="revenue-chart0"
-                       style="position: relative;">
-                       <form>
-                        <div class="row">
-                          <div class="col-md-3">
-                            <div class="form-group" [formGroup]="formdata">
-                              <label>Financial Year</label>
-                              <ng-select class="form-control select2bs4" style="width: 100%" [items]="budgetFinYears"
-                        bindLabel="finYear" placeholder="Select Financial Year" formControlName="finYear"
-                        appendTo="body">
-                      </ng-select>
-                              <!-- <select class="form-control select2bs4" style="width: 100%">      //vaibhav -->
-                                <!-- <option selected="selected">2022-23</option>
+                  <div class="chart tab-pane active" id="revenue-chart0" style="position: relative;">
+                    <form>
+                      <div class="row">
+                        <div class="col-md-3">
+                          <div class="form-group" [formGroup]="formdata">
+                            <label>Financial Year</label>
+                            <ng-select class="form-control select2bs4" style="width: 100%" [items]="budgetFinYears"
+                              bindLabel="finYear" placeholder="Select Financial Year" formControlName="finYear"
+                              appendTo="body">
+                            </ng-select>
+                            <!-- <select class="form-control select2bs4" style="width: 100%">      //vaibhav -->
+                            <!-- <option selected="selected">2022-23</option>
                                 <option>2021-22</option>
                                 <option>2020-21</option> -->
-                              <!-- </select> -->
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <div class="form-group" [formGroup]="formdata" >
-                              <label>Unit</label>
-                              <ng-select class="form-control select2bs4" style="width: 100%" [items]="allCBUnits"
-                            bindLabel="descr" appendTo="body"
-                            placeholder="Select To Unit"  formControlName="cbUnit"
-                            appendTo="body">
-                          </ng-select>
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <div class="form-group" [formGroup]="formdata">
-                              <label>Sub Head</label>
-                              <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeads"
-                        bindLabel="subHeadDescr" placeholder="Select Sub Head" formControlName="subHead"
-                        appendTo="body">
-                      </ng-select>
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <div class="form-group">
-                              <label style="opacity:0">.</label>
-                               <br>
-                               <!-- <button type="submit" class="btn btn-primary mr-2"><i class="fas fa-search"></i> Search</button> -->
-                               <td><button type="submit" class="btn btn-primary mr-2" (click)="searchData()"><i
-                                class="fas fa-search"></i>
-                                Search</button></td>
-                            </div>
+                            <!-- </select> -->
                           </div>
                         </div>
-                       </form>
-                   </div>
-                </div>
-                </form>
-              </div><!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-            <!-- /.card -->
-          </section>
-          <!-- Left col -->
-          <section class="col-lg-6 connectedSortable">
-            <!-- Custom tabs (Charts with tabs)-->
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">
-                  <i class="fas fa-chart-pie mr-1"></i>
-                  Subhead Wise Expenditure
-                </h3>
-                <!-- card tools -->
-                <div class="card-tools">
-                  <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                </div>
-                <!-- /.card-tools -->
-              </div><!-- /.card-header -->
-              <div class="card-body">
-                <div class="tab-content p-0">
-                  <!-- Morris chart - Sales -->
-                  <div class="chart tab-pane active" id="revenue-chart"
-                       style="position: relative; height: 300px;">
-                      <canvas id="my-chart" height="300" style="height: 300px;"></canvas>
-                   </div>
-                </div>
-              </div><!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-            <!-- /.card -->
-          </section>
-          <!-- /.Left col -->
-          <!-- right col (We are only adding the ID to make the widgets sortable)-->
-          <section class="col-lg-6 connectedSortable">
-            <!-- Custom tabs (Charts with tabs)-->
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">
-                  <i class="fas fa-chart-pie mr-1"></i>
-                  Unit Wise Expenditure
-                </h3>
-                <!-- card tools -->
-                <div class="card-tools">
-                  <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                </div>
-                <!-- /.card-tools -->
-              </div><!-- /.card-header -->
-              <div class="card-body">
-                <div class="tab-content p-0">
-                  <!-- Morris chart - Sales -->
-                  <div class="chart tab-pane active" id="revenue-chart2"
-                       style="position: relative; height: 300px;">
-                      <canvas id="my-chart2" height="300" style="height: 300px;"></canvas>
-                   </div>
-                </div>
-              </div><!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-            <!-- /.card -->
-          </section>
-          <!-- right col -->
-          <section class="col-lg-12 connectedSortable">
-            <!-- Custom tabs (Charts with tabs)-->
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">
-                  <i class="ion ion-clipboard mr-1"></i>
-                  Unit Wise Expenditure
-                </h3>
-                <!-- card tools -->
-                <div class="card-tools">
-
-                  <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                </div>
-                <!-- /.card-tools -->
-              </div><!-- /.card-header -->
-              <div class="card-body">
-                <div class="tab-content p-0">
-                  <!-- Morris chart - Sales -->
-                  <div class="chart tab-pane active" id="revenue-chart3"
-                       style="position: relative;">
-                       <div class="row">
-                        <div class="col-sm-12">
-                          <div class="card-body table-responsive p-0">
-                            <table class="table table-hover text-nowrap">
-                              <thead>
-                                <tr>
-                                  <th>Unit</th>
-                                  <th>F.Y.</th>
-                                  <th>Sub Head</th>
-                                  <th>Allocated</th>
-                                  <th>Expenditure</th>
-                                  <th>Balance</th>
-                                  <th>Last CB Date</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                     <tr *ngFor="let entry of unitWiseExpenditureList" >
-                                      <td>{{entry.unit}}</td>
-                                      <td>{{entry.financialYear}}</td>
-                                      <td>{{entry.subhead}}</td>
-                                      <td>{{entry.allocated}}</td>
-                                      <td>{{entry.expenditure}}</td>
-                                      <td>{{entry.allocated-entry.expenditure}}</td>
-                                      <td>{{entry.lastCbDate}}</td>
-                                    </tr>
-<!--                                    <tr>-->
-<!--                                      <td>RHQ(W)</td>-->
-<!--                                      <td>2022-23</td>-->
-<!--                                      <td>Office Expenses</td>-->
-<!--                                      <td>23475</td>-->
-<!--                                      <td>233434</td>-->
-<!--                                      <td>166545</td>-->
-<!--                                      <td>21/11/23</td>-->
-<!--                                    </tr>-->
-<!--                                    <tr>-->
-<!--                                      <td>RHQ(W)</td>-->
-<!--                                      <td>2022-23</td>-->
-<!--                                      <td>Office Expenses</td>-->
-<!--                                      <td>23475</td>-->
-<!--                                      <td>233434</td>-->
-<!--                                      <td>166545</td>-->
-<!--                                      <td>21/11/23</td>-->
-<!--                                    </tr>-->
-<!--                                    <tr>-->
-<!--                                      <td>RHQ(W)</td>-->
-<!--                                      <td>2022-23</td>-->
-<!--                                      <td>Office Expenses</td>-->
-<!--                                      <td>23475</td>-->
-<!--                                      <td>233434</td>-->
-<!--                                      <td>166545</td>-->
-<!--                                      <td>21/11/23</td>-->
-<!--                                    </tr>-->
-                              </tbody>
-                            </table>
+                        <div class="col-md-3">
+                          <div class="form-group" [formGroup]="formdata">
+                            <label>Unit</label>
+                            <ng-select class="form-control select2bs4" style="width: 100%" [items]="allunits"
+                              bindLabel="descr" appendTo="body" placeholder="Select To Unit" formControlName="unit"
+                              appendTo="body">
+                            </ng-select>
                           </div>
-                          <div class="row mt-2">
-                            <div class="col-sm-12 col-md-5">
-                              <div
-                                class="dataTables_info"
-                                id="example2_info"
-                                role="status"
-                                aria-live="polite"
-                              >
-                                Showing 1 to 10 of 57 entries
-                              </div>
-                            </div>
-                            <div class="col-sm-12 col-md-7">
-                              <div
-                                class="dataTables_paginate paging_simple_numbers"
-                                id="example2_paginate"
-                              >
-                                <ul class="pagination float-right">
-                                  <li
-                                    class="paginate_button page-item previous disabled"
-                                    id="example2_previous"
-                                  >
-                                    <a
-                                      href="#"
-                                      aria-controls="example2"
-                                      data-dt-idx="0"
-                                      tabindex="0"
-                                      class="page-link"
-                                      >Previous</a
-                                    >
-                                  </li>
-                                  <li class="paginate_button page-item active">
-                                    <a
-                                      href="#"
-                                      aria-controls="example2"
-                                      data-dt-idx="1"
-                                      tabindex="0"
-                                      class="page-link"
-                                      >1</a
-                                    >
-                                  </li>
-                                  <li class="paginate_button page-item">
-                                    <a
-                                      href="#"
-                                      aria-controls="example2"
-                                      data-dt-idx="2"
-                                      tabindex="0"
-                                      class="page-link"
-                                      >2</a
-                                    >
-                                  </li>
-                                  <li class="paginate_button page-item">
-                                    <a
-                                      href="#"
-                                      aria-controls="example2"
-                                      data-dt-idx="3"
-                                      tabindex="0"
-                                      class="page-link"
-                                      >3</a
-                                    >
-                                  </li>
-                                  <li class="paginate_button page-item">
-                                    <a
-                                      href="#"
-                                      aria-controls="example2"
-                                      data-dt-idx="4"
-                                      tabindex="0"
-                                      class="page-link"
-                                      >4</a
-                                    >
-                                  </li>
-                                  <li class="paginate_button page-item">
-                                    <a
-                                      href="#"
-                                      aria-controls="example2"
-                                      data-dt-idx="5"
-                                      tabindex="0"
-                                      class="page-link"
-                                      >5</a
-                                    >
-                                  </li>
-                                  <li class="paginate_button page-item">
-                                    <a
-                                      href="#"
-                                      aria-controls="example2"
-                                      data-dt-idx="6"
-                                      tabindex="0"
-                                      class="page-link"
-                                      >6</a
-                                    >
-                                  </li>
-                                  <li
-                                    class="paginate_button page-item next"
-                                    id="example2_next"
-                                  >
-                                    <a
-                                      href="#"
-                                      aria-controls="example2"
-                                      data-dt-idx="7"
-                                      tabindex="0"
-                                      class="page-link"
-                                      >Next</a
-                                    >
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group" [formGroup]="formdata">
+                            <label>Sub Head</label>
+                            <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeads"
+                              bindLabel="subHeadDescr" placeholder="Select Sub Head" formControlName="subHead"
+                              appendTo="body">
+                            </ng-select>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label style="opacity:0">.</label>
+                            <br>
+                            <!-- <button type="submit" class="btn btn-primary mr-2"><i class="fas fa-search"></i> Search</button> -->
+                            <td><button type="submit" class="btn btn-primary mr-2" (click)="searchData()"><i
+                                  class="fas fa-search"></i>
+                                Search</button></td>
                           </div>
                         </div>
                       </div>
-                   </div>
+                    </form>
+                  </div>
                 </div>
-              </div><!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-            <!-- /.card -->
-          </section>
-        </div>
-        <!-- /.row (main row) -->
+              </form>
+            </div><!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+          <!-- /.card -->
+        </section>
+        <!-- Left col -->
+        <section class="col-lg-6 connectedSortable">
+          <!-- Custom tabs (Charts with tabs)-->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fas fa-chart-pie mr-1"></i>
+                Subhead Wise Expenditure
+              </h3>
+              <!-- card tools -->
+              <div class="card-tools">
+                <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+              </div>
+              <!-- /.card-tools -->
+            </div><!-- /.card-header -->
+            <div class="card-body">
+              <div class="tab-content p-0">
+                <!-- Morris chart - Sales -->
+                <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;">
+                  <canvas id="my-chart" height="300" style="height: 300px;"></canvas>
+                </div>
+              </div>
+            </div><!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+          <!-- /.card -->
+        </section>
+        <!-- /.Left col -->
+        <!-- right col (We are only adding the ID to make the widgets sortable)-->
+        <section class="col-lg-6 connectedSortable">
+          <!-- Custom tabs (Charts with tabs)-->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fas fa-chart-pie mr-1"></i>
+                Unit Wise Expenditure
+              </h3>
+              <!-- card tools -->
+              <div class="card-tools">
+                <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+              </div>
+              <!-- /.card-tools -->
+            </div><!-- /.card-header -->
+            <div class="card-body">
+              <div class="tab-content p-0">
+                <!-- Morris chart - Sales -->
+                <div class="chart tab-pane active" id="revenue-chart2" style="position: relative; height: 300px;">
+                  <canvas id="my-chart2" height="300" style="height: 300px;"></canvas>
+                </div>
+              </div>
+            </div><!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+          <!-- /.card -->
+        </section>
+        <!-- right col -->
+        <section class="col-lg-12 connectedSortable">
+          <!-- Custom tabs (Charts with tabs)-->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="ion ion-clipboard mr-1"></i>
+                Unit Wise Expenditure
+              </h3>
+              <!-- card tools -->
+              <div class="card-tools">
+
+                <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+              </div>
+              <!-- /.card-tools -->
+            </div><!-- /.card-header -->
+            <div class="card-body">
+              <div class="tab-content p-0">
+                <!-- Morris chart - Sales -->
+                <div class="chart tab-pane active" id="revenue-chart3" style="position: relative;">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="card-body table-responsive p-0">
+                        <table class="table table-hover text-nowrap">
+                          <thead>
+                            <tr>
+                              <th>Unit</th>
+                              <th>F.Y.</th>
+                              <th>Sub Head</th>
+                              <th>Allocated</th>
+                              <th>Expenditure</th>
+                              <th>Balance</th>
+                              <th>Last CB Date</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let entry of unitWiseExpenditureList">
+                              <td>{{entry.unit}}</td>
+                              <td>{{entry.financialYear}}</td>
+                              <td>{{entry.subhead}}</td>
+                              <td>{{entry.allocated}}</td>
+                              <td>{{entry.expenditure}}</td>
+                              <td>{{entry.allocated-entry.expenditure}}</td>
+                              <td>{{entry.lastCbDate}}</td>
+                            </tr>
+                            <!--                                    <tr>-->
+                            <!--                                      <td>RHQ(W)</td>-->
+                            <!--                                      <td>2022-23</td>-->
+                            <!--                                      <td>Office Expenses</td>-->
+                            <!--                                      <td>23475</td>-->
+                            <!--                                      <td>233434</td>-->
+                            <!--                                      <td>166545</td>-->
+                            <!--                                      <td>21/11/23</td>-->
+                            <!--                                    </tr>-->
+                            <!--                                    <tr>-->
+                            <!--                                      <td>RHQ(W)</td>-->
+                            <!--                                      <td>2022-23</td>-->
+                            <!--                                      <td>Office Expenses</td>-->
+                            <!--                                      <td>23475</td>-->
+                            <!--                                      <td>233434</td>-->
+                            <!--                                      <td>166545</td>-->
+                            <!--                                      <td>21/11/23</td>-->
+                            <!--                                    </tr>-->
+                            <!--                                    <tr>-->
+                            <!--                                      <td>RHQ(W)</td>-->
+                            <!--                                      <td>2022-23</td>-->
+                            <!--                                      <td>Office Expenses</td>-->
+                            <!--                                      <td>23475</td>-->
+                            <!--                                      <td>233434</td>-->
+                            <!--                                      <td>166545</td>-->
+                            <!--                                      <td>21/11/23</td>-->
+                            <!--                                    </tr>-->
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="row mt-2">
+                        <div class="col-sm-12 col-md-5">
+                          <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
+                            Showing 1 to 10 of 57 entries
+                          </div>
+                        </div>
+                        <div class="col-sm-12 col-md-7">
+                          <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                            <ul class="pagination float-right">
+                              <li class="paginate_button page-item previous disabled" id="example2_previous">
+                                <a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0"
+                                  class="page-link">Previous</a>
+                              </li>
+                              <li class="paginate_button page-item active">
+                                <a href="#" aria-controls="example2" data-dt-idx="1" tabindex="0"
+                                  class="page-link">1</a>
+                              </li>
+                              <li class="paginate_button page-item">
+                                <a href="#" aria-controls="example2" data-dt-idx="2" tabindex="0"
+                                  class="page-link">2</a>
+                              </li>
+                              <li class="paginate_button page-item">
+                                <a href="#" aria-controls="example2" data-dt-idx="3" tabindex="0"
+                                  class="page-link">3</a>
+                              </li>
+                              <li class="paginate_button page-item">
+                                <a href="#" aria-controls="example2" data-dt-idx="4" tabindex="0"
+                                  class="page-link">4</a>
+                              </li>
+                              <li class="paginate_button page-item">
+                                <a href="#" aria-controls="example2" data-dt-idx="5" tabindex="0"
+                                  class="page-link">5</a>
+                              </li>
+                              <li class="paginate_button page-item">
+                                <a href="#" aria-controls="example2" data-dt-idx="6" tabindex="0"
+                                  class="page-link">6</a>
+                              </li>
+                              <li class="paginate_button page-item next" id="example2_next">
+                                <a href="#" aria-controls="example2" data-dt-idx="7" tabindex="0"
+                                  class="page-link">Next</a>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div><!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+          <!-- /.card -->
+        </section>
       </div>
-      <!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+      <!-- /.row (main row) -->
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->

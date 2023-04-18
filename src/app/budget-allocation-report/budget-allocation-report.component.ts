@@ -15,7 +15,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 export class BudgetAllocationReportComponent implements OnInit {
   budgetFinYears: any[] = [];
 
-  allCBUnits: any[] = [];
+  allunits: any[] = [];
 
   budgetListData: any[] = [];
 
@@ -61,7 +61,7 @@ export class BudgetAllocationReportComponent implements OnInit {
     this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
-        this.allCBUnits = result['response'];
+        this.allunits = result['response'];
         this.SpinnerService.hide();
       } else {
         this.common.faliureAlert('Please try later', result['message'], '');
@@ -74,7 +74,7 @@ export class BudgetAllocationReportComponent implements OnInit {
 
     let submitJson = {
       budgetFinancialYearId: formData.finYear.serialNo,
-      unitId: formData.toUnit.cbUnit,
+      unitId: formData.toUnit.unit,
     };
 
     this.apiService

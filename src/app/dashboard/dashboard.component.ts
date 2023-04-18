@@ -36,7 +36,7 @@ export class DashboardComponent implements OnInit {
   dasboardData: any;
   unitWiseExpenditureList: UnitWiseExpenditureList[] = [];
 
-  allCBUnits: any[] = [];
+  allunits: any[] = [];
 
   budgetListData: any[] = [];
 
@@ -48,7 +48,7 @@ export class DashboardComponent implements OnInit {
   formdata = new FormGroup({
     finYear: new FormControl(),
     subHead: new FormControl(),
-    cbUnit: new FormControl(),
+    unit: new FormControl(),
   });
 
   updateBudgetFormData = new FormGroup({
@@ -99,7 +99,7 @@ export class DashboardComponent implements OnInit {
     this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
-        this.allCBUnits = result['response'];
+        this.allunits = result['response'];
         this.SpinnerService.hide();
       } else {
         this.common.faliureAlert('Please try later', result['message'], '');
@@ -137,9 +137,9 @@ export class DashboardComponent implements OnInit {
           ) {
             // let unit='';
             // let finyear='';
-            // for(let j=0;j<this.allCBUnits.length;j++){
-            //   if(this.dasboardData.unitWiseExpenditureList[i].unit==this.allCBUnits[j].unit){
-            //     unit=this.allCBUnits[j].descr;
+            // for(let j=0;j<this.allunits.length;j++){
+            //   if(this.dasboardData.unitWiseExpenditureList[i].unit==this.allunits[j].unit){
+            //     unit=this.allunits[j].descr;
             //   }
             // }
             // for(let j=0;j<this.budgetFinYears.length;j++){
@@ -216,7 +216,7 @@ export class DashboardComponent implements OnInit {
             if (
               this.formdata.get('finYear')?.value.finYear !=
                 this.unitWiseExpenditureList[i].financialYear ||
-              this.formdata.get('cbUnit')?.value.descr !=
+              this.formdata.get('unit')?.value.descr !=
                 this.unitWiseExpenditureList[i].unit ||
               this.formdata.get('subHead')?.value.subHeadDescr !=
                 this.unitWiseExpenditureList[i].subhead

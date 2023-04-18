@@ -33,9 +33,11 @@ export class RecieptComponent {
   finalTableData: any[] = [];
 
   uploadDocuments: any[] = [];
-  cbUnitForDocuments: any[] = [];
+  unitForDocuments: any[] = [];
 
   submitJson: any;
+
+  autoSelectedAllocationType: any;
 
   ngOnInit(): void {
     this.getBudgetFinYear();
@@ -86,7 +88,7 @@ export class RecieptComponent {
     this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
-        this.cbUnitForDocuments = result['response'];
+        this.unitForDocuments = result['response'];
         this.SpinnerService.hide();
       } else {
         this.common.faliureAlert('Please try later', result['message'], '');
@@ -224,7 +226,7 @@ export class RecieptComponent {
     };
 
     this.selectedFinYear = formdataValue.finYear.serialNo;
-
+    debugger;
     this.apiService
       .postApi(this.cons.api.getBudgetReciptFilter, submitJson)
       .subscribe({
@@ -274,7 +276,7 @@ export class RecieptComponent {
       this.isSelectedMA = true;
       this.isSectedSG = false;
       this.isSectedVOA = false;
-    } else if (selectedAllocationType.allocType == 'Supplementry Grant') {
+    } else if (selectedAllocationType.allocType == 'SG') {
       this.isSelectedRE = false;
       this.isSelectedMA = false;
       this.isSectedSG = true;
@@ -295,7 +297,7 @@ export class RecieptComponent {
   saveBudgetRecipt() {
     let authRequestsList: any[] = [];
     let budgetRequest: any[] = [];
-
+    debugger;
     for (var i = 0; i < this.subHeadList.length; i++) {
       budgetRequest.push({
         budgetHeadId: this.subHeadList[i].budgetHead.budgetCodeId,
@@ -304,13 +306,45 @@ export class RecieptComponent {
     }
 
     for (var i = 0; i < this.uploadDocuments.length; i++) {
-      authRequestsList.push({
-        authUnitId: this.uploadDocuments[i].authUnit.unit,
-        authority: this.uploadDocuments[i].authority,
-        authDate: this.uploadDocuments[i].authorityData,
-        remark: this.uploadDocuments[i].remarks,
-        authDocId: this.uploadDocuments[i].uploadDocId,
-      });
+      if (
+        this.uploadDocuments[i].authority == null ||
+        this.uploadDocuments[i].authority == undefined ||
+        this.uploadDocuments[i].authUnit == null ||
+        this.uploadDocuments[i].authUnit == undefined ||
+        this.uploadDocuments[i].authorityData == null ||
+        this.uploadDocuments[i].authorityData == undefined ||
+        this.uploadDocuments[i].remarks == null ||
+        this.uploadDocuments[i].remarks == undefined ||
+        this.uploadDocuments[i].uploadDocId == null ||
+        this.uploadDocuments[i].uploadDocId == undefined
+      ) {
+        authRequestsList = [];
+        this.common.faliureAlert(
+          'Please try again.',
+          'Please Fill Authority Data',
+          ''
+        );
+        return;
+      } else {
+        if (this.isUpdate) {
+          authRequestsList.push({
+            authority: this.uploadDocuments[i].authority,
+            authDate: this.uploadDocuments[i].authorityData,
+            remark: this.uploadDocuments[i].remarks,
+            authUnitId: this.uploadDocuments[i].authUnit.unit,
+            authDocId: this.uploadDocuments[i].uploadDocId,
+            authorityId: 'AU_ID1681724260012',
+          });
+        } else {
+          authRequestsList.push({
+            authority: this.uploadDocuments[i].authority,
+            authDate: this.uploadDocuments[i].authorityData,
+            remark: this.uploadDocuments[i].remarks,
+            authUnitId: this.uploadDocuments[i].authUnit.unit,
+            authDocId: this.uploadDocuments[i].uploadDocId,
+          });
+        }
+      }
     }
 
     this.submitJson = {
@@ -377,16 +411,71 @@ export class RecieptComponent {
     // this.common.successAlert('Success', 'Finally submitted', 'success');
   }
 
-  // pdfurl = '';
-  // (path: any) {
-  //   // this.serdebugger
-  //   let blob: Blob = path.authList[0].docId.pathURL as Blob;
-  //   // let url = window.URL.createObjectURL(blob);
-  //   this.pdfurl = path.authList[0].docId.pathURL;
-  //   debugger;
-  // }
-
   previewURL(path: any) {
     window.open(path.authList[0].docId.pathURL, '_blank');
+  }
+
+  authListData: any[] = [];
+
+  isUpdate: boolean = false;
+
+  updateReciept(data: any) {
+    this.SpinnerService.show();
+    this.isUpdate = true;
+
+    // AU_ID1681724260012
+
+    this.selectedFinYear = data.finYear.serialNo;
+    this.finalSelectedAllocationType = data.allocTypeId;
+
+    let selectedAllocationType = data.allocTypeId.allocType;
+
+    this.autoSelectedAllocationType = data.allocTypeId.allocType;
+
+    let submitJson = {
+      majorHeadId: data.subHead.majorHead,
+      budgetFinancialYearId: data.finYear.serialNo,
+    };
+
+    this.apiService
+      .postApi(this.cons.api.getBudgetReciptFilter, submitJson)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            this.subHeadList = result['response'].budgetData;
+
+            for (let i = 0; i < this.subHeadList.length; i++) {
+              this.subHeadList[i].codeSubHeadId =
+                this.subHeadList[i].budgetHead.codeSubHeadId;
+              this.subHeadList[i].subHeadDescr =
+                this.subHeadList[i].budgetHead.subHeadDescr;
+              this.subHeadList[i].budgetCodeId =
+                this.subHeadList[i].budgetHead.budgetCodeId;
+              if (selectedAllocationType == 'BE') {
+                this.subHeadList[i].amount = this.subHeadList[i].be;
+              } else if (selectedAllocationType == 'RE') {
+                this.subHeadList[i].amount = this.subHeadList[i].re;
+              } else if (selectedAllocationType == 'MA') {
+                this.subHeadList[i].amount = this.subHeadList[i].ma;
+              } else if (selectedAllocationType == 'SG') {
+                this.subHeadList[i].amount = this.subHeadList[i].sg;
+              } else if (selectedAllocationType == 'VOA') {
+                this.subHeadList[i].amount = this.subHeadList[i].voa;
+              }
+            }
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
   }
 }

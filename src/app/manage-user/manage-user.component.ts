@@ -33,7 +33,7 @@ export class ManageUserComponent {
 
   rank: String | undefined;
 
-  allCBUnits: any[] = [];
+  allunits: any[] = [];
 
   isDisabled: any | undefined = true;
 
@@ -119,7 +119,7 @@ export class ManageUserComponent {
   getUserInfo(event: any) {
     this.SpinnerService.show();
     let submitJson = {
-      unitId: event.cbUnit,
+      unitId: event.unit,
       userName: '03720',
     };
     this.apiService.postApi(this.cons.api.getUserInfo, submitJson).subscribe({
@@ -147,7 +147,7 @@ export class ManageUserComponent {
     this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
-        this.allCBUnits = result['response'];
+        this.allunits = result['response'];
         this.SpinnerService.hide();
       } else {
         this.common.faliureAlert('Please try later', result['message'], '');
@@ -175,7 +175,7 @@ export class ManageUserComponent {
 
   saveUserData(formDataValue: any) {
     let submitJson = {
-      unitId: formDataValue.unit.cbUnit,
+      unitId: formDataValue.unit.unit,
       unit: formDataValue.unit.cgUnitShort,
       pid: formDataValue.pno.pid,
       pno: formDataValue.pno.pno,
