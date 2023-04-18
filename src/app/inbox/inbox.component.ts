@@ -66,10 +66,11 @@ export class InboxComponent implements OnInit {
             const entry: InboxList = {
               serial: i + 1,
               type: list[i].isBgOrCg,
-              createDate: this.datePipe.transform(
-                new Date(list[i].createdOn),
-                'dd-MM-yyyy'
-              ),
+              createDate: this.convertEpochToDateTime(list[i].createdOn),
+              //   this.datePipe.transform(
+              //   new Date(list[i].createdOn),
+              //   'dd-MM-yyyy'
+              // ),
               createBy: list[i].userData.fullName,
               unitName: list[i].toUnit.descr,
               groupId: list[i].groupId,
@@ -83,5 +84,16 @@ export class InboxComponent implements OnInit {
         console.log(error);
       }
     );
+  }
+  convertEpochToDateTime(epochTime: number): string {
+    const date = new Date(epochTime); // Convert epoch time to milliseconds
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2); // Month starts from 0 in JavaScript
+    const day = ('0' + date.getDate()).slice(-2);
+    const hours = ('0' + date.getHours()).slice(-2);
+    const minutes = ('0' + date.getMinutes()).slice(-2);
+    const seconds = ('0' + date.getSeconds()).slice(-2);
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   }
 }
