@@ -45,7 +45,8 @@
                     <div class="form-group">
                       <label>Financial Year <span class="text-danger">*</span></label>
                       <ng-select class="form-control select2bs4" style="width: 100%" [items]="finYearList"
-                        bindLabel="finYear" placeholder="Select Financial Year" formControlName="finYear">
+                        bindLabel="finYear" placeholder="Select Financial Year" formControlName="finYear"
+                        (change)="changeFinYear()">
                       </ng-select>
                     </div>
                   </div>
@@ -145,7 +146,7 @@
                   <th>Authority Date</th>
                   <th>Remark</th>
                   <th>Document Name</th>
-                  <th class="thhead">Action</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -196,7 +197,9 @@
         <!-- /.card-body -->
         <div class="card-footer">
           <div class="row">
-            <button type="submit" class="btn btn-primary" (click)="saveBudgetRecipt()">Submit</button>
+
+            <button type="submit" class="btn btn-primary" (click)="saveBudgetRecipt()" *ngIf="!isUpdate">Save</button>
+            <button type="submit" class="btn btn-primary" (click)="saveBudgetRecipt()" *ngIf="isUpdate">Update</button>
           </div>
         </div>
 

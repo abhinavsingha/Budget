@@ -181,11 +181,6 @@ export class RecieptComponent {
           this.uploadFileResponse = '';
           // this.newSubcArr = [];
           this.uploadFileResponse = result['response'];
-          console.log(
-            'upload file data ======= ' +
-              JSON.stringify(this.uploadFileResponse) +
-              ' =submitJson'
-          );
 
           this.uploadDocuments[index].uploadDocId =
             this.uploadFileResponse.uploadDocId;
@@ -234,8 +229,8 @@ export class RecieptComponent {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
+            this.isUpdate = false;
             this.subHeadList = result['response'].budgetData;
-
             for (let i = 0; i < this.subHeadList.length; i++) {
               this.subHeadList[i].codeSubHeadId =
                 this.subHeadList[i].budgetHead.codeSubHeadId;
@@ -386,16 +381,8 @@ export class RecieptComponent {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
 
-          // console.log(JSON.stringify(result) + " =submitJson");
-
           if (result['message'] == 'success') {
-            // this.newSubcList = [];
-            // this.newSubcArr = [];
-            this.common.successAlert(
-              'Success',
-              result['response']['msg'],
-              'success'
-            );
+            this.getBudgetRecipt();
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
@@ -424,6 +411,8 @@ export class RecieptComponent {
     this.isUpdate = true;
 
     // AU_ID1681724260012
+
+    this.allocationTypeChange(data.allocTypeId);
 
     this.selectedFinYear = data.finYear.serialNo;
     this.finalSelectedAllocationType = data.allocTypeId;
@@ -477,5 +466,10 @@ export class RecieptComponent {
         },
         complete: () => console.info('complete'),
       });
+  }
+
+  changeFinYear() {
+    // thisisUpdate
+    this.isUpdate = false;
   }
 }

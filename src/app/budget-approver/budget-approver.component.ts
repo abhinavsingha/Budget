@@ -10,7 +10,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CommonService } from '../services/common/common.service';
 import Swal from 'sweetalert2';
-import {SharedService} from "../services/shared/shared.service";
+import { SharedService } from '../services/shared/shared.service';
 
 @Component({
   selector: 'app-budget-approver',
@@ -39,7 +39,7 @@ export class BudgetApproverComponent implements OnInit {
     private formBuilder: FormBuilder,
     private common: CommonService,
     private router: Router,
-    public sharedService:SharedService
+    public sharedService: SharedService
   ) {}
 
   openDialog() {
@@ -50,12 +50,13 @@ export class BudgetApproverComponent implements OnInit {
 
   getAlGroupId(groupId: any) {
     this.SpinnerService.show();
+    debugger;
     this.apiService
       .getApi(this.cons.api.getAlGroupId + '/' + groupId)
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
-          this.budgetDataList = result['response'];
+          this.budgetDataList = result['response'].budgetResponseist;
           this.SpinnerService.hide();
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
