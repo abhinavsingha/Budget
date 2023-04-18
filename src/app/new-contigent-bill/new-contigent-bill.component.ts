@@ -1058,7 +1058,7 @@ export class NewContigentBillComponent implements OnInit {
 
         for (let i = 0; i < getCbList.length; i++) {
           let url =
-            this.cons.api.getAvailableFund + '/' + getCbList[i].unitId.unit;
+            this.cons.api.getAvailableFund + '/' + getCbList[i].cbUnitId.unit;
           console.log(url);
           this.SpinnerService.show();
           this.apiService.getApi(url).subscribe(
@@ -1067,13 +1067,13 @@ export class NewContigentBillComponent implements OnInit {
               this.budgetAllotted = result['response'].fundAvailable;
               const entry: newCb = {
                 authUnitId: getCbList[i].authoritiesList[0].authUnit,
-                unitId: getCbList[i].unitId.unit,
+                unitId: getCbList[i].cbUnitId.unit,
                 uploadFileDate: getCbList[i].fileDate,
                 finSerialNo: getCbList[i].finYear.serialNo,
                 progressiveAmount: getCbList[i].progressiveAmount,
                 fileDate: getCbList[i].fileDate,
                 minorHead: getCbList[i].budgetHeadID.minorHead,
-                unit: getCbList[i].unitId.cgUnitShort,
+                unit: getCbList[i].cbUnitId.cgUnitShort,
                 finYearName: getCbList[i].finYear.finYear,
                 majorHead: getCbList[i].budgetHeadID.majorHead,
                 subHead: getCbList[i].budgetHeadID.subHeadDescr,
