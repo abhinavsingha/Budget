@@ -21,110 +21,105 @@
     <!-- /.container-fluid -->
   </div>
   <!-- /.content-header -->
-
   <!-- Main content -->
   <section class="content">
     <div class="container-fluid">
       <div class="card card-default">
         <div class="card-header">
           <h3 class="card-title">New Contingent Bill</h3>
-
           <div class="card-tools">
-            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+            <button class="btn btn-tool" data-card-widget="collapse" type="button">
               <i class="fas fa-minus"></i>
             </button>
           </div>
         </div>
         <!-- /.card-header -->
         <div class="card-body" id="cbForm">
-          <form [formGroup]="formdata" (ngSubmit)="submitList()">
+          <form (ngSubmit)="submitList()" [formGroup]="formdata">
             <div class="row">
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Financial Year</label>
-                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="finYearData"
-                    bindLabel="finYear" placeholder="Select Financial Year" formControlName="finYearName" required>
+                  <ng-select [items]="finYearData" bindLabel="finYear" class="form-control select2bs4"
+                             formControlName="finYearName" placeholder="Select Financial Year" required
+                             style="width: 100%" (change)="cleardata('finYear')">
                   </ng-select>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Major Head</label>
-                  <ng-select name="majorHead" [(ngModel)]="majorHead" class="form-control select2bs4"
-                    style="width: 100%" [items]="majorHeadData" bindLabel="majorHead" placeholder="Select Major Head"
-                    formControlName="majorHead" (change)="setSubHead()">
+                  <ng-select (change)="setSubHead()" [(ngModel)]="majorHead" [items]="majorHeadData"
+                             bindLabel="majorHead" class="form-control select2bs4" formControlName="majorHead"
+                             name="majorHead"
+                             placeholder="Select Major Head" style="width: 100%">
                   </ng-select>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Sub Head</label>
-                  <ng-select name="subHead" [(ngModel)]="subHead" class="form-control select2bs4" style="width: 100%"
-                    [items]="subHeadData" bindLabel="subHeadDescr" placeholder="Select Sub Head"
-                    formControlName="subHead">
+                  <ng-select [(ngModel)]="subHead" [items]="subHeadData" bindLabel="subHeadDescr" class="form-control select2bs4"
+                             formControlName="subHead" name="subHead" placeholder="Select Sub Head"
+                             style="width: 100%">
                   </ng-select>
-                  <!--                  <select class="form-control select2bs4" style="width: 100%">-->
-                  <!--                    <option selected="selected">Office Expenses</option>-->
-                  <!--                    <option>Office Expenses 1</option>-->
-                  <!--                    <option>Office Expenses 2</option>-->
-                  <!--                  </select>-->
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>CB Unit</label>
-                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="unitData" bindLabel="descr"
-                    placeholder="Select Unit" formControlName="unit" (change)="getBudgetAllotted()">
+                  <ng-select (change)="getBudgetAllotted()" [items]="unitData" bindLabel="descr" class="form-control select2bs4"
+                             formControlName="unit" placeholder="Select Unit" style="width: 100%">
                   </ng-select>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Minor Head</label>
-                  <ng-select name="MinorHead" class="form-control select2bs4" style="width: 100%"
-                    [items]="minorHeadData" bindLabel="minorHead" placeholder="Select Minor Head"
-                    formControlName="minorHead">
+                  <ng-select [items]="minorHeadData" bindLabel="minorHead" class="form-control select2bs4"
+                             formControlName="minorHead" name="MinorHead" placeholder="Select Minor Head"
+                             style="width: 100%">
                   </ng-select>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Budget Alloted</label>
-                  <input formControlName="budgetAllocated" type="number" class="form-control" id="budgetAllotted"
-                    readonly />
+                  <input class="form-control" formControlName="budgetAllocated" id="budgetAllotted" readonly
+                         type="number" placeholder="Budget Alloted"/>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>CB Amount</label>
-                  <input type="number" class="form-control" id="Amount" placeholder="Enter Amount"
-                    formControlName="amount" [(ngModel)]="billAmount" (change)="updateExpenditure()" />
+                  <input (change)="updateExpenditure()" class="form-control" formControlName="amount"
+                         id="Amount"  type="number" placeholder="Enter Amount"/>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Proggressive Expenditure Including This Bill</label>
-                  <input type="number" class="form-control" id="Proggressive" formControlName="progressive" readonly />
+                  <input class="form-control" formControlName="progressive" id="Proggressive" readonly type="number" placeholder="Progressive Amount"/>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Balance Fund</label>
-                  <input type="text" class="form-control" id="BalanceFund" formControlName="balance" readonly />
+                  <input class="form-control" formControlName="balance" id="BalanceFund" readonly type="text"/>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>CB No.</label>
-                  <input type="text" class="form-control" id="PrevAllocation" placeholder="Enter CB Number"
-                    formControlName="cbNo" />
+                  <input class="form-control" formControlName="cbNo" id="PrevAllocation" placeholder="Enter CB Number"
+                         type="text"/>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>CB Date</label>
-                  <input type="date" class="form-control" id="cbDate" placeholder="Enter Date"
-                    formControlName="cbDate" />
+                  <input class="form-control" formControlName="cbDate" id="cbDate" placeholder="Enter Date"
+                         type="date" (change)="checkDate()"/>
                 </div>
               </div>
               <!--              <div class="col-md-4">-->
@@ -138,22 +133,22 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Authority Unit</label>
-                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="unitData" bindLabel="descr"
-                    formControlName="authorityUnit" placeholder="Select Authority Unit">
+                  <ng-select [items]="unitData" bindLabel="descr" class="form-control select2bs4" formControlName="authorityUnit"
+                             placeholder="Select Authority Unit" style="width: 100%">
                   </ng-select>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Authority</label>
-                  <input type="text" class="form-control" id="authority" placeholder="Enter Remarks"
-                    formControlName="authority" />
+                  <input class="form-control" formControlName="authority" id="authority" placeholder="Enter Remarks"
+                         type="text"/>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Date</label>
-                  <input type="date" class="form-control" id="date" placeholder="Enter Date" formControlName="date" />
+                  <input class="form-control" formControlName="date" id="date" placeholder="Enter Date" type="date"/>
                 </div>
               </div>
               <div class="col-md-4">
@@ -161,12 +156,12 @@
                   <label for="InputFile">Browse File</label>
                   <div class="input-group">
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input" id="InputFile" formControlName="file"
-                        #browseFileInput>
+                      <input #browseFileInput class="custom-file-input" formControlName="file" id="InputFile"
+                             type="file">
                       <label class="custom-file-label" for="InputFile">Choose file</label>
                     </div>
                     <div class="input-group-append">
-                      <span class="input-group-text" style="cursor: pointer" (click)="browseFile()">Upload</span>
+                      <span (click)="upload('browse')" class="input-group-text" style="cursor: pointer">Upload</span>
                     </div>
                   </div>
                 </div>
@@ -174,22 +169,22 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Firm Name</label>
-                  <input type="text" class="form-control" id="FirmName" placeholder="Enter Firm Name"
-                    formControlName="firmName" />
+                  <input class="form-control" formControlName="firmName" id="FirmName" placeholder="Enter Firm Name"
+                         type="text"/>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Invoice Number</label>
-                  <input type="text" class="form-control" id="invoiceNo" placeholder="Enter Invoice Number"
-                    formControlName="invoiceNo" />
+                  <input class="form-control" formControlName="invoiceNo" id="invoiceNo" placeholder="Enter Invoice Number"
+                         type="text"/>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Invoice Date</label>
-                  <input type="date" class="form-control" id="invoiceDate" placeholder="Enter Invoice Date"
-                    formControlName="invoiceDate" />
+                  <input class="form-control" formControlName="invoiceDate" id="invoiceDate" placeholder="Enter Invoice Date"
+                         type="date"/>
                 </div>
               </div>
               <div class="col-md-4">
@@ -197,12 +192,12 @@
                   <label for="invoice">Invoice Upload</label>
                   <div class="input-group">
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input" id="invoice" formControlName="file"
-                        #invoiceFileInput>
+                      <input #invoiceFileInput class="custom-file-input" formControlName="file" id="invoice"
+                             type="file">
                       <label class="custom-file-label" for="invoice">Choose file</label>
                     </div>
                     <div class="input-group-append">
-                      <span class="input-group-text" style="cursor: pointer" (click)="invoiceUpload()">Upload</span>
+                      <span (click)="upload('invoice')" class="input-group-text" style="cursor: pointer">Upload</span>
                     </div>
                   </div>
                 </div>
@@ -210,45 +205,45 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label>File Number</label>
-                  <input type="text" class="form-control" id="fileNumber" placeholder="Enter File Number"
-                    formControlName="fileNo" />
+                  <input class="form-control" formControlName="fileNo" id="fileNumber" placeholder="Enter File Number"
+                         type="text"/>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>File Date</label>
-                  <input type="date" class="form-control" id="fileDate" placeholder="Enter Invoice Date"
-                    formControlName="fileDate" />
+                  <input class="form-control" formControlName="fileDate" id="fileDate" placeholder="Enter Invoice Date"
+                         type="date"/>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>On Account Of</label>
-                  <textarea type="text" class="form-control" id="onAccOf"
-                    placeholder="Quarterly payment(3rd Qtr) towars hiring of Designer/Developer IT Manpower(Project SDOT)"
-                    formControlName="onAccOf"></textarea>
+                  <textarea class="form-control" formControlName="onAccOf" id="onAccOf"
+                            placeholder="Quarterly payment(3rd Qtr) towars hiring of Designer/Developer IT Manpower(Project SDOT)"
+                            type="text"></textarea>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Authority Details</label>
-                  <textarea type="text" class="form-control" id="authDetail"
-                    placeholder="S1.10.1 of Shedule-10 of DFPCG-2017 vide Govt. of India, Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017"
-                    formControlName="authDetail"></textarea>
+                  <textarea class="form-control" formControlName="authDetail" id="authDetail"
+                            placeholder="S1.10.1 of Shedule-10 of DFPCG-2017 vide Govt. of India, Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017"
+                            type="text"></textarea>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Return Remarks</label>
-                  <input type="text" class="form-control" id="ReturnRemarks" placeholder="Return Remarks"
-                    formControlName="returnRemarks" />
+                  <input class="form-control" formControlName="returnRemarks" id="ReturnRemarks" placeholder="Return Remarks"
+                         readonly type="text"/>
                 </div>
 
               </div>
 
               <div class="col-md-6">
-                <button type="button" class="btn btn-primary mr-2" (click)="updateList()">Update CB</button>
-                <button type="button" class="btn btn-primary" (click)="addToList()">Save CB</button>
+                <button (click)="updateList()" class="btn btn-primary mr-2" type="button">Update CB</button>
+                <button (click)="addToList()" class="btn btn-primary" type="button">Save CB</button>
                 <!--                <button type="submit" class="btn btn-primary" (click)="dummydata()"></button>-->
               </div>
               <!-- /.col -->
@@ -258,100 +253,60 @@
                 <div class="card-body table-responsive p-0">
                   <table class="table table-hover text-nowrap" id="cbTable">
                     <thead>
-                      <tr>
-                        <th><input type="checkbox"> All</th>
-                        <!--                      <th><input type="checkbox" [checked]="isAllCheckBoxChecked()" (change)="checkAllCheckBox($event)"></th>-->
-                        <th>F.Y.</th>
-                        <th>CB Unit</th>
-                        <th>Sub Head</th>
-                        <th>CB No.</th>
-                        <th>Amount</th>
-                        <th>CB Date</th>
-                        <th>Status</th>
-                        <th></th>
-                        <th></th>
+                    <tr>
+                      <th><input type="checkbox" [(ngModel)]="masterChecked" (change)="selectAll()" [ngModelOptions]="{standalone: true}"> All</th>
+                      <!--                      <th><input type="checkbox" [checked]="isAllCheckBoxChecked()" (change)="checkAllCheckBox($event)"></th>-->
+                      <th>F.Y.</th>
+                      <th>CB Unit</th>
+                      <th>Sub Head</th>
+                      <th>CB No.</th>
+                      <th>Amount</th>
+                      <th>CB Date</th>
+                      <th>Status</th>
+                      <th></th>
+                      <th ng-if="approvedPresent">Ink Sign</th>
 
-                      </tr>
+                    </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let cb of cbList" id="htmlData" #htmlData>
-                        <td><input type="checkbox" value="{{cb.cbNo}}" (change)="getCheckedRows(cb.cbNo)"></td>
-                        <td>{{cb.finYearName}}</td>
-                        <td>{{cb.unit}}</td>
-                        <td>{{cb.subHead}}</td>
-                        <td>{{cb.cbNo}}</td>
-                        <td>{{cb.amount}}</td>
-                        <td>{{cb.cbDate}}</td>
-                        <td>{{cb.status}}</td>
-                        <!--                         <td><button type="button" class="btn btn-primary mr-2" >Download</button><button type="button" class="btn btn-primary">View</button></td> -->
-                        <td><button type="button" *ngIf="cb.status !== 'Approved'" (click)="updateFormdata(cb)"
-                            class="btn btn-primary">View</button>
-                          <button type="button" *ngIf="cb.status === 'Approved'" (click)="downloadBill(cb)"
-                            class="btn btn-primary">Download</button>
-
-                          <!--                        <td><button type="submit" class="btn btn-primary">View</button></td>-->
-                        </td>
-                        <td>
-                          <div class="input-group" *ngIf="cb.status === 'Approved'">
-                            <div class="custom-file" [formGroup]="formData">
-                              <input type="file" class="custom-file-input" #uploadFileInput
-                                formControlName="uploadFile">
-                              <label class="custom-file-label" for="invoice">Choose file</label>
-                            </div>
-                            <div class="input-group-append">
-                              <span class="input-group-text" style="cursor: pointer"
-                                (click)="uploadBill(cb)">Upload</span>
-                            </div>
+<!--                    <tr ng-repeat="item in items">-->
+                    <tr *ngFor="let cb of cbList.reverse()  | paginate :{itemsPerPage:10,currentPage:p}; let i = index" id="htmlData" >
+<!--                      <td><input (change)="getCheckedRows(cb.cbNo)" type="checkbox" value="{{cb.cbNo}}"></td>-->
+                      <td><input type="checkbox" [(ngModel)]="cb.checked" [ngModelOptions]="{standalone: true}"></td>
+                      <td>{{cb.finYearName}}</td>
+                      <td>{{cb.unit}}</td>
+                      <td>{{cb.subHead}}</td>
+                      <td>{{cb.cbNo}}</td>
+                      <td>{{cb.amount}}</td>
+                      <td>{{cb.cbDate}}</td>
+                      <td>{{cb.status}}</td>
+                      <td>
+                        <button (click)="updateFormdata(cb)" *ngIf="cb.status !== 'Approved'" class="btn btn-primary"
+                                type="button">View
+                        </button>
+                        <button (click)="downloadBill(cb)" *ngIf="cb.status === 'Approved'" class="btn btn-primary"
+                                type="button">Download
+                        </button>
+                      </td>
+                      <td>
+                        <div *ngIf="cb.status === 'Approved'" class="input-group">
+                          <div [formGroup]="formData" class="custom-file">
+                            <input #uploadFileInput class="custom-file-input" formControlName="uploadFile" id="uploadFile"
+                                   type="file">
+                            <label class="custom-file-label" for="invoice">Choose file</label>
                           </div>
-                        </td>
-
-                        <!--                          <div>-->
-                        <!--                          <input type="file" class="custom-file-input" (change)="onFileInputChange($event)"-->
-                        <!--                                 #uploadFileInput>-->
-                        <!--                          <span *ngIf="cb.status === 'Approved'" class="input-group-text" style="cursor: pointer" (click)="uploadBill(cb)">Upload</span>-->
-                        <!--&lt;!&ndash;                          <button type="button" *ngIf="cb.status === 'Approved'" (click)="uploadBill(cb.cbNo)" class="btn btn-secondary">upload</button>-->
-                        <!--                        &ndash;&gt;</div></td>-->
-                      </tr>
+                          <div class="input-group-append">
+                              <span (click)="uploadBill(cb)" class="input-group-text"
+                                    style="cursor: pointer">Upload</span>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
                     </tbody>
                   </table>
                 </div>
-                <div class="row mt-2">
-                  <div class="col-sm-12 col-md-5">
-                    <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
-                      Showing 1 to 10 of 57 entries
-                    </div>
-                  </div>
-                  <div class="col-sm-12 col-md-7">
-                    <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
-                      <ul class="pagination float-right">
-                        <li class="paginate_button page-item previous disabled" id="example2_previous">
-                          <a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0"
-                            class="page-link">Previous</a>
-                        </li>
-                        <li class="paginate_button page-item active">
-                          <a href="#" aria-controls="example2" data-dt-idx="1" tabindex="0" class="page-link">1</a>
-                        </li>
-                        <li class="paginate_button page-item">
-                          <a href="#" aria-controls="example2" data-dt-idx="2" tabindex="0" class="page-link">2</a>
-                        </li>
-                        <li class="paginate_button page-item">
-                          <a href="#" aria-controls="example2" data-dt-idx="3" tabindex="0" class="page-link">3</a>
-                        </li>
-                        <li class="paginate_button page-item">
-                          <a href="#" aria-controls="example2" data-dt-idx="4" tabindex="0" class="page-link">4</a>
-                        </li>
-                        <li class="paginate_button page-item">
-                          <a href="#" aria-controls="example2" data-dt-idx="5" tabindex="0" class="page-link">5</a>
-                        </li>
-                        <li class="paginate_button page-item">
-                          <a href="#" aria-controls="example2" data-dt-idx="6" tabindex="0" class="page-link">6</a>
-                        </li>
-                        <li class="paginate_button page-item next" id="example2_next">
-                          <a href="#" aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
+                <div class="col-sm-12 col-md-12">
+                  <pagination-controls class="pagination float-right" (pageChange)="p = $event"></pagination-controls>
                 </div>
               </div>
             </div>
@@ -360,7 +315,7 @@
         <!-- /.card-body -->
         <div class="card-footer">
           <div class="row">
-            <button type="submit" class="btn btn-primary mr-2" (click)="confirmModel()">Submit</button>
+            <button (click)="confirmModel()" class="btn btn-primary mr-2" type="submit">Submit</button>
           </div>
         </div>
       </div>

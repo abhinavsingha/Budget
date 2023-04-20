@@ -226,7 +226,7 @@ export class CdaParkingComponent implements OnInit {
   getCdaData() {
     this.SpinnerService.show();
     // let url=this.cons.api.getCdaData+'/'+this.formdata.get('unit')?.value.unit;
-    this.apiService.getApi(this.cons.api.getCdaData).subscribe(
+    this.apiService.getApi(this.cons.api.getCdaUnitList).subscribe(
       (res) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = res;
@@ -251,6 +251,8 @@ export class CdaParkingComponent implements OnInit {
 
   updateCda(cda: any) {
     {
+      if(cda.current==null)
+        cda.current=0;
       this.cdaCurrentTotal = 0;
       this.cdaTotalTotal = 0;
       for (let i = 0; i < this.cdaData.length; i++) {
@@ -299,53 +301,78 @@ export class CdaParkingComponent implements OnInit {
   }
 
   addCdaData() {
-    for (let i = 0; i < this.cdaData.length; i++) {
-      if (this.cdaData[i].checked) {
-        let cdaTableEntry: cdaTableData = {
-          allocationType: this.formdata.get('budgetType')?.value.allocType,
-          allocationTypeId: this.formdata.get('budgetType')?.value.allocTypeId,
-          financialYear: this.formdata.get('finYearName')?.value.finYear,
-          majorHead: this.formdata.get('majorHead')?.value.majorHead,
-          minorHead: this.formdata.get('minorHead')?.value.minorHead,
-          cda: this.cdaData[i].cdaName,
-          ginNo: this.cdaData[i].ginNo,
-          subHead: this.formdata.get('subHead')?.value.subHeadDescr,
-          existing: this.cdaData[i].amount,
-          current:
-            this.cdaData[i].current != undefined ? this.cdaData[i].current : 0,
-          total: this.cdaData[i].total,
-          remarks:
-            this.formdata.get('remarks')?.value != null
-              ? this.formdata.get('remarks')?.value
-              : '',
-          checked: false,
-        };
-        let flag = false;
-        for (let j = 0; j < this.cdaTableData.length; j++) {
-          if (
-            this.cdaTableData[j].ginNo == cdaTableEntry.ginNo &&
-            this.cdaTableData[j].allocationType ==
-              cdaTableEntry.allocationType &&
-            this.cdaTableData[j].financialYear == cdaTableEntry.financialYear &&
-            this.cdaTableData[j].majorHead == cdaTableEntry.majorHead &&
-            this.cdaTableData[j].minorHead == cdaTableEntry.minorHead &&
-            this.cdaTableData[j].subHead == cdaTableEntry.subHead &&
-            this.cdaTableData[j].remarks == cdaTableEntry.remarks
-          )
-            flag = true;
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Add it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        for (let i = 0; i < this.cdaData.length; i++) {
+          if (this.cdaData[i].checked) {
+            let cdaTableEntry: cdaTableData = {
+              allocationType: this.formdata.get('budgetType')?.value.allocType,
+              allocationTypeId: this.formdata.get('budgetType')?.value.allocTypeId,
+              financialYear: this.formdata.get('finYearName')?.value.finYear,
+              majorHead: this.formdata.get('majorHead')?.value.majorHead,
+              minorHead: this.formdata.get('minorHead')?.value.minorHead,
+              cda: this.cdaData[i].cdaName,
+              ginNo: this.cdaData[i].ginNo,
+              subHead: this.formdata.get('subHead')?.value.subHeadDescr,
+              existing: this.cdaData[i].amount,
+              current:
+                this.cdaData[i].current != undefined ? this.cdaData[i].current : 0,
+              total: this.cdaData[i].total,
+              remarks:
+                this.formdata.get('remarks')?.value != null
+                  ? this.formdata.get('remarks')?.value
+                  : '',
+              checked: false,
+            };
+            let flag = false;
+            for (let j = 0; j < this.cdaTableData.length; j++) {
+              if (
+                this.cdaTableData[j].ginNo == cdaTableEntry.ginNo &&
+                this.cdaTableData[j].allocationType ==
+                cdaTableEntry.allocationType &&
+                this.cdaTableData[j].financialYear == cdaTableEntry.financialYear &&
+                this.cdaTableData[j].majorHead == cdaTableEntry.majorHead &&
+                this.cdaTableData[j].minorHead == cdaTableEntry.minorHead &&
+                this.cdaTableData[j].subHead == cdaTableEntry.subHead &&
+                this.cdaTableData[j].remarks == cdaTableEntry.remarks
+              )
+                flag = true;
+            }
+            if (!flag) this.cdaTableData.push(cdaTableEntry);
+          }
         }
-        if (!flag) this.cdaTableData.push(cdaTableEntry);
       }
-    }
+    });
     console.log(this.cdaTableData);
   }
 
   deleteFromCdaTable() {
-    for (let i = 0; i < this.cdaTableData.length; i++) {
-      if (this.cdaTableData[i].checked) {
-        this.cdaTableData.pop();
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        for (let i = this.cdaTableData.length-1 ; i >=0 ; i--) {
+          if (this.cdaTableData[i].checked) {
+            this.cdaTableData.splice(i, 1);
+          }
+        }
       }
-    }
+    });
+
   }
 
   checkSubmitTableData() {
@@ -365,6 +392,7 @@ export class CdaParkingComponent implements OnInit {
       this.confirmModel();
     }
   }
+
   submitCdaTableData() {
     // for(let j=0;j<this.majorHeadData.length;j++){
     //   if(this.majorHeadData[j].majorHead==this.formdata.get('majorHead')?.value.majorHead)
@@ -440,6 +468,7 @@ export class CdaParkingComponent implements OnInit {
         },
       });
   }
+
   confirmModel() {
     Swal.fire({
       title: 'Are you sure?',
