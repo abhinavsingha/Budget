@@ -85,10 +85,16 @@
             </li>
           </ul>
         </li>
-        <li class="nav-item" *ngIf="userRole=='System Admin' || userRole=='Unit Admin'">
+        <li class="nav-item" *ngIf="userRole=='Unit Admin'">
           <a href="#" class="nav-link" [routerLink]="['/manage-users']" [routerLinkActive]="['active']">
             <i class="fas fa-user-cog nav-icon"></i>
-            <p>Manage Users</p>
+            <p>Manage User Roles</p>
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="userRole=='System Admin'">
+          <a href="#" class="nav-link" [routerLink]="['/manage-users']" [routerLinkActive]="['active']">
+            <i class="fas fa-user-cog nav-icon"></i>
+            <p>Manage Unit Admin</p>
           </a>
         </li>
         <li class="nav-item" *ngIf=" userRole=='CB Creator'">

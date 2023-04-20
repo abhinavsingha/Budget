@@ -67,14 +67,14 @@
                         formControlName="minorHead" readonly />
                     </div>
                   </div>
-                  <div class="col-md-12">
+                  <!-- <div class="col-md-12">
                     <div class="form-group">
                       <label>Sub Head Type <span class="text-danger">*</span></label>
                       <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeadTypeList"
                         bindLabel="finYear" placeholder="Select Sub Head Type" formControlName="subHeadType">
                       </ng-select>
                     </div>
-                  </div>
+                  </div> -->
                   <div class=" col-md-12">
                     <div class="form-group">
                       <label>Remarks <span class="text-danger">*</span></label>
@@ -106,9 +106,18 @@
                     <tr *ngFor="let subHeadData of subHeadList; let i = index">
                       <td>{{i+1}}</td>
                       <td>{{subHeadData.subHeadDescr}}</td>
-                      <td *ngIf="isSelectedRE || isSelectedMA ||isSectedVOA">{{subHeadData.be}}</td>
-                      <td *ngIf="isSelectedMA || isSectedSG">{{subHeadData.re}}</td>
-                      <td *ngIf="isSectedSG">{{subHeadData.ma}}</td>
+                      <td *ngIf="isSelectedRE || isSelectedMA ||isSectedVOA">
+                        <span *ngIf="subHeadData.be == 0.0">-</span>
+                        <span *ngIf="subHeadData.be != 0.0">{{subHeadData.be}}</span>
+                      </td>
+                      <td *ngIf="isSelectedMA || isSectedSG">
+                        <span *ngIf="subHeadData.re == 0.0">-</span>
+                        <span *ngIf="subHeadData.re != 0.0">{{subHeadData.re}}</span>
+                      </td>
+                      <td *ngIf="isSectedSG">
+                        <span *ngIf="subHeadData.ma == 0.0">-</span>
+                        <span *ngIf="subHeadData.ma != 0.0">{{subHeadData.ma}}</span>
+                      </td>
                       <td><input type="text" class="form-control" id="Aallocationamount"
                           placeholder="Please Enter Amount Here" [(ngModel)]="subHeadData.amount"
                           [ngModelOptions]="{standalone: true}" /></td>
@@ -197,29 +206,26 @@
         <!-- /.card-body -->
         <div class="card-footer">
           <div class="row">
-
             <button type="submit" class="btn btn-primary" (click)="saveBudgetRecipt()" *ngIf="!isUpdate">Save</button>
             <button type="submit" class="btn btn-primary" (click)="saveBudgetRecipt()" *ngIf="isUpdate">Update</button>
           </div>
         </div>
-
-
-
       </div>
       <div class="card card-default">
         <div class="card-header">
           <h3 class="card-title">View Reciept</h3>
 
-          <div class="card-tools">
+          <!-- <div class="card-tools">
             <div class="input-group input-group-sm">
-              <input type="text" class="form-control" placeholder="Search by F.Y./MA/Supplementary Grant">
+              <input type="text" [(ngModel)]="searchText" class="form-control"
+                placeholder="Search by F.Y./MA/Supplementary Grant">
               <div class="input-group-append">
                 <div class="btn btn-primary">
                   <i class="fas fa-search"></i>
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
         <!-- /.card-header -->
         <div class="card-body">
@@ -228,8 +234,8 @@
               <table class="table table-hover text-nowrap">
                 <thead>
                   <tr>
+                    <th>Sr. No.</th>
                     <th>F.Y.</th>
-                    <!-- <th>Budget</th> -->
                     <th>Sub Head</th>
                     <th>Type</th>
                     <th>Amount(crores)</th>
@@ -238,8 +244,29 @@
                     <th>Action</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr *ngFor="let tableData of finalTableData; let i = index">
+                <tbody *ngIf="searchText == ''">
+                  <tr
+                    *ngFor="let tableData of finalTableData  | searchPipe: searchText | paginate :{itemsPerPage:10,currentPage:p}; let i = index">
+                    <td>{{10 *(p-1)+i+1}}</td>
+                    <td>{{tableData.finYear.finYear}}</td>
+                    <td>{{tableData.subHead.subHeadDescr}}</td>
+                    <td>{{tableData.allocTypeId.allocDesc}}</td>
+                    <td>{{tableData.allocationAmount}}</td>
+                    <td>{{tableData.remarks}}</td>
+                    <!-- <td>{{tableData.authList[0].docId.pathURL}}</td> -->
+                    <td>
+                      <button type="submit" class="btn btn-primary mr-2" (click)="previewURL(tableData)"><i
+                          class="fas fa-eye"></i> View</button>
+                      <button type="submit" class="btn btn-warning mr-2" (click)="updateReciept(tableData)"><i
+                          class="fas fa-edit"></i> Update</button>
+                      <!-- <button type="submit" class="btn btn-danger mr-2"><i class="fas fa-trash-alt"></i> Delete</button> -->
+                    </td>
+                  </tr>
+                </tbody>
+                <tbody *ngIf="searchText != '' ">
+                  <tr
+                    *ngFor="let tableData of finalTableData  | searchPipe: searchText | paginate :{itemsPerPage:10,currentPage:p}; let i = index">
+                    <td>{{10 *(p-1)+i+1}}</td>
                     <td>{{tableData.finYear.finYear}}</td>
                     <td>{{tableData.subHead.subHeadDescr}}</td>
                     <td>{{tableData.allocTypeId.allocDesc}}</td>
@@ -257,6 +284,18 @@
                 </tbody>
               </table>
             </form>
+          </div>
+          <div class="row mt-2">
+            <div class="col-sm-12 col-md-5">
+              <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
+
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-7">
+              <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                <pagination-controls class="pagination float-right" (pageChange)="p = $event"></pagination-controls>
+              </div>
+            </div>
           </div>
         </div>
         <!-- /.card-body -->
