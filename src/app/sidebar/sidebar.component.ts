@@ -35,7 +35,7 @@ export class SidebarComponent {
     //   localStorage.removeItem('foo');
     //   localStorage.setItem('user_role', 'Admin');
     // }
-
+    console.log('SIDEBAR')
     this.getDashBoardDta();
   }
 

@@ -39,7 +39,6 @@ import { SharedService } from './services/shared/shared.service';
 import { SearchPipePipe } from './services/searchPipe/search-pipe.pipe';
 
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
-import {CbVerificationComponent} from "./cb-verification/cb-verification.component";
 
 // import { DialogComponent } from './dialog/dialog.component';
 // import { MatIconModule } from '@angular/material/icon';
@@ -66,8 +65,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        url: 'http://localhost:8080/auth',
-        // url: 'https://icg.net.in/auth/',
+        // url: 'http://localhost:8080/auth',
+        url: 'https://icg.net.in/auth/',
         realm: 'icgrms',
         clientId: 'budget',
       },
@@ -103,7 +102,6 @@ function initializeKeycloak(keycloak: KeycloakService) {
     UnitRebaseComponent,
     SearchPipePipe,
     CdaParkingReportComponent,
-    CbVerificationComponent,
     // DialogComponent,
   ],
   imports: [
