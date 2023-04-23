@@ -126,7 +126,11 @@ export class ConstantsService {
     budgetRecipetSave: this.serviceUrl + 'budgetRecipet/budgetRecipetSave',
 
     getBudgetRecipt: this.serviceUrl + 'budgetRecipet/getBudgetRecipt',
-    getCdaUnitList:this.serviceUrl + 'cdaParkingController/getCdaUnitList',
-    verifyContingentBill: this.serviceUrl+'contingentBillController/verifyContingentBill',
+    getCdaUnitList: this.serviceUrl + 'cdaParkingController/getCdaUnitList',
+    verifyContingentBill:
+      this.serviceUrl + 'contingentBillController/verifyContingentBill',
+
+    getCgUnitDataWithPurposeCode:
+      this.serviceUrl + 'budgetAllocation/getCgUnitDataWithPurposeCode',
   };
 }

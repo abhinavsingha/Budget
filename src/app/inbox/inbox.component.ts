@@ -1,9 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiCallingServiceService } from '../services/api-calling/api-calling-service.service';
+
+import * as $ from 'jquery';
 import { ConstantsService } from '../services/constants/constants.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { CommonService } from '../services/common/common.service';
+import { ApiCallingServiceService } from '../services/api-calling/api-calling-service.service';
+import { SubHeadWiseUnitList } from '../model/sub-head-wise-unit-list';
+import { UploadDocuments } from '../model/upload-documents';
+import Swal from 'sweetalert2';
+import { Location } from '@angular/common';
 import { DatePipe } from '@angular/common';
+
 import { SharedService } from '../services/shared/shared.service';
+
 class InboxList {
   serial: number | undefined;
   type: string | undefined;
@@ -11,36 +21,67 @@ class InboxList {
   createBy: string | undefined;
   unitName: string | undefined;
   groupId: string | undefined;
+  status: string | undefined;
 }
+
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+
 @Component({
   selector: 'app-inbox',
   templateUrl: './inbox.component.html',
   styleUrls: ['./inbox.component.scss'],
 })
 export class InboxComponent implements OnInit {
-  inboxList: InboxList[] = [];
-  p: number = 1;
-  constructor(
-    private datePipe: DatePipe,
-    private apiService: ApiCallingServiceService,
-    private router: Router,
-    private cons: ConstantsService,
-    private sharedService: SharedService
-  ) {}
   public userRole: any;
+
+  inboxList: InboxList[] = [];
+
+  p: number = 1;
+
+  // inboxList: any[] = [];
+
   ngOnInit(): void {
-    $.getScript('assets/js/adminlte.js');
     this.userRole = localStorage.getItem('user_role');
     if (this.userRole == 'sys_Admin') {
       this.router.navigateByUrl('/dashboard');
     }
-    this.getInboxList();
-  }
-  redirect(li: InboxList) {
 
+    this.inboxlist();
+
+    $('#cdaParking').hide();
+    $('#btnCda').click(function () {
+      $('#cdaParking').show();
+    });
+    $('.modal').on('hidden.bs.modal', function () {
+      $('#cdaParking').hide();
+    });
+  }
+
+  constructor(
+    private SpinnerService: NgxSpinnerService,
+    private cons: ConstantsService,
+    private apiService: ApiCallingServiceService,
+    private formBuilder: FormBuilder,
+    private common: CommonService,
+    private router: Router,
+    private _location: Location,
+    private datePipe: DatePipe,
+    private sharedService: SharedService
+  ) {}
+
+  redirect(li: InboxList) {
     if (li.groupId != null || li.groupId != undefined) {
       localStorage.setItem('group_id', li.groupId);
+    }
 
+    if (li.type != null || li.type != undefined) {
+      localStorage.setItem('type', li.type);
     }
 
     if (li.type == 'CB') {
@@ -52,10 +93,14 @@ export class InboxComponent implements OnInit {
       this.router.navigate(['/budget-approval']);
       this.sharedService.redirectedFrom = 'inbox';
       // window.location.href = '/budget-approval';
+    } else if (li.type == 'BR') {
+      this.router.navigate(['/budget-approval']);
+      this.sharedService.redirectedFrom = 'inbox';
+      // window.location.href = '/budget-approval';
     }
   }
 
-  private getInboxList() {
+  private inboxlist() {
     this.apiService.getApi(this.cons.api.inboxlist).subscribe(
       (res) => {
         let result: { [key: string]: any } = res;
@@ -74,6 +119,7 @@ export class InboxComponent implements OnInit {
               createBy: list[i].userData.fullName,
               unitName: list[i].toUnit.descr,
               groupId: list[i].groupId,
+              status: list[i].status,
             };
             this.inboxList.push(entry);
           }
@@ -85,6 +131,7 @@ export class InboxComponent implements OnInit {
       }
     );
   }
+
   convertEpochToDateTime(epochTime: number): string {
     const date = new Date(epochTime); // Convert epoch time to milliseconds
     const year = date.getFullYear();

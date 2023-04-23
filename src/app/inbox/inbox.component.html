@@ -30,42 +30,39 @@
           <div class="card-header">
             <h3 class="card-title">Inbox</h3>
 
-            <!-- <div class="card-tools">
-                  <div class="input-group input-group-sm">
-                    <input type="text" class="form-control" placeholder="Search Requests">
-                    <div class="input-group-append">
-                      <div class="btn btn-primary">
-                        <i class="fas fa-search"></i>
-                      </div>
-                    </div>
+            <div class="card-tools">
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control" placeholder="Search Requests">
+                <div class="input-group-append">
+                  <div class="btn btn-primary">
+                    <i class="fas fa-search"></i>
                   </div>
-                </div> -->
+                </div>
+              </div>
+            </div>
             <!-- /.card-tools -->
           </div>
           <!-- /.card-header -->
           <div class="card-body p-0">
-            <div class="row mt-2">
-              <div class="col-sm-12 col-md-5">
-                <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
-
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-7">
-                <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
-                  <pagination-controls class="pagination float-right" (pageChange)="p = $event"></pagination-controls>
-                </div>
-              </div>
-            </div>
             <div class="table-responsive mailbox-messages">
               <table class="table table-hover table-striped">
+                <thead>
+                  <th>S.No.</th>
+                  <th>Type</th>
+                  <th>Created Date & Time</th>
+                  <th>Created By</th>
+                  <th>Unit Name</th>
+                  <th>Status</th>
+                </thead>
                 <tbody>
-                  <tr>
-                    <th>Serial No.</th>
-                    <th>Type</th>
-                    <th>Create Date</th>
-                    <th>Create By</th>
-                    <th>Unit Name</th>
-                  </tr>
+                  <!-- <tr data-toggle="modal" data-target="#modal-lg">
+                      <td>1</td>
+                      <td>Budeget Allocation</td>
+                      <td>21/03/2023 9:00</td>
+                      <td>Meena</td>
+                      <td>CGHQ</td>
+                      <td>Approved</td>
+                    </tr> -->
                   <tr *ngFor="let li of inboxList| paginate :{itemsPerPage:10,currentPage:p}; let i = index"
                     id="htmlData" (click)="redirect(li)">
                     <td>{{10 *(p-1)+i+1}}</td>
@@ -73,56 +70,8 @@
                     <td>{{li.createDate}}</td>
                     <td>{{li.createBy}}</td>
                     <td>{{li.unitName}}</td>
+                    <td>{{li.status}}</td>
                   </tr>
-                  <!--                    <tr [routerLink]="['/budget-approval']">-->
-                  <!--                      <td class="mailbox-name"><a href="#">Alexander Pierce</a></td>-->
-                  <!--                      <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...-->
-                  <!--                      </td>-->
-                  <!--                      <td class="mailbox-attachment"></td>-->
-                  <!--                      <td class="mailbox-date">5 mins ago</td>-->
-                  <!--                    </tr>-->
-                  <!--                    <tr [routerLink]="['/contingent-bill-aprover']">-->
-                  <!--                      <td class="mailbox-name"><a href="#">Alexander PierceCB</a></td>-->
-                  <!--                      <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...-->
-                  <!--                      </td>-->
-                  <!--                      <td class="mailbox-attachment"></td>-->
-                  <!--                      <td class="mailbox-date">5 mins ago</td>-->
-                  <!--                    </tr>-->
-                  <!--                    <tr [routerLink]="['/budget-approval']">-->
-                  <!--                      <td class="mailbox-name"><a href="#">Alexander Pierce</a></td>-->
-                  <!--                      <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...-->
-                  <!--                      </td>-->
-                  <!--                      <td class="mailbox-attachment"></td>-->
-                  <!--                      <td class="mailbox-date">5 mins ago</td>-->
-                  <!--                    </tr>-->
-                  <!--                    <tr [routerLink]="['/budget-approval']">-->
-                  <!--                      <td class="mailbox-name"><a href="#">Alexander Pierce</a></td>-->
-                  <!--                      <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...-->
-                  <!--                      </td>-->
-                  <!--                      <td class="mailbox-attachment"></td>-->
-                  <!--                      <td class="mailbox-date">5 mins ago</td>-->
-                  <!--                    </tr>-->
-                  <!--                    <tr [routerLink]="['/budget-approval']">-->
-                  <!--                      <td class="mailbox-name"><a href="#">Alexander Pierce</a></td>-->
-                  <!--                      <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...-->
-                  <!--                      </td>-->
-                  <!--                      <td class="mailbox-attachment"></td>-->
-                  <!--                      <td class="mailbox-date">5 mins ago</td>-->
-                  <!--                    </tr>-->
-                  <!--                    <tr [routerLink]="['/budget-approval']">-->
-                  <!--                      <td class="mailbox-name"><a href="#">Alexander Pierce</a></td>-->
-                  <!--                      <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...-->
-                  <!--                      </td>-->
-                  <!--                      <td class="mailbox-attachment"></td>-->
-                  <!--                      <td class="mailbox-date">5 mins ago</td>-->
-                  <!--                    </tr>-->
-                  <!--                    <tr [routerLink]="['/budget-approval']">-->
-                  <!--                      <td class="mailbox-name"><a href="#">Alexander Pierce</a></td>-->
-                  <!--                      <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...-->
-                  <!--                      </td>-->
-                  <!--                      <td class="mailbox-attachment"></td>-->
-                  <!--                      <td class="mailbox-date">5 mins ago</td>-->
-                  <!--                    </tr>-->
                 </tbody>
               </table>
               <!-- /.table -->
@@ -130,16 +79,25 @@
             <!-- /.mail-box-messages -->
           </div>
           <!-- /.card-body -->
-          <div class="row mt-2">
-            <div class="col-sm-12 col-md-5">
-              <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
-
+          <div class="card-footer p-0">
+            <div class="mailbox-controls">
+              <!-- /.btn-group -->
+              <button type="button" class="btn btn-default btn-sm">
+                <i class="fas fa-sync-alt"></i>
+              </button>
+              <div class="float-right">
+                1-50/200
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default btn-sm">
+                    <i class="fas fa-chevron-left"></i>
+                  </button>
+                  <button type="button" class="btn btn-default btn-sm">
+                    <i class="fas fa-chevron-right"></i>
+                  </button>
+                </div>
+                <!-- /.btn-group -->
               </div>
-            </div>
-            <div class="col-sm-12 col-md-7">
-              <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
-                <pagination-controls class="pagination float-right" (pageChange)="p = $event"></pagination-controls>
-              </div>
+              <!-- /.float-right -->
             </div>
           </div>
         </div>
@@ -152,5 +110,128 @@
   </section>
 
   <!-- /.content -->
+  <div class="modal fade" id="modal-lg">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">CDA Parking</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card-tools float-right mb-2">
+                <div class="input-group input-group-sm">
+                  <input type="text" class="form-control" placeholder="Search Requests">
+                  <div class="input-group-append">
+                    <div class="btn btn-primary">
+                      <i class="fas fa-search"></i>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                  <thead>
+                    <tr>
+                      <th>S.No.</th>
+                      <th>F.Y.</th>
+                      <th>Unit</th>
+                      <th>Major Head</th>
+                      <th>Minor Head</th>
+                      <th>Sub Head</th>
+                      <th>Bud. Type</th>
+                      <th>Amount</th>
+                      <th>Remarks</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td>2022-23</td>
+                      <td>CGHQ</td>
+                      <td>Dte. Budget</td>
+                      <td>Minor Head</td>
+                      <td>Sub Head</td>
+                      <td>BE</td>
+                      <td>550.0000</td>
+                      <td>Remarks</td>
+                    </tr>
+
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td><button type="button" class="btn btn-primary" id="btnCda">Add CDA Parking</button></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                  </tfoot>
+                </table>
+
+              </div>
+              <div class="row mt-2">
+                <div class="col-sm-12 col-md-12">
+                  <pagination-controls class="pagination float-right"></pagination-controls>
+
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-12" id="cdaParking">
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                  <thead>
+                    <tr>
+                      <th>CDA</th>
+                      <th>Existing</th>
+                      <th>Current</th>
+                      <th>Total</th>
+                      <th>Action</th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><ng-select class="form-control select2bs4" style="width: 100%" appendTo="body"
+                          placeholder="Select To Unit" formControlName="cbUnit">
+                        </ng-select></td>
+                      <td>2.30</td>
+                      <td><input type="text" class="form-control" id="Aallocationamount"
+                          placeholder="Please Enter Amount" /></td>
+                      <td>7.8</td>
+                      <td><button type="button" class="btn btn-primary">Add Row</button></td>
+                    </tr>
+
+                  </tbody>
+                </table>
+
+              </div>
+              <div class="row mt-2">
+                <div class="col-sm-12 col-md-12">
+                  <pagination-controls class="pagination float-right"></pagination-controls>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
 </div>
 <!-- /.content-wrapper -->

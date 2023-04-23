@@ -27,6 +27,80 @@
     <div class="container-fluid">
       <div class="card card-default">
         <div class="card-header">
+          <h3 class="card-title">Manage User</h3>
+          <!-- /.card-tools -->
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+          <form [formGroup]="formdata">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Units</label>
+                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="allunits" bindLabel="descr"
+                    (change)="getUserInfo($event)" appendTo="body" placeholder="Select To Unit" formControlName="unit">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>CG P.No.</label>
+                  <ng-select class="form-control select2bs4" style="width: 100%" [disabled]="true" [items]="allUsers"
+                    bindLabel="pno" appendTo="body" placeholder="Select CG P.No." (change)="setOtherValues($event)"
+                    formControlName="pno"></ng-select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>User Name</label>
+                  <input type="text" class="form-control" id="fundAvailable" value="{{userName}}"
+                    formControlName="userName" readonly />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Rank</label>
+                  <input type="text" class="form-control" id="rank" value="{{rank}}" formControlName="rank" readonly />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Role</label>
+                  <ng-select class="form-control select2bs4" style="width: 100%" [disabled]="true" [items]="allRoles"
+                    bindLabel="roleName" appendTo="body" placeholder="Select CG P.No."
+                    formControlName="role"></ng-select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>From Date</label>
+                  <input type="date" class="form-control" id="Date" placeholder="Enter From Date"
+                    formControlName="fromDate" />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>To Date</label>
+                  <input type="date" class="form-control" id="Date" placeholder="Enter To Date"
+                    formControlName="toDate" />
+                </div>
+              </div>
+              <!-- /.col -->
+            </div>
+          </form>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+          <div class="row">
+            <button type="submit" class="btn btn-primary mr-2" (click)="saveUserData(formdata.value)">Save</button>
+          </div>
+        </div>
+      </div>
+      <!-- /.row -->
+
+
+      <div class="card card-default">
+        <div class="card-header">
           <h3 class="card-title">Users Details</h3>
 
           <div class="card-tools">
@@ -45,14 +119,8 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body">
-
           <div class="row">
             <div class="col-sm-12">
-
-
-
-
-
               <div class="card-body table-responsive p-0">
                 <table class="table table-hover text-nowrap">
                   <thead>
@@ -133,71 +201,10 @@
               </div>
             </div>
           </div>
-          <form [formGroup]="formdata">
-            <div class="row">
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Units</label>
-                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="allunits" bindLabel="descr"
-                    (change)="getUserInfo($event)" appendTo="body" placeholder="Select To Unit" formControlName="unit">
-                  </ng-select>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>CG P.No.</label>
-                  <ng-select class="form-control select2bs4" style="width: 100%" [disabled]="true" [items]="allUsers"
-                    bindLabel="pno" appendTo="body" placeholder="Select CG P.No." (change)="setOtherValues($event)"
-                    formControlName="pno"></ng-select>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>User Name</label>
-                  <input type="text" class="form-control" id="fundAvailable" value="{{userName}}"
-                    formControlName="userName" readonly />
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Rank</label>
-                  <input type="text" class="form-control" id="rank" value="{{rank}}" formControlName="rank" readonly />
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Role</label>
-                  <ng-select class="form-control select2bs4" style="width: 100%" [disabled]="true" [items]="allRoles"
-                    bindLabel="roleName" appendTo="body" placeholder="Select CG P.No."
-                    formControlName="role"></ng-select>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>From Date</label>
-                  <input type="date" class="form-control" id="Date" placeholder="Enter From Date"
-                    formControlName="fromDate" />
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>To Date</label>
-                  <input type="date" class="form-control" id="Date" placeholder="Enter To Date"
-                    formControlName="toDate" />
-                </div>
-              </div>
-              <!-- /.col -->
-            </div>
-          </form>
         </div>
         <!-- /.card-body -->
-        <div class="card-footer">
-          <div class="row">
-            <button type="submit" class="btn btn-primary mr-2" (click)="saveUserData(formdata.value)">Save</button>
-          </div>
-        </div>
+
       </div>
-      <!-- /.row -->
     </div>
     <!-- /.container-fluid -->
   </section>

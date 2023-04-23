@@ -23,6 +23,14 @@ import {
   styleUrls: ['./manage-user.component.scss'],
 })
 export class ManageUserComponent {
+  public userRole: any;
+
+  name: any;
+
+  roles: any[] = [];
+
+  roleHeading: any;
+
   usersWithRole: any[] = [];
 
   allRoles: any[] = [];
@@ -57,7 +65,8 @@ export class ManageUserComponent {
     $.getScript('assets/js/adminlte.js');
     this.getAllUser();
     this.getAllRole();
-    this.getCgUnitData();
+    this.getCgUnitDataWithPurposeCode();
+    // this.getDashBoardDta();
     $.getScript('assets/js/adminlte.js');
   }
 
@@ -120,13 +129,19 @@ export class ManageUserComponent {
     this.SpinnerService.show();
     let submitJson = {
       unitId: event.unit,
-      userName: '03720',
+      userName: '',
     };
     this.apiService.postApi(this.cons.api.getUserInfo, submitJson).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
         if (result['message'] == 'success') {
+          this.allUsers = [];
+          this.formdata.patchValue({
+            pno: undefined,
+            userName: undefined,
+            rank: undefined,
+          });
           this.allUsers = result['response'];
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
@@ -141,18 +156,21 @@ export class ManageUserComponent {
     });
   }
 
-  getCgUnitData() {
+  getCgUnitDataWithPurposeCode() {
     this.SpinnerService.show();
-
-    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
-      let result: { [key: string]: any } = res;
-      if (result['message'] == 'success') {
-        this.allunits = result['response'];
-        this.SpinnerService.hide();
-      } else {
-        this.common.faliureAlert('Please try later', result['message'], '');
-      }
-    });
+    debugger;
+    this.apiService
+      .getApi(this.cons.api.getCgUnitDataWithPurposeCode)
+      .subscribe((res) => {
+        let result: { [key: string]: any } = res;
+        debugger;
+        if (result['message'] == 'success') {
+          this.allunits = result['response'];
+          this.SpinnerService.hide();
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      });
   }
 
   setOtherValues(event: any) {
@@ -208,19 +226,12 @@ export class ManageUserComponent {
 
   finallySubmit(data: any, formDataValue: any) {
     this.SpinnerService.show();
-    // var newSubmitJson = this.submitJson;
     var newSubmitJson = data;
-    console.log(JSON.stringify(newSubmitJson) + ' =submitJson for save budget');
-
     this.apiService.postApi(this.cons.api.createUser, newSubmitJson).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
-
-        // console.log(JSON.stringify(result) + " =submitJson");
-
         if (result['message'] == 'success') {
-          // This is for the data saving the data into upper table
           this.pushDataInMainList(formDataValue);
           this.refresh();
           this.formdata.reset();
@@ -240,8 +251,6 @@ export class ManageUserComponent {
       },
       complete: () => console.info('complete'),
     });
-
-    // this.common.successAlert('Success', 'Finally submitted', 'success');
   }
 
   refresh(): void {
@@ -274,8 +283,6 @@ export class ManageUserComponent {
 
   deactivateUserRoleFinallySubmit(data: any, indexValue: any) {
     this.SpinnerService.show();
-    // var newSubmitJson = this.submitJson;
-
     let submitJson = {
       pid: data.pid,
       roleId: data.roleId,
@@ -286,16 +293,8 @@ export class ManageUserComponent {
         next: (v: object) => {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
-
-          // console.log(JSON.stringify(result) + " =submitJson");
-
           if (result['message'] == 'success') {
-            // This is for the data saving the data into upper table
-
             this.usersWithRole.splice(indexValue, 1);
-            // this.pushDataInMainList(formDataValue);
-            // this.refresh();
-            // this.formdata.reset();
             this.common.successAlert(
               'Success',
               result['response']['msg'],
@@ -312,7 +311,33 @@ export class ManageUserComponent {
         },
         complete: () => console.info('complete'),
       });
+  }
 
-    // this.common.successAlert('Success', 'Finally submitted', 'success');
+  getDashBoardDta() {
+    this.SpinnerService.show();
+    var newSubmitJson = null;
+    this.apiService
+      .postApi(this.cons.api.getDashBoardDta, newSubmitJson)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            debugger;
+            this.userRole = result['response'].userDetails.role[0].roleName;
+            this.name = result['response'].userDetails.fullName;
+            this.roles = result['response'].userDetails.role;
+            this.roleHeading = result['response'].userDetails.role[0].roleName;
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
   }
 }

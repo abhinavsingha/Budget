@@ -86,7 +86,7 @@
           </ul>
         </li>
         <li class="nav-item" *ngIf="userRole=='Unit Admin'">
-          <a href="#" class="nav-link" [routerLink]="['/manage-users']" [routerLinkActive]="['active']">
+          <a href="#" class="nav-link" [routerLink]="['/manage-user-roles']" [routerLinkActive]="['active']">
             <i class="fas fa-user-cog nav-icon"></i>
             <p>Manage User Roles</p>
           </a>
@@ -110,14 +110,14 @@
             <p>Budget Allocation Report</p>
           </a>
         </li>
-        <li class="nav-item " *ngIf="userRole=='Budget Manager' || userRole=='CB Creator'">
+        <li class="nav-item " *ngIf="userRole=='Budget Manager' ">
           <a href="#" class="nav-link" [routerLink]="['/cda-parking']" [routerLinkActive]="['active']">
             <i class="fas fa-coins nav-icon"></i>
             <p>CDA Parking</p>
           </a>
         </li>
         <li class="nav-item"
-          *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'|| userRole=='CB Creator'|| userRole=='CB Approver' || userRole=='Viewer'">
+          *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'|| userRole=='CB Approver' || userRole=='Viewer'">
           <a href="#" class="nav-link" [routerLink]="['/cda-parking-report']" [routerLinkActive]="['active']">
             <i class="fas fa-file-invoice nav-icon"></i>
             <p>CDA Parking Report</p>
