@@ -18,7 +18,7 @@ class InboxList {
   serial: number | undefined;
   type: string | undefined;
   createDate: string | undefined | null;
-  createBy: string | undefined;
+  // createBy: string | undefined;
   unitName: string | undefined;
   groupId: string | undefined;
   status: string | undefined;
@@ -101,10 +101,12 @@ export class InboxComponent implements OnInit {
   }
 
   private inboxlist() {
-    this.apiService.getApi(this.cons.api.inboxlist).subscribe(
-      (res) => {
-        let result: { [key: string]: any } = res;
-        console.log(result['response']);
+    debugger;
+    this.SpinnerService.show();
+    this.apiService.getApi(this.cons.api.inboxlist).subscribe((res) => {
+      let result: { [key: string]: any } = res;
+      if (result['message'] == 'success') {
+        this.SpinnerService.hide();
         let list: any = result['response'];
         if (list != null) {
           for (let i = 0; i < list.length; i++) {
@@ -115,21 +117,19 @@ export class InboxComponent implements OnInit {
               //   this.datePipe.transform(
               //   new Date(list[i].createdOn),
               //   'dd-MM-yyyy'
-              // ),
-              createBy: list[i].userData.fullName,
+              // // ),
+              // createBy: list[i].userData.fullName,
               unitName: list[i].toUnit.descr,
               groupId: list[i].groupId,
               status: list[i].status,
             };
             this.inboxList.push(entry);
           }
-          console.log(this.inboxList);
         }
-      },
-      (error) => {
-        console.log(error);
+      } else {
+        this.common.faliureAlert('Please try later', result['message'], '');
       }
-    );
+    });
   }
 
   convertEpochToDateTime(epochTime: number): string {

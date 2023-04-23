@@ -10,7 +10,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CommonService } from '../services/common/common.service';
 import Swal from 'sweetalert2';
 import { InboxComponent } from '../inbox/inbox.component';
-import {SharedService} from "../services/shared/shared.service";
+import { SharedService } from '../services/shared/shared.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -35,7 +35,7 @@ export class SidebarComponent {
     //   localStorage.removeItem('foo');
     //   localStorage.setItem('user_role', 'Admin');
     // }
-    console.log('SIDEBAR')
+    console.log('SIDEBAR');
     this.getDashBoardDta();
   }
 
@@ -58,7 +58,6 @@ export class SidebarComponent {
   getDashBoardDta() {
     this.SpinnerService.show();
     var newSubmitJson = null;
-
     this.apiService
       .postApi(this.cons.api.getDashBoardDta, newSubmitJson)
       .subscribe({
