@@ -87,7 +87,13 @@ export class InboxComponent implements OnInit {
     if (li.type == 'CB') {
       this.sharedService.sharedValue = li.groupId;
       this.sharedService.redirectedFrom = 'inbox';
-      this.router.navigate(['/contingent-bill-aprover']);
+      if(li.status=='Pending'){
+        this.router.navigate(['/cb-verification']);
+      }
+      else if(li.status=='Verified'){
+        this.router.navigate(['/contingent-bill-aprover']);
+      }
+
       // window.location.href =;
     } else if (li.type == 'BG') {
       this.router.navigate(['/budget-approval']);
