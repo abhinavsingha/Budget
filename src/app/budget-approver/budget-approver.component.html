@@ -122,7 +122,7 @@
                       <!-- <th>Balance Amount</th> -->
                       <!-- <th>Remarks</th> -->
                       <!-- <th>Status</th> -->
-                      <th>Action</th>
+                      <th *ngIf="isInboxAndOutbox!= 'Outbox' && type!='BG' && userRole!='Budget Approver'">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -138,9 +138,11 @@
                       <!-- <td>{{buggetData.allocationAmount}}</td> -->
                       <!-- <td>{{buggetData.remarks}}</td> -->
                       <!-- <td>{{buggetData.status}}</td> -->
-                      <button type="submit" class="btn btn-warning mr-2" data-toggle="modal" data-target="#modal-lg"
-                        (click)="addCDAParking(buggetData)">Add
-                        CDA Parking</button>
+                      <td>
+                        <button type="submit" class="btn btn-warning mr-2" data-toggle="modal" data-target="#modal-lg"
+                          (click)="addCDAParking(buggetData)">Add
+                          CDA Parking</button>
+                      </td>
                     </tr>
 
                   </tbody>
@@ -199,20 +201,20 @@
                   </div>
                 </div>
               </div> -->
-              <!-- <div class="col-md-4">
+              <div class="col-md-4" *ngIf="type=='BG' && userRole=='Budget Approver'">
                 <div class="form-group" *ngIf="sharedService.redirectedFrom === 'inbox'">
                   <label>Approve/Return Remarks</label>
                   <input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Remarks"
                     formControlName="remarks" />
                 </div>
-              </div> -->
+              </div>
             </div>
           </form>
         </div>
         <!-- /.card-body -->
 
 
-        <div class=" card-footer" *ngIf="type=='BG'">
+        <div class=" card-footer" *ngIf="type=='BG' && userRole=='Budget Approver'">
           <div class="row" *ngIf="sharedService.redirectedFrom === 'inbox'">
             <button type="submit" class="btn btn-primary mr-2" (click)="approveForm(formdata.value)">Approve</button>
             <button type="submit" class="btn btn-danger" (click)="returnForm(formdata.value)">Return</button>
@@ -317,7 +319,7 @@
                     <tr *ngFor="let cdaParking of multipleCdaParking; let i = index">
                       <td>
                         <ng-select class="form-control select2bs4" style="width: 100%" [items]="cdaUnitList"
-                          bindLabel="cdaName" placeholder="Select CDA Unit" formControlName="finYear" appendTo="body"
+                          bindLabel="cdaName" placeholder="Select CDA Unit" appendTo="body"
                           [(ngModel)]="cdaParking.cdaParkingUnit">
                         </ng-select>
                         <!-- <td>2.30</td> -->
@@ -351,7 +353,7 @@
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Submit</button>
+          <button type="button" class="btn btn-primary" (click)="saveCdaParkingData()">Submit</button>
         </div>
       </div>
       <!-- /.modal-content -->

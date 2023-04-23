@@ -47,6 +47,7 @@ export class InboxComponent implements OnInit {
   // inboxList: any[] = [];
 
   ngOnInit(): void {
+    localStorage.setItem('isInboxOrOutbox', 'Inbox');
     this.userRole = localStorage.getItem('user_role');
     if (this.userRole == 'sys_Admin') {
       this.router.navigateByUrl('/dashboard');
@@ -87,10 +88,9 @@ export class InboxComponent implements OnInit {
     if (li.type == 'CB') {
       this.sharedService.sharedValue = li.groupId;
       this.sharedService.redirectedFrom = 'inbox';
-      if(li.status=='Pending'){
+      if (li.status == 'Pending') {
         this.router.navigate(['/cb-verification']);
-      }
-      else if(li.status=='Verified'){
+      } else if (li.status == 'Verified') {
         this.router.navigate(['/contingent-bill-aprover']);
       }
 

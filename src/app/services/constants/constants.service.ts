@@ -134,5 +134,8 @@ export class ConstantsService {
 
     getCgUnitDataWithPurposeCode:
       this.serviceUrl + 'budgetAllocation/getCgUnitDataWithPurposeCode',
+
+    getAllUnitRebaseData:
+      this.serviceUrl + 'unitRebaseController/getAllUnitRebaseData',
   };
 }

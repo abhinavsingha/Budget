@@ -15,7 +15,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import {SharedService} from "../services/shared/shared.service";
+import { SharedService } from '../services/shared/shared.service';
 
 @Component({
   selector: 'app-budget-allocation-subheadwise',
@@ -63,7 +63,7 @@ export class BudgetAllocationSubheadwiseComponent {
   }
 
   constructor(
-    private sharedService:SharedService,
+    private sharedService: SharedService,
     private SpinnerService: NgxSpinnerService,
     private cons: ConstantsService,
     private apiService: ApiCallingServiceService,
@@ -149,6 +149,7 @@ export class BudgetAllocationSubheadwiseComponent {
 
   getAvailableFund(event: any) {
     //Step1:-> Selected Major Data and Minor Data automatically
+    debugger;
     this.formdata.patchValue({
       majorHead: event.majorHead,
       minorHead: event.minorHead,

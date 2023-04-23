@@ -15,7 +15,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import {SharedService} from "../services/shared/shared.service";
+import { SharedService } from '../services/shared/shared.service';
 
 @Component({
   selector: 'app-budget-allocation',
@@ -24,6 +24,7 @@ import {SharedService} from "../services/shared/shared.service";
 })
 export class BudgetAllocationComponent implements OnInit {
   uploadDocuments: any[] = [];
+  allocationType: any[] = [];
 
   budgetFinYears: any[] = [];
   subHeads: any[] = [];
@@ -97,7 +98,7 @@ export class BudgetAllocationComponent implements OnInit {
   selectedValueOfSubheadsDatas: any[] = [];
 
   constructor(
-    private sharedService:SharedService,
+    private sharedService: SharedService,
     private SpinnerService: NgxSpinnerService,
     private cons: ConstantsService,
     private apiService: ApiCallingServiceService,
@@ -108,26 +109,12 @@ export class BudgetAllocationComponent implements OnInit {
 
   token: any;
   ngOnInit(): void {
-    // this.keycloakService.getToken().then((token) => {
-    //   this.token = token;
-    //   this.getUserDetails(this.token);
-    //   localStorage.setItem('token', this.token);
-    // });
-
-    // this.getDataBudgetAllocation();
-    // this.balanceFund = 0;
-    // this.getCombo("MONTH", "");
-    // this.getCombo("YEAR", "");
-    // this.cgwwaUserDetails = JSON.parse(
-    //   localStorage.getItem("cgwwaUserDetails") || ""
-    // );
     this.getBudgetFinYear();
     this.getCgUnitDataNew();
     this.getMajorDataNew();
-
     this.getUserDetails('');
     this.getUnitDatas();
-
+    this.getAllocationTypeData();
     this.deleteDataByPid();
 
     this.uploadDocuments.push(new UploadDocuments());
@@ -175,38 +162,24 @@ export class BudgetAllocationComponent implements OnInit {
                 );
               }
             });
-
-          // this.apiService
-          //   .postApi(this.cons.api.getMajorData, userNameJson)
-          //   .subscribe({
-          //     next: (v: object) => {
-          //       let result: { [key: string]: any } = v;
-          //       // console.log("userdetail............" + JSON.stringify(v));
-          //       if (result['message'] == 'success') {
-          //         localStorage.setItem('newToken', result['response']['token']);
-          //         this.getFinancialYear();
-          //         this.majorHead = result['response'].subHead;
-          //         this.minorHead = result['response'].subHead;
-          //         this.getCgUnitData();
-          //         this.getAllSubHeadDataFirst();
-          //         this.getAllSubHeadDataSecond();
-
-          //         this.SpinnerService.hide();
-          //       } else {
-          //         this.common.faliureAlert(
-          //           'Please try later',
-          //           result['message'],
-          //           ''
-          //         );
-          //       }
-          //     },
-          //     error: (e) => {},
-          //     complete: () => console.info('complete'),
-          //   });
-          // }
         },
         error: (e) => {},
         complete: () => console.info('complete'),
+      });
+  }
+
+  getAllocationTypeData() {
+    this.SpinnerService.show();
+    this.apiService
+      .getApi(this.cons.api.getAllocationTypeData)
+      .subscribe((res) => {
+        let result: { [key: string]: any } = res;
+        if (result['message'] == 'success') {
+          this.allocationType = result['response'];
+          this.SpinnerService.hide();
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
       });
   }
 
@@ -589,7 +562,6 @@ export class BudgetAllocationComponent implements OnInit {
 
     let authRequestsList: any[] = [];
     let budgetRequest: any[] = [];
-
     for (var i = 0; i < this.tableData.length; i++) {
       budgetRequest.push({
         budgetFinanciaYearId: this.tableData[i].financialYear.serialNo,
@@ -597,7 +569,7 @@ export class BudgetAllocationComponent implements OnInit {
         subHeadId: this.tableData[i].selectedSubHead.budgetCodeId,
         amount: this.tableData[i].selectedSubHead.amount,
         remark: this.tableData[i].remarks,
-        allocationTypeId: 'ALL_101',
+        allocationTypeId: this.tableData[i].allocationType.allocTypeId,
       });
     }
 
@@ -640,7 +612,7 @@ export class BudgetAllocationComponent implements OnInit {
     // var newSubmitJson = this.submitJson;
     var newSubmitJson = data;
     console.log(JSON.stringify(newSubmitJson) + ' =submitJson for save budget');
-    debugger;
+
     this.apiService
       .postApi(this.cons.api.saveBudgetAllocationUnitWise, newSubmitJson)
       .subscribe({
@@ -799,11 +771,11 @@ export class BudgetAllocationComponent implements OnInit {
       );
       return;
     }
-
+    // debugger;
     this.SpinnerService.show();
     let submitJson = {
       finYearId: formDataValue.finYearId.serialNo,
-      codeSubHeadId: data.codeSubHeadId,
+      codeSubHeadId: data.budgetCodeId,
       unitId: formDataValue.unitId.unit,
       codeMajorHeadId: data.majorHead,
     };
@@ -822,6 +794,7 @@ export class BudgetAllocationComponent implements OnInit {
               unitName: formDataValue.unitId,
               selectedSubHead: data,
               remarks: formDataValue.remarks,
+              allocationType: formDataValue.allocationType,
             });
 
             if (this.subHeadFilterDatas != undefined) {
@@ -963,7 +936,6 @@ export class BudgetAllocationComponent implements OnInit {
   }
 
   addFieldValue() {
-    debugger;
     this.uploadDocuments.push(new UploadDocuments());
   }
 
@@ -1062,7 +1034,7 @@ export class BudgetAllocationComponent implements OnInit {
     this.formdata.patchValue({
       minorHeadId: formdataValue.majorHeadId.minorHead,
     });
-    debugger;
+
     let submitJson = {
       finyearId: formdataValue.finYearId.serialNo,
       majorHead: formdataValue.majorHeadId.majorHead,

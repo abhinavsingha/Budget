@@ -39,9 +39,7 @@
         <div class="card-body">
           <form [formGroup]="formdata" (ngSubmit)="showList(formdata.value)">
             <div class="row">
-
               <div class="col-md-6">
-
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
@@ -52,7 +50,6 @@
                       </ng-select>
                     </div>
                   </div>
-
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>To Unit</label>
@@ -62,7 +59,6 @@
                       </ng-select>
                     </div>
                   </div>
-
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Major Head</label>
@@ -72,19 +68,19 @@
                       </ng-select>
                     </div>
                   </div>
-
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Minor Head</label>
-                      <!-- <ng-select class="form-control select2bs4" style="width: 100%" [items]="minorHead"
-                        bindLabel="minorHead" (change)="getAvailableFund($event)" placeholder="Select Minor Head"
-                        formControlName="unit"> -->
                       <input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Minor Head"
                         value="asdf" formControlName="minorHeadId" readonly />
-
-
-
-
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Allocation Type</label>
+                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="allocationType"
+                        bindLabel="allocDesc" placeholder="Select Allocation Type" formControlName="allocationType">
+                      </ng-select>
                     </div>
                   </div>
                   <div class=" col-md-6">
@@ -107,7 +103,7 @@
                         <th>Sr No</th>
                         <th>Sub Head</th>
                         <th>Amount(crores)</th>
-                        <th>CDA Parking</th>
+                        <!-- <th>CDA Parking</th> -->
                         <th>Action</th>
                       </tr>
                     </thead>
@@ -136,8 +132,10 @@
                             id="Aallocationamount" placeholder="Please Enter Amount" />
 
                         </td>
-                        <td><button type="button" class="btn btn-warning" data-toggle="modal"
-                            data-target="#modal-lg">Add CDA</button></td>
+                        <!-- <td>
+                          <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-lg">Add
+                            CDA</button>
+                        </td> -->
                         <td>
                           <button type=" submit" class="btn btn-primary mr-2"
                             (click)="addSubHeadValue(subHeadData, formdata.value, i)">Add</button>

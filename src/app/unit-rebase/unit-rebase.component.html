@@ -37,7 +37,7 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body">
-          <form [formGroup]="formdata">
+          <form [formGroup]="formdata" (ngSubmit)="showList(formdata.value)">
             <div class="row">
               <div class="col-md-3">
                 <div class="form-group">
@@ -51,14 +51,15 @@
                 <div class="form-group">
                   <label>Unit</label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [items]="allunits" bindLabel="descr"
-                    appendTo="body" placeholder="Select To Unit" formControlName="toUnit">
+                    appendTo="body" placeholder="Select To Unit" formControlName="toUnit" (change)="selectUnit($event)">
                   </ng-select>
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
                   <label>From Station</label>
-                  <input type="text" class="form-control" id="frmStation" placeholder="Mumbai RHQ(W)" disabled />
+                  <input type="text" class="form-control" id="frmStation" placeholder="Mumbai RHQ(W)"
+                    formControlName="toStation" readonly />
                 </div>
               </div>
               <div class="col-md-3">

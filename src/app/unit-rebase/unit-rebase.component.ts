@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, DebugElement } from '@angular/core';
 
 import * as $ from 'jquery';
 import { ApiCallingServiceService } from '../services/api-calling/api-calling-service.service';
@@ -29,6 +29,7 @@ export class UnitRebaseComponent {
   formdata = new FormGroup({
     finYear: new FormControl(),
     toUnit: new FormControl(),
+    toStation: new FormControl(),
   });
 
   formdataForToStation = new FormGroup({
@@ -238,5 +239,40 @@ export class UnitRebaseComponent {
     };
 
     this.confirmModel(submitJson);
+  }
+
+  selectUnit(data: any) {
+    this.formdata.patchValue({
+      toStation: data.cgStation.stationName,
+    });
+  }
+
+  tableDataList: any[] = [];
+
+  showList(data: any) {
+    // debugger;
+    // data.finYear.serialNo;
+    // data.toUnit.unit;
+    // getAllUnitRebaseData/{finYear}/{unit}
+    this.SpinnerService.show();
+
+    this.apiService
+      .getApi(
+        this.cons.api.getAllUnitRebaseData +
+          '/' +
+          data.finYear.serialNo +
+          '/' +
+          data.toUnit.unit
+      )
+      .subscribe((res) => {
+        let result: { [key: string]: any } = res;
+        debugger;
+        if (result['message'] == 'success') {
+          this.tableDataList = result['response'];
+          this.SpinnerService.hide();
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      });
   }
 }
