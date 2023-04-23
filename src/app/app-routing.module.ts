@@ -18,6 +18,7 @@ import { CdaParkingComponent } from './cda-parking/cda-parking.component';
 import { RecieptComponent } from './reciept/reciept.component';
 import { UnitRebaseComponent } from './unit-rebase/unit-rebase.component';
 import { CdaParkingReportComponent } from './cda-parking-report/cda-parking-report.component';
+import {CbVerificationComponent} from "./cb-verification/cb-verification.component";
 
 const routes: Routes = [
   // { path: '', component: LoginComponent },
@@ -39,6 +40,10 @@ const routes: Routes = [
   {
     path: 'contingent-bill-aprover',
     component: ContigentBillApproverComponent,
+  },
+  {
+    path: 'cb-verification',
+    component: CbVerificationComponent,
   },
   {
     path: 'budget-allocation-subheadwise',

@@ -9,6 +9,7 @@ import { CommonService } from '../services/common/common.service';
 import Swal from 'sweetalert2';
 
 import { KeycloakService } from 'keycloak-angular';
+import {SharedService} from "../services/shared/shared.service";
 
 @Component({
   selector: 'app-header',
@@ -25,6 +26,7 @@ export class HeaderComponent {
   parseData: any;
 
   roleHeading: any;
+
 
   ngOnInit(): void {
     $.getScript('assets/js/adminlte.js');
@@ -47,7 +49,8 @@ export class HeaderComponent {
     private apiService: ApiCallingServiceService,
     private formBuilder: FormBuilder,
     private common: CommonService,
-    private keycloakService: KeycloakService
+    private keycloakService: KeycloakService,
+    private sharedService: SharedService
   ) {}
 
   changeRole(role: any) {
@@ -84,6 +87,8 @@ export class HeaderComponent {
           localStorage.removeItem('user_role');
           localStorage.setItem('user_role', data.roleName);
           this.roleHeading = data.roleName;
+          this.sharedService.roleHeading=this.roleHeading;
+          console.log(this.roleHeading);
           window.location.reload();
           this.SpinnerService.hide();
         } else {
@@ -166,6 +171,7 @@ export class HeaderComponent {
             this.name = result['response'].userDetails.fullName;
             this.roles = result['response'].userDetails.role;
             this.roleHeading = result['response'].userDetails.role[0].roleName;
+            this.sharedService.roleHeading=this.roleHeading;
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
