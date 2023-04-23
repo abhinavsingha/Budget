@@ -11,6 +11,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CommonService } from '../services/common/common.service';
 import Swal from 'sweetalert2';
 import { SharedService } from '../services/shared/shared.service';
+import { MultiCdaParking } from '../model/multi-cda-parking';
 
 @Component({
   selector: 'app-budget-approver',
@@ -18,7 +19,11 @@ import { SharedService } from '../services/shared/shared.service';
   styleUrls: ['./budget-approver.component.scss'],
 })
 export class BudgetApproverComponent implements OnInit {
+  multipleCdaParking: any[] = [];
+
   budgetDataList: any[] = [];
+
+  type: any = '';
 
   p: number = 1;
 
@@ -27,7 +32,15 @@ export class BudgetApproverComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    if (
+      localStorage.getItem('type') != null ||
+      localStorage.getItem('type') != undefined
+    ) {
+      this.type = localStorage.getItem('type');
+    }
     this.getAlGroupId(localStorage.getItem('group_id'));
+    this.getCdaUnitList();
+    this.multipleCdaParking.push(new MultiCdaParking());
     $.getScript('assets/js/adminlte.js');
   }
 
@@ -50,7 +63,6 @@ export class BudgetApproverComponent implements OnInit {
 
   getAlGroupId(groupId: any) {
     this.SpinnerService.show();
-    debugger;
     this.apiService
       .getApi(this.cons.api.getAlGroupId + '/' + groupId)
       .subscribe((res) => {
@@ -64,6 +76,19 @@ export class BudgetApproverComponent implements OnInit {
       });
   }
 
+  cdaUnitList: any[] = [];
+  getCdaUnitList() {
+    this.SpinnerService.show();
+    this.apiService.getApi(this.cons.api.getCdaUnitList).subscribe((res) => {
+      let result: { [key: string]: any } = res;
+      if (result['message'] == 'success') {
+        this.cdaUnitList = result['response'];
+        this.SpinnerService.hide();
+      } else {
+        this.common.faliureAlert('Please try later', result['message'], '');
+      }
+    });
+  }
   approverConfirmationModel(data: any) {}
 
   returnConfirmationModel(data: any) {}
@@ -166,5 +191,21 @@ export class BudgetApproverComponent implements OnInit {
         },
         complete: () => console.info('complete'),
       });
+  }
+
+  totalAmountToAllocateCDAParking: any;
+  addCDAParking(data: any) {
+    this.multipleCdaParking = [];
+    this.multipleCdaParking.push(new MultiCdaParking());
+    this.totalAmountToAllocateCDAParking = data.allocationAmount;
+    debugger;
+  }
+
+  deleteFromMultipleCdaParking(index: any) {
+    this.multipleCdaParking.splice(index, 1);
+  }
+
+  addNewRow() {
+    this.multipleCdaParking.push(new MultiCdaParking());
   }
 }
