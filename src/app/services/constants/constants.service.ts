@@ -6,10 +6,10 @@ import { Injectable } from '@angular/core';
 export class ConstantsService {
   constructor() {}
 
-  serviceUrl = 'https://icg.net.in/budget/'; //prod
+  // serviceUrl = 'https://icg.net.in/budget/'; //prod
   // serviceUrl = 'http://488e-203-153-42-234.ngrok.io/'; //dev
   // serviceUrl = 'http://192.168.1.131:1111/'; //dev
-
+  serviceUrl = 'https://icg.net.in/budget/';
   api = {
     getDataBudgetAllocation:
       this.serviceUrl + 'budgetAllocation/getDataBudgetAllocation',
@@ -39,7 +39,7 @@ export class ConstantsService {
     getSubHeadsData: this.serviceUrl + 'budgetAllocation/getSubHeadsData',
 
     getAllocationTypeData:
-      this.serviceUrl + 'budgetAllocation/getAllocationTypeData',
+      this.serviceUrl + 'budgetAllocation/getAllocationType',
 
     getDashboardData: this.serviceUrl + 'dashBoard/getDashBoardDta',
     saveContingentBill:
@@ -126,6 +126,7 @@ export class ConstantsService {
     budgetRecipetSave: this.serviceUrl + 'budgetRecipet/budgetRecipetSave',
 
     getBudgetRecipt: this.serviceUrl + 'budgetRecipet/getBudgetRecipt',
-    getCdaUnitList:this.serviceUrl + 'cdaParkingController/getCdaUnitList'
+    getCdaUnitList:this.serviceUrl + 'cdaParkingController/getCdaUnitList',
+    verifyContingentBill: this.serviceUrl+'contingentBillController/verifyContingentBill',
   };
 }
