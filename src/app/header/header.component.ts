@@ -4,12 +4,12 @@ import { ApiCallingServiceService } from '../services/api-calling/api-calling-se
 import { ConstantsService } from '../services/constants/constants.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Injectable, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CommonService } from '../services/common/common.service';
 import Swal from 'sweetalert2';
 
 import { KeycloakService } from 'keycloak-angular';
+import {SharedService} from "../services/shared/shared.service";
 
 @Component({
   selector: 'app-header',
@@ -21,11 +21,12 @@ export class HeaderComponent {
 
   roles: any[] = [];
 
-  roleHeading: any;
-
   userDetails: any = {};
 
   parseData: any;
+
+  roleHeading: any;
+
 
   ngOnInit(): void {
     $.getScript('assets/js/adminlte.js');
@@ -49,7 +50,7 @@ export class HeaderComponent {
     private formBuilder: FormBuilder,
     private common: CommonService,
     private keycloakService: KeycloakService,
-    private router: Router
+    private sharedService: SharedService
   ) {}
 
   changeRole(role: any) {
@@ -86,7 +87,8 @@ export class HeaderComponent {
           localStorage.removeItem('user_role');
           localStorage.setItem('user_role', data.roleName);
           this.roleHeading = data.roleName;
-          this.router.navigate(['/dashboard']);
+          this.sharedService.roleHeading=this.roleHeading;
+          console.log(this.roleHeading);
           window.location.reload();
           this.SpinnerService.hide();
         } else {
@@ -155,6 +157,7 @@ export class HeaderComponent {
   getDashBoardDta() {
     this.SpinnerService.show();
     var newSubmitJson = null;
+
     this.apiService
       .postApi(this.cons.api.getDashBoardDta, newSubmitJson)
       .subscribe({
@@ -162,9 +165,13 @@ export class HeaderComponent {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
+            // this.userDetails = JSON.parse(nr);
+
+            // let userDetailsString: {} = result['response'].userDetails.;
             this.name = result['response'].userDetails.fullName;
             this.roles = result['response'].userDetails.role;
             this.roleHeading = result['response'].userDetails.role[0].roleName;
+            this.sharedService.roleHeading=this.roleHeading;
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }

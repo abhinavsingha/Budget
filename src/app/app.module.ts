@@ -39,7 +39,7 @@ import { SharedService } from './services/shared/shared.service';
 import { SearchPipePipe } from './services/searchPipe/search-pipe.pipe';
 
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
-import { ManageUserRoleComponent } from './manage-user-role/manage-user-role.component';
+import {CbVerificationComponent} from "./cb-verification/cb-verification.component";
 
 // import { DialogComponent } from './dialog/dialog.component';
 // import { MatIconModule } from '@angular/material/icon';
@@ -103,7 +103,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     UnitRebaseComponent,
     SearchPipePipe,
     CdaParkingReportComponent,
-    ManageUserRoleComponent,
+    CbVerificationComponent,
     // DialogComponent,
   ],
   imports: [
