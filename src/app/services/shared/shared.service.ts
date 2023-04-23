@@ -6,5 +6,6 @@ export class SharedService {
   public redirectedFrom: string|undefined;
   public inbox:any;
   public outbox:any;
+  public roleHeading: any;
   constructor() { }
 }
