@@ -424,6 +424,7 @@ export class RevisionComponent {
       }
 
     }
+    this.getTotalAmount();
 
   }
 
@@ -447,16 +448,19 @@ export class RevisionComponent {
         }
       }
     }
+    this.getTotalAmount()
   }
   getTotalAmount(){
     this.totalExistingAmount = 0.0;
     this.totlaRevisionAmount = 0.0;
     this.totalRevisiedAmount = 0.0;
     for(let i=0;i<this.budgetRevisionUnitList2.length;i++){
-      this.totalExistingAmount=this.totalExistingAmount+this.budgetRevisionUnitList2[i].existingAmount
-      this.totalRevisiedAmount=this.totalRevisiedAmount+this.budgetRevisionUnitList2[i].revisiedAmount
-      if(this.budgetRevisionUnitList2[i].revisionAmount!=undefined){
-        this.totlaRevisionAmount=this.totlaRevisionAmount+this.budgetRevisionUnitList2[i].revisionAmount
+      if(!this.budgetRevisionUnitList2[i].isSelected){
+        this.totalExistingAmount=this.totalExistingAmount+this.budgetRevisionUnitList2[i].existingAmount
+        this.totalRevisiedAmount=this.totalRevisiedAmount+this.budgetRevisionUnitList2[i].revisiedAmount
+        if(this.budgetRevisionUnitList2[i].revisionAmount!=undefined){
+          this.totlaRevisionAmount=this.totlaRevisionAmount+this.budgetRevisionUnitList2[i].revisionAmount
+        }
       }
     }
   }
