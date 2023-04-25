@@ -772,8 +772,11 @@ export class BudgetAllocationComponent implements OnInit {
       );
       return;
     }
+    data.amount=data.amount*data.amountUnit.amount;
+    delete data.amountUnit;
     // debugger;
     this.SpinnerService.show();
+
     let submitJson = {
       finYearId: formDataValue.finYearId.serialNo,
       codeSubHeadId: data.budgetCodeId,
@@ -801,6 +804,7 @@ export class BudgetAllocationComponent implements OnInit {
             if (this.subHeadFilterDatas != undefined) {
               for (let i = 0; i < this.subHeadFilterDatas.length; i++) {
                 this.subHeadFilterDatas[i].amount = undefined;
+                this.subHeadFilterDatas[i].amountUnit=undefined
               }
             }
           } else {
@@ -1043,6 +1047,7 @@ export class BudgetAllocationComponent implements OnInit {
       finyearId: formdataValue.finYearId.serialNo,
       majorHead: formdataValue.majorHeadId.majorHead,
       unitId: formdataValue.unitId.unit,
+      allocationType:this.formdata.get('allocationType')?.value.allocTypeId
     };
 
     this.apiService.postApi(this.cons.api.getFilterData, submitJson).subscribe({
@@ -1056,6 +1061,7 @@ export class BudgetAllocationComponent implements OnInit {
           if (this.subHeadFilterDatas != undefined) {
             for (let i = 0; i < this.subHeadFilterDatas.length; i++) {
               this.subHeadFilterDatas[i].amount = undefined;
+              this.subHeadFilterDatas[i].amountUnit=undefined;
             }
           }
         } else {
@@ -1131,6 +1137,7 @@ export class BudgetAllocationComponent implements OnInit {
           if (this.subHeadFilterDatas != undefined) {
             for (let i = 0; i < this.subHeadFilterDatas.length; i++) {
               this.subHeadFilterDatas[i].amount = undefined;
+              this.subHeadFilterDatas[i].amountUnit=undefined;
             }
           }
         } else {
@@ -1165,5 +1172,23 @@ export class BudgetAllocationComponent implements OnInit {
         this.SpinnerService.hide();
       }
     );
+  }
+ amountUnit=[{
+   unit:'Crore',
+   amount:10000000
+ },{
+   unit:'Lakh',
+   amount:100000
+ },{
+   unit:'Thousand',
+   amount:1000
+ },{
+   unit:'Hundred',
+   amount:100
+ }
+ ]
+  test() {
+    debugger;
+
   }
 }
