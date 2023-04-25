@@ -1187,8 +1187,5 @@ export class BudgetAllocationComponent implements OnInit {
    amount:100
  }
  ]
-  test() {
-    debugger;
 
-  }
 }

@@ -152,7 +152,6 @@ export class BudgetAllocationSubheadwiseComponent {
 
   getAvailableFund(event: any) {
     //Step1:-> Selected Major Data and Minor Data automatically
-    debugger;
     this.formdata.patchValue({
       majorHead: event.majorHead,
       minorHead: event.minorHead,
@@ -181,8 +180,7 @@ export class BudgetAllocationSubheadwiseComponent {
     if (
       formDataValue.finYear == null ||
       formDataValue.subHead == null ||
-      formDataValue.allocationType == null ||
-      formDataValue.remarks == null
+      formDataValue.allocationType == null
     ) {
       this.common.faliureAlert(
         'Please try again',
@@ -191,7 +189,9 @@ export class BudgetAllocationSubheadwiseComponent {
       );
       return;
     }
-
+    for(let i =0;i< this.subHeadWiseUnitList.length;i++){
+      this.subHeadWiseUnitList[i].amount=this.subHeadWiseUnitList[i].amount*this.subHeadWiseUnitList[i].amountUnit.amount;
+    }
     this.submitted = true;
     if (this.formdata.invalid) {
       return;
@@ -279,6 +279,20 @@ export class BudgetAllocationSubheadwiseComponent {
     }
   }
   uploadFileResponse: any;
+  amountUnit=[{
+    unit:'Crore',
+    amount:10000000
+  },{
+    unit:'Lakh',
+    amount:100000
+  },{
+    unit:'Thousand',
+    amount:1000
+  },{
+    unit:'Hundred',
+    amount:100
+  }
+  ]
   uploadFile(index: any) {
     const formData = new FormData();
     formData.append('file', this.file);
@@ -297,8 +311,8 @@ export class BudgetAllocationSubheadwiseComponent {
           this.uploadFileResponse = result['response'];
           console.log(
             'upload file data ======= ' +
-              JSON.stringify(this.uploadFileResponse) +
-              ' =submitJson'
+            JSON.stringify(this.uploadFileResponse) +
+            ' =submitJson'
           );
 
           this.uploadDocuments[index].uploadDocId =
@@ -355,7 +369,7 @@ export class BudgetAllocationSubheadwiseComponent {
     for (var i = 0; i < this.budgetAllocationArray.length; i++) {
       budgetRequest.push({
         budgetFinanciaYearId:
-          this.budgetAllocationArray[i].financialYear.serialNo,
+        this.budgetAllocationArray[i].financialYear.serialNo,
         toUnitId: this.budgetAllocationArray[i].unitName.unit,
         subHeadId: this.budgetAllocationArray[i].subHeadName.budgetCodeId,
         amount: this.budgetAllocationArray[i].amount,
