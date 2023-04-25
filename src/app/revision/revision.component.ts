@@ -96,6 +96,9 @@ export class RevisionComponent {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.budgetFinYears = result['response'];
+        this.formdata.patchValue({
+          finYear: this.budgetFinYears[0],
+        });
         this.SpinnerService.hide();
       } else {
         this.common.faliureAlert('Please try later', result['message'], '');

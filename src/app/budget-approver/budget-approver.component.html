@@ -138,7 +138,7 @@
                       <!-- <td>{{buggetData.allocationAmount}}</td> -->
                       <!-- <td>{{buggetData.remarks}}</td> -->
                       <!-- <td>{{buggetData.status}}</td> -->
-                      <td>
+                      <td *ngIf="isInboxAndOutbox!= 'Outbox' && type!='BG' && userRole!='Budget Approver'">
                         <button type="submit" class="btn btn-warning mr-2" data-toggle="modal" data-target="#modal-lg"
                           (click)="addCDAParking(buggetData)">Add
                           CDA Parking</button>

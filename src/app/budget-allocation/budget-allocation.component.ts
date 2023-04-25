@@ -757,6 +757,7 @@ export class BudgetAllocationComponent implements OnInit {
   tableData: any[] = [];
 
   addSubHeadValue(data: any, formDataValue: any, subHeadIndex: any) {
+    debugger;
     if (
       data.amount == undefined ||
       formDataValue.remarks == null ||
@@ -952,6 +953,9 @@ export class BudgetAllocationComponent implements OnInit {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.budgetFinYearsNew = result['response'];
+        this.formdata.patchValue({
+          finYearId: this.budgetFinYearsNew[0],
+        });
         this.SpinnerService.hide();
       } else {
         this.common.faliureAlert('Please try later', result['message'], '');
