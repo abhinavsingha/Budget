@@ -205,63 +205,63 @@
             </div>
           </div>
 
-          <div class="card-body table-responsive p-0 mt-4">
-            <table class="table table-hover text-nowrap">
-              <thead>
-                <tr>
-                  <!-- <th></th> -->
-                  <th>Auth Unit</th>
-                  <th>Authority</th>
-                  <th>Authority Date</th>
-                  <th>Remark</th>
-                  <th>Document Name</th>
-                  <th class="thhead">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let uploadData of uploadDocuments; let i = index">
-                  <!-- <td><input class="form-check-input" type="checkbox" id="check1" name="option1" value="001"></td> -->
-                  <td>
-                    <div class="form-group">
-                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="unitForDocuments"
-                        bindLabel="descr" (change)="getAvailableFund($event)" appendTo="body"
-                        placeholder="Select To Unit" [(ngModel)]="uploadData.authUnit">
-                      </ng-select>
-                    </div>
-                  </td>
-                  <td><input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Authority"
-                      [(ngModel)]="uploadData.authority" name="{{uploadData.authority}}" /></td>
-                  <td><input type="date" class="form-control" id="date" [(ngModel)]="uploadData.authorityData" /></td>
-                  <td><input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Remarks"
-                      [(ngModel)]="uploadData.remarks" /></td>
-                  <td>
-                    <div class="form-group">
-                      <div class="input-group">
-                        <div class="custom-file">
-                          <input type="file" class="custom-file-input" id="exampleInputFile"
-                            (change)="onChangeFile($event)">
-                          <label class="custom-file-label" for="exampleInputFile">Choose
-                            file</label>
-                        </div>
-                        <div class="input-group-append">
-                          <span class="input-group-text" (click)="uploadFile(i)">Upload</span>
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                    <button type="submit" class="btn btn-danger float-left"
-                      (click)="deleteFieldValue(i)">Delete</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="row mt-2">
-            <div class="col-sm-12 col-md-12">
-              <button type="submit" class="btn btn-primary mr-2 float-left" (click)="addFieldValue()">Add Row</button>
-            </div>
-          </div>
+<!--          <div class="card-body table-responsive p-0 mt-4">-->
+<!--            <table class="table table-hover text-nowrap">-->
+<!--              <thead>-->
+<!--                <tr>-->
+<!--                  &lt;!&ndash; <th></th> &ndash;&gt;-->
+<!--                  <th>Auth Unit</th>-->
+<!--                  <th>Authority</th>-->
+<!--                  <th>Authority Date</th>-->
+<!--                  <th>Remark</th>-->
+<!--                  <th>Document Name</th>-->
+<!--                  <th class="thhead">Action</th>-->
+<!--                </tr>-->
+<!--              </thead>-->
+<!--              <tbody>-->
+<!--                <tr *ngFor="let uploadData of uploadDocuments; let i = index">-->
+<!--                  &lt;!&ndash; <td><input class="form-check-input" type="checkbox" id="check1" name="option1" value="001"></td> &ndash;&gt;-->
+<!--                  <td>-->
+<!--                    <div class="form-group">-->
+<!--                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="unitForDocuments"-->
+<!--                        bindLabel="descr" (change)="getAvailableFund($event)" appendTo="body"-->
+<!--                        placeholder="Select To Unit" [(ngModel)]="uploadData.authUnit">-->
+<!--                      </ng-select>-->
+<!--                    </div>-->
+<!--                  </td>-->
+<!--                  <td><input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Authority"-->
+<!--                      [(ngModel)]="uploadData.authority" name="{{uploadData.authority}}" /></td>-->
+<!--                  <td><input type="date" class="form-control" id="date" [(ngModel)]="uploadData.authorityData" /></td>-->
+<!--                  <td><input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Remarks"-->
+<!--                      [(ngModel)]="uploadData.remarks" /></td>-->
+<!--                  <td>-->
+<!--                    <div class="form-group">-->
+<!--                      <div class="input-group">-->
+<!--                        <div class="custom-file">-->
+<!--                          <input type="file" class="custom-file-input" id="exampleInputFile"-->
+<!--                            (change)="onChangeFile($event)">-->
+<!--                          <label class="custom-file-label" for="exampleInputFile">Choose-->
+<!--                            file</label>-->
+<!--                        </div>-->
+<!--                        <div class="input-group-append">-->
+<!--                          <span class="input-group-text" (click)="uploadFile(i)">Upload</span>-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                  </td>-->
+<!--                  <td>-->
+<!--                    <button type="submit" class="btn btn-danger float-left"-->
+<!--                      (click)="deleteFieldValue(i)">Delete</button>-->
+<!--                  </td>-->
+<!--                </tr>-->
+<!--              </tbody>-->
+<!--            </table>-->
+<!--          </div>-->
+<!--          <div class="row mt-2">-->
+<!--            <div class="col-sm-12 col-md-12">-->
+<!--              <button type="submit" class="btn btn-primary mr-2 float-left" (click)="addFieldValue()">Add Row</button>-->
+<!--            </div>-->
+<!--          </div>-->
         </div>
         <!-- /.card-body -->
         <div class="card-footer">

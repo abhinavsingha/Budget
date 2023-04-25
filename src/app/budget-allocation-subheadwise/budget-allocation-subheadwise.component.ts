@@ -346,7 +346,7 @@ export class BudgetAllocationSubheadwiseComponent {
     this.budgetAllocationArray;
     this.uploadDocuments;
 
-    let authRequestsList: any[] = [];
+    // let authRequestsList: any[] = [];
     let budgetRequest: any[] = [];
 
     for (var i = 0; i < this.budgetAllocationArray.length; i++) {
@@ -361,18 +361,18 @@ export class BudgetAllocationSubheadwiseComponent {
       });
     }
 
-    for (var i = 0; i < this.uploadDocuments.length; i++) {
-      authRequestsList.push({
-        authUnitId: this.uploadDocuments[i].authUnit.unit,
-        authority: this.uploadDocuments[i].authority,
-        authDate: this.uploadDocuments[i].authorityData,
-        remark: this.uploadDocuments[i].remarks,
-        authDocId: this.uploadDocuments[i].uploadDocId,
-      });
-    }
+    // for (var i = 0; i < this.uploadDocuments.length; i++) {
+    //   authRequestsList.push({
+    //     authUnitId: this.uploadDocuments[i].authUnit.unit,
+    //     authority: this.uploadDocuments[i].authority,
+    //     authDate: this.uploadDocuments[i].authorityData,
+    //     remark: this.uploadDocuments[i].remarks,
+    //     authDocId: this.uploadDocuments[i].uploadDocId,
+    //   });
+    // }
 
     this.submitJson = {
-      authRequests: authRequestsList,
+      // authRequests: authRequestsList,
       budgetRequest: budgetRequest,
     };
 
