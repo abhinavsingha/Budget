@@ -136,6 +136,9 @@ export class ConstantsService {
       this.serviceUrl + 'budgetAllocation/getCgUnitDataWithPurposeCode',
 
     getAllUnitRebaseData:
-      this.serviceUrl + 'unitRebaseController/getAllUnitRebaseData',
+      this.serviceUrl + 'unitRebaseController/getAllUnitRebaseData', getAvailableFundFindByUnitIdAndFinYearId: this.serviceUrl + 'budgetAllocation/getAvailableFundFindByUnitIdAndFinYearId',
+    saveBudgetRevisionData: this.serviceUrl + 'budgetAllocation/saveBudgetRevisionData'
+
+
   };
 }

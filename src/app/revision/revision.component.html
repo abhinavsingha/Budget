@@ -61,29 +61,35 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Major Head</label>
-                      <input type="number" class="form-control" id="PrevAllocation" placeholder="Major Head"
-                        formControlName="majorHead" readonly />
+                      <ng-select  [items]="majorHeadData"
+                                 bindLabel="majorHead" class="form-control select2bs4" formControlName="majorHead"
+                                 name="majorHead"
+                                 placeholder="Select Major Head" style="width: 100%">
+                      </ng-select>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Minor Head</label>
-                      <input type="number" class="form-control" id="PrevAllocation" placeholder="Minor Head"
-                        formControlName="minorHead" readonly />
+                      <ng-select  [items]="minorHeadData"
+                                  bindLabel="minorHead" class="form-control select2bs4" formControlName="minorHead"
+                                  name="minorHead"
+                                  placeholder="Select Minor Head" style="width: 100%">
+                      </ng-select>
                     </div>
                   </div>
 
                   <div class=" col-md-6">
                     <div class="form-group">
-                      <label>Fund Available</label>
-                      <input type="number" class="form-control" id="PrevAllocation" placeholder="2.22"
+                      <label>Balance Fund</label>
+                      <input type="number" class="form-control" id="balance" placeholder="2.22"
                         formControlName="fundAvailable" readonly />
                     </div>
                   </div>
                   <div class=" col-md-6">
                     <div class="form-group">
                       <label>RE(Additional/Withdrawl)</label>
-                      <input type="number" class="form-control" id="PrevAllocation" placeholder="0.24"
+                      <input type="number" class="form-control" id="re" placeholder="0.24"
                         formControlName="reallocateFund" readonly />
                     </div>
                   </div>
@@ -97,8 +103,8 @@
                   <div class="col-md-6">
                     <label style="opacity:0">.</label>
                     <br>
-                    <button type="submit" class="btn btn-primary mr-2">Add</button>
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="submit" class="btn btn-primary mr-2" (click)="saveDataToTable()">Add</button>
+<!--                    <button type="submit" class="btn btn-danger">Delete</button>-->
                   </div>
                 </div>
               </form>
@@ -112,33 +118,56 @@
                       <th>Existing(crores)</th>
                       <th>RE(crores)</th>
                       <th>Revised</th>
-                      <th>Action</th>
+<!--                      <th>Action</th>-->
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let subHeadWiseUnit of budgetRevisionUnitList; let i = index">
-                      <td>
-                        <div class="form-group">
-                          <ng-select class="form-control select2bs4" style="width: 100%" [items]="allunits"
-                            bindLabel="descr" (change)="getAvailableFund($event, i)" appendTo="body"
-                            placeholder="Select To Unit" [(ngModel)]="subHeadWiseUnit.unit">
-                          </ng-select>
-                        </div>
-                      </td>
-                      <td>
-                        <span *ngIf="!subHeadWiseUnit.isSelected">-</span>
-                        <span *ngIf="subHeadWiseUnit.isSelected">{{subHeadWiseUnit.existingAmount}}</span>
-                      </td>
-                      <td><input type="number" class="form-control" id="Aallocationamount"
-                          placeholder="Please Revised Amount" [(ngModel)]="subHeadWiseUnit.revisionAmount"
-                          (keyup)="revisionAmount(i)" (change)="revisionAmount(i)"
-                          [ngModelOptions]="{standalone: true}" /></td>
-                      <td>
-                        <span *ngIf="!subHeadWiseUnit.isSelected">-</span>
-                        <span *ngIf="subHeadWiseUnit.isSelected">{{subHeadWiseUnit.revisiedAmount}}</span>
-                      </td>
-                      <td><button type="submit" class="btn btn-danger mr-2">Delete</button></td>
-                    </tr>
+                  <tr *ngFor="let subHeadWiseUnit of budgetRevisionUnitList2; let i = index">
+                    <td *ngIf="!subHeadWiseUnit.isSelected">{{subHeadWiseUnit.unit.descr}}</td>
+                    <td *ngIf="!subHeadWiseUnit.isSelected">{{subHeadWiseUnit.existingAmount}}</td>
+                    <td *ngIf="!subHeadWiseUnit.isSelected"><input type="number" (change)="revisionAmount(i)" [(ngModel)]="subHeadWiseUnit.revisionAmount"></td>
+                    <td *ngIf="!subHeadWiseUnit.isSelected">{{subHeadWiseUnit.revisiedAmount}}</td>
+<!--                    <td><button type="submit" class="btn btn-danger mr-2">Delete</button></td>-->
+                  </tr>
+                  <tr>
+                    <td>Total</td>
+                    <td>{{totalExistingAmount}}</td>
+                    <td>{{totlaRevisionAmount}}</td>
+                    <td>{{totalRevisiedAmount}}</td>
+                  </tr>
+<!--                  <tr *ngFor="let subHeadWiseUnit of budgetRevisionUnitList; let i = index">-->
+<!--                  <td><ng-select class="form-control select2bs4" style="width: 100%" [items]="allunits"-->
+<!--                                                bindLabel="descr" (change)="getAvailableFundFindByUnitIdAndFinYearId($event, i)" appendTo="body"-->
+<!--                                                placeholder="Select To Unit" [(ngModel)]="subHeadWiseUnit.unit">-->
+<!--                                              </ng-select></td>-->
+<!--                  <td>0.00</td>-->
+<!--                  <td><input type="number"></td>-->
+<!--                  <td>{{subHeadWiseUnit.revisiedAmount}}</td>-->
+<!--                  <td><button type="submit" class="btn btn-danger mr-2">Delete</button></td>-->
+<!--                  </tr>-->
+<!--                    <tr *ngFor="let subHeadWiseUnit of budgetRevisionUnitList; let i = index">-->
+<!--                      <td>-->
+<!--                        <div class="form-group">-->
+<!--                          <ng-select class="form-control select2bs4" style="width: 100%" [items]="allunits"-->
+<!--                            bindLabel="descr" (change)="getAvailableFund($event, i)" appendTo="body"-->
+<!--                            placeholder="Select To Unit" [(ngModel)]="subHeadWiseUnit.unit">-->
+<!--                          </ng-select>-->
+<!--                        </div>-->
+<!--                      </td>-->
+<!--                      <td>-->
+<!--                        <span *ngIf="!subHeadWiseUnit.isSelected">-</span>-->
+<!--                        <span *ngIf="subHeadWiseUnit.isSelected">{{subHeadWiseUnit.existingAmount}}</span>-->
+<!--                      </td>-->
+<!--                      <td><input type="number" class="form-control" id="Aallocationamount"-->
+<!--                          placeholder="Please Revised Amount" [(ngModel)]="subHeadWiseUnit.revisionAmount"-->
+<!--                          (keyup)="revisionAmount(i)" (change)="revisionAmount(i)"-->
+<!--                          [ngModelOptions]="{standalone: true}" /></td>-->
+<!--                      <td>-->
+<!--                        <span *ngIf="!subHeadWiseUnit.isSelected">-</span>-->
+<!--                        <span *ngIf="subHeadWiseUnit.isSelected">{{subHeadWiseUnit.revisiedAmount}}</span>-->
+<!--                      </td>-->
+<!--                      <td><button type="submit" class="btn btn-danger mr-2">Delete</button></td>-->
+<!--                    </tr>-->
                   </tbody>
                   <tfoot>
                     <tr>
@@ -146,8 +175,8 @@
                       <td>{{totalExistingAmount}}</td>
                       <td>{{totlaRevisionAmount}}</td>
                       <td>38.00</td> -->
-                      <td><button type="submit" class="btn btn-primary mr-2"
-                          (click)="moveDataToNextGrid(formdata.value)">Add Row</button></td>
+<!--                      <td><button type="submit" class="btn btn-primary mr-2"-->
+<!--                          (click)="moveDataToNextGrid(formdata.value)">Add Row</button></td>-->
                     </tr>
                   </tfoot>
                 </table>
@@ -164,18 +193,28 @@
                 <table class="table table-hover text-nowrap">
                   <thead>
                     <tr>
-                      <th></th>
+                      <th><input type="checkbox" [(ngModel)]="masterChecked" (change)="selectAll()" [ngModelOptions]="{standalone: true}"> All</th>
                       <th>F.Y.</th>
                       <th>Unit</th>
                       <th>Sub Head</th>
                       <th>Bud. Type</th>
-                      <th>Existing(In Corores)</th>
-                      <th>RE(In Corores)</th>
+                      <th>Existing</th>
+                      <th>RE</th>
                       <th>Revised</th>
-                      <th>Remarks</th>
+<!--                      <th>Remarks</th>-->
                     </tr>
                   </thead>
                   <tbody>
+                  <tr *ngFor="let td of tabledata; let i = index">
+                    <td><input type="checkbox" [(ngModel)]="td.checked" [ngModelOptions]="{standalone: true}"></td>
+                    <td>{{td.financialYear.finYear}}</td>
+                    <td>{{td.unit.descr}}</td>
+                    <td>{{td.subHead.subHeadDescr}}</td>
+                    <td>RE</td>
+                    <td>{{td.amount}}</td>
+                    <td>{{td.revisedAmount}}</td>
+                    <td>{{td.amount+td.revisedAmount}}</td>
+                  </tr>
                     <!-- <tr>
 
                       <td><input class="form-check-input" type="checkbox" id="check1" name="option1" value="001"></td>
@@ -213,8 +252,8 @@
 
 
                 <div class="col-sm-12 col-md-12">
-                  <button type="submit" class="btn btn-danger mr-2 float-left">Delete</button>
-                  <button type="submit" class="btn btn-primary float-left">Print</button>
+                  <button type="submit" class="btn btn-danger mr-2 float-left" (click)="deleteTableData()">Delete</button>
+<!--                  <button type="submit" class="btn btn-primary float-left">Print</button>-->
                   <pagination-controls class="pagination float-right"></pagination-controls>
 
                 </div>
@@ -222,68 +261,71 @@
             </div>
           </div>
 
-          <div class="card-body table-responsive p-0 mt-4">
-            <table class="table table-hover text-nowrap">
-              <thead>
-                <tr>
-                  <!-- <th></th> -->
-                  <th>Auth Unit</th>
-                  <th>Authority</th>
-                  <th>Authority Date</th>
-                  <th>Remark</th>
-                  <th>Document Name</th>
-                  <th class="thhead">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let uploadData of uploadDocuments; let i = index">
-                  <!-- <td><input class="form-check-input" type="checkbox" id="check1" name="option1" value="001"></td> -->
-                  <td>
-                    <div class="form-group">
-                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="unitForDocuments"
-                        bindLabel="descr" (change)="getAvailableFund($event,'')" appendTo="body"
-                        placeholder="Select To Unit" [(ngModel)]="uploadData.authUnit">
-                      </ng-select>
-                    </div>
-                  </td>
-                  <td><input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Authority"
-                      [(ngModel)]="uploadData.authority" name="{{uploadData.authority}}" /></td>
-                  <td><input type="date" class="form-control" id="date" [(ngModel)]="uploadData.authorityData" /></td>
-                  <td><input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Remarks"
-                      [(ngModel)]="uploadData.remarks" /></td>
-                  <td>
-                    <div class="form-group">
-                      <div class="input-group">
-                        <div class="custom-file">
-                          <input type="file" class="custom-file-input" id="exampleInputFile"
-                            (change)="onChangeFile($event)">
-                          <label class="custom-file-label" for="exampleInputFile">Choose
-                            file</label>
-                        </div>
-                        <div class="input-group-append">
-                          <span class="input-group-text" (click)="uploadFile(i)">Upload</span>
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                    <button type="submit" class="btn btn-danger float-left"
-                      (click)="deleteFieldValue(i)">Delete</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="row mt-2">
-            <div class="col-sm-12 col-md-12">
-              <button type="submit" class="btn btn-primary mr-2 float-left" (click)="addFieldValue()">Add Row</button>
-            </div>
-          </div>
+<!--          <div class="card-body table-responsive p-0 mt-4">-->
+<!--            <table class="table table-hover text-nowrap">-->
+<!--              <thead>-->
+<!--                <tr>-->
+<!--                  &lt;!&ndash; <th></th> &ndash;&gt;-->
+<!--                  <th>Auth Unit</th>-->
+<!--                  <th>Authority</th>-->
+<!--                  <th>Authority Date</th>-->
+<!--                  <th>Remark</th>-->
+<!--                  <th>Document Name</th>-->
+<!--                  <th class="thhead">Action</th>-->
+<!--                </tr>-->
+<!--              </thead>-->
+<!--              <tbody>-->
+<!--                <tr *ngFor="let uploadData of uploadDocuments; let i = index">-->
+<!--                  &lt;!&ndash; <td><input class="form-check-input" type="checkbox" id="check1" name="option1" value="001"></td> &ndash;&gt;-->
+<!--                  <td>-->
+<!--                    <div class="form-group">-->
+<!--                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="unitForDocuments"-->
+<!--                        bindLabel="descr" (change)="getAvailableFund($event,'')" appendTo="body"-->
+<!--                        placeholder="Select To Unit" [(ngModel)]="uploadData.authUnit">-->
+<!--                      </ng-select>-->
+<!--                    </div>-->
+<!--                  </td>-->
+<!--                  <td><input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Authority"-->
+<!--                      [(ngModel)]="uploadData.authority" name="{{uploadData.authority}}" /></td>-->
+<!--                  <td><input type="date" class="form-control" id="date" [(ngModel)]="uploadData.authorityData" /></td>-->
+<!--                  <td><input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Remarks"-->
+<!--                      [(ngModel)]="uploadData.remarks" /></td>-->
+<!--                  <td>-->
+<!--                    <div class="form-group">-->
+<!--                      <div class="input-group">-->
+<!--                        <div class="custom-file">-->
+<!--                          <input type="file" class="custom-file-input" id="exampleInputFile"-->
+<!--                            (change)="onChangeFile($event)">-->
+<!--                          <label class="custom-file-label" for="exampleInputFile">Choose-->
+<!--                            file</label>-->
+<!--                        </div>-->
+<!--                        <div class="input-group-append">-->
+<!--                          <span class="input-group-text" (click)="uploadFile(i)">Upload</span>-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                  </td>-->
+<!--                  <td>-->
+<!--                    <button type="submit" class="btn btn-danger float-left"-->
+<!--                      (click)="deleteFieldValue(i)">Delete</button>-->
+<!--                  </td>-->
+<!--                </tr>-->
+<!--              </tbody>-->
+<!--            </table>-->
+<!--          </div>-->
+<!--          <div class="row mt-2">-->
+<!--            <div class="col-sm-12 col-md-12">-->
+<!--              <button type="submit" class="btn btn-primary mr-2 float-left" (click)="addFieldValue()">Add Row</button>-->
+<!--            </div>-->
+<!--          </div>-->
+
+
+
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
           <div class="row">
-            <button type="submit" class="btn btn-primary mr-2">Submit</button>
+            <button type="submit" class="btn btn-primary mr-2" (click)="saveRevisionData()">Submit</button>
           </div>
         </div>
 

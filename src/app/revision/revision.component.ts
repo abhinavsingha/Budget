@@ -15,6 +15,26 @@ import {
   Validators,
 } from '@angular/forms';
 
+class tableData {
+  checked:boolean=false;
+  financialYear:any;
+  unit:any;
+  subHead:any;
+  allocationType:any;
+  amount:any;
+  revisedAmount:any;
+
+}
+
+class revision {
+  budgetFinanciaYearId:any;
+  toUnitId:any;
+  subHeadId:any;
+  amount:any;
+  revisedAmount:any;
+  allocationTypeId:any;
+}
+
 @Component({
   selector: 'app-revision',
   templateUrl: './revision.component.html',
@@ -27,11 +47,8 @@ export class RevisionComponent {
   selectedunits: any[] = [];
   budgetRevisionUnitList: any[] = [];
   allocationType: any[] = [];
-
   budgetAllocationArray: any[] = [];
-
   submitted = false;
-
   p: number = 1;
   length: number = 0;
 
@@ -47,14 +64,19 @@ export class RevisionComponent {
     remarks: new FormControl('', Validators.required),
     reallocateFund: new FormControl(),
   });
+   majorHeadData: any;
+   minorHeadData: any;
+   allRevisedUnits: any;
+   budgetRevisionUnitList2: any[]=[];
 
   ngOnInit(): void {
     $.getScript('assets/js/adminlte.js');
     this.getBudgetFinYear();
     this.getSubHeadsData();
-    // this.getCgUnitData();
+     this.getCgUnitData();
     this.getNewEmptyEntries();
     this.getUnitDatas();
+    this.getMajorHead();
     this.getAvailableFundData();
     this.uploadDocuments.push(new UploadDocuments());
     $.getScript('assets/main.js');
@@ -84,9 +106,6 @@ export class RevisionComponent {
   }
 
   getNewEmptyEntries() {
-    this.budgetRevisionUnitList.push(new BudgetRevisionUnitList());
-    this.budgetRevisionUnitList.push(new BudgetRevisionUnitList());
-    this.budgetRevisionUnitList.push(new BudgetRevisionUnitList());
     this.budgetRevisionUnitList.push(new BudgetRevisionUnitList());
   }
 
@@ -152,7 +171,43 @@ export class RevisionComponent {
     });
   }
 
+  private getMajorHead() {
+    // const userJson = {userRoleId: "ICGS Delhi", userName: "kya hai ye", userUnitId: "000015"}
+    this.SpinnerService.show();
+    this.apiService.getApi(this.cons.api.getMajorData).subscribe({
+      next: (v: object) => {
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          localStorage.setItem('newToken', result['response']['token']);
+          this.majorHeadData = result['response'].subHead;
+          this.minorHeadData = result['response'].subHead;
+          this.SpinnerService.hide();
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.log('error');
+      },
+      complete: () => console.info('complete'),
+    });
+  }
+
   getAvailableFund(event: any, formDataValue: any) {
+    for(let i=0;i<this.subHeads.length;i++){
+      if(this.subHeads[i]==this.formdata.get('subHead')?.value){
+        for(let j=0;j<this.majorHeadData.length;j++) {
+          if (this.subHeads[i].majorHead == this.majorHeadData[j].majorHead)
+            this.formdata.get('majorHead')?.setValue(this.majorHeadData[j]);
+
+          if (this.subHeads[i].minorHead == this.minorHeadData[j].minorHead)
+            this.formdata.get('minorHead')?.setValue(this.minorHeadData[j]);
+        }
+      }
+
+    }
+
     //Step1:-> Selected Major Data and Minor Data automatically
     // this.formdata.patchValue({
     //   majorHead: event.majorHead,
@@ -193,7 +248,8 @@ export class RevisionComponent {
           let result: { [key: string]: any } = v;
 
           if (result['message'] == 'success') {
-            this.allunits = result['response'];
+            this.allRevisedUnits = result['response'];
+            this.populateRevisionData();
             // this.subHeadFilterDatas = result['response'].subHeads;
             // this.tableData.splice(indexValue, 1);
             // if (this.subHeadFilterDatas != undefined) {
@@ -289,16 +345,159 @@ export class RevisionComponent {
   }
 
   revisionAmount(index: any) {
-    this.budgetRevisionUnitList[index].revisiedAmount =
-      this.budgetRevisionUnitList[index].existingAmount +
-      this.budgetRevisionUnitList[index].revisionAmount;
-
-    this.totlaRevisionAmount =
-      this.totlaRevisionAmount +
-      this.budgetRevisionUnitList[index].revisionAmount;
+    this.budgetRevisionUnitList2[index].revisiedAmount = parseFloat(this.budgetRevisionUnitList2[index].existingAmount) + this.budgetRevisionUnitList2[index].revisionAmount;
+    this.getTotalAmount();
   }
 
   totalExistingAmount: any = 0.0;
   totlaRevisionAmount: any = 0.0;
   totalRevisiedAmount: any = 0.0;
+
+  private populateRevisionData() {
+    for(let i=0;i<this.allRevisedUnits.length;i++){
+      const entry:BudgetRevisionUnitList= {
+        id: undefined,
+        unit: this.allRevisedUnits[i].unit,
+        existingAmount: parseFloat(this.allRevisedUnits[i].existingAmount),
+        revisionAmount: undefined,
+        revisiedAmount: parseFloat(this.allRevisedUnits[i].existingAmount),
+        isSelected: false
+      }
+      this.budgetRevisionUnitList2.push(entry);
+    }
+    this.getTotalAmount();
+  }
+
+  getAvailableFundFindByUnitIdAndFinYearId($event: any, i: number) {
+    const finYear=this.formdata.get('finYear')?.value
+    let formData={};
+      if(finYear!=null){
+      formData={
+        unitId:this.budgetRevisionUnitList[i].unit.unit,
+        finYearId:JSON.parse(finYear).serialNo
+      }
+
+    this.apiService.postApi(this.cons.api.getAvailableFundFindByUnitIdAndFinYearId, formData).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+
+        if (result['message'] == 'success') {
+          // this.newSubcList = [];
+
+          this.common.successAlert(
+            'Success',
+            result['response']['msg'],
+            'success'
+          );
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
+  }
+  }
+  tabledata:tableData[]=[];
+  masterChecked: boolean=false;
+  saveDataToTable() {
+    for(let i=0;i<this.budgetRevisionUnitList2.length;i++){
+      if(this.budgetRevisionUnitList2[i].revisionAmount!=undefined&&!this.budgetRevisionUnitList2[i].isSelected){
+        const data:tableData= {
+          checked:false,
+          financialYear: this.formdata.get('finYear')?.value,
+          unit: this.budgetRevisionUnitList2[i].unit,
+          subHead: this.formdata.get('subHead')?.value,
+          allocationType: 'RE',
+          amount: parseFloat(this.budgetRevisionUnitList2[i].existingAmount),
+          revisedAmount: parseFloat(this.budgetRevisionUnitList2[i].revisionAmount)
+        }
+        this.tabledata.push(data);
+        // this.budgetRevisionUnitList2.splice(i, 1);
+        // i--;
+        this.budgetRevisionUnitList2[i].isSelected=true;
+      }
+
+    }
+
+  }
+
+  selectAll() {
+    for(let i=0;i<this.tabledata.length;i++){
+      this.tabledata[i].checked=this.masterChecked;
+      console.log(this.tabledata[i].checked);
+    }
+    console.log(this.masterChecked);
+  }
+
+  deleteTableData() {
+    for(let i=this.tabledata.length-1;i>=0;i--){
+      if(this.tabledata[i].checked){
+        for(let j=0;i<this.budgetRevisionUnitList2.length;j++){
+          if(this.tabledata[i].unit.unit==this.budgetRevisionUnitList2[j].unit.unit){
+            this.budgetRevisionUnitList2[j].isSelected=false;
+            this.tabledata.splice(i,1);
+            break;
+          }
+        }
+      }
+    }
+  }
+  getTotalAmount(){
+    this.totalExistingAmount = 0.0;
+    this.totlaRevisionAmount = 0.0;
+    this.totalRevisiedAmount = 0.0;
+    for(let i=0;i<this.budgetRevisionUnitList2.length;i++){
+      this.totalExistingAmount=this.totalExistingAmount+this.budgetRevisionUnitList2[i].existingAmount
+      this.totalRevisiedAmount=this.totalRevisiedAmount+this.budgetRevisionUnitList2[i].revisiedAmount
+      if(this.budgetRevisionUnitList2[i].revisionAmount!=undefined){
+        this.totlaRevisionAmount=this.totlaRevisionAmount+this.budgetRevisionUnitList2[i].revisionAmount
+      }
+    }
+  }
+  saveRevisionData(){
+    const requestJson:revision[]=[];
+    for(let i=0;i<this.tabledata.length;i++){
+    const entry:revision= {
+      budgetFinanciaYearId: this.tabledata[i].financialYear.serialNo,
+      toUnitId: this.tabledata[i].unit.unit,
+      subHeadId: this.tabledata[i].subHead.codeSubHeadId,
+      amount: this.tabledata[i].amount,
+      revisedAmount: this.tabledata[i].revisedAmount,
+      allocationTypeId: 'RE'
+    }
+    requestJson.push(entry);
+    }
+    this.apiService.postApi(this.cons.api.saveBudgetRevisionData, requestJson).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+
+        if (result['message'] == 'success') {
+          // this.newSubcList = [];
+
+          this.common.successAlert(
+            'Success',
+            result['response']['msg'],
+            'success'
+          );
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
+  }
 }
+
+

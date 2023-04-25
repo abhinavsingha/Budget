@@ -171,6 +171,7 @@ export class NewContigentBillComponent implements OnInit {
     this.getFinancialYear();
     this.getCgUnitData();
     this.getCBData();
+    this.getDashboardData();
   }
 
   addToList() {
@@ -383,6 +384,15 @@ export class NewContigentBillComponent implements OnInit {
           // this.userRole = result['response'].userDetails.role[0].roleName;
           this.sharedService.inbox = result['response'].inbox;
           this.sharedService.outbox = result['response'].outBox;
+          for(let i=0;i<this.unitData.length;i++){
+            if(this.unitData[i].unit==result['response'].userDetails.unitId){
+              this.formdata.get('unit')?.setValue(this.unitData[i]);
+              this.getBudgetAllotted();
+              this.formdata.get('authorityUnit')?.setValue(this.unitData[i]);
+            }
+
+          }
+
         }
       },
       (error) => {
