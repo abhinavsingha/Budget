@@ -190,7 +190,8 @@ export class BudgetAllocationSubheadwiseComponent {
       return;
     }
     for(let i =0;i< this.subHeadWiseUnitList.length;i++){
-      this.subHeadWiseUnitList[i].amount=this.subHeadWiseUnitList[i].amount*this.subHeadWiseUnitList[i].amountUnit.amount;
+      if(this.subHeadWiseUnitList[i].amountUnit!=undefined)
+        this.subHeadWiseUnitList[i].amount=this.subHeadWiseUnitList[i].amount*this.subHeadWiseUnitList[i].amountUnit.amount;
     }
     this.submitted = true;
     if (this.formdata.invalid) {
