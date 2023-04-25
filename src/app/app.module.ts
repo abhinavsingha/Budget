@@ -39,7 +39,7 @@ import { SharedService } from './services/shared/shared.service';
 import { SearchPipePipe } from './services/searchPipe/search-pipe.pipe';
 
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
-import {CbVerificationComponent} from "./cb-verification/cb-verification.component";
+import { CbVerificationComponent } from './cb-verification/cb-verification.component';
 
 // import { DialogComponent } from './dialog/dialog.component';
 // import { MatIconModule } from '@angular/material/icon';
