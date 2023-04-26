@@ -137,7 +137,8 @@ export class ConstantsService {
 
     getAllUnitRebaseData:
       this.serviceUrl + 'unitRebaseController/getAllUnitRebaseData', getAvailableFundFindByUnitIdAndFinYearId: this.serviceUrl + 'budgetAllocation/getAvailableFundFindByUnitIdAndFinYearId',
-    saveBudgetRevisionData: this.serviceUrl + 'budgetAllocation/saveBudgetRevisionData'
+    saveBudgetRevisionData: this.serviceUrl + 'budgetAllocation/saveBudgetRevisionData',
+    saveAuthData: this.serviceUrl+'budgetAllocation/saveAuthData'
 
 
   };

@@ -78,10 +78,17 @@
                       </ng-select>
                     </div>
                   </div>
-
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Allocation Type</label>
+                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="allocationType"
+                                 bindLabel="allocDesc" placeholder="Select Allocation Type" formControlName="allocationType" (change)="getBudgetRevisionData(formdata.value)">
+                      </ng-select>
+                    </div>
+                  </div>
                   <div class=" col-md-6">
                     <div class="form-group">
-                      <label>Balance Fund</label>
+                      <label>Available Fund</label>
                       <input type="number" class="form-control" id="balance" placeholder="2.22"
                         formControlName="fundAvailable" readonly />
                     </div>
@@ -100,6 +107,7 @@
                         formControlName="balanceFund" readonly />
                     </div>
                   </div>
+
                   <div class="col-md-6">
                     <label style="opacity:0">.</label>
                     <br>
@@ -203,7 +211,7 @@
                     <td>{{td.financialYear.finYear}}</td>
                     <td>{{td.unit.descr}}</td>
                     <td>{{td.subHead.subHeadDescr}}</td>
-                    <td>RE</td>
+                    <td>{{td.allocationType.allocDesc}}</td>
                     <td>{{td.amount}}</td>
                     <td>{{td.revisedAmount}}</td>
                     <td>{{td.amount+td.revisedAmount}}</td>

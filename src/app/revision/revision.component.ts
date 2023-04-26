@@ -78,6 +78,7 @@ export class RevisionComponent {
     this.getUnitDatas();
     this.getMajorHead();
     this.getAvailableFundData();
+    this.getAllocationTypeData()
     this.uploadDocuments.push(new UploadDocuments());
     $.getScript('assets/main.js');
   }
@@ -234,40 +235,10 @@ export class RevisionComponent {
     //   this.subHeadWiseUnitList.push(subHeadWiseUnit);
     // }
 
-    debugger;
-    let submitJson = {
-      budgetFinancialYearId: formDataValue.finYear.serialNo,
-      subHead: event.budgetCodeId,
-    };
 
-    this.apiService
-      .postApi(this.cons.api.getBudgetRevisionData, submitJson)
-      .subscribe({
-        next: (v: object) => {
-          this.SpinnerService.hide();
-          let result: { [key: string]: any } = v;
 
-          if (result['message'] == 'success') {
-            this.allRevisedUnits = result['response'];
-            this.populateRevisionData();
-            // this.subHeadFilterDatas = result['response'].subHeads;
-            // this.tableData.splice(indexValue, 1);
-            // if (this.subHeadFilterDatas != undefined) {
-            //   for (let i = 0; i < this.subHeadFilterDatas.length; i++) {
-            //     this.subHeadFilterDatas[i].amount = undefined;
-            //   }
-            // }
-          } else {
-            this.common.faliureAlert('Please try later', result['message'], '');
-          }
-        },
-        error: (e) => {
-          this.SpinnerService.hide();
-          console.error(e);
-          this.common.faliureAlert('Error', e['error']['message'], 'error');
-        },
-        complete: () => console.info('complete'),
-      });
+
+
   }
 
   moveDataToNextGrid(formDataValue: any) {
@@ -413,7 +384,7 @@ export class RevisionComponent {
           financialYear: this.formdata.get('finYear')?.value,
           unit: this.budgetRevisionUnitList2[i].unit,
           subHead: this.formdata.get('subHead')?.value,
-          allocationType: 'RE',
+          allocationType: this.formdata.get('allocationType')?.value,
           amount: parseFloat(this.budgetRevisionUnitList2[i].existingAmount),
           revisedAmount: parseFloat(this.budgetRevisionUnitList2[i].revisionAmount)
         }
@@ -464,16 +435,30 @@ export class RevisionComponent {
       }
     }
   }
+  getAllocationTypeData() {
+    this.SpinnerService.show();
+    this.apiService
+      .getApi(this.cons.api.getAllocationTypeData)
+      .subscribe((res) => {
+        let result: { [key: string]: any } = res;
+        if (result['message'] == 'success') {
+          this.allocationType = result['response'];
+          this.SpinnerService.hide();
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      });
+  }
   saveRevisionData(){
     const requestJson:revision[]=[];
     for(let i=0;i<this.tabledata.length;i++){
     const entry:revision= {
       budgetFinanciaYearId: this.tabledata[i].financialYear.serialNo,
       toUnitId: this.tabledata[i].unit.unit,
-      subHeadId: this.tabledata[i].subHead.codeSubHeadId,
+      subHeadId: this.tabledata[i].subHead.budgetCodeId,
       amount: this.tabledata[i].amount,
       revisedAmount: this.tabledata[i].revisedAmount,
-      allocationTypeId: 'RE'
+      allocationTypeId: this.tabledata[i].allocationType.allocTypeId
     }
     requestJson.push(entry);
     }
@@ -501,6 +486,42 @@ export class RevisionComponent {
       },
       complete: () => console.info('complete'),
     });
+  }
+  getBudgetRevisionData(formDataValue: any){
+    debugger;
+    let submitJson = {
+      budgetFinancialYearId: formDataValue.finYear.serialNo,
+       subHead: formDataValue.subHead.budgetCodeId,
+      allocationTypeId: formDataValue.allocationType.allocTypeId
+    };
+    this.apiService
+      .postApi(this.cons.api.getBudgetRevisionData, submitJson)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+
+          if (result['message'] == 'success') {
+            this.allRevisedUnits = result['response'];
+            this.populateRevisionData();
+            // this.subHeadFilterDatas = result['response'].subHeads;
+            // this.tableData.splice(indexValue, 1);
+            // if (this.subHeadFilterDatas != undefined) {
+            //   for (let i = 0; i < this.subHeadFilterDatas.length; i++) {
+            //     this.subHeadFilterDatas[i].amount = undefined;
+            //   }
+            // }
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
   }
 }
 

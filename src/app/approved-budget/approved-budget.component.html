@@ -21,14 +21,14 @@
       <!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-  
+
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
         <div class="card card-default">
           <div class="card-header">
             <h3 class="card-title">Approved Budget</h3>
-  
+
             <div class="card-tools">
               <button
                 type="button"
@@ -41,7 +41,7 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body">
-            <form>
+            <form [formGroup]="formdata">
                 <div class="row">
                     <div class="col-sm-12">
                       <div class="card-body table-responsive p-0">
@@ -58,42 +58,15 @@
                             </tr>
                           </thead>
                           <tbody>
-                                 <tr>
-                                  <td>1</td>
-                                  <td>2022-23</td>
-                                  <td>RHQ(W)</td>
-                                  <td>Office Expenses</td>
-                                  <td>BE</td>
-                                  <td>1.00</td>
-                                  <td>CGHQ to RHQ</td>
+                                 <tr *ngFor="let buggetData of budgetDataList  | paginate :{itemsPerPage:15,currentPage:p} ; let i = index">
+                                  <td>{{15 *(p-1)+i+1}}</td>
+                                  <td>{{buggetData.finYear.finYear}}</td>
+                                  <td>{{buggetData.toUnit.cgUnitShort}}</td>
+                                  <td>{{buggetData.subHead.subHeadDescr}}</td>
+                                  <td>{{buggetData.allocTypeId.allocDesc}}</td>
+                                  <td>{{buggetData.allocationAmount}}</td>
+                                  <td>{{buggetData.remarks}}</td>
                                 </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>2022-23</td>
-                                    <td>RHQ(W)</td>
-                                    <td>Office Expenses</td>
-                                    <td>BE</td>
-                                    <td>1.00</td>
-                                    <td>CGHQ to RHQ</td>
-                                  </tr>
-                                  <tr>
-                                    <td>3</td>
-                                    <td>2022-23</td>
-                                    <td>RHQ(W)</td>
-                                    <td>Office Expenses</td>
-                                    <td>BE</td>
-                                    <td>1.00</td>
-                                    <td>CGHQ to RHQ</td>
-                                  </tr>
-                                  <tr>
-                                    <td>4</td>
-                                    <td>2022-23</td>
-                                    <td>RHQ(W)</td>
-                                    <td>Office Expenses</td>
-                                    <td>BE</td>
-                                    <td>1.00</td>
-                                    <td>CGHQ to RHQ</td>
-                                  </tr>
                           </tbody>
                         </table>
                       </div>
@@ -204,57 +177,71 @@
               <div class="col-md-4">
                   <div class="form-group">
                     <label>Authority Unit</label>
-                    <select   class="form-control select2bs4" style="width: 100%">
-                      <option selected="selected">CGHQ</option>
-                      <option>RHQ(W)</option>
-                      <option>RHQ(S)</option>
-                    </select>
+                    <ng-select [items]="unitData" bindLabel="descr" class="form-control select2bs4"
+                               formControlName="authUnit" placeholder="Select Unit" style="width: 100%" >
+                    </ng-select>
                   </div>
                 </div>
               <div class="col-md-4">
                   <div class="form-group">
                     <label>Authority</label>
-                    <input  
+                    <input
                       type="text"
                       class="form-control"
                       id="BalanceFund"
                       placeholder="BE/15/CGHQ"
+                      formControlName="authority"
                     />
                   </div>
                 </div>
               <div class="col-md-4">
                   <div class="form-group">
                     <label>Date</label>
-                    <input  
+                    <input
                       type="date"
                       class="form-control"
                       id="Date"
                       placeholder="23/02/23"
+                      formControlName="date"
                     />
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
-                    <label for="exampleInputFile">Upload Document</label>
+                    <label for="invoice">Upload Document</label>
                     <div class="input-group">
-                    <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="exampleInputFile"  >
-                    <label class="custom-file-label" for="exampleInputFile">Browse</label>
+                      <div class="custom-file">
+                        <input #invoiceFileInput class="custom-file-input" formControlName="file" id="invoice"
+                               type="file">
+                        <label class="custom-file-label" for="invoice">Choose file</label>
+                      </div>
+                      <div class="input-group-append">
+                        <span (click)="upload()" class="input-group-text" style="cursor: pointer">Upload</span>
+                      </div>
                     </div>
-                    <div class="input-group-append">
-                    <span class="input-group-text docBtn" >Upload</span>
-                    </div>
-                    </div>
-                    </div>
+                  </div>
+<!--                  <div class="form-group">-->
+<!--                    <label for="exampleInputFile">Upload Document</label>-->
+<!--                    <div class="input-group">-->
+<!--                    <div class="custom-file">-->
+<!--                    <input type="file" class="custom-file-input" id="exampleInputFile"  >-->
+<!--                    <label class="custom-file-label" for="exampleInputFile">Browse</label>-->
+<!--                    </div>-->
+<!--                    <div class="input-group-append">-->
+<!--                    <span class="input-group-text docBtn" >Upload</span>-->
+<!--                    </div>-->
+<!--                    </div>-->
+<!--                    </div>-->
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
                     <label>Remarks</label>
-                    <input  
+                    <input
                       type="text"
                       class="form-control"
                       id="PrevAllocation"
                       placeholder="CGHQ to RHQ"
+                      formControlName="remarks"
                     />
                   </div>
                 </div>
@@ -264,7 +251,7 @@
           <!-- /.card-body -->
           <div class="card-footer">
             <div class="row">
-              <button type="submit" class="btn btn-primary mr-2">Submit</button>
+              <button type="submit" class="btn btn-primary mr-2" (click)="save(formdata.value)">Submit</button>
             </div>
           </div>
         </div>
@@ -272,8 +259,7 @@
       </div>
       <!-- /.container-fluid -->
     </section>
-  
+
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-  
