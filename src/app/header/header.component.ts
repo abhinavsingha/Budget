@@ -28,6 +28,10 @@ export class HeaderComponent {
 
   roleHeading: any;
 
+  unitName: any;
+
+  rank: any;
+
   ngOnInit(): void {
     $.getScript('assets/js/adminlte.js');
     let nr = localStorage.getItem('userDetails');
@@ -90,8 +94,8 @@ export class HeaderComponent {
           this.roleHeading = data.roleName;
           this.sharedService.roleHeading = this.roleHeading;
           // console.log(this.roleHeading);
-          // window.location.reload();
           this.router.navigate(['/dashboard']);
+          window.location.reload();
           this.SpinnerService.hide();
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
@@ -168,12 +172,15 @@ export class HeaderComponent {
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
             // this.userDetails = JSON.parse(nr);
-
+            debugger;
             // let userDetailsString: {} = result['response'].userDetails.;
+
             this.name = result['response'].userDetails.fullName;
             this.roles = result['response'].userDetails.role;
             this.roleHeading = result['response'].userDetails.role[0].roleName;
             this.sharedService.roleHeading = this.roleHeading;
+            this.unitName = result['response'].userDetails.unit;
+            this.rank = result['response'].userDetails.rank;
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }

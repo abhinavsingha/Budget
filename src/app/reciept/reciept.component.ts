@@ -43,6 +43,8 @@ export class RecieptComponent {
 
   p: number = 1;
 
+  totalAmount: any = 0.0;
+
   ngOnInit(): void {
     this.getBudgetFinYear();
     this.majorDataNew();
@@ -133,8 +135,6 @@ export class RecieptComponent {
   }
 
   majorHeadChange(selectedMajorHead: any, formdataValue: any) {
-    debugger;
-
     if (selectedMajorHead == undefined || selectedMajorHead == null) {
       this.formdata.reset();
       this.isSelectedRE = false;
@@ -314,6 +314,10 @@ export class RecieptComponent {
     let budgetRequest: any[] = [];
 
     for (var i = 0; i < this.subHeadList.length; i++) {
+      debugger;
+      if (this.subHeadList[i].amount == '') {
+        this.subHeadList[i].amount = '0';
+      }
       budgetRequest.push({
         budgetHeadId: this.subHeadList[i].budgetHead.budgetCodeId,
         allocationAmount: this.subHeadList[i].amount,
@@ -515,5 +519,12 @@ export class RecieptComponent {
       minorHead: '',
       majorHead: null,
     });
+  }
+
+  allocatedAmount(index: any) {
+    debugger;
+    this.totalAmount =
+      parseFloat(this.totalAmount) + parseFloat(this.subHeadList[index].amount);
+    // this.getTotalAmount();
   }
 }

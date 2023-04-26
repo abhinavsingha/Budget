@@ -466,7 +466,7 @@ export class BudgetAllocationComponent implements OnInit {
         subHeadName:
           this.subHeadArrayWithoutUnit[i].selectedSubHead.subHeadDescr,
         amount: this.subHeadArrayWithoutUnit[i].filledAmount,
-        remarks: this.subHeadArrayWithoutUnit[i].remarks,
+        // remarks: this.subHeadArrayWithoutUnit[i].remarks,
       });
     }
 
@@ -760,7 +760,6 @@ export class BudgetAllocationComponent implements OnInit {
     debugger;
     if (
       data.amount == undefined ||
-      formDataValue.remarks == null ||
       formDataValue.finYearId == null ||
       formDataValue.unitId == null ||
       formDataValue.majorHeadId == null

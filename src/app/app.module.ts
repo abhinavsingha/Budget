@@ -41,6 +41,7 @@ import { SearchPipePipe } from './services/searchPipe/search-pipe.pipe';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { CbVerificationComponent } from './cb-verification/cb-verification.component';
 import { ApprovedBudgetComponent } from './approved-budget/approved-budget.component';
+import { SearchPipeRecieptPipe } from './services/search-pipe-reciept/search-pipe-reciept.pipe';
 
 // import { DialogComponent } from './dialog/dialog.component';
 // import { MatIconModule } from '@angular/material/icon';
@@ -106,6 +107,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     CdaParkingReportComponent,
     CbVerificationComponent,
     ApprovedBudgetComponent,
+    SearchPipeRecieptPipe,
     // DialogComponent,
   ],
   imports: [
@@ -131,6 +133,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     SharedService,
     DatePipe,
     SearchPipePipe,
+    SearchPipeRecieptPipe,
     {
       provide: APP_INITIALIZER,
       useFactory: initializeKeycloak,

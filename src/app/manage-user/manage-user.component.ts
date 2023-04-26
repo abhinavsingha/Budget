@@ -126,44 +126,65 @@ export class ManageUserComponent {
   }
 
   getUserInfo(event: any) {
+    debugger;
     this.SpinnerService.show();
-    let submitJson = {
-      unitId: event.unit,
-      userName: '',
-    };
-    this.apiService.postApi(this.cons.api.getUserInfo, submitJson).subscribe({
-      next: (v: object) => {
-        this.SpinnerService.hide();
-        let result: { [key: string]: any } = v;
-        if (result['message'] == 'success') {
-          this.allUsers = [];
-          this.formdata.patchValue({
-            pno: undefined,
-            userName: undefined,
-            rank: undefined,
-          });
-          this.allUsers = result['response'];
-        } else {
-          this.common.faliureAlert('Please try later', result['message'], '');
-        }
-      },
-      error: (e) => {
-        this.SpinnerService.hide();
-        console.error(e);
-        this.common.faliureAlert('Error', e['error']['message'], 'error');
-      },
-      complete: () => console.info('complete'),
-    });
+    if (event.unit == '001321') {
+      this.apiService
+        .getApi('https://icg.net.in/cghrdata/getAllData/getALlDBudgetPno/1026')
+        .subscribe((res) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = res;
+          if (result['message'] == 'success') {
+            this.allUsers = [];
+            this.formdata.patchValue({
+              pno: undefined,
+              userName: undefined,
+              rank: undefined,
+            });
+            this.allUsers = result['response'];
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        });
+    } else {
+      let submitJson = {
+        unitId: event.unit,
+        userName: '',
+      };
+      this.apiService.postApi(this.cons.api.getUserInfo, submitJson).subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            this.allUsers = [];
+            this.formdata.patchValue({
+              pno: undefined,
+              userName: undefined,
+              rank: undefined,
+            });
+            this.allUsers = result['response'];
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
+    }
   }
 
   getCgUnitDataWithPurposeCode() {
     this.SpinnerService.show();
-    debugger;
+
     this.apiService
       .getApi(this.cons.api.getCgUnitDataWithPurposeCode)
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
-        debugger;
+
         if (result['message'] == 'success') {
           this.allunits = result['response'];
           this.SpinnerService.hide();

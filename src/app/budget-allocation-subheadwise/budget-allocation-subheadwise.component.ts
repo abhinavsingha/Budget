@@ -39,6 +39,8 @@ export class BudgetAllocationSubheadwiseComponent {
 
   submitJson: any;
 
+  fundAvailableByFinYearAndUnitAndAllocationType: any;
+
   formdata = new FormGroup({
     finYear: new FormControl(),
     subHead: new FormControl(),
@@ -189,9 +191,11 @@ export class BudgetAllocationSubheadwiseComponent {
       );
       return;
     }
-    for(let i =0;i< this.subHeadWiseUnitList.length;i++){
-      if(this.subHeadWiseUnitList[i].amountUnit!=undefined)
-        this.subHeadWiseUnitList[i].amount=this.subHeadWiseUnitList[i].amount*this.subHeadWiseUnitList[i].amountUnit.amount;
+    for (let i = 0; i < this.subHeadWiseUnitList.length; i++) {
+      if (this.subHeadWiseUnitList[i].amountUnit != undefined)
+        this.subHeadWiseUnitList[i].amount =
+          this.subHeadWiseUnitList[i].amount *
+          this.subHeadWiseUnitList[i].amountUnit.amount;
     }
     this.submitted = true;
     if (this.formdata.invalid) {
@@ -280,20 +284,24 @@ export class BudgetAllocationSubheadwiseComponent {
     }
   }
   uploadFileResponse: any;
-  amountUnit=[{
-    unit:'Crore',
-    amount:10000000
-  },{
-    unit:'Lakh',
-    amount:100000
-  },{
-    unit:'Thousand',
-    amount:1000
-  },{
-    unit:'Hundred',
-    amount:100
-  }
-  ]
+  amountUnit = [
+    {
+      unit: 'Crore',
+      amount: 10000000,
+    },
+    {
+      unit: 'Lakh',
+      amount: 100000,
+    },
+    {
+      unit: 'Thousand',
+      amount: 1000,
+    },
+    {
+      unit: 'Hundred',
+      amount: 100,
+    },
+  ];
   uploadFile(index: any) {
     const formData = new FormData();
     formData.append('file', this.file);
@@ -312,8 +320,8 @@ export class BudgetAllocationSubheadwiseComponent {
           this.uploadFileResponse = result['response'];
           console.log(
             'upload file data ======= ' +
-            JSON.stringify(this.uploadFileResponse) +
-            ' =submitJson'
+              JSON.stringify(this.uploadFileResponse) +
+              ' =submitJson'
           );
 
           this.uploadDocuments[index].uploadDocId =
@@ -370,7 +378,7 @@ export class BudgetAllocationSubheadwiseComponent {
     for (var i = 0; i < this.budgetAllocationArray.length; i++) {
       budgetRequest.push({
         budgetFinanciaYearId:
-        this.budgetAllocationArray[i].financialYear.serialNo,
+          this.budgetAllocationArray[i].financialYear.serialNo,
         toUnitId: this.budgetAllocationArray[i].unitName.unit,
         subHeadId: this.budgetAllocationArray[i].subHeadName.budgetCodeId,
         amount: this.budgetAllocationArray[i].amount,
@@ -471,5 +479,69 @@ export class BudgetAllocationSubheadwiseComponent {
         this.SpinnerService.hide();
       }
     );
+  }
+
+  getFundAvailableBuFinYearAndSubHeadAndAllocationType(data: any) {
+    if (data.subHead == null || data.subHead == undefined) {
+      this.common.warningAlert(
+        'Warning',
+        'Please Select Sub-Head first...!',
+        'error'
+      );
+      return;
+    }
+
+    this.SpinnerService.show();
+    // var newSubmitJson = this.submitJson;
+    // var newSubmitJson = data;
+    // console.log(JSON.stringify(newSubmitJson) + ' =submitJson for save budget');
+
+    debugger;
+    let submitJson = {
+      finYearId: data.finYear.serialNo,
+      subHeadId: data.subHead.budgetCodeId,
+      allocationTypeId: data.allocationType.allocTypeId,
+    };
+
+    this.apiService
+      .postApi(
+        this.cons.api.getAvailableFundFindByUnitIdAndFinYearId,
+        submitJson
+      )
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            this.fundAvailableByFinYearAndUnitAndAllocationType =
+              result['response'].fundAvailable;
+
+            this.formdata.patchValue({
+              fundAvailable: result['response'].fundAvailable,
+            });
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
+  }
+
+  allocatedTotalAmount: number = 0;
+
+  allocatedAmount(index: any) {
+    this.allocatedTotalAmount =
+      this.allocatedTotalAmount + this.subHeadWiseUnitList[index].amount;
+
+    this.formdata.patchValue({
+      currentAllocation: this.allocatedTotalAmount,
+    });
+    debugger;
+    // this.getTotalAmount();
   }
 }

@@ -87,7 +87,7 @@
             </div>
             <div class="col-md-9">
               <div class="card-body table-responsive p-0 " style="height:400px;">
-                <table class="table table-hover text-nowrap">
+                <table class="table table-hover text-nowrap" style="height:400px;">
                   <thead>
                     <tr>
                       <th>Sr. No.</th>
@@ -120,22 +120,23 @@
                       </td>
                       <td><input type="text" class="form-control" id="Aallocationamount"
                           placeholder="Please Enter Amount Here" [(ngModel)]="subHeadData.amount"
-                          [ngModelOptions]="{standalone: true}" /></td>
+                          [ngModelOptions]="{standalone: true}" (change)="allocatedAmount(i)" /></td>
                     </tr>
 
                   </tbody>
-                  <!-- <tfoot>
+                  <tfoot>
                     <tr>
-                      <td><button type="submit" class="btn btn-warning mr-2"><i class="fas fa-plus"></i> Add
-                          Row</button></td>
+
+
+
+                      <td>Total</td>
                       <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
+                      <td *ngIf="isSelectedRE || isSelectedMA ||isSectedVOA"></td>
+                      <td *ngIf="isSelectedMA || isSectedSG"></td>
+                      <td *ngIf="isSectedSG"></td>
+                      <td> {{totalAmount}}</td>
                     </tr>
-                  </tfoot> -->
+                  </tfoot>
                 </table>
 
               </div>
@@ -197,11 +198,11 @@
               </tbody>
             </table>
           </div>
-          <!-- <div class="row mt-2">
+          <div class="row mt-2">
             <div class="col-sm-12 col-md-12">
               <button type="submit" class="btn btn-primary mr-2 float-left" (click)="addFieldValue()">Add Row</button>
             </div>
-          </div> -->
+          </div>
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
@@ -215,7 +216,7 @@
         <div class="card-header">
           <h3 class="card-title">View Reciept</h3>
 
-          <!-- <div class="card-tools">
+          <div class="card-tools">
             <div class="input-group input-group-sm">
               <input type="text" [(ngModel)]="searchText" class="form-control"
                 placeholder="Search by F.Y./MA/Supplementary Grant">
@@ -225,7 +226,7 @@
                 </div>
               </div>
             </div>
-          </div> -->
+          </div>
         </div>
         <!-- /.card-header -->
         <div class="card-body">
@@ -246,7 +247,7 @@
                 </thead>
                 <tbody *ngIf="searchText == ''">
                   <tr
-                    *ngFor="let tableData of finalTableData  | searchPipe: searchText | paginate :{itemsPerPage:10,currentPage:p}; let i = index">
+                    *ngFor="let tableData of finalTableData  | searchPipeReciept: searchText | paginate :{itemsPerPage:10,currentPage:p}; let i = index">
                     <td>{{10 *(p-1)+i+1}}</td>
                     <td>{{tableData.finYear.finYear}}</td>
                     <td>{{tableData.subHead.subHeadDescr}}</td>
@@ -265,7 +266,7 @@
                 </tbody>
                 <tbody *ngIf="searchText != '' ">
                   <tr
-                    *ngFor="let tableData of finalTableData  | searchPipe: searchText | paginate :{itemsPerPage:10,currentPage:p}; let i = index">
+                    *ngFor="let tableData of finalTableData  | searchPipeReciept: searchText | paginate :{itemsPerPage:10,currentPage:p}; let i = index">
                     <td>{{10 *(p-1)+i+1}}</td>
                     <td>{{tableData.finYear.finYear}}</td>
                     <td>{{tableData.subHead.subHeadDescr}}</td>

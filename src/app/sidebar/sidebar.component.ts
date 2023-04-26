@@ -24,6 +24,8 @@ export class SidebarComponent {
 
   outbox: any;
 
+  unitName: any;
+
   ngOnInit(): void {
     $.getScript('assets/js/adminlte.js');
     // this.userRole = localStorage.getItem('user_role');
@@ -70,6 +72,7 @@ export class SidebarComponent {
             this.outbox = result['response'].outBox;
             this.sharedService.inbox = result['response'].inbox;
             this.sharedService.outbox = result['response'].outBox;
+            this.unitName = result['response'].userDetails.unit;
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
