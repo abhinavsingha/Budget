@@ -77,6 +77,7 @@ export class InboxComponent implements OnInit {
   ) {}
 
   redirect(li: InboxList) {
+    debugger;
     if (li.groupId != null || li.groupId != undefined) {
       localStorage.setItem('group_id', li.groupId);
     }

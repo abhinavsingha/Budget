@@ -76,6 +76,7 @@ export class OutboxComponent implements OnInit {
   ) {}
 
   redirect(li: InboxList) {
+    debugger;
     if (li.groupId != null || li.groupId != undefined) {
       localStorage.setItem('group_id', li.groupId);
     }
@@ -95,12 +96,16 @@ export class OutboxComponent implements OnInit {
 
       // window.location.href =;
     } else if (li.type == 'BG') {
-      this.router.navigate(['/budget-approval']);
-      this.sharedService.redirectedFrom = 'inbox';
+      if (li.status == 'Approved') {
+        this.router.navigate(['/budget-approved']);
+      } else {
+        this.router.navigate(['/budget-approval']);
+      }
+      // this.sharedService.redirectedFrom = 'inbox';
       // window.location.href = '/budget-approval';
     } else if (li.type == 'BR') {
       this.router.navigate(['/budget-approval']);
-      this.sharedService.redirectedFrom = 'inbox';
+      // this.sharedService.redirectedFrom = 'inbox';
       // window.location.href = '/budget-approval';
     }
   }

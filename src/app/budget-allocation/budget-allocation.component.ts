@@ -772,7 +772,7 @@ export class BudgetAllocationComponent implements OnInit {
       );
       return;
     }
-    data.amount=data.amount*data.amountUnit.amount;
+    data.amount = data.amount * data.amountUnit.amount;
     delete data.amountUnit;
     // debugger;
     this.SpinnerService.show();
@@ -782,6 +782,7 @@ export class BudgetAllocationComponent implements OnInit {
       codeSubHeadId: data.budgetCodeId,
       unitId: formDataValue.unitId.unit,
       codeMajorHeadId: data.majorHead,
+      allocationType: formDataValue.allocationType.allocTypeId,
     };
 
     this.apiService
@@ -804,7 +805,7 @@ export class BudgetAllocationComponent implements OnInit {
             if (this.subHeadFilterDatas != undefined) {
               for (let i = 0; i < this.subHeadFilterDatas.length; i++) {
                 this.subHeadFilterDatas[i].amount = undefined;
-                this.subHeadFilterDatas[i].amountUnit=undefined
+                this.subHeadFilterDatas[i].amountUnit = undefined;
               }
             }
           } else {
@@ -1000,6 +1001,7 @@ export class BudgetAllocationComponent implements OnInit {
 
   // minorHeadAutoSelect: any;
   getAllSubHeadByFinYearMajorHeadAndUnit(formdataValue: any) {
+    debugger;
     this.count = 1;
     this.countFinYear = 1;
 
@@ -1019,7 +1021,9 @@ export class BudgetAllocationComponent implements OnInit {
       formdataValue.finYearId == null ||
       formdataValue.unitId == null ||
       formdataValue.unitId.length == 0 ||
-      formdataValue.finYearId.length == 0
+      formdataValue.finYearId.length == 0 ||
+      formdataValue.allocationType == null ||
+      formdataValue.allocationType.length == 0
     ) {
       this.formdata.patchValue({
         majorHeadId: [],
@@ -1029,7 +1033,7 @@ export class BudgetAllocationComponent implements OnInit {
       });
       this.common.faliureAlert(
         'Please try again...!',
-        'Please select Financial Year and To Unit.',
+        'Please select Financial Year, To Unit and allocation type.',
         ''
       );
       return;
@@ -1047,7 +1051,7 @@ export class BudgetAllocationComponent implements OnInit {
       finyearId: formdataValue.finYearId.serialNo,
       majorHead: formdataValue.majorHeadId.majorHead,
       unitId: formdataValue.unitId.unit,
-      allocationType:this.formdata.get('allocationType')?.value.allocTypeId
+      allocationType: this.formdata.get('allocationType')?.value.allocTypeId,
     };
 
     this.apiService.postApi(this.cons.api.getFilterData, submitJson).subscribe({
@@ -1061,7 +1065,7 @@ export class BudgetAllocationComponent implements OnInit {
           if (this.subHeadFilterDatas != undefined) {
             for (let i = 0; i < this.subHeadFilterDatas.length; i++) {
               this.subHeadFilterDatas[i].amount = undefined;
-              this.subHeadFilterDatas[i].amountUnit=undefined;
+              this.subHeadFilterDatas[i].amountUnit = undefined;
             }
           }
         } else {
@@ -1137,7 +1141,7 @@ export class BudgetAllocationComponent implements OnInit {
           if (this.subHeadFilterDatas != undefined) {
             for (let i = 0; i < this.subHeadFilterDatas.length; i++) {
               this.subHeadFilterDatas[i].amount = undefined;
-              this.subHeadFilterDatas[i].amountUnit=undefined;
+              this.subHeadFilterDatas[i].amountUnit = undefined;
             }
           }
         } else {
@@ -1173,19 +1177,22 @@ export class BudgetAllocationComponent implements OnInit {
       }
     );
   }
- amountUnit=[{
-   unit:'Crore',
-   amount:10000000
- },{
-   unit:'Lakh',
-   amount:100000
- },{
-   unit:'Thousand',
-   amount:1000
- },{
-   unit:'Hundred',
-   amount:100
- }
- ]
-
+  amountUnit = [
+    {
+      unit: 'Crore',
+      amount: 10000000,
+    },
+    {
+      unit: 'Lakh',
+      amount: 100000,
+    },
+    {
+      unit: 'Thousand',
+      amount: 1000,
+    },
+    {
+      unit: 'Hundred',
+      amount: 100,
+    },
+  ];
 }

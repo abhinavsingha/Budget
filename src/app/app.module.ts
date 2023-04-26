@@ -40,6 +40,7 @@ import { SearchPipePipe } from './services/searchPipe/search-pipe.pipe';
 
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { CbVerificationComponent } from './cb-verification/cb-verification.component';
+import { ApprovedBudgetComponent } from './approved-budget/approved-budget.component';
 
 // import { DialogComponent } from './dialog/dialog.component';
 // import { MatIconModule } from '@angular/material/icon';
@@ -104,6 +105,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     SearchPipePipe,
     CdaParkingReportComponent,
     CbVerificationComponent,
+    ApprovedBudgetComponent,
     // DialogComponent,
   ],
   imports: [

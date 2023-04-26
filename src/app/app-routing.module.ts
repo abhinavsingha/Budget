@@ -18,7 +18,8 @@ import { CdaParkingComponent } from './cda-parking/cda-parking.component';
 import { RecieptComponent } from './reciept/reciept.component';
 import { UnitRebaseComponent } from './unit-rebase/unit-rebase.component';
 import { CdaParkingReportComponent } from './cda-parking-report/cda-parking-report.component';
-import {CbVerificationComponent} from "./cb-verification/cb-verification.component";
+import { CbVerificationComponent } from './cb-verification/cb-verification.component';
+import { ApprovedBudgetComponent } from './approved-budget/approved-budget.component';
 
 const routes: Routes = [
   // { path: '', component: LoginComponent },
@@ -70,6 +71,7 @@ const routes: Routes = [
     component: UnitRebaseComponent,
   },
   { path: 'cda-parking-report', component: CdaParkingReportComponent },
+  { path: 'budget-approved', component: ApprovedBudgetComponent },
 ];
 
 @NgModule({
