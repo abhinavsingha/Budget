@@ -77,7 +77,7 @@ export class ConstantsService {
 
     getAllStation: this.serviceUrl + 'unitRebaseController/getAllStation',
 
-    saveRebase: this.serviceUrl + 'unitRebaseController/saveRebase',
+    saveRebase: this.serviceUrl + 'unitRebaseController/saveUnitRebase',
 
     getDashBoardDta: this.serviceUrl + 'dashBoard/getDashBoardDta',
 

@@ -80,49 +80,49 @@
                       <th>Unit</th>
                       <th>F.Y.</th>
                       <th>Sub Head</th>
-                      <th>Allocated</th>
+                      <th>Allocated Fund</th>
                       <th>Expenditure</th>
-                      <th>Balance</th>
+                      <th>Balance Fund</th>
                       <th>Last CB Date</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <!-- <tr>
-                      <td>ICGS Sarang</td>
-                      <td>2022-23</td>
-                      <td>Office Expenses</td>
-                      <td>120000.00</td>
-                      <td>100000.00</td>
-                      <td>20000.00</td>
-                      <td>12/10/2022</td>
+                     <tr *ngFor="let td of tableDataList; let i = index">
+                      <td>{{td.unit}}</td>
+                      <td>{{td.finYear}}</td>
+                      <td>{{td.subHead}}</td>
+                      <td>{{td.allocated}}</td>
+                      <td>{{td.expenditure}}</td>
+                      <td>{{td.bal}}</td>
+                      <td>{{td.lastCbDate}}</td>
                     </tr>
-                    <tr>
-                      <td>ICGS Sarang</td>
-                      <td>2022-23</td>
-                      <td>Office Expenses</td>
-                      <td>120000.00</td>
-                      <td>100000.00</td>
-                      <td>20000.00</td>
-                      <td>12/10/2022</td>
-                    </tr>
-                    <tr>
-                      <td>ICGS Sarang</td>
-                      <td>2022-23</td>
-                      <td>Office Expenses</td>
-                      <td>120000.00</td>
-                      <td>100000.00</td>
-                      <td>20000.00</td>
-                      <td>12/10/2022</td>
-                    </tr>
-                    <tr>
-                      <td>ICGS Sarang</td>
-                      <td>2022-23</td>
-                      <td>Office Expenses</td>
-                      <td>120000.00</td>
-                      <td>100000.00</td>
-                      <td>20000.00</td>
-                      <td>12/10/2022</td>
-                    </tr> -->
+                     <!--<tr>
+                       <td>ICGS Sarang</td>
+                       <td>2022-23</td>
+                       <td>Office Expenses</td>
+                       <td>120000.00</td>
+                       <td>100000.00</td>
+                       <td>20000.00</td>
+                       <td>12/10/2022</td>
+                     </tr>
+                     <tr>
+                       <td>ICGS Sarang</td>
+                       <td>2022-23</td>
+                       <td>Office Expenses</td>
+                       <td>120000.00</td>
+                       <td>100000.00</td>
+                       <td>20000.00</td>
+                       <td>12/10/2022</td>
+                     </tr>
+                     <tr>
+                       <td>ICGS Sarang</td>
+                       <td>2022-23</td>
+                       <td>Office Expenses</td>
+                       <td>120000.00</td>
+                       <td>100000.00</td>
+                       <td>20000.00</td>
+                       <td>12/10/2022</td>
+                     </tr> -->
                   </tbody>
                 </table>
               </div>

@@ -26,14 +26,14 @@
           *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'|| userRole=='CB Verifier'|| userRole=='CB Creator'|| userRole=='CB Approver'">
           <a href="#" class="nav-link" [routerLink]="['/inbox']" [routerLinkActive]="['active']">
             <i class="fas fa-inbox nav-icon"></i>
-            <p>Inbox<span class="right badge badge-danger">{{this.sharedService.inbox}}</span></p>
+            <p>Inbox<span *ngIf="sharedService.inbox !== '0'" class="right badge badge-danger">{{this.sharedService.inbox}}</span></p>
           </a>
         </li>
         <li class="nav-item"
           *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'|| userRole=='CB Verifier'|| userRole=='CB Creator'|| userRole=='CB Approver'">
           <a href="#" class="nav-link" [routerLink]="['/outbox']" [routerLinkActive]="['active']">
             <i class="fas fa-paper-plane nav-icon"></i>
-            <p>Outbox<span class="right badge badge-danger">{{this.sharedService.outbox}}</span></p>
+            <p>Outbox<span *ngIf="sharedService.outbox !== '0'" class="right badge badge-danger">{{this.sharedService.outbox}}</span></p>
           </a>
         </li>
         <li class="nav-item menu-is-opening menu-open" *ngIf="userRole=='Budget Manager'">

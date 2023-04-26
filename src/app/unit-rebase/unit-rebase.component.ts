@@ -168,6 +168,8 @@ export class UnitRebaseComponent {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
         if (result['message'] == 'success') {
+          this.getCgUnitData();
+          this.getAllStation();
           this.common.successAlert(
             'Success',
             result['response']['msg'],
@@ -272,6 +274,7 @@ export class UnitRebaseComponent {
         debugger;
         if (result['message'] == 'success') {
           this.tableDataList = result['response'];
+
           this.SpinnerService.hide();
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
