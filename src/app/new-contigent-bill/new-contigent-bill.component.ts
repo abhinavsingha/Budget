@@ -484,6 +484,7 @@ export class NewContigentBillComponent implements OnInit {
 
   setSubHead() {
     this.SpinnerService.show();
+    this.formdata.get('minorHead')?.setValue(this.majorHead);
     let url =
       this.cons.api.getAllSubHeadByMajorHead + '/' + this.majorHead.majorHead;
     this.apiService.getApi(url).subscribe(

@@ -115,8 +115,8 @@
                   <thead>
                     <tr>
                       <th>Unit</th>
-                      <th>Existing(crores)</th>
-                      <th>RE(crores)</th>
+                      <th>Existing</th>
+                      <th>Revision Amount</th>
                       <th>Revised</th>
 <!--                      <th>Action</th>-->
                     </tr>
@@ -129,12 +129,7 @@
                     <td *ngIf="!subHeadWiseUnit.isSelected">{{subHeadWiseUnit.revisiedAmount}}</td>
 <!--                    <td><button type="submit" class="btn btn-danger mr-2">Delete</button></td>-->
                   </tr>
-                  <tr>
-                    <td>Total</td>
-                    <td>{{totalExistingAmount}}</td>
-                    <td>{{totlaRevisionAmount}}</td>
-                    <td>{{totalRevisiedAmount}}</td>
-                  </tr>
+
 <!--                  <tr *ngFor="let subHeadWiseUnit of budgetRevisionUnitList; let i = index">-->
 <!--                  <td><ng-select class="form-control select2bs4" style="width: 100%" [items]="allunits"-->
 <!--                                                bindLabel="descr" (change)="getAvailableFundFindByUnitIdAndFinYearId($event, i)" appendTo="body"-->
@@ -170,14 +165,12 @@
 <!--                    </tr>-->
                   </tbody>
                   <tfoot>
-                    <tr>
-                      <!-- <td>Total</td>
-                      <td>{{totalExistingAmount}}</td>
-                      <td>{{totlaRevisionAmount}}</td>
-                      <td>38.00</td> -->
-<!--                      <td><button type="submit" class="btn btn-primary mr-2"-->
-<!--                          (click)="moveDataToNextGrid(formdata.value)">Add Row</button></td>-->
-                    </tr>
+                  <tr>
+                    <td>Total</td>
+                    <td>{{totalExistingAmount}}</td>
+                    <td>{{totlaRevisionAmount}}</td>
+                    <td>{{totalRevisiedAmount}}</td>
+                  </tr>
                   </tfoot>
                 </table>
 
