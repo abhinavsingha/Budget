@@ -90,14 +90,14 @@ export class HeaderComponent {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
           localStorage.removeItem('user_role');
-         // localStorage.setItem('user_role', data.roleName);
+          // localStorage.setItem('user_role', data.roleName);
           this.roleHeading = data.roleName;
           this.sharedService.roleHeading = this.roleHeading;
           // console.log(this.roleHeading);
+
           if (this.router.url == '/dashboard') {
             window.location.reload();
-          }
-          else {
+          } else {
             this.router.navigate(['/dashboard']);
           }
           this.SpinnerService.hide();
@@ -137,7 +137,8 @@ export class HeaderComponent {
 
   logout() {
     // this.confirmModelForLogout(null);
-
+    localStorage.removeItem('userCurrentUnit');
+    localStorage.removeItem('userCurrentUnitName');
     localStorage.removeItem('token');
     localStorage.removeItem('cgwwaUserDetails');
     this.keycloakService.logout();

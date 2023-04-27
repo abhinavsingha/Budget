@@ -57,6 +57,7 @@ export class SidebarComponent {
     this.keycloakService.logout();
   }
 
+  unitId: any;
   getDashBoardDta() {
     this.SpinnerService.show();
     var newSubmitJson = null;
@@ -73,6 +74,16 @@ export class SidebarComponent {
             this.sharedService.inbox = result['response'].inbox;
             this.sharedService.outbox = result['response'].outBox;
             this.unitName = result['response'].userDetails.unit;
+            this.unitId = result['response'].userDetails.unitId;
+            debugger;
+            localStorage.setItem(
+              'userCurrentUnit',
+              result['response'].userDetails.unitId
+            );
+            localStorage.setItem(
+              'userCurrentUnitName',
+              result['response'].userDetails.unit
+            );
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }

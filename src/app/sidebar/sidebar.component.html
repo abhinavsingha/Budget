@@ -49,7 +49,7 @@
             </p>
           </a>
           <ul class="nav nav-treeview">
-            <li class="nav-item">
+            <li class="nav-item" *ngIf="userRole=='Budget Manager' && this.unitId == '001321'">
               <a href="#" class="nav-link" [routerLink]="['/reciept']" [routerLinkActive]="['active']">
                 <i class="fas fa-file-alt nav-icon"></i>
                 <p>Reciept</p>

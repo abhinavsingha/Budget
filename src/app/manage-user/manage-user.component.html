@@ -139,7 +139,7 @@
                   </thead>
                   <tbody *ngIf="searchText == ''">
                     <tr
-                      *ngFor="let user of usersWithRole  | searchPipe: searchText | paginate :{itemsPerPage:10,currentPage:p}; let i = index">
+                      *ngFor="let user of usersWithRole  | searchUserPipe: searchText | paginate :{itemsPerPage:10,currentPage:p}; let i = index">
                       <td>{{10 *(p-1)+i+1}}</td>
                       <td>{{user.unit}}</td>
                       <td>{{user.rank}}</td>
@@ -163,7 +163,7 @@
                   </tbody>
                   <tbody *ngIf="searchText != '' ">
                     <tr
-                      *ngFor="let user of usersWithRole  | searchPipe: searchText | paginate :{itemsPerPage:10,currentPage:p}; let i = index">
+                      *ngFor="let user of usersWithRole  | searchUserPipe: searchText | paginate :{itemsPerPage:10,currentPage:p}; let i = index">
                       <td>{{10 *(p-1)+i+1}}</td>
                       <td>{{user.unit}}</td>
                       <td>{{user.rank}}</td>

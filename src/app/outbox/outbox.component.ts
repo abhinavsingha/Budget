@@ -97,8 +97,10 @@ export class OutboxComponent implements OnInit {
       // window.location.href =;
     } else if (li.type == 'BG') {
       if (li.status == 'Approved') {
-        this.router.navigate(['/budget-approved']);
-      } else {
+        this.router.navigate(['/budget-approval']);
+      } else if (li.status == 'Fully Approved') {
+        this.router.navigate(['/budget-approval']);
+      } else if (li.status == 'Pending') {
         this.router.navigate(['/budget-approval']);
       }
       // this.sharedService.redirectedFrom = 'inbox';
@@ -113,11 +115,11 @@ export class OutboxComponent implements OnInit {
   private outboxlist() {
     debugger;
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.outboxlist).subscribe((res) => {
+    this.apiService.getApi(this.cons.api.inboxlist).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.SpinnerService.hide();
-        let list: any = result['response'];
+        let list: any = result['response'].outList;
         if (list != null) {
           for (let i = 0; i < list.length; i++) {
             const entry: InboxList = {

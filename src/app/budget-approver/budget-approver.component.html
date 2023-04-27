@@ -201,8 +201,8 @@
                   </div>
                 </div>
               </div> -->
-              <div class="col-md-4" *ngIf="type=='BG' && userRole=='Budget Approver'">
-                <div class="form-group" *ngIf="sharedService.redirectedFrom === 'inbox'">
+              <div class="col-md-4" *ngIf="type=='BG' && userRole=='Budget Approver' && isInboxAndOutbox!= 'Outbox'">
+                <div class="form-group">
                   <label>Approve/Return Remarks</label>
                   <input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Remarks"
                     formControlName="remarks" />
@@ -214,8 +214,8 @@
         <!-- /.card-body -->
 
 
-        <div class=" card-footer" *ngIf="type=='BG' && userRole=='Budget Approver'">
-          <div class="row" *ngIf="sharedService.redirectedFrom === 'inbox'">
+        <div class=" card-footer" *ngIf="type=='BG' && userRole=='Budget Approver' && isInboxAndOutbox!= 'Outbox'">
+          <div class="row">
             <button type="submit" class="btn btn-primary mr-2" (click)="approveForm(formdata.value)">Approve</button>
             <button type="submit" class="btn btn-danger" (click)="returnForm(formdata.value)">Return</button>
           </div>

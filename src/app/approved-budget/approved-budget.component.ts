@@ -1,16 +1,17 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import * as $ from "jquery";
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
-import {NgxSpinnerService} from "ngx-spinner";
-import {ConstantsService} from "../services/constants/constants.service";
-import {ApiCallingServiceService} from "../services/api-calling/api-calling-service.service";
-import {CommonService} from "../services/common/common.service";
-import {SharedService} from "../services/shared/shared.service";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import * as $ from 'jquery';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ConstantsService } from '../services/constants/constants.service';
+import { ApiCallingServiceService } from '../services/api-calling/api-calling-service.service';
+import { CommonService } from '../services/common/common.service';
+import { SharedService } from '../services/shared/shared.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-approved-budget',
   templateUrl: './approved-budget.component.html',
-  styleUrls: ['./approved-budget.component.scss']
+  styleUrls: ['./approved-budget.component.scss'],
 })
 export class ApprovedBudgetComponent implements OnInit {
   @ViewChild('invoiceFileInput') invoiceFileInput: any;
@@ -38,7 +39,8 @@ export class ApprovedBudgetComponent implements OnInit {
     private apiService: ApiCallingServiceService,
     private formBuilder: FormBuilder,
     private common: CommonService,
-    public sharedService: SharedService
+    public sharedService: SharedService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -116,48 +118,47 @@ export class ApprovedBudgetComponent implements OnInit {
     );
   }
   upload() {
-      const file: File = this.invoiceFileInput.nativeElement.files[0];
-      console.log(file);
-      const formData = new FormData();
-      console.log(this.formdata.get('file')?.value);
-      formData.append('file', file);
-      this.SpinnerService.show();
-      this.apiService.postApi(this.cons.api.fileUpload, formData).subscribe({
-        next: (v: object) => {
-          this.SpinnerService.hide();
-          let result: { [key: string]: any } = v;
+    const file: File = this.invoiceFileInput.nativeElement.files[0];
+    console.log(file);
+    const formData = new FormData();
+    console.log(this.formdata.get('file')?.value);
+    formData.append('file', file);
+    this.SpinnerService.show();
+    this.apiService.postApi(this.cons.api.fileUpload, formData).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
 
-          if (result['message'] == 'success') {
-            this.common.successAlert(
-              'Success',
-              result['response']['msg'],
-              'success'
-            );
-            this.invoice = result['response'].uploadDocId;
-            this.invoicePath = result['response'].uploadPathUrl;
-            this.SpinnerService.hide();
-          } else {
-            this.common.faliureAlert('Please try later', result['message'], '');
-            this.SpinnerService.hide();
-          }
-        },
-        error: (e) => {
+        if (result['message'] == 'success') {
+          this.common.successAlert(
+            'Success',
+            result['response']['msg'],
+            'success'
+          );
+          this.invoice = result['response'].uploadDocId;
+          this.invoicePath = result['response'].uploadPathUrl;
           this.SpinnerService.hide();
-          console.error(e);
-          this.common.faliureAlert('Error', e['error']['message'], 'error');
-        },
-        complete: () => this.SpinnerService.hide(),
-      });
-
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+          this.SpinnerService.hide();
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => this.SpinnerService.hide(),
+    });
   }
-  save(formDataValue:any){
-    let newSubmitJson={
-      authDate:formDataValue.date,
-      remark:formDataValue.remarks,
-      authUnitId:formDataValue.authUnit.unit,
+  save(formDataValue: any) {
+    let newSubmitJson = {
+      authDate: formDataValue.date,
+      remark: formDataValue.remarks,
+      authUnitId: formDataValue.authUnit.unit,
       authDocId: this.invoice,
-      authGroupId: localStorage.getItem('group_id')
-    }
+      authGroupId: localStorage.getItem('group_id'),
+    };
     this.apiService
       .postApi(this.cons.api.saveAuthData, newSubmitJson)
       .subscribe({
@@ -168,13 +169,12 @@ export class ApprovedBudgetComponent implements OnInit {
           // console.log(JSON.stringify(result) + " =submitJson");
 
           if (result['message'] == 'success') {
-            // this.newSubcList = [];
-            // this.newSubcArr = [];
-            this.common.successAlert(
-              'Success',
-              result['response']['msg'],
-              'success'
-            );
+            // this.common.successAlert(
+            //   'Success',
+            //   result['response']['msg'],
+            //   'success'
+            // );
+            this.router.navigate(['/dashboard']);
             this.getDashBoardDta();
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
@@ -188,7 +188,4 @@ export class ApprovedBudgetComponent implements OnInit {
         complete: () => console.info('complete'),
       });
   }
-
-
-
 }

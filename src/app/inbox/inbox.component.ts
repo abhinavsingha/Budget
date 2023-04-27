@@ -97,8 +97,13 @@ export class InboxComponent implements OnInit {
 
       // window.location.href =;
     } else if (li.type == 'BG') {
-      this.router.navigate(['/budget-approval']);
-      this.sharedService.redirectedFrom = 'inbox';
+      if (li.status == 'Approved') {
+        this.router.navigate(['/budget-approved']);
+      } else if (li.status == 'Fully Approved') {
+        this.router.navigate(['/budget-approval']);
+      } else if (li.status == 'Pending') {
+        this.router.navigate(['/budget-approval']);
+      }
       // window.location.href = '/budget-approval';
     } else if (li.type == 'BR') {
       this.router.navigate(['/budget-approval']);
@@ -114,8 +119,10 @@ export class InboxComponent implements OnInit {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.SpinnerService.hide();
-        let list: any = result['response'];
-        if (list != null) {
+        debugger;
+        let list: any = result['response'].inboxList;
+
+        if (list.length > 0) {
           for (let i = 0; i < list.length; i++) {
             const entry: InboxList = {
               serial: i + 1,

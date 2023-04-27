@@ -52,6 +52,8 @@ export class RecieptComponent {
     this.uploadDocuments.push(new UploadDocuments());
     this.getUnitDatas();
     this.getBudgetRecipt();
+
+    debugger;
     $.getScript('assets/main.js');
   }
 
@@ -148,7 +150,7 @@ export class RecieptComponent {
       this.uploadDocuments.push(new UploadDocuments());
       return;
     }
-
+    this.totalAmount = 0;
     if (formdataValue.finYear == null || formdataValue.finYear == undefined) {
       this.common.faliureAlert(
         'Please try again.',
@@ -310,11 +312,11 @@ export class RecieptComponent {
   }
 
   saveBudgetRecipt() {
+    this.totalAmount = 0;
     let authRequestsList: any[] = [];
     let budgetRequest: any[] = [];
 
     for (var i = 0; i < this.subHeadList.length; i++) {
-      debugger;
       if (this.subHeadList[i].amount == '') {
         this.subHeadList[i].amount = '0';
       }
@@ -508,6 +510,7 @@ export class RecieptComponent {
   }
 
   changeFinYear() {
+    this.totalAmount = 0;
     this.isSelectedRE = false;
     this.isSelectedMA = false;
     this.isSectedSG = false;
@@ -522,9 +525,15 @@ export class RecieptComponent {
   }
 
   allocatedAmount(index: any) {
-    debugger;
-    this.totalAmount =
-      parseFloat(this.totalAmount) + parseFloat(this.subHeadList[index].amount);
+    this.totalAmount = 0;
+
+    for (var i = 0; i < this.subHeadList.length; i++) {
+      if (this.subHeadList[i].amount != '') {
+        this.totalAmount =
+          parseFloat(this.totalAmount) + parseFloat(this.subHeadList[i].amount);
+      }
+    }
+
     // this.getTotalAmount();
   }
 }

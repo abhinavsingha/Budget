@@ -62,13 +62,19 @@ export class ManageUserRoleComponent {
     userName: new FormControl(),
     rank: new FormControl(),
   });
-
+  currentUserUnit: any;
+  userCurrentUnitName: any;
   ngOnInit(): void {
     $.getScript('assets/js/adminlte.js');
     this.getAllUser();
     this.getAllRole();
     this.getCgUnitDataWithPurposeCode();
     this.getDashBoardDta();
+
+    this.currentUserUnit = localStorage.getItem('userCurrentUnit');
+
+    this.userCurrentUnitName = localStorage.getItem('userCurrentUnitName');
+    debugger;
     $.getScript('assets/js/adminlte.js');
   }
 
@@ -208,7 +214,7 @@ export class ManageUserRoleComponent {
 
   pushDataInMainList(formDataValue: any) {
     this.usersWithRole.push({
-      unit: formDataValue.unit.cgUnitShort,
+      unit: this.userCurrentUnitName,
       rank: formDataValue.pno.rank,
       name: formDataValue.pno.name,
       pno: formDataValue.pno.pno,
@@ -222,8 +228,8 @@ export class ManageUserRoleComponent {
   saveUserData(formDataValue: any) {
     debugger;
     let submitJson = {
-      unitId: formDataValue.pno.unitId,
-      unit: formDataValue.pno.unit,
+      unitId: this.currentUserUnitNew,
+      unit: this.currentUserUnitNameNew,
       pid: formDataValue.pno.pid,
       pno: formDataValue.pno.pno,
       fullName: formDataValue.pno.name,
@@ -326,6 +332,8 @@ export class ManageUserRoleComponent {
       });
   }
 
+  currentUserUnitNew: any;
+  currentUserUnitNameNew: any;
   getDashBoardDta() {
     this.SpinnerService.show();
     var newSubmitJson = null;
@@ -337,6 +345,9 @@ export class ManageUserRoleComponent {
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
             // debugger;
+
+            this.currentUserUnitNew = result['response'].userDetails.unitId;
+            this.currentUserUnitNameNew = result['response'].userDetails.unit;
 
             // this.userRole = result['response'].userDetails.unitId;
             this.getUserInfo(result['response'].userDetails);

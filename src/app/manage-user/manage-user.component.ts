@@ -304,33 +304,16 @@ export class ManageUserComponent {
 
   deactivateUserRoleFinallySubmit(data: any, indexValue: any) {
     this.SpinnerService.show();
-    let submitJson = {
-      pid: data.pid,
-      roleId: data.roleId,
-    };
     this.apiService
-      .postApi(this.cons.api.updateUserRole, submitJson)
-      .subscribe({
-        next: (v: object) => {
+      .getApi(this.cons.api.deActivateUser + '/' + data.pid)
+      .subscribe((res) => {
+        let result: { [key: string]: any } = res;
+        if (result['message'] == 'success') {
+          this.usersWithRole.splice(indexValue, 1);
           this.SpinnerService.hide();
-          let result: { [key: string]: any } = v;
-          if (result['message'] == 'success') {
-            this.usersWithRole.splice(indexValue, 1);
-            this.common.successAlert(
-              'Success',
-              result['response']['msg'],
-              'success'
-            );
-          } else {
-            this.common.faliureAlert('Please try later', result['message'], '');
-          }
-        },
-        error: (e) => {
-          this.SpinnerService.hide();
-          console.error(e);
-          this.common.faliureAlert('Error', e['error']['message'], 'error');
-        },
-        complete: () => console.info('complete'),
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
       });
   }
 
