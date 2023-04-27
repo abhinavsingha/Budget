@@ -90,12 +90,16 @@ export class HeaderComponent {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
           localStorage.removeItem('user_role');
-          localStorage.setItem('user_role', data.roleName);
+         // localStorage.setItem('user_role', data.roleName);
           this.roleHeading = data.roleName;
           this.sharedService.roleHeading = this.roleHeading;
           // console.log(this.roleHeading);
-          this.router.navigate(['/dashboard']);
-          window.location.reload();
+          if (this.router.url == '/dashboard') {
+            window.location.reload();
+          }
+          else {
+            this.router.navigate(['/dashboard']);
+          }
           this.SpinnerService.hide();
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
