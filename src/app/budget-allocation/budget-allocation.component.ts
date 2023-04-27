@@ -112,7 +112,7 @@ export class BudgetAllocationComponent implements OnInit {
     this.getBudgetFinYear();
     this.getCgUnitDataNew();
     this.getMajorDataNew();
-    this.getUserDetails('');
+    // this.getUserDetails('');
     this.getUnitDatas();
     this.getAllocationTypeData();
     this.deleteDataByPid();
@@ -123,50 +123,50 @@ export class BudgetAllocationComponent implements OnInit {
     $.getScript('assets/main.js');
   }
 
-  getUserDetails(token: any) {
-    this.SpinnerService.show();
-    this.apiService
-      .getToeknApi(this.cons.api.getUserNameApiUrl, this.token)
-      .subscribe({
-        next: (v: object) => {
-          // console.log("getToeknApi............" + JSON.stringify(v));
-          let result: { [key: string]: any } = v;
+  // getUserDetails(token: any) {
+  //   this.SpinnerService.show();
+  //   this.apiService
+  //     .getToeknApi(this.cons.api.getUserNameApiUrl, this.token)
+  //     .subscribe({
+  //       next: (v: object) => {
+  //         // console.log("getToeknApi............" + JSON.stringify(v));
+  //         let result: { [key: string]: any } = v;
 
-          // if (result['upn'] != "") {
-          var userNameJson = {
-            userRoleId: 'ICGS Delhi',
-            userName: 'kya hai ye',
-            userUnitId: '000015',
-          };
-          var self = this;
+  //         // if (result['upn'] != "") {
+  //         var userNameJson = {
+  //           userRoleId: 'ICGS Delhi',
+  //           userName: 'kya hai ye',
+  //           userUnitId: '000015',
+  //         };
+  //         var self = this;
 
-          this.apiService
-            .getApi(this.cons.api.getMajorData)
-            .subscribe((res) => {
-              let result: { [key: string]: any } = res;
-              if (result['message'] == 'success') {
-                localStorage.setItem('newToken', result['response']['token']);
-                this.getFinancialYear();
-                this.majorHead = result['response'].subHead;
-                this.minorHead = result['response'].subHead;
-                this.getCgUnitData();
-                this.getAllSubHeadDataFirst();
-                this.getAllSubHeadDataSecond();
+  //         this.apiService
+  //           .getApi(this.cons.api.getMajorData)
+  //           .subscribe((res) => {
+  //             let result: { [key: string]: any } = res;
+  //             if (result['message'] == 'success') {
+  //               localStorage.setItem('newToken', result['response']['token']);
+  //               this.getFinancialYear();
+  //               this.majorHead = result['response'].subHead;
+  //               this.minorHead = result['response'].subHead;
+  //               this.getCgUnitData();
+  //               this.getAllSubHeadDataFirst();
+  //               this.getAllSubHeadDataSecond();
 
-                this.SpinnerService.hide();
-              } else {
-                this.common.faliureAlert(
-                  'Please try later',
-                  result['message'],
-                  ''
-                );
-              }
-            });
-        },
-        error: (e) => {},
-        complete: () => console.info('complete'),
-      });
-  }
+  //               this.SpinnerService.hide();
+  //             } else {
+  //               this.common.faliureAlert(
+  //                 'Please try later',
+  //                 result['message'],
+  //                 ''
+  //               );
+  //             }
+  //           });
+  //       },
+  //       error: (e) => {},
+  //       complete: () => console.info('complete'),
+  //     });
+  // }
 
   getAllocationTypeData() {
     this.SpinnerService.show();

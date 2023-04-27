@@ -5,7 +5,7 @@
     <img src="assets/img/icg_logo.png" alt="icg Logo" class="brand-image" width="100px">
     <p class="identity">{{userRole}}</p>
     <p class="identity">{{unitName}}</p>
-    <p class="identity">EP</p>
+    <!-- <p class="identity">EP</p> -->
   </a>
   <!-- Sidebar -->
   <div class="sidebar">
@@ -90,7 +90,7 @@
           </ul>
         </li>
         <li class="nav-item" *ngIf="userRole=='Unit Admin'">
-          <a href="#" class="nav-link" [routerLink]="['/manage-users']" [routerLinkActive]="['active']">
+          <a href="#" class="nav-link" [routerLink]="['/manage-user-role']" [routerLinkActive]="['active']">
             <i class="fas fa-user-cog nav-icon"></i>
             <p>Manage User Roles</p>
           </a>

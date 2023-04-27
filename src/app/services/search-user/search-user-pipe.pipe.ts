@@ -1,9 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'searchPipeReciept',
+  name: 'searchUserPipe',
 })
-export class SearchPipeRecieptPipe implements PipeTransform {
+export class SearchUserPipePipe implements PipeTransform {
   transform(items: any[], searchText: string): any[] {
     if (!items) {
       return [];
@@ -15,10 +15,9 @@ export class SearchPipeRecieptPipe implements PipeTransform {
     return items.filter((it) => {
       debugger;
       return (
-        it.allocTypeId.allocDesc
-          .toLowerCase()
-          .includes(searchText.toLowerCase()) ||
-        it.finYear.finYear.includes(searchText)
+        it.name.toLowerCase().includes(searchText.toLowerCase()) ||
+        it.unit.toLowerCase().includes(searchText.toLowerCase()) ||
+        it.pno.includes(searchText)
       );
     });
   }

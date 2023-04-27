@@ -40,23 +40,23 @@ export class ApiCallingServiceService {
     );
   }
 
-  getToeknApi(url: any, token: any) {
-    // console.log(token + " jsonPayload " + url);
-    const headers = new HttpHeaders().set('Authorization', `Bearer ` + token);
-    return this.http.get(url, { headers: headers }).pipe(
-      map((results) => results),
-      catchError(this.handleError)
-    );
-  }
+  // getToeknApi(url: any, token: any) {
+  //   // console.log(token + " jsonPayload " + url);
+  //   const headers = new HttpHeaders().set('Authorization', `Bearer ` + token);
+  //   return this.http.get(url, { headers: headers }).pipe(
+  //     map((results) => results),
+  //     catchError(this.handleError)
+  //   );
+  // }
 
-  getToeknApiForBudget(url: any, token: any) {
-    // console.log(token + " jsonPayload " + url);
-    const headers = new HttpHeaders().set('token', token);
-    return this.http.get(url, { headers: headers }).pipe(
-      map((results) => results),
-      catchError(this.handleError)
-    );
-  }
+  // getToeknApiForBudget(url: any, token: any) {
+  //   // console.log(token + " jsonPayload " + url);
+  //   const headers = new HttpHeaders().set('token', token);
+  //   return this.http.get(url, { headers: headers }).pipe(
+  //     map((results) => results),
+  //     catchError(this.handleError)
+  //   );
+  // }
 
   private handleError(error: Response | any) {
     let errMsg: string;

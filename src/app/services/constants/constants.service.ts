@@ -137,11 +137,16 @@ export class ConstantsService {
 
     getAllUnitRebaseData:
       this.serviceUrl + 'unitRebaseController/getAllUnitRebaseData',
+
     getAvailableFundFindByUnitIdAndFinYearId:
       this.serviceUrl +
       'budgetAllocation/getAvailableFundFindByUnitIdAndFinYearId',
+
     saveBudgetRevisionData:
       this.serviceUrl + 'budgetAllocation/saveBudgetRevision',
+
     saveAuthData: this.serviceUrl + 'budgetAllocation/saveAuthData',
+
+    deActivateUser: this.serviceUrl + 'mangeUser/deActivateUser',
   };
 }

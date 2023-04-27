@@ -99,7 +99,6 @@
 
                     <div class="card-tools">
                         <div class="input-group input-group-sm">
-                            <!-- <input type="text" class="form-control" placeholder="Search Requests"> -->
                             <input type="text" [(ngModel)]="searchText" name="search"
                                 class="form-control form-control-user search" placeholder="Search by P.No.">
                             <div class="input-group-append">
@@ -133,7 +132,7 @@
                                     </thead>
                                     <tbody *ngIf="searchText == ''">
                                         <tr
-                                            *ngFor="let user of usersWithRole  | searchPipe: searchText | paginate :{itemsPerPage:10,currentPage:p}; let i = index">
+                                            *ngFor="let user of usersWithRole  | searchUserPipe: searchText | paginate :{itemsPerPage:10,currentPage:p}; let i = index">
                                             <td>{{10 *(p-1)+i+1}}</td>
                                             <td>{{user.unit}}</td>
                                             <td>{{user.rank}}</td>
@@ -158,7 +157,7 @@
                                     </tbody>
                                     <tbody *ngIf="searchText != '' ">
                                         <tr
-                                            *ngFor="let user of usersWithRole  | searchPipe: searchText | paginate :{itemsPerPage:10,currentPage:p}; let i = index">
+                                            *ngFor="let user of usersWithRole  | searchUserPipe: searchText | paginate :{itemsPerPage:10,currentPage:p}; let i = index">
                                             <td>{{10 *(p-1)+i+1}}</td>
                                             <td>{{user.unit}}</td>
                                             <td>{{user.rank}}</td>

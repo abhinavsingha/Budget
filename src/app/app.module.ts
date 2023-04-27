@@ -42,6 +42,8 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { CbVerificationComponent } from './cb-verification/cb-verification.component';
 import { ApprovedBudgetComponent } from './approved-budget/approved-budget.component';
 import { SearchPipeRecieptPipe } from './services/search-pipe-reciept/search-pipe-reciept.pipe';
+import { ManageUserRoleComponent } from './manage-user-role/manage-user-role.component';
+import { SearchUserPipePipe } from './services/search-user/search-user-pipe.pipe';
 
 // import { DialogComponent } from './dialog/dialog.component';
 // import { MatIconModule } from '@angular/material/icon';
@@ -108,6 +110,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
     CbVerificationComponent,
     ApprovedBudgetComponent,
     SearchPipeRecieptPipe,
+    ManageUserRoleComponent,
+    SearchUserPipePipe,
     // DialogComponent,
   ],
   imports: [
@@ -134,6 +138,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     DatePipe,
     SearchPipePipe,
     SearchPipeRecieptPipe,
+    SearchUserPipePipe,
     {
       provide: APP_INITIALIZER,
       useFactory: initializeKeycloak,

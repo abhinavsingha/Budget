@@ -37,6 +37,8 @@ export class BudgetAllocationSubheadwiseComponent {
   p: number = 1;
   length: number = 0;
 
+  amount = 0;
+
   submitJson: any;
 
   fundAvailableByFinYearAndUnitAndAllocationType: any;
@@ -191,12 +193,19 @@ export class BudgetAllocationSubheadwiseComponent {
       );
       return;
     }
+
     for (let i = 0; i < this.subHeadWiseUnitList.length; i++) {
       if (this.subHeadWiseUnitList[i].amountUnit != undefined)
         this.subHeadWiseUnitList[i].amount =
           this.subHeadWiseUnitList[i].amount *
           this.subHeadWiseUnitList[i].amountUnit.amount;
+
+      this.amount = this.amount + this.subHeadWiseUnitList[i].amount;
     }
+    this.formdata.patchValue({
+      currentAllocation: this.amount,
+    });
+
     this.submitted = true;
     if (this.formdata.invalid) {
       return;
@@ -535,12 +544,17 @@ export class BudgetAllocationSubheadwiseComponent {
   allocatedTotalAmount: number = 0;
 
   allocatedAmount(index: any) {
-    this.allocatedTotalAmount =
-      this.allocatedTotalAmount + this.subHeadWiseUnitList[index].amount;
+    // this.subHeadWiseUnitList;
 
-    this.formdata.patchValue({
-      currentAllocation: this.allocatedTotalAmount,
-    });
+    // let amount = 0;
+
+    // for (var i = 0; i < this.subHeadWiseUnitList.length; i++) {
+    //   amount = amount + this.subHeadWiseUnitList[i].amount;
+    // }
+
+    // this.formdata.patchValue({
+    //   currentAllocation: amount,
+    // });
     debugger;
     // this.getTotalAmount();
   }
