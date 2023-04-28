@@ -151,7 +151,7 @@ export class UnitRebaseComponent {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, Delete it!',
+      confirmButtonText: 'Yes, Submit it!',
     }).then((result) => {
       if (result.isConfirmed) {
         this.finallySubmit(data);
