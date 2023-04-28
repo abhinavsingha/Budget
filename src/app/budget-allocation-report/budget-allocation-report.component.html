@@ -35,20 +35,20 @@
             </button>
           </div>
         </div>
-        <!-- /.card-header -->
+        <!-- /.card-header (ngSubmit)="searchData(formdata.value)-->
         <div class="card-body">
-          <form [formGroup]="formdata" (ngSubmit)="searchData(formdata.value)">
+          <form [formGroup]="formdata">
             <div class="row">
-              <div class="col-md-4">
-                <div class="form-group">
+              <div class="col-md-3">
+                <div class="form-group" [formGroup]="formdata">
                   <label>Financial Year</label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [items]="budgetFinYears"
                     bindLabel="finYear" placeholder="Select Financial Year" formControlName="finYear">
                   </ng-select>
                 </div>
               </div>
-              <div class="col-md-4">
-                <div class="form-group">
+              <div class="col-md-3">
+                <div class="form-group" [formGroup]="formdata">
                   <label>To Unit</label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [items]="allunits" bindLabel="descr"
                     appendTo="body" placeholder="Select To Unit" formControlName="toUnit">
@@ -56,11 +56,44 @@
                 </div>
               </div>
               <div class="col-md-3">
-                <div class="form-group">
-                  <label style="opacity:0">.</label>
-                  <br>
-                  <button type="submit" class="btn btn-primary mr-2"><i class="fas fa-search"></i> Search</button>
+                <div class="form-group" [formGroup]="formdata">
+                  <!-- <label>Major Head</label> -->
+                  <label>Major Head <span class="text-danger">*</span></label>
+                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="majorHeadList"
+                    bindLabel="majorHead" placeholder="Select Major Head" formControlName="majorHead"
+                    (change)="majorHeadChange($event, formdata.value)">
+                  </ng-select>
                 </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group" [formGroup]="formdata">
+                  <label>Minor Head</label>
+                  <input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Minor Head"
+                    formControlName="minorHead" readonly />
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group" [formGroup]="formdata">
+                  <label>Sub Head</label>
+                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeads"
+                    bindLabel="subHeadDescr" placeholder="Select Sub Head" formControlName="subHead"></ng-select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group" [formGroup]="formdata">
+                  <label>Allocation Type</label>
+                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="allocationType"
+                    bindLabel="allocDesc" placeholder="Select Allocation Type" formControlName="allocationType">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label style="opacity:0">.</label>
+                <br>
+                <td><button type="submit" class="btn btn-primary mr-2" (click)="searchData(formdata.value)"><i
+                      class="fas fa-search"></i>
+                    Search</button></td>
+
               </div>
             </div>
           </form>
@@ -71,61 +104,48 @@
                   <thead>
                     <tr>
                       <th>Sr. No.</th>
-                      <th>Batch</th>
                       <th>F.Y.</th>
                       <th>Unit</th>
                       <th>Sub Head</th>
                       <th>Type</th>
-                      <th>Previous</th>
                       <th>Amount</th>
                       <th>Remarks</th>
+                      <th>View</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <!-- <tr>
-                      <td><input type="checkbox"></td>
-                      <td>011/2022-23</td>
-                      <td>2022-23</td>
-                      <td>RHQ(W)</td>
-                      <td>Office Expenses</td>
-                      <td>Initial</td>
-                      <td>0</td>
-                      <td>2100000233</td>
-                      <td>CGHQ to RHQ</td>
-                    </tr>
                     <tr>
-                      <td><input type="checkbox"></td>
-                      <td>011/2022-23</td>
-                      <td>2022-23</td>
-                      <td>RHQ(W)</td>
-                      <td>Office Expenses</td>
-                      <td>Initial</td>
-                      <td>0</td>
-                      <td>2100000233</td>
-                      <td>CGHQ to RHQ</td>
+                    <tr
+                      *ngFor="let entry of allocationRepoList.reverse()  | paginate :{itemsPerPage:10,currentPage:p}; let i = index"
+                      id="htmlData">
+                      <!--                      <td><input (change)="getCheckedRows(cb.cbNo)" type="checkbox" value="{{cb.cbNo}}"></td>-->
+                      <td><input type="checkbox" [(ngModel)]="entry.checked" [ngModelOptions]="{standalone: true}"></td>
+                      <!-- <tr *ngFor="let entry of allocationRepoList"> -->
+                      <td>{{entry.financialYear.finYear}}</td>
+                      <td>{{entry.unit.cgUnitShort}}</td>
+                      <td>{{entry.subhead.budgetCodeId}}</td>
+                      <td>{{entry.type.allocDesc}}</td>
+                      <td>{{entry.amount}}</td>
+                      <td>{{entry.Remarks}}</td>
+                      <button (click)="downloadBill(entry)" *ngIf="entry.status === 'Approved'" class="btn btn-primary"
+                        type="button">Download
+                      </button>
+                      <!-- <td>{{entry.view}}</td> -->
+                      <button type="submit" class="btn btn-warning"><i class="fas fa-eye"></i> View</button>
                     </tr>
-                    <tr>
-                      <td><input type="checkbox"></td>
-                      <td>011/2022-23</td>
-                      <td>2022-23</td>
-                      <td>RHQ(W)</td>
-                      <td>Office Expenses</td>
-                      <td>Initial</td>
-                      <td>0</td>
-                      <td>2100000233</td>
-                      <td>CGHQ to RHQ</td>
-                    </tr>
-                    <tr>
-                      <td><input type="checkbox"></td>
-                      <td>011/2022-23</td>
-                      <td>2022-23</td>
-                      <td>RHQ(W)</td>
-                      <td>Office Expenses</td>
-                      <td>Initial</td>
-                      <td>0</td>
-                      <td>2100000233</td>
-                      <td>CGHQ to RHQ</td>
-                    </tr> -->
+
+
+                    <!-- <th>Sr. No.</th>
+                      <td>F.Y.</td>
+                      <td>Unit</td>
+                      <td>Sub Head</td>
+                      <td>Type</td>
+                      <td>Amount</td>
+                      <td>Remarks</td>
+                      <td> -->
+
+                    <!-- </td> -->
+                    <!-- </tr> -->
                   </tbody>
                 </table>
               </div>
@@ -169,8 +189,8 @@
             </div>
           </div>
           <!-- /.row -->
-          <div class="row">
-            <div class="col-md-4">
+          <!-- <div class="row">
+            <div class="col-md-3">
               <div class="form-group">
                 <label>Authority Unit</label>
                 <select class="form-control select2bs4" style="width: 100%">
@@ -180,19 +200,19 @@
                 </select>
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
               <div class="form-group">
                 <label>Authority</label>
                 <input type="text" class="form-control" id="BalanceFund" placeholder="Enter Authority" />
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
               <div class="form-group">
                 <label>Date</label>
                 <input type="date" class="form-control" id="Date" placeholder="Enter Date" />
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
               <div class="form-group">
                 <label>Type</label>
                 <select class="form-control select2bs4" style="width: 100%">
@@ -202,26 +222,35 @@
                 </select>
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
               <div class="form-group">
-                <label>Document</label>
-                <div class="custom-file">
-                  <input type="file" class="custom-file-input" id="inputGroupFile01"
-                    aria-describedby="inputGroupFileAddon01">
-                  <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                <label for="exampleInputFile">Document</label>
+                <div class="input-group">
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="exampleInputFile">
+                    <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                  </div>
+                  <div class="input-group-append">
+                    <span class="input-group-text">Upload</span>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="col-md-4 upldBtn">
-              <button type="submit" class="btn btn-primary">Download</button>
+            <div class="col-md-3 ">
+              <label style="opacity:0">.</label>
+              <br>
+              <button type="submit" class="btn btn-primary"><i class="fas fa-download"></i> Download</button>
             </div>
-          </div>
+          </div> -->
 
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
           <div class="row">
-            <button type="submit" class="btn btn-primary mr-2">Print</button>
+            <!-- <button (click)="downloadBill(cb)" *ngIf="cb.status === 'Approved'" class="btn btn-primary"
+                                type="button">Download
+                        </button> -->
+            <button type="submit" class="btn btn-primary"><i class="fas fa-download"></i> Download Report</button>
           </div>
         </div>
       </div>

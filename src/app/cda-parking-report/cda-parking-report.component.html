@@ -56,21 +56,24 @@
                 <div class="form-group">
                   <label>Sub Head</label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeads"
-                    bindLabel="subHeadDescr" (change)="selectSubHead($event)" placeholder="Select Sub Head"
-                    formControlName="subHead" appendTo="body">
+                    bindLabel="subHeadDescr" placeholder="Select Sub Head" formControlName="subHead" appendTo="body">
                   </ng-select>
                 </div>
               </div>
               <div class=" col-md-4">
                 <div class="form-group">
                   <label>Major Head</label>
-                  <input type="text" class="form-control" placeholder="2037" formControlName="majorHead" />
+                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="majorHeadList"
+                    bindLabel="majorHead" placeholder="Select Major Head" formControlName="majorHead"
+                    (change)="majorHeadChange($event, formdata.value)">
+                  </ng-select>
                 </div>
               </div>
               <div class=" col-md-4">
                 <div class="form-group">
                   <label>Minor Head</label>
-                  <input type="text" class="form-control" placeholder="123" formControlName="minorHead" />
+                  <input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Minor Head"
+                    formControlName="minorHead" readonly />
                 </div>
               </div>
               <div class="col-md-4">
@@ -93,18 +96,21 @@
                 <div class="form-group">
                   <label style="opacity:0">.</label>
                   <br>
-                  <input class="mr-2" type="checkbox" name="check">
+                  <!-- <input class="mr-2" type="checkbox" name="check">
                   <label class="mr-2">Unit Wise</label>
                   <input class="mr-2" type="checkbox" name="check" />
                   <label class="mr-2">Subhead Wise</label>
                   <input class="mr-2" type="checkbox" name="check" />
-                  <label class="mr-2">CDA Wise</label>
+                  <label class="mr-2">CDA Wise</label> -->
                 </div>
               </div>
               <div class="col-md-3">
                 <label style="opacity:0">.</label>
                 <br>
-                <button type="submit" class="btn btn-primary mr-2">View</button>
+                <td><button type="submit" class="btn btn-primary mr-2" (click)="viewData(formdata.value)"><i
+                      class="fas fa-search"></i>
+                    View</button></td>
+                <!-- <button type="submit" class="btn btn-primary mr-2">View</button> -->
                 <!-- <td><button type="submit" class="btn btn-primary mr-2" (click)="viewData()"><i -->
                 <!-- class="fas fa-search"></i> -->
                 <!-- View</button></td> -->
@@ -117,21 +123,21 @@
               <div class="card-body table-responsive p-0">
                 <table class="table table-hover text-nowrap">
                   <thead>
-                    <!-- <tr>
+                    <tr>
                       <th>F.Y.</th>
-                      <th>CDA(crores)</th>
-                      <th>Sub Head</th>
-                      <th>Total</th>
                       <th>Unit</th>
-                    </tr> -->
+                      <th>Sub Head</th>
+                      <th>CDA(crores)</th>
+                      <th>Total</th>
+                    </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let entry of cdaParkingReportTable">
-                      <td>{{entry.financialYear}}</td>
+                    <tr *ngFor="let entry of cdaParkingReportList">
+                      <td>{{entry.financialYear.finYear}}</td>
                       <td>{{entry.CDA}}</td>
-                      <td>{{entry.SubHead}}</td>
+                      <td>{{entry.SubHead.codeSubHeadId}}</td>
                       <td>{{entry.total}}</td>
-                      <td>{{entry.unit}}</td>
+                      <td>{{entry.unit.cbUnit}}</td>
                       <!-- <td>{{entry.cda}}</td> -->
                       <!-- <td>{{entry.expenditure}}</td> -->
                       <!-- <td>{{entry.allocated-entry.expenditure}}</td> -->
@@ -214,10 +220,10 @@
           <div class="row">
             <div class="col-md-4">
               <div class="form-group">
-                <label>Authority Unit</label>
+                <!-- <label>Authority Unit</label>
                 <ng-select class="form-control select2bs4" style="width: 100%" [items]="allunits" bindLabel="descr"
                   placeholder="Select Authority Unit" [(ngModel)]="authorityUnit">
-                </ng-select>
+                </ng-select> -->
                 <!-- <select class="form-control select2bs4" style="width: 100%">
                       <option selected="selected">CGHQ</option>
                       <option>RHQ(W)</option>
@@ -227,7 +233,7 @@
             </div>
             <div class="col-md-4">
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="Enter Authority" [(ngModel)]="authority" />
+                <!-- <input type="text" class="form-control" placeholder="Enter Authority" [(ngModel)]="authority" /> -->
                 <!-- <label>Authority</label>
                     <input
                       type="text"
@@ -239,7 +245,7 @@
             </div>
             <div class="col-md-4">
               <div class="form-group">
-                <input type="date" class="form-control" id="date" [(ngModel)]="authorityDate" />
+                <!-- <input type="date" class="form-control" id="date" [(ngModel)]="authorityDate" /> -->
                 <!-- <label>Date</label>
                     <input
                       type="date"
@@ -251,10 +257,10 @@
             </div>
             <div class="col-md-4">
               <div class="form-group">
-                <label>Type</label>
+                <!-- <label>Type</label>
                 <ng-select name="budgetType" class="form-control select2bs4" style="width: 100%" [items]="budgetType"
                   bindLabel="allocDesc" placeholder="Select Major Head" formControlName="budgetType">
-                </ng-select>
+                </ng-select> -->
                 <!-- <select class="form-control select2bs4" style="width: 100%">
                       <option selected="selected">Letter</option>
                       <option>Letter</option>
@@ -264,23 +270,23 @@
             </div>
             <div class="col-md-4">
               <div class="form-group">
-                <label for="exampleInputFile">Document</label>
+                <!-- <label for="exampleInputFile">Document</label> -->
                 <div class="input-group">
                   <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="exampleInputFile" #authFileInput>
-                    <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                    <!-- <input type="file" class="custom-file-input" id="exampleInputFile" #authFileInput> -->
+                    <!-- <label class="custom-file-label" for="exampleInputFile">Choose file</label> -->
                     <!-- <input type="file" class="custom-file-input" id="exampleInputFile">
                     <label class="custom-file-label" for="exampleInputFile">Choose file</label> -->
                   </div>
                   <div class="input-group-append">
-                    <span class="input-group-text" style="cursor: pointer" (click)="invoiceUpload()">Upload</span>
+                    <!-- <span class="input-group-text" style="cursor: pointer" (click)="invoiceUpload()">Upload</span> -->
                     <!-- <span class="input-group-text">Upload</span> -->
                   </div>
                 </div>
               </div>
             </div>
             <div class="col-md-4 upldBtn">
-              <button type="submit" class="btn btn-primary">Download</button>
+              <!-- <button type="submit" class="btn btn-primary">Download</button> -->
             </div>
           </div>
 
@@ -288,7 +294,7 @@
         <!-- /.card-body -->
         <div class="card-footer">
           <div class="row">
-            <button type="submit" class="btn btn-primary mr-2">Print</button>
+            <button type="submit" class="btn btn-primary mr-2">Download</button>
           </div>
         </div>
       </div>
