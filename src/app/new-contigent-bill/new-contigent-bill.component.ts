@@ -197,12 +197,12 @@ export class NewContigentBillComponent implements OnInit {
       const cb: newCb = {
         onAccOf: this.formdata.get('onAccOf')?.value,
         authDetail: this.formdata.get('authDetail')?.value,
-        authUnitId: this.formdata.get('authorityUnit')?.value.unit,
-        unitId: this.formdata.get('unit')?.value.unit,
+        authUnitId: this.unitId,
+        unitId: this.unitId,
         finSerialNo: this.formdata.get('finYearName')?.value.serialNo,
         budgetAllocated: this.formdata.get('budgetAllocated')?.value,
         minorHead: this.formdata.get('minorHead')?.value.minorHead,
-        unit: this.formdata.get('unit')?.value.cgUnitShort,
+        unit: this.unitName,
         finYearName: this.formdata.get('finYearName')?.value.finYear,
         majorHead: this.formdata.get('majorHead')?.value.majorHead,
         subHead: this.formdata.get('subHead')?.value.subHeadDescr,
@@ -212,7 +212,7 @@ export class NewContigentBillComponent implements OnInit {
         cbDate: this.formdata.get('cbDate')?.value,
         // remarks: this.formdata.get('remarks')?.value,
         authority: this.formdata.get('authority')?.value,
-        authorityUnit: this.formdata.get('authorityUnit')?.value.cgUnitShort,
+        authorityUnit: this.unitName,
         date: this.formdata.get('date')?.value,
         firmName: this.formdata.get('firmName')?.value,
         invoiceNo: this.formdata.get('invoiceNo')?.value,
@@ -264,7 +264,7 @@ export class NewContigentBillComponent implements OnInit {
     let url =
       this.cons.api.getAvailableFund +
       '/' +
-      this.formdata.get('unit')?.value.unit;
+      this.unitId;
     this.apiService.getApi(url).subscribe(
       (res) => {
         this.SpinnerService.hide();
@@ -631,15 +631,8 @@ unitId:any;
       }
     }
     this.formdata.get('amount')?.setValue(cbEntry.amount);
-    for (let i = 0; i < this.unitData.length; i++) {
-      if (this.unitData[i].cgUnitShort == cbEntry.unit)
-        this.formdata.get('unit')?.setValue(this.unitData[i]);
-      if (
-        this.unitData[i].cgUnitShort == cbEntry.authorityUnit ||
-        this.unitData[i].unit == cbEntry.authorityUnit
-      )
-        this.formdata.get('authorityUnit')?.setValue(this.unitData[i]);
-    }
+    this.formdata.get('unit')?.setValue(this.unitName);
+    this.formdata.get('authorityUnit')?.setValue(this.unitName);
     this.formdata.get('budgetAllocated')?.setValue(cbEntry.budgetAllocated);
     this.getExpenditure();
     this.budgetAllotted=cbEntry.budgetAllocated;
@@ -687,10 +680,7 @@ unitId:any;
             this.formdata.get('budgetAllocated')?.value;
           this.cbList[i].amount = this.formdata.get('amount')?.value;
           this.cbList[i].authority = this.formdata.get('authority')?.value;
-          this.cbList[i].authorityUnit =
-            this.formdata.get('authorityUnit')?.value.cgUnitShort;
           this.cbList[i].cbDate = this.formdata.get('cbDate')?.value;
-          this.cbList[i].unit = this.formdata.get('unit')?.value.cgUnitShort;
           this.cbList[i].date = this.formdata.get('date')?.value;
           this.cbList[i].file = this.formdata.get('file')?.value;
           this.cbList[i].finYearName =
@@ -771,12 +761,12 @@ unitId:any;
 
         } else if (this.cbList[i].status == 'Pending for Submission') {
           let entry: newCb = {
-            authUnitId: this.formdata.get('authorityUnit')?.value.unit,
-            unitId: this.formdata.get('unit')?.value.unit,
+            authUnitId: this.unitId,
+            unitId: this.unitId,
             finSerialNo: this.formdata.get('finYearName')?.value.serialNo,
             budgetAllocated: this.formdata.get('budgetAllocated')?.value,
             minorHead: this.formdata.get('minorHead')?.value.minorHead,
-            unit: this.formdata.get('unit')?.value.cgUnitShort,
+            unit: this.unitName,
             finYearName: this.formdata.get('finYearName')?.value.finYear,
             majorHead: this.formdata.get('majorHead')?.value.majorHead,
             subHead: this.formdata.get('subHead')?.value.subHeadDescr,
@@ -785,8 +775,7 @@ unitId:any;
             cbNo: this.formdata.get('cbNo')?.value,
             cbDate: this.formdata.get('cbDate')?.value,
             authority: this.formdata.get('authority')?.value,
-            authorityUnit:
-            this.formdata.get('authorityUnit')?.value.cgUnitShort,
+            authorityUnit:this.unitName,
             date: this.formdata.get('date')?.value,
             firmName: this.formdata.get('firmName')?.value,
             invoiceNo: this.formdata.get('invoiceNo')?.value,
