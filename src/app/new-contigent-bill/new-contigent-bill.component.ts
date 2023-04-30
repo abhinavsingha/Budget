@@ -370,7 +370,8 @@ export class NewContigentBillComponent implements OnInit {
     this.formdata.get('progressive')?.setValue(this.expenditure);
     // this.updateExpenditure();
   }
-
+unitId:any;
+  unitName:any;
   private getDashboardData() {
     // this.SpinnerService.show();
     this.apiService.postApi(this.cons.api.getDashboardData, null).subscribe(
@@ -384,14 +385,11 @@ export class NewContigentBillComponent implements OnInit {
           // this.userRole = result['response'].userDetails.role[0].roleName;
           this.sharedService.inbox = result['response'].inbox;
           this.sharedService.outbox = result['response'].outBox;
-          for(let i=0;i<this.unitData.length;i++){
-            if(this.unitData[i].unit==result['response'].userDetails.unitId){
-              this.formdata.get('unit')?.setValue(this.unitData[i]);
-              this.getBudgetAllotted();
-              this.formdata.get('authorityUnit')?.setValue(this.unitData[i]);
-            }
-
-          }
+          this.unitId=result['response'].userDetails.unitId;
+          this.unitName=result['response'].userDetails.unit;
+          this.formdata.get('unit')?.setValue(this.unitName);
+          this.formdata.get('authorityUnit')?.setValue(this.unitName);
+          this.getBudgetAllotted();
 
         }
       },

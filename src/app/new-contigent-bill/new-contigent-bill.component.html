@@ -68,9 +68,10 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label>CB Unit</label>
-                  <ng-select (change)="getBudgetAllotted()" [items]="unitData" bindLabel="descr" class="form-control select2bs4"
-                             formControlName="unit" placeholder="Select Unit" style="width: 100%" [readonly]="true">
-                  </ng-select>
+                  <input class="form-control" formControlName="unit" id="unit" readonly type="text" readonly/>
+<!--                  <ng-select (change)="getBudgetAllotted()" [items]="unitData" bindLabel="descr" class="form-control select2bs4"-->
+<!--                             formControlName="unit" placeholder="Select Unit" style="width: 100%" [readonly]="true">-->
+<!--                  </ng-select>-->
                 </div>
               </div>
               <div class="col-md-4">
@@ -133,9 +134,11 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Authority Unit</label>
-                  <ng-select [items]="unitData" bindLabel="descr" class="form-control select2bs4" formControlName="authorityUnit"
-                             placeholder="Select Authority Unit" style="width: 100%" [readonly]="true">
-                  </ng-select>
+                  <input class="form-control" formControlName="authorityUnit" id="authorityUnit" placeholder=""
+                         type="text" readonly/>
+<!--                  <ng-select [items]="unitData" bindLabel="descr" class="form-control select2bs4" formControlName="authorityUnit"-->
+<!--                             placeholder="Select Authority Unit" style="width: 100%" [readonly]="true">-->
+<!--                  </ng-select>-->
                 </div>
               </div>
               <div class="col-md-4">
