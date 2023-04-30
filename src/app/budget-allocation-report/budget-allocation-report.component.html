@@ -39,155 +39,74 @@
         <div class="card-body">
           <form [formGroup]="formdata">
             <div class="row">
+
               <div class="col-md-3">
-                <div class="form-group" [formGroup]="formdata">
+                <div class="form-group">
                   <label>Financial Year</label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [items]="budgetFinYears"
                     bindLabel="finYear" placeholder="Select Financial Year" formControlName="finYear">
                   </ng-select>
                 </div>
               </div>
+
               <div class="col-md-3">
-                <div class="form-group" [formGroup]="formdata">
+                <div class="form-group">
+                  <label>Report Type</label>
+                  <select class="form-control select2bs4" style="width: 100%" placeholder="Select Report Type"
+                    id="reporttype" (change)="selectReportType(formdata.value)" formControlName="reportType">
+                    <option selected disabled>--Select Report Type--</option>
+                    <option value="01">BE</option>
+                    <option value="02">RE</option>
+                    <option value="03">Unit Wise</option>
+                    <option value="04">Subhead Wise</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-3" id="unitinput" *ngIf="showUnit">
+                <div class="form-group">
                   <label>To Unit</label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [items]="allunits" bindLabel="descr"
                     appendTo="body" placeholder="Select To Unit" formControlName="toUnit">
                   </ng-select>
                 </div>
               </div>
-              <div class="col-md-3">
-                <div class="form-group" [formGroup]="formdata">
-                  <!-- <label>Major Head</label> -->
+              <!-- <div class="col-md-3" id="majorinput">
+                <div class="form-group">
+                  
                   <label>Major Head <span class="text-danger">*</span></label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [items]="majorHeadList"
                     bindLabel="majorHead" placeholder="Select Major Head" formControlName="majorHead"
                     (change)="majorHeadChange($event, formdata.value)">
                   </ng-select>
                 </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group" [formGroup]="formdata">
+              </div> -->
+              <!-- <div class="col-md-3" id="minorinput">
+                <div class="form-group">
                   <label>Minor Head</label>
                   <input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Minor Head"
                     formControlName="minorHead" readonly />
                 </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group" [formGroup]="formdata">
+              </div> -->
+              <div class="col-md-3" id="subheadinput" *ngIf="showSubHead">
+                <div class="form-group">
                   <label>Sub Head</label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeads"
                     bindLabel="subHeadDescr" placeholder="Select Sub Head" formControlName="subHead"></ng-select>
                 </div>
               </div>
-              <div class="col-md-3">
-                <div class="form-group" [formGroup]="formdata">
+              <!-- <div class="col-md-3" id="allocationinput">
+                <div class="form-group">
                   <label>Allocation Type</label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [items]="allocationType"
                     bindLabel="allocDesc" placeholder="Select Allocation Type" formControlName="allocationType">
                   </ng-select>
                 </div>
-              </div>
-              <div class="col-md-3">
-                <label style="opacity:0">.</label>
-                <br>
-                <td><button type="submit" class="btn btn-primary mr-2" (click)="searchData(formdata.value)"><i
-                      class="fas fa-search"></i>
-                    Search</button></td>
+              </div> -->
 
-              </div>
             </div>
           </form>
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap">
-                  <thead>
-                    <tr>
-                      <th>Sr. No.</th>
-                      <th>F.Y.</th>
-                      <th>Unit</th>
-                      <th>Sub Head</th>
-                      <th>Type</th>
-                      <th>Amount</th>
-                      <th>Remarks</th>
-                      <th>View</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                    <tr
-                      *ngFor="let entry of allocationRepoList.reverse()  | paginate :{itemsPerPage:10,currentPage:p}; let i = index"
-                      id="htmlData">
-                      <!--                      <td><input (change)="getCheckedRows(cb.cbNo)" type="checkbox" value="{{cb.cbNo}}"></td>-->
-                      <td><input type="checkbox" [(ngModel)]="entry.checked" [ngModelOptions]="{standalone: true}"></td>
-                      <!-- <tr *ngFor="let entry of allocationRepoList"> -->
-                      <td>{{entry.financialYear.finYear}}</td>
-                      <td>{{entry.unit.cgUnitShort}}</td>
-                      <td>{{entry.subhead.budgetCodeId}}</td>
-                      <td>{{entry.type.allocDesc}}</td>
-                      <td>{{entry.amount}}</td>
-                      <td>{{entry.Remarks}}</td>
-                      <button (click)="downloadBill(entry)" *ngIf="entry.status === 'Approved'" class="btn btn-primary"
-                        type="button">Download
-                      </button>
-                      <!-- <td>{{entry.view}}</td> -->
-                      <button type="submit" class="btn btn-warning"><i class="fas fa-eye"></i> View</button>
-                    </tr>
 
-
-                    <!-- <th>Sr. No.</th>
-                      <td>F.Y.</td>
-                      <td>Unit</td>
-                      <td>Sub Head</td>
-                      <td>Type</td>
-                      <td>Amount</td>
-                      <td>Remarks</td>
-                      <td> -->
-
-                    <!-- </td> -->
-                    <!-- </tr> -->
-                  </tbody>
-                </table>
-              </div>
-              <div class="row mt-2">
-                <div class="col-sm-12 col-md-5">
-                  <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
-                    Showing 1 to 10 of 57 entries
-                  </div>
-                </div>
-                <div class="col-sm-12 col-md-7">
-                  <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
-                    <ul class="pagination float-right">
-                      <li class="paginate_button page-item previous disabled" id="example2_previous">
-                        <a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
-                      </li>
-                      <li class="paginate_button page-item active">
-                        <a href="#" aria-controls="example2" data-dt-idx="1" tabindex="0" class="page-link">1</a>
-                      </li>
-                      <li class="paginate_button page-item">
-                        <a href="#" aria-controls="example2" data-dt-idx="2" tabindex="0" class="page-link">2</a>
-                      </li>
-                      <li class="paginate_button page-item">
-                        <a href="#" aria-controls="example2" data-dt-idx="3" tabindex="0" class="page-link">3</a>
-                      </li>
-                      <li class="paginate_button page-item">
-                        <a href="#" aria-controls="example2" data-dt-idx="4" tabindex="0" class="page-link">4</a>
-                      </li>
-                      <li class="paginate_button page-item">
-                        <a href="#" aria-controls="example2" data-dt-idx="5" tabindex="0" class="page-link">5</a>
-                      </li>
-                      <li class="paginate_button page-item">
-                        <a href="#" aria-controls="example2" data-dt-idx="6" tabindex="0" class="page-link">6</a>
-                      </li>
-                      <li class="paginate_button page-item next" id="example2_next">
-                        <a href="#" aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
           <!-- /.row -->
           <!-- <div class="row">
             <div class="col-md-3">

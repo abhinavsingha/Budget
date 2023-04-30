@@ -53,6 +53,7 @@ export class BudgetAllocationReportComponent implements OnInit {
     minorHead: new FormControl(),
     subHead: new FormControl(),
     allocationType: new FormControl(),
+    reportType: new FormControl('--Select Report Type--'),
   });
   entry: any;
 
@@ -63,8 +64,6 @@ export class BudgetAllocationReportComponent implements OnInit {
     this.majorDataNew();
     this.getSubHeadsData();
     this.getAllocationType();
-
-    $.getScript('assets/js/adminlte.js');
   }
 
   constructor(
@@ -314,6 +313,21 @@ export class BudgetAllocationReportComponent implements OnInit {
         this.SpinnerService.hide();
       }
     );
+  }
+
+  showUnit: boolean = false;
+  showSubHead: boolean = false;
+  selectReportType(data: any) {
+    if (data.reportType == '03') {
+      this.showUnit = true;
+      this.showSubHead = false;
+    } else if (data.reportType == '04') {
+      this.showSubHead = true;
+      this.showUnit = false;
+    } else {
+      this.showSubHead = false;
+      this.showUnit = false;
+    }
   }
 }
 

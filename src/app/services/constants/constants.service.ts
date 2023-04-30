@@ -64,6 +64,9 @@ export class ConstantsService {
     budgetAllocationReport:
       this.serviceUrl + 'budgetAllocation/budgetAllocationReport',
 
+    getAllocationReport:
+      this.serviceUrl + 'reportController/getAllocationReport',
+
     budgetDelete: this.serviceUrl + 'budgetAllocation/budgetDelete',
 
     updateBudgetAllocation:

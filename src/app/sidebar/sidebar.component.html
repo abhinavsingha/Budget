@@ -126,13 +126,13 @@
             <p>CDA Parking</p>
           </a>
         </li> -->
-        <!-- <li class="nav-item"
+        <li class="nav-item"
           *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'|| userRole=='CB Creator'|| userRole=='CB Approver' || userRole=='Viewer'">
           <a href="#" class="nav-link" [routerLink]="['/cda-parking-report']" [routerLinkActive]="['active']">
             <i class="fas fa-file-invoice nav-icon"></i>
             <p>CDA Parking Report</p>
           </a>
-        </li> -->
+        </li>
         <li class="nav-item" *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'">
           <a href="#" class="nav-link" [routerLink]="['/unit-rebase']" [routerLinkActive]="['active']">
             <i class="fas fa-ship nav-icon"></i>

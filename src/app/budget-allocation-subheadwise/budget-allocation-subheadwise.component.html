@@ -88,11 +88,11 @@
                   <div class=" col-md-6">
                     <div class="form-group">
                       <label>Fund Available</label>
-                      <input type="number" class="form-control" id="PrevAllocation" placeholder="Enter Remarks"
+                      <input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Remarks"
                         formControlName="fundAvailable" readonly />
                     </div>
                   </div>
-                  <div class=" col-md-6">
+                  <!-- <div class=" col-md-6">
                     <div class="form-group">
                       <label>Current Allocation</label>
                       <input type="number" class="form-control" id="PrevAllocation" placeholder="Enter Remarks"
@@ -105,7 +105,7 @@
                       <input type="number" class="form-control" id="PrevAllocation" placeholder="Enter Remarks"
                         formControlName="balanceFund" readonly />
                     </div>
-                  </div>
+                  </div> -->
                   <!-- <div class=" col-md-6">
                     <div class="form-group">
                       <label>Remarks</label>
@@ -138,8 +138,8 @@
                       <td>
                         <div class="form-group">
                           <ng-select class="form-control select2bs4" style="width: 100%" [items]="allunits"
-                            bindLabel="descr" (change)="getAvailableFund($event)" appendTo="body"
-                            placeholder="Select To Unit" [(ngModel)]="subHeadWiseUnit.unit">
+                            bindLabel="descr" appendTo="body" placeholder="Select To Unit"
+                            [(ngModel)]="subHeadWiseUnit.unit">
                           </ng-select>
                         </div>
                       </td>

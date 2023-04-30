@@ -1000,7 +1000,6 @@ export class BudgetAllocationComponent implements OnInit {
 
   // minorHeadAutoSelect: any;
   getAllSubHeadByFinYearMajorHeadAndUnit(formdataValue: any) {
-    debugger;
     this.count = 1;
     this.countFinYear = 1;
 
@@ -1119,12 +1118,12 @@ export class BudgetAllocationComponent implements OnInit {
 
   deleteRowFromTableData(tableSingleData: any, indexValue: any) {
     this.SpinnerService.show();
-
     let submitJson = {
       finyearId: tableSingleData.financialYear.serialNo,
       majorHead: tableSingleData.selectedSubHead.majorHead,
       unitId: tableSingleData.unitName.unit,
-      subHeadId: tableSingleData.selectedSubHead.codeSubHeadId,
+      subHeadId: tableSingleData.selectedSubHead.budgetCodeId,
+      allocationType: tableSingleData.allocationType.allocTypeId,
     };
 
     this.apiService.postApi(this.cons.api.deleteData, submitJson).subscribe({

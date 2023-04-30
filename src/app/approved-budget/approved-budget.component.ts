@@ -96,12 +96,38 @@ export class ApprovedBudgetComponent implements OnInit {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
           this.budgetDataList = result['response'].budgetResponseist;
+          if (this.budgetDataList.length > 0) {
+            let authGroupId = this.budgetDataList[0].authGroupId;
+            this.getAllocationReport(authGroupId);
+          }
           this.SpinnerService.hide();
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
       });
   }
+
+  path: any;
+  getAllocationReport(authGroupId: any) {
+    this.SpinnerService.show();
+    this.apiService
+      .getApi(this.cons.api.getAllocationReport + '/' + authGroupId)
+      .subscribe((res) => {
+        let result: { [key: string]: any } = res;
+        if (result['message'] == 'success') {
+          debugger;
+          if (result['response'].length > 0) {
+            this.path = result['response'][0].path;
+          }
+          // this.budgetDataList = result['response'].budgetResponseist;
+
+          this.SpinnerService.hide();
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      });
+  }
+
   getCgUnitData() {
     this.SpinnerService.show();
     var comboJson = null;
@@ -188,4 +214,6 @@ export class ApprovedBudgetComponent implements OnInit {
         complete: () => console.info('complete'),
       });
   }
+
+  downloadReport() {}
 }

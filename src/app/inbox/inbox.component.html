@@ -53,6 +53,7 @@
                   <!-- <th>Created By</th> -->
                   <th>Unit Name</th>
                   <th>Status</th>
+                  <th>Action</th>
                 </thead>
                 <tbody>
                   <!-- <tr data-toggle="modal" data-target="#modal-lg">
@@ -71,6 +72,8 @@
                     <!-- <td>{{li.createBy}}</td> -->
                     <td>{{li.unitName}}</td>
                     <td>{{li.status}}</td>
+                    <td><button type="submit" class="btn btn-warning mr-2" (click)="redirect(li)"> <i
+                          class="fas fa-eye"></i> View</button></td>
                   </tr>
                 </tbody>
               </table>

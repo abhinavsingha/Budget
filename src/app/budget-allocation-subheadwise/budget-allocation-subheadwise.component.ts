@@ -491,6 +491,15 @@ export class BudgetAllocationSubheadwiseComponent {
   }
 
   getFundAvailableBuFinYearAndSubHeadAndAllocationType(data: any) {
+    debugger;
+
+    if (data.allocationType == null || data.allocationType == undefined) {
+      this.formdata.patchValue({
+        fundAvailable: '',
+      });
+      return;
+    }
+
     if (data.subHead == null || data.subHead == undefined) {
       this.common.warningAlert(
         'Warning',

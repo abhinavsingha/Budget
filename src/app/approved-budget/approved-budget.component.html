@@ -1,265 +1,184 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0">Approved Budget</h1>
-          </div>
-          <!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item"><a href="#">Approved Budget</a></li>
-            </ol>
-          </div>
-          <!-- /.col -->
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Approved Budget</h1>
         </div>
-        <!-- /.row -->
+        <!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Approved Budget</a></li>
+          </ol>
+        </div>
+        <!-- /.col -->
       </div>
-      <!-- /.container-fluid -->
+      <!-- /.row -->
     </div>
-    <!-- /.content-header -->
+    <!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
 
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <div class="card card-default">
-          <div class="card-header">
-            <h3 class="card-title">Approved Budget</h3>
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="card card-default">
+        <div class="card-header">
+          <h3 class="card-title">Approved Budget</h3>
 
-            <div class="card-tools">
-              <button
-                type="button"
-                class="btn btn-tool"
-                data-card-widget="collapse"
-              >
-                <i class="fas fa-minus"></i>
-              </button>
-            </div>
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
           </div>
-          <!-- /.card-header -->
-          <div class="card-body">
-            <form [formGroup]="formdata">
-                <div class="row">
-                    <div class="col-sm-12">
-                      <div class="card-body table-responsive p-0">
-                        <table class="table table-hover text-nowrap">
-                          <thead>
-                            <tr>
-                              <th>Sr. No.</th>
-                              <th>F.Y.</th>
-                              <th>Unit</th>
-                              <th>Sub Head</th>
-                              <th>Type</th>
-                              <th>Fund Allocated(Crores)</th>
-                              <th>Remarks</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                                 <tr *ngFor="let buggetData of budgetDataList  | paginate :{itemsPerPage:15,currentPage:p} ; let i = index">
-                                  <td>{{15 *(p-1)+i+1}}</td>
-                                  <td>{{buggetData.finYear.finYear}}</td>
-                                  <td>{{buggetData.toUnit.cgUnitShort}}</td>
-                                  <td>{{buggetData.subHead.subHeadDescr}}</td>
-                                  <td>{{buggetData.allocTypeId.allocDesc}}</td>
-                                  <td>{{buggetData.allocationAmount}}</td>
-                                  <td>{{buggetData.remarks}}</td>
-                                </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div class="row mt-2">
-                        <div class="col-sm-12 col-md-5">
-                            <button type="submit" class="btn btn-primary mr-2"><i class="fas fa-download"></i> Download</button>
-                        </div>
-                        <div class="col-sm-12 col-md-7">
-                          <div
-                            class="dataTables_paginate paging_simple_numbers"
-                            id="example2_paginate"
-                          >
-                            <ul class="pagination float-right">
-                              <li
-                                class="paginate_button page-item previous  "
-                                id="example2_previous"
-                              >
-                                <a
-                                  href="#"
-                                  aria-controls="example2"
-                                  data-dt-idx="0"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >Previous</a
-                                >
-                              </li>
-                              <li class="paginate_button page-item active">
-                                <a
-                                  href="#"
-                                  aria-controls="example2"
-                                  data-dt-idx="1"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >1</a
-                                >
-                              </li>
-                              <li class="paginate_button page-item">
-                                <a
-                                  href="#"
-                                  aria-controls="example2"
-                                  data-dt-idx="2"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >2</a
-                                >
-                              </li>
-                              <li class="paginate_button page-item">
-                                <a
-                                  href="#"
-                                  aria-controls="example2"
-                                  data-dt-idx="3"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >3</a
-                                >
-                              </li>
-                              <li class="paginate_button page-item">
-                                <a
-                                  href="#"
-                                  aria-controls="example2"
-                                  data-dt-idx="4"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >4</a
-                                >
-                              </li>
-                              <li class="paginate_button page-item">
-                                <a
-                                  href="#"
-                                  aria-controls="example2"
-                                  data-dt-idx="5"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >5</a
-                                >
-                              </li>
-                              <li class="paginate_button page-item">
-                                <a
-                                  href="#"
-                                  aria-controls="example2"
-                                  data-dt-idx="6"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >6</a
-                                >
-                              </li>
-                              <li
-                                class="paginate_button page-item next"
-                                id="example2_next"
-                              >
-                                <a
-                                  href="#"
-                                  aria-controls="example2"
-                                  data-dt-idx="7"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >Next</a
-                                >
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+          <form [formGroup]="formdata">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="card-body table-responsive p-0">
+                  <table class="table table-hover text-nowrap">
+                    <thead>
+                      <tr>
+                        <th>Sr. No.</th>
+                        <th>F.Y.</th>
+                        <th>Unit</th>
+                        <th>Sub Head</th>
+                        <th>Type</th>
+                        <th>Fund Allocated(Crores)</th>
+                        <th>Remarks</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        *ngFor="let buggetData of budgetDataList  | paginate :{itemsPerPage:15,currentPage:p} ; let i = index">
+                        <td>{{15 *(p-1)+i+1}}</td>
+                        <td>{{buggetData.finYear.finYear}}</td>
+                        <td>{{buggetData.toUnit.cgUnitShort}}</td>
+                        <td>{{buggetData.subHead.subHeadDescr}}</td>
+                        <td>{{buggetData.allocTypeId.allocDesc}}</td>
+                        <td>{{buggetData.allocationAmount}}</td>
+                        <td>{{buggetData.remarks}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-sm-12 col-md-5">
+                    <a class="btn btn-primary mr-2" href={{path}} target="_blank"><i class="fas fa-download"></i>
+                      Download</a>
+                    <!-- <button  class="btn btn-primary mr-2"><i class="fas fa-download"></i> Download</button> -->
+                  </div>
+                  <div class="col-sm-12 col-md-7">
+                    <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                      <ul class="pagination float-right">
+                        <li class="paginate_button page-item previous  " id="example2_previous">
+                          <a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0"
+                            class="page-link">Previous</a>
+                        </li>
+                        <li class="paginate_button page-item active">
+                          <a href="#" aria-controls="example2" data-dt-idx="1" tabindex="0" class="page-link">1</a>
+                        </li>
+                        <li class="paginate_button page-item">
+                          <a href="#" aria-controls="example2" data-dt-idx="2" tabindex="0" class="page-link">2</a>
+                        </li>
+                        <li class="paginate_button page-item">
+                          <a href="#" aria-controls="example2" data-dt-idx="3" tabindex="0" class="page-link">3</a>
+                        </li>
+                        <li class="paginate_button page-item">
+                          <a href="#" aria-controls="example2" data-dt-idx="4" tabindex="0" class="page-link">4</a>
+                        </li>
+                        <li class="paginate_button page-item">
+                          <a href="#" aria-controls="example2" data-dt-idx="5" tabindex="0" class="page-link">5</a>
+                        </li>
+                        <li class="paginate_button page-item">
+                          <a href="#" aria-controls="example2" data-dt-idx="6" tabindex="0" class="page-link">6</a>
+                        </li>
+                        <li class="paginate_button page-item next" id="example2_next">
+                          <a href="#" aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
+                        </li>
+                      </ul>
                     </div>
-                  </div>
-              <!-- /.row -->
-              <div class="row">
-              <div class="col-md-4">
-                  <div class="form-group">
-                    <label>Authority Unit</label>
-                    <ng-select [items]="unitData" bindLabel="descr" class="form-control select2bs4"
-                               formControlName="authUnit" placeholder="Select Unit" style="width: 100%" >
-                    </ng-select>
-                  </div>
-                </div>
-              <div class="col-md-4">
-                  <div class="form-group">
-                    <label>Authority</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="BalanceFund"
-                      placeholder="BE/15/CGHQ"
-                      formControlName="authority"
-                    />
-                  </div>
-                </div>
-              <div class="col-md-4">
-                  <div class="form-group">
-                    <label>Date</label>
-                    <input
-                      type="date"
-                      class="form-control"
-                      id="Date"
-                      placeholder="23/02/23"
-                      formControlName="date"
-                    />
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label for="invoice">Upload Document</label>
-                    <div class="input-group">
-                      <div class="custom-file">
-                        <input #invoiceFileInput class="custom-file-input" formControlName="file" id="invoice"
-                               type="file">
-                        <label class="custom-file-label" for="invoice">Choose file</label>
-                      </div>
-                      <div class="input-group-append">
-                        <span (click)="upload()" class="input-group-text" style="cursor: pointer">Upload</span>
-                      </div>
-                    </div>
-                  </div>
-<!--                  <div class="form-group">-->
-<!--                    <label for="exampleInputFile">Upload Document</label>-->
-<!--                    <div class="input-group">-->
-<!--                    <div class="custom-file">-->
-<!--                    <input type="file" class="custom-file-input" id="exampleInputFile"  >-->
-<!--                    <label class="custom-file-label" for="exampleInputFile">Browse</label>-->
-<!--                    </div>-->
-<!--                    <div class="input-group-append">-->
-<!--                    <span class="input-group-text docBtn" >Upload</span>-->
-<!--                    </div>-->
-<!--                    </div>-->
-<!--                    </div>-->
-                </div>
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label>Remarks</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="PrevAllocation"
-                      placeholder="CGHQ to RHQ"
-                      formControlName="remarks"
-                    />
                   </div>
                 </div>
               </div>
-            </form>
-          </div>
-          <!-- /.card-body -->
-          <div class="card-footer">
-            <div class="row">
-              <button type="submit" class="btn btn-primary mr-2" (click)="save(formdata.value)">Submit</button>
             </div>
+            <!-- /.row -->
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Authority Unit</label>
+                  <ng-select [items]="unitData" bindLabel="descr" class="form-control select2bs4"
+                    formControlName="authUnit" placeholder="Select Unit" style="width: 100%">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Authority</label>
+                  <input type="text" class="form-control" id="BalanceFund" placeholder="BE/15/CGHQ"
+                    formControlName="authority" />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Date</label>
+                  <input type="date" class="form-control" id="Date" placeholder="23/02/23" formControlName="date" />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="invoice">Upload Document</label>
+                  <div class="input-group">
+                    <div class="custom-file">
+                      <input #invoiceFileInput class="custom-file-input" formControlName="file" id="invoice"
+                        type="file">
+                      <label class="custom-file-label" for="invoice">Choose file</label>
+                    </div>
+                    <div class="input-group-append">
+                      <span (click)="upload()" class="input-group-text" style="cursor: pointer">Upload</span>
+                    </div>
+                  </div>
+                </div>
+                <!--                  <div class="form-group">-->
+                <!--                    <label for="exampleInputFile">Upload Document</label>-->
+                <!--                    <div class="input-group">-->
+                <!--                    <div class="custom-file">-->
+                <!--                    <input type="file" class="custom-file-input" id="exampleInputFile"  >-->
+                <!--                    <label class="custom-file-label" for="exampleInputFile">Browse</label>-->
+                <!--                    </div>-->
+                <!--                    <div class="input-group-append">-->
+                <!--                    <span class="input-group-text docBtn" >Upload</span>-->
+                <!--                    </div>-->
+                <!--                    </div>-->
+                <!--                    </div>-->
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Remarks</label>
+                  <input type="text" class="form-control" id="PrevAllocation" placeholder="CGHQ to RHQ"
+                    formControlName="remarks" />
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+          <div class="row">
+            <button type="submit" class="btn btn-primary mr-2" (click)="save(formdata.value)">Submit</button>
           </div>
         </div>
-        <!-- /.row -->
       </div>
-      <!-- /.container-fluid -->
-    </section>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </section>
 
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
