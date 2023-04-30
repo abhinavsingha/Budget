@@ -281,6 +281,7 @@ export class CbVerificationComponent {
         this.formdata.get('finYearName')?.setValue(this.finYearData[i]);
     }
     this.formdata.get('file')?.setValue(cbEntry.file);
+
   }
   getBudgetAllotted() {
     this.budgetAllotted = 0;

@@ -87,7 +87,7 @@ export class OutboxComponent implements OnInit {
 
     if (li.type == 'CB') {
       this.sharedService.sharedValue = li.groupId;
-      this.sharedService.redirectedFrom = 'inbox';
+      this.sharedService.redirectedFrom = 'outbox';
       if (li.status == 'Pending') {
         this.router.navigate(['/cb-verification']);
       } else if (li.status == 'Verified') {

@@ -107,12 +107,12 @@
             <p>New Contingent Bill</p>
           </a>
         </li>
-        <li class="nav-item" *ngIf=" userRole=='CB Creator'">
-          <a href="#" class="nav-link" [routerLink]="['/cb-verification']" [routerLinkActive]="['active']">
-            <i class="fas fa-file-alt nav-icon"></i>
-            <p>CB Verification</p>
-          </a>
-        </li>
+<!--        <li class="nav-item" *ngIf=" userRole=='CB Creator'">-->
+<!--          <a href="#" class="nav-link" [routerLink]="['/cb-verification']" [routerLinkActive]="['active']">-->
+<!--            <i class="fas fa-file-alt nav-icon"></i>-->
+<!--            <p>CB Verification</p>-->
+<!--          </a>-->
+<!--        </li>-->
         <li class="nav-item"
           *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'|| userRole=='CB Creator'|| userRole=='CB Approver' || userRole=='Viewer'">
           <a href="#" class="nav-link" [routerLink]="['/budget-allocation-report']" [routerLinkActive]="['active']">
