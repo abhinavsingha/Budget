@@ -274,12 +274,8 @@ export class CbVerificationComponent {
         this.formdata.get('minorHead')?.setValue(this.minorHeadData[i]);
       }
     }
-    for (let i = 0; i < this.unitData.length; i++) {
-      if (this.unitData[i].descr == cbEntry.unit)
-        this.formdata.get('unit')?.setValue(this.unitData[i]);
-      if (this.unitData[i].unit == cbEntry.authorityUnit)
-        this.formdata.get('authorityUnit')?.setValue(this.unitData[i]);
-    }
+    this.formdata.get('unit')?.setValue(cbEntry.unit);
+    this.formdata.get('authorityUnit')?.setValue(cbEntry.unit);
     for (let i = 0; i < this.finYearData.length; i++) {
       if (this.finYearData[i].finYear == cbEntry.finYearName)
         this.formdata.get('finYearName')?.setValue(this.finYearData[i]);
