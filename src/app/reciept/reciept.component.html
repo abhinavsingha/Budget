@@ -63,7 +63,7 @@
                   <div class="col-md-12">
                     <div class="form-group">
                       <label>Minor Head</label>
-                      <input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Minor Head"
+                      <input type="text" class="form-control" id="minorHead" placeholder="Enter Minor Head"
                         formControlName="minorHead" readonly />
                     </div>
                   </div>
@@ -77,8 +77,8 @@
                   </div> -->
                   <div class=" col-md-12">
                     <div class="form-group">
-                      <label>Remarks <span class="text-danger">*</span></label>
-                      <input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Remarks"
+                      <label>Remarks <span class="text-danger"></span></label>
+                      <input type="text" class="form-control" id="remarks" placeholder="Enter Remarks"
                         formControlName="remarks" />
                     </div>
                   </div>
@@ -170,8 +170,8 @@
                       </ng-select>
                     </div>
                   </td>
-                  <td><input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Authority"
-                      [(ngModel)]="uploadData.authority" name="{{uploadData.authority}}" /></td>
+                  <td><input type="text" class="form-control" id="PrvAllocation" placeholder="Enter Authority"
+                      [(ngModel)]="uploadData.authority" name="uploadData.authority" /></td>
                   <td><input type="date" class="form-control" id="date" [(ngModel)]="uploadData.authorityData" /></td>
                   <td><input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Remarks"
                       [(ngModel)]="uploadData.remarks" /></td>
