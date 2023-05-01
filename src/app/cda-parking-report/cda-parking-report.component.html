@@ -41,7 +41,7 @@
             <div class="row">
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>Financial Year <i class="fas fa-star text-danger font-10"></i> </label>
+                  <label class="control-label">Financial Year </label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [items]="budgetFinYears"
                     bindLabel="finYear" placeholder="Select Financial Year" formControlName="finYear" appendTo="body">
                   </ng-select>
@@ -49,7 +49,7 @@
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>Sub Head</label>
+                  <label class="control-label">Sub Head</label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeads"
                     bindLabel="subHeadDescr" placeholder="Select Sub Head" formControlName="subHead" appendTo="body">
                   </ng-select>
@@ -57,7 +57,7 @@
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>CDA Unit</label>
+                  <label class="control-label">CDA Unit</label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [items]="cdaUnitList"
                     bindLabel="cdaName" placeholder="Select CDA Unit" appendTo="body" formControlName="cdas">
                   </ng-select>

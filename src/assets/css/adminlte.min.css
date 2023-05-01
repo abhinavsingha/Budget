@@ -2440,6 +2440,16 @@ textarea.form-control.is-invalid {
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+.control-label::after { 
+  color: #d00;
+  font-family: 'FontAwesome';
+  content: "*";
+  font-weight: bold;
+  font-size: 14px;
+  position: absolute;
+  margin-left: 3px;
+  top:0px;
+}
 @media (prefers-reduced-motion: reduce) {
   .btn {
     transition: none;

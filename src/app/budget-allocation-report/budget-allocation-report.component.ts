@@ -288,12 +288,7 @@ export class BudgetAllocationReportComponent implements OnInit {
             this.SpinnerService.hide();
             let result: { [key: string]: any } = v;
             if (result['message'] == 'success') {
-              debugger;
-              this.common.successAlert(
-                'Success',
-                result['response']['msg'],
-                'success'
-              );
+              this.downloadPdf(result['response'][0].path);
             } else {
               this.common.faliureAlert(
                 'Please try later',
@@ -323,12 +318,7 @@ export class BudgetAllocationReportComponent implements OnInit {
             this.SpinnerService.hide();
             let result: { [key: string]: any } = v;
             if (result['message'] == 'success') {
-              debugger;
-              this.common.successAlert(
-                'Success',
-                result['response']['msg'],
-                'success'
-              );
+              this.downloadPdf(result['response'][0].path);
             } else {
               this.common.faliureAlert(
                 'Please try later',
@@ -357,8 +347,7 @@ export class BudgetAllocationReportComponent implements OnInit {
         .subscribe((res) => {
           let result: { [key: string]: any } = res;
           if (result['message'] == 'success') {
-            // this.cdaUnitList = result['response'];debuge
-            debugger;
+            this.downloadPdf(result['response'][0].path);
             this.SpinnerService.hide();
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
@@ -377,8 +366,7 @@ export class BudgetAllocationReportComponent implements OnInit {
         .subscribe((res) => {
           let result: { [key: string]: any } = res;
           if (result['message'] == 'success') {
-            // this.cdaUnitList = result['response'];debuge
-            debugger;
+            this.downloadPdf(result['response'][0].path);
             this.SpinnerService.hide();
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');

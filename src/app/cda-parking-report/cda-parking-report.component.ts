@@ -4,7 +4,9 @@ import { ConstantsService } from '../services/constants/constants.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CommonService } from '../services/common/common.service';
 import { ApiCallingServiceService } from '../services/api-calling/api-calling-service.service';
+import { HttpClient } from '@angular/common/http';
 import Swal from 'sweetalert2';
+import * as FileSaver from 'file-saver';
 // import { NgSelectModule } from '@ng-select/ng-select';
 // import {Component, OnInit, ViewChild} from '@angular/core';
 
@@ -144,6 +146,7 @@ export class CdaParkingReportComponent implements OnInit {
     private cons: ConstantsService,
     private apiService: ApiCallingServiceService,
     private formBuilder: FormBuilder,
+    private http: HttpClient,
     private common: CommonService // private select :NgSelectModule
   ) {}
 
@@ -372,12 +375,8 @@ export class CdaParkingReportComponent implements OnInit {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
-            debugger;
-            this.common.successAlert(
-              'Success',
-              result['response']['msg'],
-              'success'
-            );
+            // this.downloadPdf()
+            this.downloadPdf(result['response'][0].path);
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
@@ -389,5 +388,18 @@ export class CdaParkingReportComponent implements OnInit {
         },
         complete: () => console.info('complete'),
       });
+  }
+
+  downloadPdf(pdfUrl: string): void {
+    this.http.get(pdfUrl, { responseType: 'blob' }).subscribe(
+      (blob: Blob) => {
+        this.SpinnerService.hide();
+        FileSaver.saveAs(blob, 'document.pdf');
+      },
+      (error) => {
+        this.SpinnerService.hide();
+        console.error('Failed to download PDF:', error);
+      }
+    );
   }
 }

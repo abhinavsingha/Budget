@@ -43,7 +43,7 @@
 
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>Financial Year</label>
+                  <label class="control-label">Financial Year</label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [items]="budgetFinYears"
                     bindLabel="finYear" placeholder="Select Financial Year" formControlName="finYear">
                   </ng-select>
@@ -52,7 +52,7 @@
 
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>Report Type</label>
+                  <label class="control-label">Report Type</label>
                   <select class="form-control select2bs4" style="width: 100%" placeholder="Select Report Type"
                     id="reporttype" (change)="selectReportType(formdata.value)" formControlName="reportType">
                     <option selected disabled>--Select Report Type--</option>
@@ -66,7 +66,7 @@
 
               <div class="col-md-3" id="unitinput" *ngIf="showUnit">
                 <div class="form-group">
-                  <label>Unit</label>
+                  <label class="control-label">Unit</label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [items]="allunits" bindLabel="descr"
                     appendTo="body" placeholder="Select To Unit" formControlName="toUnit">
                   </ng-select>
@@ -74,7 +74,7 @@
               </div>
               <div class="col-md-3" id="subheadinput" *ngIf="showSubHead">
                 <div class="form-group">
-                  <label>Sub Head</label>
+                  <label class="control-label">Sub Head</label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeads"
                     bindLabel="subHeadDescr" placeholder="Select Sub Head" formControlName="subHead"></ng-select>
                 </div>
