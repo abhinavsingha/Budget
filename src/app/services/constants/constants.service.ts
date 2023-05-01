@@ -151,5 +151,14 @@ export class ConstantsService {
     saveAuthData: this.serviceUrl + 'budgetAllocation/saveAuthData',
 
     deActivateUser: this.serviceUrl + 'mangeUser/deActivateUser',
+
+    getUnitWiseAllocationReport:
+      this.serviceUrl + 'reportController/getUnitWiseAllocationReport',
+
+    getSubHeadWiseAllocationReport:
+      this.serviceUrl + 'reportController/getSubHeadWiseAllocationReport',
+
+    getBEAllocationReport:
+      this.serviceUrl + 'reportController/getBEAllocationReport',
   };
 }

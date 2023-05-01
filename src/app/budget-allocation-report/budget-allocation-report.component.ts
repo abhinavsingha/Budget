@@ -49,10 +49,7 @@ export class BudgetAllocationReportComponent implements OnInit {
   formdata = new FormGroup({
     finYear: new FormControl(),
     toUnit: new FormControl(),
-    majorHead: new FormControl(),
-    minorHead: new FormControl(),
     subHead: new FormControl(),
-    allocationType: new FormControl(),
     reportType: new FormControl('--Select Report Type--'),
   });
   entry: any;
@@ -93,7 +90,7 @@ export class BudgetAllocationReportComponent implements OnInit {
 
     this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
       let result: { [key: string]: any } = res;
-
+      debugger;
       if (result['message'] == 'success') {
         this.allunits = result['response'];
         this.SpinnerService.hide();
@@ -113,12 +110,6 @@ export class BudgetAllocationReportComponent implements OnInit {
       } else {
         this.common.faliureAlert('Please try later', result['message'], '');
       }
-    });
-  }
-
-  majorHeadChange(selectedMajorHead: any, formdataValue: any) {
-    this.formdata.patchValue({
-      minorHead: selectedMajorHead.minorHead,
     });
   }
 
@@ -252,19 +243,10 @@ export class BudgetAllocationReportComponent implements OnInit {
                 this.allocationRepoList[i].unit ||
                 this.formdata.get('subHead')?.value.subHeadDescr !=
                   this.allocationRepoList[i].subhead
-                //   ||
-                // this.formdata.get('type')?.value.type !=
-                //   this.allocationRepoList[i].type ||
-                // this.formdata.get('amount')?.value.amount !=
-                //   this.allocationRepoList[i].amount ||
-                // this.formdata.get('remarks')?.value.remarks !=
-                //   this.allocationRepoList[i].Remarks
               ) {
                 this.allocationRepoList.pop();
               }
             }
-            // console.log('DATA>>>>>>>'+this.dasboardData);
-            // this.draw();
             this.SpinnerService.hide();
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
@@ -283,6 +265,129 @@ export class BudgetAllocationReportComponent implements OnInit {
   draw() {
     throw new Error('Method not implemented.');
   }
+
+  downloadReport(formdata: any) {
+    if (formdata.finYear == null || formdata.finYear == undefined) {
+      this.common.warningAlert(
+        'Please try later',
+        'Please Select all mandatory data.',
+        ''
+      );
+    }
+    if (formdata.reportType == '03') {
+      // It is for Unit Wise
+      let submitJson = {
+        finYearId: formdata.finYear.serialNo,
+        unitId: formdata.toUnit.unit,
+      };
+
+      this.apiService
+        .postApi(this.cons.api.getUnitWiseAllocationReport, submitJson)
+        .subscribe({
+          next: (v: object) => {
+            this.SpinnerService.hide();
+            let result: { [key: string]: any } = v;
+            if (result['message'] == 'success') {
+              debugger;
+              this.common.successAlert(
+                'Success',
+                result['response']['msg'],
+                'success'
+              );
+            } else {
+              this.common.faliureAlert(
+                'Please try later',
+                result['message'],
+                ''
+              );
+            }
+          },
+          error: (e) => {
+            this.SpinnerService.hide();
+            console.error(e);
+            this.common.faliureAlert('Error', e['error']['message'], 'error');
+          },
+          complete: () => console.info('complete'),
+        });
+    } else if (formdata.reportType == '04') {
+      // It is for Subhead Wise
+      let submitJson = {
+        finYearId: formdata.finYear.serialNo,
+        unitId: formdata.subHead.budgetCodeId,
+      };
+      debugger;
+      this.apiService
+        .postApi(this.cons.api.getSubHeadWiseAllocationReport, submitJson)
+        .subscribe({
+          next: (v: object) => {
+            this.SpinnerService.hide();
+            let result: { [key: string]: any } = v;
+            if (result['message'] == 'success') {
+              debugger;
+              this.common.successAlert(
+                'Success',
+                result['response']['msg'],
+                'success'
+              );
+            } else {
+              this.common.faliureAlert(
+                'Please try later',
+                result['message'],
+                ''
+              );
+            }
+          },
+          error: (e) => {
+            this.SpinnerService.hide();
+            console.error(e);
+            this.common.faliureAlert('Error', e['error']['message'], 'error');
+          },
+          complete: () => console.info('complete'),
+        });
+    } else if (formdata.reportType == '01') {
+      //It is for BE report
+      this.SpinnerService.show();
+      this.apiService
+        .getApi(
+          this.cons.api.getBEAllocationReport +
+            '/' +
+            formdata.finYear.serialNo +
+            '/BE'
+        )
+        .subscribe((res) => {
+          let result: { [key: string]: any } = res;
+          if (result['message'] == 'success') {
+            // this.cdaUnitList = result['response'];debuge
+            debugger;
+            this.SpinnerService.hide();
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        });
+    } else if (formdata.reportType == '02') {
+      //It is for RE report
+      this.SpinnerService.show();
+      this.apiService
+        .getApi(
+          this.cons.api.getBEAllocationReport +
+            '/' +
+            formdata.finYear.serialNo +
+            '/RE'
+        )
+        .subscribe((res) => {
+          let result: { [key: string]: any } = res;
+          if (result['message'] == 'success') {
+            // this.cdaUnitList = result['response'];debuge
+            debugger;
+            this.SpinnerService.hide();
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        });
+    }
+    debugger;
+  }
+
   downloadPdf(pdfUrl: string): void {
     this.http.get(pdfUrl, { responseType: 'blob' }).subscribe(
       (blob: Blob) => {
@@ -330,33 +435,3 @@ export class BudgetAllocationReportComponent implements OnInit {
     }
   }
 }
-
-// searchData(formData: any) {
-//   this.SpinnerService.show();
-
-//   let submitJson = {
-//     budgetFinancialYearId: formData.finYear.serialNo,
-//     unitId: formData.toUnit.unit,
-//   };
-
-//   this.apiService
-//     .postApi(this.cons.api.getAllocationReportRevised, submitJson)
-//     .subscribe({
-//       next: (v: object) => {
-//         this.SpinnerService.hide();
-//         let result: { [key: string]: any } = v;
-
-//         if (result['message'] == 'success') {
-//           this.budgetListData = result['response'];
-//         } else {
-//           this.common.faliureAlert('Please try later', result['message'], '');
-//         }
-//       },
-//       error: (e) => {
-//         this.SpinnerService.hide();
-//         console.error(e);
-//         this.common.faliureAlert('Error', e['error']['message'], 'error');
-//       },
-//       complete: () => console.info('complete'),
-//     });
-// }
