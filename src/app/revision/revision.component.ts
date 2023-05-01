@@ -207,32 +207,6 @@ export class RevisionComponent {
         }
       }
     }
-
-    //Step1:-> Selected Major Data and Minor Data automatically
-    // this.formdata.patchValue({
-    //   majorHead: event.majorHead,
-    //   minorHead: event.minorHead,
-    // });
-
-    // this.budgetRevisionUnitList[index].isSelected = true;
-    // this.budgetRevisionUnitList[index].existingAmount = 30;
-
-    // this.totalExistingAmount =
-    //   this.totalExistingAmount +
-    //   this.budgetRevisionUnitList[index].existingAmount;
-    //Step2-> Get Allocation Fund By API by SubHead and Financial Year
-
-    //Step3-> Get All Unit By SubHead Selected
-    // this.selectedunits = structuredClone(this.allunits);
-    // ;
-    // for (var i = 0; i < this.selectedunits.length; i++) {
-    //   let subHeadWiseUnit = new SubHeadWiseUnitList();
-    //   subHeadWiseUnit.id = 0;
-    //   subHeadWiseUnit.amount = 0;
-    //   subHeadWiseUnit.isSelected = false;
-    //   subHeadWiseUnit.unit = this.selectedunits[i].descr;
-    //   this.subHeadWiseUnitList.push(subHeadWiseUnit);
-    // }
   }
 
   moveDataToNextGrid(formDataValue: any) {

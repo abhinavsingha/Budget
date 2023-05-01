@@ -41,18 +41,13 @@
             <div class="row">
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>Financial Year</label>
+                  <label>Financial Year <i class="fas fa-star text-danger font-10"></i> </label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [items]="budgetFinYears"
                     bindLabel="finYear" placeholder="Select Financial Year" formControlName="finYear" appendTo="body">
                   </ng-select>
-                  <!-- <select class="form-control select2bs4" style="width: 100%">      //vaibhav -->
-                  <!-- <option selected="selected">2022-23</option>
-                        <option>2021-22</option>
-                        <option>2020-21</option> -->
-                  <!-- </select> -->
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label>Sub Head</label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeads"
@@ -60,241 +55,24 @@
                   </ng-select>
                 </div>
               </div>
-              <div class=" col-md-4">
-                <div class="form-group">
-                  <label>Major Head</label>
-                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="majorHeadList"
-                    bindLabel="majorHead" placeholder="Select Major Head" formControlName="majorHead"
-                    (change)="majorHeadChange($event, formdata.value)">
-                  </ng-select>
-                </div>
-              </div>
-              <div class=" col-md-4">
-                <div class="form-group">
-                  <label>Minor Head</label>
-                  <input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Minor Head"
-                    formControlName="minorHead" readonly />
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Unit</label>
-                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="allunits" bindLabel="descr"
-                    appendTo="body" placeholder="Select To Unit" formControlName="toUnit">
-                  </ng-select>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>CDA</label>
-                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="budgetCda"
-                    bindLabel="cdasDescr" placeholder="Select Sub Head" formControlName="cdas" appendTo="body">
-                  </ng-select>
-                </div>
-              </div>
-              <div class=" col-md-4">
-                <div class="form-group">
-                  <label style="opacity:0">.</label>
-                  <br>
-                  <!-- <input class="mr-2" type="checkbox" name="check">
-                  <label class="mr-2">Unit Wise</label>
-                  <input class="mr-2" type="checkbox" name="check" />
-                  <label class="mr-2">Subhead Wise</label>
-                  <input class="mr-2" type="checkbox" name="check" />
-                  <label class="mr-2">CDA Wise</label> -->
-                </div>
-              </div>
               <div class="col-md-3">
-                <label style="opacity:0">.</label>
-                <br>
-                <td><button type="submit" class="btn btn-primary mr-2" (click)="viewData(formdata.value)"><i
-                      class="fas fa-search"></i>
-                    View</button></td>
-                <!-- <button type="submit" class="btn btn-primary mr-2">View</button> -->
-                <!-- <td><button type="submit" class="btn btn-primary mr-2" (click)="viewData()"><i -->
-                <!-- class="fas fa-search"></i> -->
-                <!-- View</button></td> -->
-
+                <div class="form-group">
+                  <label>CDA Unit</label>
+                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="cdaUnitList"
+                    bindLabel="cdaName" placeholder="Select CDA Unit" appendTo="body" formControlName="cdas">
+                  </ng-select>
+                </div>
               </div>
             </div>
           </form>
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap">
-                  <thead>
-                    <tr>
-                      <th>F.Y.</th>
-                      <th>Unit</th>
-                      <th>Sub Head</th>
-                      <th>CDA(crores)</th>
-                      <th>Total</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let entry of cdaParkingReportList">
-                      <td>{{entry.financialYear.finYear}}</td>
-                      <td>{{entry.CDA}}</td>
-                      <td>{{entry.SubHead.codeSubHeadId}}</td>
-                      <td>{{entry.total}}</td>
-                      <td>{{entry.unit.cbUnit}}</td>
-                      <!-- <td>{{entry.cda}}</td> -->
-                      <!-- <td>{{entry.expenditure}}</td> -->
-                      <!-- <td>{{entry.allocated-entry.expenditure}}</td> -->
-                      <!-- <td>{{entry.lastCbDate}}</td> -->
-                    </tr>
-                    <!-- <tr>
-                                  <td>2022-23</td>
-                                  <td>Office Expenses</td>
-                                  <td>RHQ(W)</td>
-                                  <td>21</td>
-                                  <td>PD(AM)</td>
-                                </tr>
-                                <tr>
-                                    <td>2022-23</td>
-                                    <td>Office Expenses</td>
-                                    <td>RHQ(W)</td>
-                                    <td>21</td>
-                                    <td>PD(AM)</td>
-                                  </tr>
-                                  <tr>
-                                    <td>2022-23</td>
-                                    <td>Office Expenses</td>
-                                    <td>RHQ(W)</td>
-                                    <td>21</td>
-                                    <td>PD(AM)</td>
-                                  </tr>
-                                  <tr>
-                                    <td>2022-23</td>
-                                    <td>Office Expenses</td>
-                                    <td>RHQ(W)</td>
-                                    <td>21</td>
-                                    <td>PD(AM)</td>
-                                  </tr> -->
-                  </tbody>
-                </table>
-              </div>
-              <div class="row mt-2">
-                <div class="col-sm-12 col-md-5">
-                  <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
-                    Showing 1 to 10 of 57 entries
-                  </div>
-                </div>
-                <div class="col-sm-12 col-md-7">
-                  <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
-                    <ul class="pagination float-right">
-                      <li class="paginate_button page-item previous disabled" id="example2_previous">
-                        <a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
-                      </li>
-                      <li class="paginate_button page-item active">
-                        <a href="#" aria-controls="example2" data-dt-idx="1" tabindex="0" class="page-link">1</a>
-                      </li>
-                      <li class="paginate_button page-item">
-                        <a href="#" aria-controls="example2" data-dt-idx="2" tabindex="0" class="page-link">2</a>
-                      </li>
-                      <li class="paginate_button page-item">
-                        <a href="#" aria-controls="example2" data-dt-idx="3" tabindex="0" class="page-link">3</a>
-                      </li>
-                      <li class="paginate_button page-item">
-                        <a href="#" aria-controls="example2" data-dt-idx="4" tabindex="0" class="page-link">4</a>
-                      </li>
-                      <li class="paginate_button page-item">
-                        <a href="#" aria-controls="example2" data-dt-idx="5" tabindex="0" class="page-link">5</a>
-                      </li>
-                      <li class="paginate_button page-item">
-                        <a href="#" aria-controls="example2" data-dt-idx="6" tabindex="0" class="page-link">6</a>
-                      </li>
-                      <li class="paginate_button page-item next" id="example2_next">
-                        <a href="#" aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <!-- <div class="col-sm-12 col-md-12">
-                        <button type="submit" class="btn btn-primary mr-2 mb-2">Print</button>
-                        </div> -->
-              </div>
-            </div>
-          </div>
-          <!-- /.row -->
-          <div class="row">
-            <div class="col-md-4">
-              <div class="form-group">
-                <!-- <label>Authority Unit</label>
-                <ng-select class="form-control select2bs4" style="width: 100%" [items]="allunits" bindLabel="descr"
-                  placeholder="Select Authority Unit" [(ngModel)]="authorityUnit">
-                </ng-select> -->
-                <!-- <select class="form-control select2bs4" style="width: 100%">
-                      <option selected="selected">CGHQ</option>
-                      <option>RHQ(W)</option>
-                      <option>RHQ(S)</option>
-                    </select> -->
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <!-- <input type="text" class="form-control" placeholder="Enter Authority" [(ngModel)]="authority" /> -->
-                <!-- <label>Authority</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="BalanceFund"
-                      placeholder="Enter Authority"
-                    /> -->
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <!-- <input type="date" class="form-control" id="date" [(ngModel)]="authorityDate" /> -->
-                <!-- <label>Date</label>
-                    <input
-                      type="date"
-                      class="form-control"
-                      id="Date"
-                      placeholder="Enter Date"
-                    /> -->
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <!-- <label>Type</label>
-                <ng-select name="budgetType" class="form-control select2bs4" style="width: 100%" [items]="budgetType"
-                  bindLabel="allocDesc" placeholder="Select Major Head" formControlName="budgetType">
-                </ng-select> -->
-                <!-- <select class="form-control select2bs4" style="width: 100%">
-                      <option selected="selected">Letter</option>
-                      <option>Letter</option>
-                      <option>Letter</option>
-                    </select> -->
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <!-- <label for="exampleInputFile">Document</label> -->
-                <div class="input-group">
-                  <div class="custom-file">
-                    <!-- <input type="file" class="custom-file-input" id="exampleInputFile" #authFileInput> -->
-                    <!-- <label class="custom-file-label" for="exampleInputFile">Choose file</label> -->
-                    <!-- <input type="file" class="custom-file-input" id="exampleInputFile">
-                    <label class="custom-file-label" for="exampleInputFile">Choose file</label> -->
-                  </div>
-                  <div class="input-group-append">
-                    <!-- <span class="input-group-text" style="cursor: pointer" (click)="invoiceUpload()">Upload</span> -->
-                    <!-- <span class="input-group-text">Upload</span> -->
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4 upldBtn">
-              <!-- <button type="submit" class="btn btn-primary">Download</button> -->
-            </div>
-          </div>
+
 
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
           <div class="row">
-            <button type="submit" class="btn btn-primary mr-2">Download</button>
+            <button type="submit" class="btn btn-primary mr-2" (click)="downloadCDAParkingReport(formdata.value)"><i
+                class="fas fa-download"></i> Download</button>
           </div>
         </div>
       </div>
