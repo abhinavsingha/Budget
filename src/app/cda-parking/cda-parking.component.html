@@ -105,6 +105,14 @@
                         formControlName="BalanceAvailable" readonly />
                     </div>
                   </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Rupees in<span class="text-danger"></span></label>
+                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="amountType"
+                                 bindLabel="amountType" placeholder="Select Amount Unit" formControlName="amountType"></ng-select>
+                    </div>
+                  </div>
+
                   <div class=" col-md-6">
                     <div class="form-group">
                       <label>Remarks</label>

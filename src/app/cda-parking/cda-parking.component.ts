@@ -64,6 +64,7 @@ export class CdaParkingComponent implements OnInit {
     majorHead: new FormControl(),
     subHead: new FormControl(),
     remarks: new FormControl('', Validators.required),
+    amountType:new FormControl()
   });
   budgetType: any;
   budgetAllotted: any;
@@ -104,6 +105,7 @@ export class CdaParkingComponent implements OnInit {
     //     this.SpinnerService.hide();
     //   }
     // );
+    this.getAmountType();
     this.getMajorHead();
     this.getFinancialYear();
     this.getCgUnitData();
@@ -251,8 +253,10 @@ export class CdaParkingComponent implements OnInit {
 
   updateCda(cda: any) {
     {
+
       if(cda.current==null)
         cda.current=0;
+      cda.current=Number(cda.current).toFixed(4);
       this.cdaCurrentTotal = 0;
       this.cdaTotalTotal = 0;
       for (let i = 0; i < this.cdaData.length; i++) {
@@ -466,6 +470,29 @@ export class CdaParkingComponent implements OnInit {
           console.error(e);
           this.common.faliureAlert('Error', e['error']['message'], 'error');
         },
+      });
+  }
+  amountType: any;
+  getAmountType(){
+    this.apiService
+      .getApi(this.cons.api.showAllAmountUnit)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            this.amountType = result['response'];
+
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
       });
   }
 
