@@ -86,7 +86,13 @@
                         value="asdf" formControlName="minorHeadId" readonly />
                     </div>
                   </div>
-
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Rupees in<span class="text-danger"></span></label>
+                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="amountType"
+                                 bindLabel="amountType" placeholder="Select Amount Unit" formControlName="amountType"></ng-select>
+                    </div>
+                  </div>
                   <!-- <div class=" col-md-6">
                     <div class="form-group">
                       <label>Remarks</label>
@@ -108,7 +114,7 @@
                         <th>Sub Head</th>
                         <th>Fund Available</th>
                         <th>Amount</th>
-                        <th>Amount Unit</th>
+<!--                        <th>Amount Unit</th>-->
                         <!-- <th>CDA Parking</th> -->
                         <th>Action</th>
                       </tr>
@@ -142,20 +148,20 @@
                             id="Aallocationamount" placeholder="Please Enter Amount" />
 
                         </td>
-                        <td>
+<!--                        <td>-->
 
-                          <ng-select class="form-control select2bs4" style="width: 100%" [items]="amountUnit"
-                            bindLabel="unit" [ngModelOptions]="{standalone: true}" placeholder="Select Unit"
-                            [(ngModel)]="subHeadData.amountUnit">
-                          </ng-select>
+<!--                          <ng-select class="form-control select2bs4" style="width: 100%" [items]="amountUnit"-->
+<!--                            bindLabel="unit" [ngModelOptions]="{standalone: true}" placeholder="Select Unit"-->
+<!--                            [(ngModel)]="subHeadData.amountUnit">-->
+<!--                          </ng-select>-->
 
-                          <!--                                        <select class="form-control" id="unit" [(ngModel)]="subHeadData.amountUnit" required [selectedIndex]="0" (change)="test()">-->
-                          <!--                                        <option value='10000000'>Crore</option>-->
-                          <!--                                        <option value='100000'>Lakh</option>-->
-                          <!--                                        <option value='1000'>Thousand</option>-->
-                          <!--                                        <option value='100'>Hundred</option>-->
-                          <!--                                      </select>-->
-                        </td>
+<!--                          &lt;!&ndash;                                        <select class="form-control" id="unit" [(ngModel)]="subHeadData.amountUnit" required [selectedIndex]="0" (change)="test()">&ndash;&gt;-->
+<!--                          &lt;!&ndash;                                        <option value='10000000'>Crore</option>&ndash;&gt;-->
+<!--                          &lt;!&ndash;                                        <option value='100000'>Lakh</option>&ndash;&gt;-->
+<!--                          &lt;!&ndash;                                        <option value='1000'>Thousand</option>&ndash;&gt;-->
+<!--                          &lt;!&ndash;                                        <option value='100'>Hundred</option>&ndash;&gt;-->
+<!--                          &lt;!&ndash;                                      </select>&ndash;&gt;-->
+<!--                        </td>-->
                         <!-- <td><button type="button" class="btn btn-warning" data-toggle="modal"
                                                   data-target="#modal-lg">Add CDA</button></td> -->
                         <td>

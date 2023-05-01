@@ -78,6 +78,7 @@ export class BudgetAllocationComponent implements OnInit {
     majorHeadId: new FormControl(),
     unitId: new FormControl(),
     minorHeadId: new FormControl(),
+    amountType:new FormControl()
   });
 
   subHeadTableData = new FormGroup({
@@ -116,7 +117,7 @@ export class BudgetAllocationComponent implements OnInit {
     this.getUnitDatas();
     this.getAllocationTypeData();
     this.deleteDataByPid();
-
+    this.getAmountType();
     this.uploadDocuments.push(new UploadDocuments());
 
     $.getScript('assets/js/adminlte.js');
@@ -182,6 +183,30 @@ export class BudgetAllocationComponent implements OnInit {
         }
       });
   }
+  amountType: any;
+  getAmountType(){
+    this.apiService
+      .getApi(this.cons.api.showAllAmountUnit)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            this.amountType = result['response'];
+
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
+  }
+
 
   arrayWithUnitMajorHeadAndSubHead: any[] = [];
   putInNewList() {
@@ -570,6 +595,7 @@ export class BudgetAllocationComponent implements OnInit {
         amount: this.tableData[i].selectedSubHead.amount,
         remark: this.tableData[i].remarks,
         allocationTypeId: this.tableData[i].allocationType.allocTypeId,
+        amountTypeId:this.formdata.get('amountType')?.value.amountTypeId
       });
     }
 
@@ -770,8 +796,6 @@ export class BudgetAllocationComponent implements OnInit {
       );
       return;
     }
-    data.amount = data.amount * data.amountUnit.amount;
-    delete data.amountUnit;
 
     this.SpinnerService.show();
 
