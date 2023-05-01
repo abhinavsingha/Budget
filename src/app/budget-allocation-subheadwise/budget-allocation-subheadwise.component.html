@@ -92,6 +92,13 @@
                         formControlName="fundAvailable" readonly />
                     </div>
                   </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Rupees in<span class="text-danger"></span></label>
+                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="amountType"
+                                 bindLabel="amountType" placeholder="Select Amount Unit" formControlName="amountType"></ng-select>
+                    </div>
+                  </div>
                   <!-- <div class=" col-md-6">
                     <div class="form-group">
                       <label>Current Allocation</label>
@@ -128,7 +135,7 @@
                     <tr>
                       <th>Unit</th>
                       <th>Amount</th>
-                      <th>Amount Unit</th>
+<!--                      <th>Amount Unit</th>-->
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -146,23 +153,23 @@
                       <td><input type="number" class="form-control" id="Aallocationamount"
                           placeholder="Please Enter Amount" [(ngModel)]="subHeadWiseUnit.amount"
                           (change)="allocatedAmount(i)" /></td>
-                      <td>
+<!--                      <td>-->
 
-                        <ng-select class="form-control select2bs4" style="width: 100%" [items]="amountUnit"
-                          bindLabel="unit" [ngModelOptions]="{standalone: true}" placeholder="Select Unit"
-                          [(ngModel)]="subHeadWiseUnit.amountUnit">
-                        </ng-select>
-
-
+<!--                        <ng-select class="form-control select2bs4" style="width: 100%" [items]="amountUnit"-->
+<!--                          bindLabel="unit" [ngModelOptions]="{standalone: true}" placeholder="Select Unit"-->
+<!--                          [(ngModel)]="subHeadWiseUnit.amountUnit">-->
+<!--                        </ng-select>-->
 
 
-                        <!--                      <select class="form-control" id="unit" [(ngModel)]="subHeadWiseUnit.amountUnit" required [selectedIndex]="0">-->
-                        <!--                      <option value=10000000>Crore</option>-->
-                        <!--                      <option value=100000>Lakh</option>-->
-                        <!--                      <option value=1000>Thousand</option>-->
-                        <!--                      <option value=100>Hundred</option>-->
-                        <!--                    </select>-->
-                      </td>
+
+
+<!--                        &lt;!&ndash;                      <select class="form-control" id="unit" [(ngModel)]="subHeadWiseUnit.amountUnit" required [selectedIndex]="0">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                      <option value=10000000>Crore</option>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                      <option value=100000>Lakh</option>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                      <option value=1000>Thousand</option>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                      <option value=100>Hundred</option>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                    </select>&ndash;&gt;-->
+<!--                      </td>-->
                       <td><button type="submit" class="btn btn-danger mr-2"
                           (click)="deleteSubHeadWiseUnitList(i)">Delete</button></td>
                     </tr>

@@ -53,9 +53,11 @@ export class BudgetAllocationSubheadwiseComponent {
     currentAllocation: new FormControl(),
     balanceFund: new FormControl(),
     remarks: new FormControl(),
+    amountType:new FormControl()
   });
 
   ngOnInit(): void {
+    this.getAmountType();
     this.getBudgetFinYear();
     this.getSubHeadsData();
     this.getCgUnitData();
@@ -93,6 +95,7 @@ export class BudgetAllocationSubheadwiseComponent {
       currentAllocation: new FormControl(),
       balanceFund: new FormControl(),
       remarks: new FormControl('', Validators.required),
+      amountType:new FormControl()
     });
   }
 
@@ -195,11 +198,6 @@ export class BudgetAllocationSubheadwiseComponent {
     }
 
     for (let i = 0; i < this.subHeadWiseUnitList.length; i++) {
-      if (this.subHeadWiseUnitList[i].amountUnit != undefined)
-        this.subHeadWiseUnitList[i].amount =
-          this.subHeadWiseUnitList[i].amount *
-          this.subHeadWiseUnitList[i].amountUnit.amount;
-
       this.amount = this.amount + this.subHeadWiseUnitList[i].amount;
     }
     this.formdata.patchValue({
@@ -293,24 +291,30 @@ export class BudgetAllocationSubheadwiseComponent {
     }
   }
   uploadFileResponse: any;
-  amountUnit = [
-    {
-      unit: 'Crore',
-      amount: 10000000,
-    },
-    {
-      unit: 'Lakh',
-      amount: 100000,
-    },
-    {
-      unit: 'Thousand',
-      amount: 1000,
-    },
-    {
-      unit: 'Hundred',
-      amount: 100,
-    },
-  ];
+  amountType: any;
+  getAmountType(){
+    this.apiService
+      .getApi(this.cons.api.showAllAmountUnit)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            this.amountType = result['response'];
+
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
+  }
+
   uploadFile(index: any) {
     const formData = new FormData();
     formData.append('file', this.file);
@@ -393,6 +397,7 @@ export class BudgetAllocationSubheadwiseComponent {
         amount: this.budgetAllocationArray[i].amount,
         remark: this.budgetAllocationArray[i].remarks,
         allocationTypeId: 'ALL_101',
+        amountTypeId:this.formdata.get('amountType')?.value.amountTypeId
       });
     }
 
@@ -550,6 +555,8 @@ export class BudgetAllocationSubheadwiseComponent {
   allocatedTotalAmount: number = 0;
 
   allocatedAmount(index: any) {
+    this.subHeadWiseUnitList[index].amount=Number(this.subHeadWiseUnitList[index].amount).toFixed(4);
+
     // this.subHeadWiseUnitList;
     // let amount = 0;
     // for (var i = 0; i < this.subHeadWiseUnitList.length; i++) {

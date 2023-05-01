@@ -550,7 +550,7 @@ export class RecieptComponent {
 
   allocatedAmount(index: any) {
     this.totalAmount = 0;
-
+    this.subHeadList[index].amount=Number(this.subHeadList[index].amount).toFixed(4);
     for (var i = 0; i < this.subHeadList.length; i++) {
       if (this.subHeadList[i].amount != '') {
         this.totalAmount =
@@ -560,4 +560,5 @@ export class RecieptComponent {
 
     // this.getTotalAmount();
   }
+
 }

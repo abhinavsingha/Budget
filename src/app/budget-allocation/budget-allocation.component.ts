@@ -1198,22 +1198,7 @@ export class BudgetAllocationComponent implements OnInit {
       }
     );
   }
-  amountUnit = [
-    {
-      unit: 'Crore',
-      amount: 10000000,
-    },
-    {
-      unit: 'Lakh',
-      amount: 100000,
-    },
-    {
-      unit: 'Thousand',
-      amount: 1000,
-    },
-    {
-      unit: 'Hundred',
-      amount: 100,
-    },
-  ];
-}
+  allocatedAmount(index: any) {
+    this.subHeadFilterDatas[index].amount = Number(this.subHeadFilterDatas[index].amount).toFixed(4);
+  }
+  }

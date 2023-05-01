@@ -121,31 +121,16 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let subHeadData of subHeadFilterDatas; let i = index">
-
-                        <!-- <div *ngIf="subHeadData.remark == null"> -->
-
-
-
                         <td>{{i+1}}</td>
-                        <!-- <td>{{subHeadData.subheadShort}}<input *ngIf=false value="DiwakarChauhan"></td> -->
                         <td>
                           {{subHeadData.subHeadDescr}}
                         </td>
-
                         <td>
                           {{subHeadData.totalAmount}}
                         </td>
                         <td>
-                          <!-- <div *ngIf="subHeadData.isActive == 1" (click)="asd(subHeadData, formdata.value,i)">
-                          Click here to enter amount
-                        </div>
-                        <div *ngIf="subHeadData.isActive == 0">
-                          <input type="text" class="form-control" id="Aallocationamount"
-                            placeholder="Please Enter Amount" formControlName="amount" />
-                        </div> -->
-
                           <input type="number" [(ngModel)]="subHeadData.amount" [ngModelOptions]="{standalone: true}"
-                            id="Aallocationamount" placeholder="Please Enter Amount" />
+                            id="Aallocationamount" placeholder="Please Enter Amount" (change)="allocatedAmount(i)"/>
 
                         </td>
 <!--                        <td>-->
