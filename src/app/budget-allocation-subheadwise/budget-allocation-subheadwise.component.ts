@@ -491,8 +491,6 @@ export class BudgetAllocationSubheadwiseComponent {
   }
 
   getFundAvailableBuFinYearAndSubHeadAndAllocationType(data: any) {
-    debugger;
-
     if (data.allocationType == null || data.allocationType == undefined) {
       this.formdata.patchValue({
         fundAvailable: '',
@@ -514,7 +512,6 @@ export class BudgetAllocationSubheadwiseComponent {
     // var newSubmitJson = data;
     // console.log(JSON.stringify(newSubmitJson) + ' =submitJson for save budget');
 
-    debugger;
     let submitJson = {
       finYearId: data.finYear.serialNo,
       subHeadId: data.subHead.budgetCodeId,
@@ -554,17 +551,13 @@ export class BudgetAllocationSubheadwiseComponent {
 
   allocatedAmount(index: any) {
     // this.subHeadWiseUnitList;
-
     // let amount = 0;
-
     // for (var i = 0; i < this.subHeadWiseUnitList.length; i++) {
     //   amount = amount + this.subHeadWiseUnitList[i].amount;
     // }
-
     // this.formdata.patchValue({
     //   currentAllocation: amount,
     // });
-    debugger;
     // this.getTotalAmount();
   }
 }

@@ -11,9 +11,7 @@ export class SearchPipeRecieptPipe implements PipeTransform {
     if (!searchText) {
       return items;
     }
-    debugger;
     return items.filter((it) => {
-      debugger;
       return (
         it.allocTypeId.allocDesc
           .toLowerCase()

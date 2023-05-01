@@ -40,7 +40,6 @@ export class BudgetApproverComponent implements OnInit {
     ) {
       this.isInboxAndOutbox = localStorage.getItem('isInboxOrOutbox');
     }
-    debugger;
     if (
       localStorage.getItem('type') != null ||
       localStorage.getItem('type') != undefined

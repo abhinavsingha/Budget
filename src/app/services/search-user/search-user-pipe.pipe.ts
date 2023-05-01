@@ -11,9 +11,7 @@ export class SearchUserPipePipe implements PipeTransform {
     if (!searchText) {
       return items;
     }
-    debugger;
     return items.filter((it) => {
-      debugger;
       return (
         it.name.toLowerCase().includes(searchText.toLowerCase()) ||
         it.unit.toLowerCase().includes(searchText.toLowerCase()) ||

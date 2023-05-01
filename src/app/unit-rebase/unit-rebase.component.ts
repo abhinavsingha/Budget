@@ -255,7 +255,7 @@ export class UnitRebaseComponent {
   tableDataList: any[] = [];
 
   showList(data: any) {
-    // debugger;
+    // ;
     // data.finYear.serialNo;
     // data.toUnit.unit;
     // getAllUnitRebaseData/{finYear}/{unit}
@@ -271,7 +271,6 @@ export class UnitRebaseComponent {
       )
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
-        debugger;
         if (result['message'] == 'success') {
           this.tableDataList = result['response'];
 

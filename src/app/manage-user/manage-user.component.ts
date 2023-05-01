@@ -126,7 +126,6 @@ export class ManageUserComponent {
   }
 
   getUserInfo(event: any) {
-    debugger;
     this.SpinnerService.show();
     if (event.unit == '001321') {
       this.apiService
@@ -327,7 +326,6 @@ export class ManageUserComponent {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
-            debugger;
             this.userRole = result['response'].userDetails.role[0].roleName;
             this.name = result['response'].userDetails.fullName;
             this.roles = result['response'].userDetails.role;

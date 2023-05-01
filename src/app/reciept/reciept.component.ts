@@ -53,7 +53,6 @@ export class RecieptComponent {
     this.getUnitDatas();
     this.getBudgetRecipt();
 
-    debugger;
     $.getScript('assets/main.js');
   }
 

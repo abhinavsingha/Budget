@@ -269,7 +269,6 @@ export class CdaParkingReportComponent implements OnInit {
   }
 
   viewData(data: any) {
-    debugger;
     this.cdaParkingReportList = [];
     this.SpinnerService.show();
     let submitJson = {
@@ -304,7 +303,6 @@ export class CdaParkingReportComponent implements OnInit {
 
             this.cdaParkingReportList.push(dataEntry);
           }
-          debugger;
           for (let i = 0; i < this.cdaParkingReportList.length; i++) {
             if (
               this.formdata.get('finYear')?.value.finYear !=
@@ -326,7 +324,7 @@ export class CdaParkingReportComponent implements OnInit {
           }
           // console.log('DATA>>>>>>>'+this.dasboardData);
           // this.draw();
-          this.SpinnerService.hide(); // debugger;
+          this.SpinnerService.hide(); // ;
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
@@ -382,7 +380,7 @@ export class CdaParkingReportComponent implements OnInit {
 
 //         console.log('DATA>>>>>>>'+this.budgetCda);
 //         this.draw();
-//         debugger;
+//         ;
 //       } else {
 //         this.common.faliureAlert('Please try later', result['message'], '');
 //       }
@@ -425,13 +423,13 @@ export class CdaParkingReportComponent implements OnInit {
 //         for(let i=0;i<this.cdaParkingReportTable.length;i++){
 
 //           if(this.formdata.get('finYear')?.value.finYear!=this.cdaParkingReportTable[i].financialYear||this.formdata.get('unit')?.value.descr!=this.cdaParkingReportTable[i].unit||this.formdata.get('subHead')?.value.subHeadDescr!=this.cdaParkingReportTable[i].subhead){
-//             debugger;
+//             ;
 //             this.cdaParkingReportTable.pop();
 //           }
 //         }
 //         // console.log('DATA>>>>>>>'+this.dasboardData);
 //         // this.draw();
-//       this.SpinnerService.hide();  // debugger;
+//       this.SpinnerService.hide();  // ;
 //       } else {
 //         this.common.faliureAlert('Please try later', result['message'], '');
 //       }
@@ -603,7 +601,7 @@ export class CdaParkingReportComponent implements OnInit {
 // }
 
 // selectSubHead(selectedSubHeadValue: any) {
-//   debugger;
+//   ;
 //   this.formdata.patchValue({
 //     majorHead: selectedSubHeadValue.subHead.mojorHead.majorHead,
 //     minorHead: selectedSubHeadValue.subHead.minorHead.minorHead,

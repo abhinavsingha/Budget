@@ -74,7 +74,6 @@ export class ManageUserRoleComponent {
     this.currentUserUnit = localStorage.getItem('userCurrentUnit');
 
     this.userCurrentUnitName = localStorage.getItem('userCurrentUnitName');
-    debugger;
     $.getScript('assets/js/adminlte.js');
   }
 
@@ -103,10 +102,8 @@ export class ManageUserRoleComponent {
 
   getAllUser() {
     this.SpinnerService.show();
-    debugger;
     this.apiService.getApi(this.cons.api.getAllUser).subscribe((res) => {
       let result: { [key: string]: any } = res;
-      debugger;
       if (result['message'] == 'success') {
         // this.usersWithRole = result['response'];
         let valueFromAPI: any[] = result['response'];
@@ -226,7 +223,6 @@ export class ManageUserRoleComponent {
   }
 
   saveUserData(formDataValue: any) {
-    debugger;
     let submitJson = {
       unitId: this.currentUserUnitNew,
       unit: this.currentUserUnitNameNew,
@@ -344,7 +340,7 @@ export class ManageUserRoleComponent {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
-            // debugger;
+            // ;
 
             this.currentUserUnitNew = result['response'].userDetails.unitId;
             this.currentUserUnitNameNew = result['response'].userDetails.unit;

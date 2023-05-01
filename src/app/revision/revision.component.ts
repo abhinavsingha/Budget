@@ -16,24 +16,23 @@ import {
 } from '@angular/forms';
 
 class tableData {
-  checked:boolean=false;
-  financialYear:any;
-  unit:any;
-  subHead:any;
-  allocationType:any;
-  amount:any;
-  revisedAmount:any;
-
+  checked: boolean = false;
+  financialYear: any;
+  unit: any;
+  subHead: any;
+  allocationType: any;
+  amount: any;
+  revisedAmount: any;
 }
 
 class revision {
-  budgetFinanciaYearId:any;
-  toUnitId:any;
-  subHeadId:any;
-  amount:any;
-  revisedAmount:any;
-  allocationTypeId:any;
-  remark:any;
+  budgetFinanciaYearId: any;
+  toUnitId: any;
+  subHeadId: any;
+  amount: any;
+  revisedAmount: any;
+  allocationTypeId: any;
+  remark: any;
 }
 
 @Component({
@@ -65,22 +64,22 @@ export class RevisionComponent {
     remarks: new FormControl('', Validators.required),
     reallocateFund: new FormControl(),
   });
-   majorHeadData: any;
-   minorHeadData: any;
-   allRevisedUnits: any;
-   budgetRevisionUnitList2: any[]=[];
+  majorHeadData: any;
+  minorHeadData: any;
+  allRevisedUnits: any;
+  budgetRevisionUnitList2: any[] = [];
   private allocationDta: any;
 
   ngOnInit(): void {
     $.getScript('assets/js/adminlte.js');
     this.getBudgetFinYear();
     this.getSubHeadsData();
-     this.getCgUnitData();
+    this.getCgUnitData();
     this.getNewEmptyEntries();
     this.getUnitDatas();
     this.getMajorHead();
     this.getAvailableFundData();
-    this.getAllocationTypeData()
+    this.getAllocationTypeData();
     this.uploadDocuments.push(new UploadDocuments());
     $.getScript('assets/main.js');
   }
@@ -135,7 +134,6 @@ export class RevisionComponent {
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
-          debugger;
           this.formdata.patchValue({
             fundAvailable: result['response'].fundAvailable,
             reallocateFund: '0.0',
@@ -198,9 +196,9 @@ export class RevisionComponent {
   }
 
   getAvailableFund(event: any, formDataValue: any) {
-    for(let i=0;i<this.subHeads.length;i++){
-      if(this.subHeads[i]==this.formdata.get('subHead')?.value){
-        for(let j=0;j<this.majorHeadData.length;j++) {
+    for (let i = 0; i < this.subHeads.length; i++) {
+      if (this.subHeads[i] == this.formdata.get('subHead')?.value) {
+        for (let j = 0; j < this.majorHeadData.length; j++) {
           if (this.subHeads[i].majorHead == this.majorHeadData[j].majorHead)
             this.formdata.get('majorHead')?.setValue(this.majorHeadData[j]);
 
@@ -208,7 +206,6 @@ export class RevisionComponent {
             this.formdata.get('minorHead')?.setValue(this.minorHeadData[j]);
         }
       }
-
     }
 
     //Step1:-> Selected Major Data and Minor Data automatically
@@ -227,7 +224,7 @@ export class RevisionComponent {
 
     //Step3-> Get All Unit By SubHead Selected
     // this.selectedunits = structuredClone(this.allunits);
-    // debugger;
+    // ;
     // for (var i = 0; i < this.selectedunits.length; i++) {
     //   let subHeadWiseUnit = new SubHeadWiseUnitList();
     //   subHeadWiseUnit.id = 0;
@@ -236,11 +233,6 @@ export class RevisionComponent {
     //   subHeadWiseUnit.unit = this.selectedunits[i].descr;
     //   this.subHeadWiseUnitList.push(subHeadWiseUnit);
     // }
-
-
-
-
-
   }
 
   moveDataToNextGrid(formDataValue: any) {
@@ -318,7 +310,9 @@ export class RevisionComponent {
   }
 
   revisionAmount(index: any) {
-    this.budgetRevisionUnitList2[index].revisiedAmount = parseFloat(this.budgetRevisionUnitList2[index].existingAmount) + this.budgetRevisionUnitList2[index].revisionAmount;
+    this.budgetRevisionUnitList2[index].revisiedAmount =
+      parseFloat(this.budgetRevisionUnitList2[index].existingAmount) +
+      this.budgetRevisionUnitList2[index].revisionAmount;
     this.getTotalAmount();
   }
 
@@ -327,124 +321,144 @@ export class RevisionComponent {
   totalRevisiedAmount: any = 0.0;
 
   private populateRevisionData() {
-    for(let i=0;i<this.allRevisedUnits.length;i++){
-      const entry:BudgetRevisionUnitList= {
+    for (let i = 0; i < this.allRevisedUnits.length; i++) {
+      const entry: BudgetRevisionUnitList = {
         id: undefined,
         unit: this.allRevisedUnits[i].unit,
         existingAmount: parseFloat(this.allRevisedUnits[i].existingAmount),
         revisionAmount: undefined,
         revisiedAmount: parseFloat(this.allRevisedUnits[i].existingAmount),
-        isSelected: false
-      }
+        isSelected: false,
+      };
       this.budgetRevisionUnitList2.push(entry);
     }
     this.getTotalAmount();
   }
 
   getAvailableFundFindByUnitIdAndFinYearId($event: any, i: number) {
-    const finYear=this.formdata.get('finYear')?.value
-    let formData={};
-      if(finYear!=null){
-      formData={
-        unitId:this.budgetRevisionUnitList[i].unit.unit,
-        finYearId:JSON.parse(finYear).serialNo
-      }
+    const finYear = this.formdata.get('finYear')?.value;
+    let formData = {};
+    if (finYear != null) {
+      formData = {
+        unitId: this.budgetRevisionUnitList[i].unit.unit,
+        finYearId: JSON.parse(finYear).serialNo,
+      };
 
-    this.apiService.postApi(this.cons.api.getAvailableFundFindByUnitIdAndFinYearId, formData).subscribe({
-      next: (v: object) => {
-        this.SpinnerService.hide();
-        let result: { [key: string]: any } = v;
+      this.apiService
+        .postApi(
+          this.cons.api.getAvailableFundFindByUnitIdAndFinYearId,
+          formData
+        )
+        .subscribe({
+          next: (v: object) => {
+            this.SpinnerService.hide();
+            let result: { [key: string]: any } = v;
 
-        if (result['message'] == 'success') {
-          // this.newSubcList = [];
+            if (result['message'] == 'success') {
+              // this.newSubcList = [];
 
-          this.common.successAlert(
-            'Success',
-            result['response']['msg'],
-            'success'
-          );
-        } else {
-          this.common.faliureAlert('Please try later', result['message'], '');
-        }
-      },
-      error: (e) => {
-        this.SpinnerService.hide();
-        console.error(e);
-        this.common.faliureAlert('Error', e['error']['message'], 'error');
-      },
-      complete: () => console.info('complete'),
-    });
+              this.common.successAlert(
+                'Success',
+                result['response']['msg'],
+                'success'
+              );
+            } else {
+              this.common.faliureAlert(
+                'Please try later',
+                result['message'],
+                ''
+              );
+            }
+          },
+          error: (e) => {
+            this.SpinnerService.hide();
+            console.error(e);
+            this.common.faliureAlert('Error', e['error']['message'], 'error');
+          },
+          complete: () => console.info('complete'),
+        });
+    }
   }
-  }
-  tabledata:tableData[]=[];
-  masterChecked: boolean=false;
+  tabledata: tableData[] = [];
+  masterChecked: boolean = false;
   saveDataToTable() {
-    const alloc={
+    const alloc = {
       allocationType: '',
-      allocationTypeId:''
+      allocationTypeId: '',
+    };
+    if (this.formdata.get('allocationType')?.value.allocType == 'BE') {
+      alloc.allocationType = 'Revised BE';
+      alloc.allocationTypeId = 'ALL_106';
+    } else {
+      alloc.allocationType = 'Revised RE';
+      alloc.allocationTypeId = 'ALL_107';
     }
-    if(this.formdata.get('allocationType')?.value.allocType=='BE'){
-      alloc.allocationType='Revised BE';
-      alloc.allocationTypeId='ALL_106';
-    }
-    else{
-      alloc.allocationType='Revised RE';
-      alloc.allocationTypeId='ALL_107';
-    }
-    for(let i=0;i<this.budgetRevisionUnitList2.length;i++){
-      if(this.budgetRevisionUnitList2[i].revisionAmount!=undefined&&!this.budgetRevisionUnitList2[i].isSelected){
-        const data:tableData= {
-          checked:false,
+    for (let i = 0; i < this.budgetRevisionUnitList2.length; i++) {
+      if (
+        this.budgetRevisionUnitList2[i].revisionAmount != undefined &&
+        !this.budgetRevisionUnitList2[i].isSelected
+      ) {
+        const data: tableData = {
+          checked: false,
           financialYear: this.formdata.get('finYear')?.value,
           unit: this.budgetRevisionUnitList2[i].unit,
           subHead: this.formdata.get('subHead')?.value,
           allocationType: alloc,
           amount: parseFloat(this.budgetRevisionUnitList2[i].existingAmount),
-          revisedAmount: parseFloat(this.budgetRevisionUnitList2[i].revisionAmount)
-        }
+          revisedAmount: parseFloat(
+            this.budgetRevisionUnitList2[i].revisionAmount
+          ),
+        };
         this.tabledata.push(data);
         // this.budgetRevisionUnitList2.splice(i, 1);
         // i--;
-        this.budgetRevisionUnitList2[i].isSelected=true;
+        this.budgetRevisionUnitList2[i].isSelected = true;
       }
-
     }
     this.getTotalAmount();
-
   }
 
   selectAll() {
-    for(let i=0;i<this.tabledata.length;i++){
-      this.tabledata[i].checked=this.masterChecked;
+    for (let i = 0; i < this.tabledata.length; i++) {
+      this.tabledata[i].checked = this.masterChecked;
       console.log(this.tabledata[i].checked);
     }
     console.log(this.masterChecked);
   }
 
   deleteTableData() {
-    for(let i=this.tabledata.length-1;i>=0;i--){
-      if(this.tabledata[i].checked){
-        for(let j=0;i<this.budgetRevisionUnitList2.length;j++){
-          if(this.tabledata[i].unit.unit==this.budgetRevisionUnitList2[j].unit.unit){
-            this.budgetRevisionUnitList2[j].isSelected=false;
-            this.tabledata.splice(i,1);
+    for (let i = this.tabledata.length - 1; i >= 0; i--) {
+      if (this.tabledata[i].checked) {
+        for (let j = 0; i < this.budgetRevisionUnitList2.length; j++) {
+          if (
+            this.tabledata[i].unit.unit ==
+            this.budgetRevisionUnitList2[j].unit.unit
+          ) {
+            this.budgetRevisionUnitList2[j].isSelected = false;
+            this.tabledata.splice(i, 1);
             break;
           }
         }
       }
     }
-    this.getTotalAmount()
+    this.getTotalAmount();
   }
-  getTotalAmount(){
+  getTotalAmount() {
     this.totalExistingAmount = 0.0;
     this.totlaRevisionAmount = 0.0;
     this.totalRevisiedAmount = 0.0;
-    for(let i=0;i<this.budgetRevisionUnitList2.length;i++){
-      if(!this.budgetRevisionUnitList2[i].isSelected){
-        this.totalExistingAmount=this.totalExistingAmount+this.budgetRevisionUnitList2[i].existingAmount
-        this.totalRevisiedAmount=this.totalRevisiedAmount+this.budgetRevisionUnitList2[i].revisiedAmount
-        if(this.budgetRevisionUnitList2[i].revisionAmount!=undefined){
-          this.totlaRevisionAmount=this.totlaRevisionAmount+this.budgetRevisionUnitList2[i].revisionAmount
+    for (let i = 0; i < this.budgetRevisionUnitList2.length; i++) {
+      if (!this.budgetRevisionUnitList2[i].isSelected) {
+        this.totalExistingAmount =
+          this.totalExistingAmount +
+          this.budgetRevisionUnitList2[i].existingAmount;
+        this.totalRevisiedAmount =
+          this.totalRevisiedAmount +
+          this.budgetRevisionUnitList2[i].revisiedAmount;
+        if (this.budgetRevisionUnitList2[i].revisionAmount != undefined) {
+          this.totlaRevisionAmount =
+            this.totlaRevisionAmount +
+            this.budgetRevisionUnitList2[i].revisionAmount;
         }
       }
     }
@@ -457,11 +471,14 @@ export class RevisionComponent {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
           this.allocationType = result['response'];
-          this.allocationDta=result['response'];
-          for(let i=this.allocationType.length-1;i>=0;i--){
-             if(this.allocationType[i].allocType!="BE"&&this.allocationType[i].allocType!="RE"){
-               this.allocationType.splice(i,1);
-             }
+          this.allocationDta = result['response'];
+          for (let i = this.allocationType.length - 1; i >= 0; i--) {
+            if (
+              this.allocationType[i].allocType != 'BE' &&
+              this.allocationType[i].allocType != 'RE'
+            ) {
+              this.allocationType.splice(i, 1);
+            }
           }
           this.SpinnerService.hide();
         } else {
@@ -469,55 +486,55 @@ export class RevisionComponent {
         }
       });
   }
-  saveRevisionData(){
-    const requestJson:revision[]=[];
-    for(let i=0;i<this.tabledata.length;i++){
-    const entry:revision= {
-      budgetFinanciaYearId: this.tabledata[i].financialYear.serialNo,
-      toUnitId: this.tabledata[i].unit.unit,
-      subHeadId: this.tabledata[i].subHead.budgetCodeId,
-      amount: this.tabledata[i].amount,
-      revisedAmount: this.tabledata[i].revisedAmount,
-      allocationTypeId: this.tabledata[i].allocationType.allocationTypeId,
-      remark:'test'
+  saveRevisionData() {
+    const requestJson: revision[] = [];
+    for (let i = 0; i < this.tabledata.length; i++) {
+      const entry: revision = {
+        budgetFinanciaYearId: this.tabledata[i].financialYear.serialNo,
+        toUnitId: this.tabledata[i].unit.unit,
+        subHeadId: this.tabledata[i].subHead.budgetCodeId,
+        amount: this.tabledata[i].amount,
+        revisedAmount: this.tabledata[i].revisedAmount,
+        allocationTypeId: this.tabledata[i].allocationType.allocationTypeId,
+        remark: 'test',
+      };
+      requestJson.push(entry);
     }
-    requestJson.push(entry);
+    const req = {
+      budgetRequest: requestJson,
+    };
+    this.apiService
+      .postApi(this.cons.api.saveBudgetRevisionData, req)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
 
-    }
-    const req={
-      budgetRequest:requestJson
-    }
-    this.apiService.postApi(this.cons.api.saveBudgetRevisionData, req).subscribe({
-      next: (v: object) => {
-        this.SpinnerService.hide();
-        let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            // this.newSubcList = [];
 
-        if (result['message'] == 'success') {
-          // this.newSubcList = [];
-
-          this.common.successAlert(
-            'Success',
-            result['response']['msg'],
-            'success'
-          );
-        } else {
-          this.common.faliureAlert('Please try later', result['message'], '');
-        }
-      },
-      error: (e) => {
-        this.SpinnerService.hide();
-        console.error(e);
-        this.common.faliureAlert('Error', e['error']['message'], 'error');
-      },
-      complete: () => console.info('complete'),
-    });
+            this.common.successAlert(
+              'Success',
+              result['response']['msg'],
+              'success'
+            );
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
   }
-  getBudgetRevisionData(formDataValue: any){
-    debugger;
+  getBudgetRevisionData(formDataValue: any) {
     let submitJson = {
       budgetFinancialYearId: formDataValue.finYear.serialNo,
-       subHead: formDataValue.subHead.budgetCodeId,
-      allocTypeId: formDataValue.allocationType.allocTypeId
+      subHead: formDataValue.subHead.budgetCodeId,
+      allocTypeId: formDataValue.allocationType.allocTypeId,
     };
     this.apiService
       .postApi(this.cons.api.getBudgetRevisionData, submitJson)
@@ -549,5 +566,3 @@ export class RevisionComponent {
       });
   }
 }
-
-

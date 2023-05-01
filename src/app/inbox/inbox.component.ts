@@ -77,7 +77,6 @@ export class InboxComponent implements OnInit {
   ) {}
 
   redirect(li: InboxList) {
-    debugger;
     if (li.groupId != null || li.groupId != undefined) {
       localStorage.setItem('group_id', li.groupId);
     }
@@ -113,13 +112,11 @@ export class InboxComponent implements OnInit {
   }
 
   private inboxlist() {
-    debugger;
     this.SpinnerService.show();
     this.apiService.getApi(this.cons.api.inboxlist).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.SpinnerService.hide();
-        debugger;
         let list: any = result['response'].inboxList;
 
         if (list.length > 0) {

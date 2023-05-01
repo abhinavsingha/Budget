@@ -42,7 +42,7 @@ export class HeaderComponent {
     //   this.roles = this.userDetails.role;
     //   this.roleHeading = this.roles[0].roleName;
     // }
-    // debugger;
+    // ;
 
     this.getDashBoardDta();
   }
@@ -105,7 +105,7 @@ export class HeaderComponent {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
       });
-    // debugger;
+    // ;
     // this.apiService
     //   .postApi(this.cons.api.updateBudgetAllocation, newSubmitJson)
     //   .subscribe({
@@ -177,7 +177,6 @@ export class HeaderComponent {
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
             // this.userDetails = JSON.parse(nr);
-            debugger;
             // let userDetailsString: {} = result['response'].userDetails.;
 
             this.name = result['response'].userDetails.fullName;

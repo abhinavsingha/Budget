@@ -76,7 +76,6 @@ export class OutboxComponent implements OnInit {
   ) {}
 
   redirect(li: InboxList) {
-    debugger;
     if (li.groupId != null || li.groupId != undefined) {
       localStorage.setItem('group_id', li.groupId);
     }
@@ -113,7 +112,6 @@ export class OutboxComponent implements OnInit {
   }
 
   private outboxlist() {
-    debugger;
     this.SpinnerService.show();
     this.apiService.getApi(this.cons.api.inboxlist).subscribe((res) => {
       let result: { [key: string]: any } = res;

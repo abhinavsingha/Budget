@@ -93,6 +93,7 @@ export class BudgetAllocationReportComponent implements OnInit {
 
     this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
       let result: { [key: string]: any } = res;
+
       if (result['message'] == 'success') {
         this.allunits = result['response'];
         this.SpinnerService.hide();
@@ -201,7 +202,6 @@ export class BudgetAllocationReportComponent implements OnInit {
       });
   }
   searchData(data: any) {
-    debugger;
     this.allocationRepoList = [];
     this.SpinnerService.show();
     let submitJson = {
@@ -265,7 +265,7 @@ export class BudgetAllocationReportComponent implements OnInit {
             }
             // console.log('DATA>>>>>>>'+this.dasboardData);
             // this.draw();
-            this.SpinnerService.hide(); // debugger;
+            this.SpinnerService.hide();
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }

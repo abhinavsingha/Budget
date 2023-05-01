@@ -757,7 +757,6 @@ export class BudgetAllocationComponent implements OnInit {
   tableData: any[] = [];
 
   addSubHeadValue(data: any, formDataValue: any, subHeadIndex: any) {
-    debugger;
     if (
       data.amount == undefined ||
       formDataValue.finYearId == null ||
@@ -773,7 +772,7 @@ export class BudgetAllocationComponent implements OnInit {
     }
     data.amount = data.amount * data.amountUnit.amount;
     delete data.amountUnit;
-    // debugger;
+
     this.SpinnerService.show();
 
     let submitJson = {

@@ -234,7 +234,7 @@ export class DashboardComponent implements OnInit {
           }
           // console.log('DATA>>>>>>>'+this.dasboardData);
           // this.draw();
-          this.SpinnerService.hide(); // debugger;
+          this.SpinnerService.hide(); // ;
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }

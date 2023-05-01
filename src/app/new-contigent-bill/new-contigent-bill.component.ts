@@ -1,16 +1,16 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {ApiCallingServiceService} from '../services/api-calling/api-calling-service.service';
-import {ConstantsService} from '../services/constants/constants.service';
-import {NgxSpinnerService} from 'ngx-spinner';
-import {CommonService} from '../services/common/common.service';
-import {FormControl, FormGroup} from '@angular/forms';
-import {DatePipe} from '@angular/common';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ApiCallingServiceService } from '../services/api-calling/api-calling-service.service';
+import { ConstantsService } from '../services/constants/constants.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { CommonService } from '../services/common/common.service';
+import { FormControl, FormGroup } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
-import {HttpClient} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import * as FileSaver from 'file-saver';
-import {Router} from '@angular/router';
-import {SharedService} from '../services/shared/shared.service';
-import * as $ from "jquery";
+import { Router } from '@angular/router';
+import { SharedService } from '../services/shared/shared.service';
+import * as $ from 'jquery';
 // import { UploadDocuments } from '../model/upload-documents';
 
 class newCb {
@@ -92,8 +92,8 @@ export class NewContigentBillComponent implements OnInit {
   @ViewChild('browseFileInput') browseFileInput: any;
   @ViewChild('invoiceFileInput') invoiceFileInput: any;
   @ViewChild('uploadFileInput') uploadFileInput: any;
-  p:number=1;
-  approvedPresent:boolean=false;
+  p: number = 1;
+  approvedPresent: boolean = false;
   finYearData: any;
   subHeadData: any;
   unitData: any;
@@ -144,10 +144,10 @@ export class NewContigentBillComponent implements OnInit {
   selectedFile: File | any = null;
   fileName = '';
   invoice: any;
-  browse:any;
+  browse: any;
   private uploadFileDate: any;
   private invoicePath: any;
-  masterChecked:boolean=false;
+  masterChecked: boolean = false;
 
   constructor(
     public sharedService: SharedService,
@@ -158,8 +158,7 @@ export class NewContigentBillComponent implements OnInit {
     private SpinnerService: NgxSpinnerService,
     private common: CommonService,
     private datePipe: DatePipe
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     $.getScript('assets/js/adminlte.js');
@@ -251,8 +250,10 @@ export class NewContigentBillComponent implements OnInit {
           ?.setValue(
             'S1.10.1 of Shedule-10 of DFPCG-2017 vide Govt. of India, Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017'
           );
-      }else{
-        Swal.fire('Duplicate Entry. Select Update to update previously entered CB');
+      } else {
+        Swal.fire(
+          'Duplicate Entry. Select Update to update previously entered CB'
+        );
       }
     } else {
       Swal.fire('Enter missing data');
@@ -261,10 +262,7 @@ export class NewContigentBillComponent implements OnInit {
 
   getBudgetAllotted() {
     this.SpinnerService.show();
-    let url =
-      this.cons.api.getAvailableFund +
-      '/' +
-      this.unitId;
+    let url = this.cons.api.getAvailableFund + '/' + this.unitId;
     this.apiService.getApi(url).subscribe(
       (res) => {
         this.SpinnerService.hide();
@@ -370,8 +368,8 @@ export class NewContigentBillComponent implements OnInit {
     this.formdata.get('progressive')?.setValue(this.expenditure);
     // this.updateExpenditure();
   }
-unitId:any;
-  unitName:any;
+  unitId: any;
+  unitName: any;
   private getDashboardData() {
     // this.SpinnerService.show();
     this.apiService.postApi(this.cons.api.getDashboardData, null).subscribe(
@@ -385,12 +383,11 @@ unitId:any;
           // this.userRole = result['response'].userDetails.role[0].roleName;
           this.sharedService.inbox = result['response'].inbox;
           this.sharedService.outbox = result['response'].outBox;
-          this.unitId=result['response'].userDetails.unitId;
-          this.unitName=result['response'].userDetails.unit;
+          this.unitId = result['response'].userDetails.unitId;
+          this.unitName = result['response'].userDetails.unit;
           this.formdata.get('unit')?.setValue(this.unitName);
           this.formdata.get('authorityUnit')?.setValue(this.unitName);
           this.getBudgetAllotted();
-
         }
       },
       (error) => {
@@ -460,8 +457,7 @@ unitId:any;
                 invoicePath: getCbList[i].invoiceUploadId.pathURL,
                 authGroupId: getCbList[i].authoritiesList[0].authGroupId,
               };
-              if(entry.status=='Approved')
-                this.approvedPresent=true;
+              if (entry.status == 'Approved') this.approvedPresent = true;
               this.cbList.push(entry);
               this.SpinnerService.hide();
             },
@@ -502,60 +498,60 @@ unitId:any;
     if (this.formdata.get('amount')?.value == null) {
       this.formdata.get('amount')?.reset();
       Swal.fire('Invalid amount. Enter Number');
-    } else if(this.formdata.get('amount')?.value<0){
+    } else if (this.formdata.get('amount')?.value < 0) {
       Swal.fire('Invalid amount. Negative value not allowed');
       this.formdata.get('amount')?.reset();
-    }else {
+    } else {
       // this.expenditure = parseFloat(this.expenditure) + this.billAmount;
       this.formdata
         .get('progressive')
-        ?.setValue(parseFloat(this.expenditure) + this.formdata.get('amount')?.value);
+        ?.setValue(
+          parseFloat(this.expenditure) + this.formdata.get('amount')?.value
+        );
       this.formdata
         .get('balance')
         ?.setValue(
-          this.budgetAllotted - (parseFloat(this.expenditure) + this.formdata.get('amount')?.value)
+          this.budgetAllotted -
+            (parseFloat(this.expenditure) + this.formdata.get('amount')?.value)
         );
     }
   }
 
-  upload(key:string) {
-    if(key=='invoice'){
-
-
-    const file: File = this.invoiceFileInput.nativeElement.files[0];
-    console.log(file);
-    const formData = new FormData();
-    console.log(this.formdata.get('file')?.value);
-    formData.append('file', file);
-    this.SpinnerService.show();
-    this.apiService.postApi(this.cons.api.fileUpload, formData).subscribe({
-      next: (v: object) => {
-        this.SpinnerService.hide();
-        let result: { [key: string]: any } = v;
-
-        if (result['message'] == 'success') {
-          this.common.successAlert(
-            'Success',
-            result['response']['msg'],
-            'success'
-          );
-          this.invoice = result['response'].uploadDocId;
-          this.invoicePath = result['response'].uploadPathUrl;
+  upload(key: string) {
+    if (key == 'invoice') {
+      const file: File = this.invoiceFileInput.nativeElement.files[0];
+      console.log(file);
+      const formData = new FormData();
+      console.log(this.formdata.get('file')?.value);
+      formData.append('file', file);
+      this.SpinnerService.show();
+      this.apiService.postApi(this.cons.api.fileUpload, formData).subscribe({
+        next: (v: object) => {
           this.SpinnerService.hide();
-        } else {
-          this.common.faliureAlert('Please try later', result['message'], '');
+          let result: { [key: string]: any } = v;
+
+          if (result['message'] == 'success') {
+            this.common.successAlert(
+              'Success',
+              result['response']['msg'],
+              'success'
+            );
+            this.invoice = result['response'].uploadDocId;
+            this.invoicePath = result['response'].uploadPathUrl;
+            this.SpinnerService.hide();
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+            this.SpinnerService.hide();
+          }
+        },
+        error: (e) => {
           this.SpinnerService.hide();
-        }
-      },
-      error: (e) => {
-        this.SpinnerService.hide();
-        console.error(e);
-        this.common.faliureAlert('Error', e['error']['message'], 'error');
-      },
-      complete: () => this.SpinnerService.hide(),
-    });
-  }
-    else{
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => this.SpinnerService.hide(),
+      });
+    } else {
       const file: File = this.browseFileInput.nativeElement.files[0];
       console.log(file);
       const formData = new FormData();
@@ -596,7 +592,6 @@ unitId:any;
   }
 
   updateFormdata(cbEntry: newCb) {
-    debugger;
     console.log('cbentry' + cbEntry);
     for (let i = 0; i < this.majorHeadData.length; i++) {
       let major = this.majorHeadData[i];
@@ -635,7 +630,7 @@ unitId:any;
     this.formdata.get('authorityUnit')?.setValue(this.unitName);
     this.formdata.get('budgetAllocated')?.setValue(cbEntry.budgetAllocated);
     this.getExpenditure();
-    this.budgetAllotted=cbEntry.budgetAllocated;
+    this.budgetAllotted = cbEntry.budgetAllocated;
     this.formdata.get('progressive')?.setValue(cbEntry.progressiveAmount);
     this.formdata
       .get('balance')
@@ -666,7 +661,6 @@ unitId:any;
     this.formdata.get('fileDate')?.setValue(cbEntry.fileDate);
     this.formdata.get('onAccOf')?.setValue(cbEntry.onAccOf);
     this.formdata.get('authDetail')?.setValue(cbEntry.authDetail);
-
   }
 
   updateList() {
@@ -758,7 +752,6 @@ unitId:any;
                 },
               });
           }
-
         } else if (this.cbList[i].status == 'Pending for Submission') {
           let entry: newCb = {
             authUnitId: this.unitId,
@@ -775,7 +768,7 @@ unitId:any;
             cbNo: this.formdata.get('cbNo')?.value,
             cbDate: this.formdata.get('cbDate')?.value,
             authority: this.formdata.get('authority')?.value,
-            authorityUnit:this.unitName,
+            authorityUnit: this.unitName,
             date: this.formdata.get('date')?.value,
             firmName: this.formdata.get('firmName')?.value,
             invoiceNo: this.formdata.get('invoiceNo')?.value,
@@ -844,8 +837,8 @@ unitId:any;
           authList: authList,
           contingentBilId: undefined,
         };
-        if(this.cbList[i].status=='Pending for Submission')
-        submitList.push(cb);
+        if (this.cbList[i].status == 'Pending for Submission')
+          submitList.push(cb);
       }
     }
     if (submitList.length == 0) {
@@ -867,10 +860,10 @@ unitId:any;
               // this.reloadModule1();
               console.log(result['response']);
 
-              for(let i=0;i<submitList.length;i++){
-                for(let j=0;j<this.cbList.length;j++){
-                  if(submitList[i].cbNumber==this.cbList[j].cbNo){
-                    this.cbList[j].status='Pending';
+              for (let i = 0; i < submitList.length; i++) {
+                for (let j = 0; j < this.cbList.length; j++) {
+                  if (submitList[i].cbNumber == this.cbList[j].cbNo) {
+                    this.cbList[j].status = 'Pending';
                   }
                 }
               }
@@ -898,7 +891,6 @@ unitId:any;
         ?.setValue(
           'S1.10.1 of Shedule-10 of DFPCG-2017 vide Govt. of India, Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017'
         );
-
     }
     this.SpinnerService.hide();
     console.log(submitList);
@@ -1029,7 +1021,7 @@ unitId:any;
   }
 
   downloadPdf(pdfUrl: string): void {
-    this.http.get(pdfUrl, {responseType: 'blob'}).subscribe(
+    this.http.get(pdfUrl, { responseType: 'blob' }).subscribe(
       (blob: Blob) => {
         //   this.http.get('https://icg.net.in/bmsreport/1681376372803.pdf', { responseType: 'blob' }).subscribe((blob: Blob) => {
         this.SpinnerService.hide();
@@ -1048,26 +1040,22 @@ unitId:any;
   // }
 
   checkDate() {
-    const date = this.datePipe.transform(
-      new Date(),
-      'yyyy-MM-dd'
-    );
-    const cbDate=this.datePipe.transform(
+    const date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    const cbDate = this.datePipe.transform(
       new Date(this.formdata.get('cbDate')?.value),
       'yyyy-MM-dd'
     );
-    if(cbDate!=null&&date!=null){
-      if(cbDate>date){
+    if (cbDate != null && date != null) {
+      if (cbDate > date) {
         Swal.fire('Cbdate cannot be a future date');
         this.formdata.get('cbDate')?.reset();
-        console.log('date= '+this.formdata.get('cbDate')?.value);
+        console.log('date= ' + this.formdata.get('cbDate')?.value);
       }
     }
-
   }
 
-  cleardata(key:string) {
-    if(key=='finYear'){
+  cleardata(key: string) {
+    if (key == 'finYear') {
       this.formdata.get('majorHead')?.reset();
       this.formdata.get('subHead')?.reset();
       this.formdata.get('minorHead')?.reset();
@@ -1075,8 +1063,8 @@ unitId:any;
   }
 
   selectAll() {
-    for(let i=0;i<this.cbList.length;i++){
-      this.cbList[i].checked=this.masterChecked;
+    for (let i = 0; i < this.cbList.length; i++) {
+      this.cbList[i].checked = this.masterChecked;
       console.log(this.cbList[i].checked);
     }
     console.log(this.masterChecked);

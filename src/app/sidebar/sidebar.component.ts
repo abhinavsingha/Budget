@@ -75,7 +75,6 @@ export class SidebarComponent {
             this.sharedService.outbox = result['response'].outBox;
             this.unitName = result['response'].userDetails.unit;
             this.unitId = result['response'].userDetails.unitId;
-            debugger;
             localStorage.setItem(
               'userCurrentUnit',
               result['response'].userDetails.unitId

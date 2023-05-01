@@ -115,7 +115,6 @@ export class ApprovedBudgetComponent implements OnInit {
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
-          debugger;
           if (result['response'].length > 0) {
             this.path = result['response'][0].path;
           }
