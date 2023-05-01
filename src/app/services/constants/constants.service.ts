@@ -159,6 +159,7 @@ export class ConstantsService {
       this.serviceUrl + 'reportController/getSubHeadWiseAllocationReport',
 
     getBEAllocationReport:
-      this.serviceUrl + 'reportController/getBEAllocationReport',
+      this.serviceUrl + 'reportController/getBEAllocationReport', showAllAmountUnit: this.serviceUrl+'dashBoard/showAllAmountUnit'
+
   };
 }

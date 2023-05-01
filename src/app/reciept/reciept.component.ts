@@ -22,6 +22,7 @@ export class RecieptComponent {
     minorHead: new FormControl(),
     subHeadType: new FormControl(),
     remarks: new FormControl(),
+    amountType:new FormControl()
   });
 
   finYearList: any[] = [];
@@ -46,6 +47,7 @@ export class RecieptComponent {
   totalAmount: any = 0.0;
 
   ngOnInit(): void {
+    this.getAmountType();
     this.getBudgetFinYear();
     this.majorDataNew();
     this.getAllocationTypeData();
@@ -333,8 +335,6 @@ export class RecieptComponent {
         this.uploadDocuments[i].authUnit == undefined ||
         this.uploadDocuments[i].authorityData == null ||
         this.uploadDocuments[i].authorityData == undefined ||
-        this.uploadDocuments[i].remarks == null ||
-        this.uploadDocuments[i].remarks == undefined ||
         this.uploadDocuments[i].uploadDocId == null ||
         this.uploadDocuments[i].uploadDocId == undefined
       ) {
@@ -370,6 +370,7 @@ export class RecieptComponent {
     this.submitJson = {
       budgetFinancialYearId: this.selectedFinYear,
       allocationTypeId: this.finalSelectedAllocationType.allocTypeId,
+      amountTypeId:this.formdata.get('amountType')?.value.amountTypeId,
       authListData: authRequestsList,
       receiptSubRequests: budgetRequest,
     };
@@ -394,9 +395,11 @@ export class RecieptComponent {
   }
 
   finallySubmit(data: any) {
+
     this.SpinnerService.show();
     // var newSubmitJson = this.submitJson;
     var newSubmitJson = data;
+
     console.log(JSON.stringify(newSubmitJson) + ' =submitJson for save budget');
 
     this.apiService
@@ -441,7 +444,29 @@ export class RecieptComponent {
   authListData: any[] = [];
 
   isUpdate: boolean = false;
+  amountType: any;
+  getAmountType(){
+    this.apiService
+      .getApi(this.cons.api.showAllAmountUnit)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            this.amountType = result['response'];
 
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
+  }
   updateReciept(data: any) {
     this.SpinnerService.show();
     this.isUpdate = true;
