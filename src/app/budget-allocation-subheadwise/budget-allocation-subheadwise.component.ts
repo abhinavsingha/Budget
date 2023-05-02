@@ -567,4 +567,8 @@ export class BudgetAllocationSubheadwiseComponent {
     // });
     // this.getTotalAmount();
   }
+amountUnit:string='';
+  setAmountUnit() {
+    this.amountUnit=this.formdata.get('amountType')?.value.amountType;
+  }
 }
