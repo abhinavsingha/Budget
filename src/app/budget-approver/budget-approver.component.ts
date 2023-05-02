@@ -204,11 +204,14 @@ export class BudgetApproverComponent implements OnInit {
 
   totalAmountToAllocateCDAParking: any;
   getCurrentSubHeadData: any;
+  showSubmit: boolean = false;
   addCDAParking(data: any) {
     this.getCurrentSubHeadData = data;
     this.multipleCdaParking = [];
     this.multipleCdaParking.push(new MultiCdaParking());
     this.totalAmountToAllocateCDAParking = data.allocationAmount;
+    this.showUpdate = false;
+    this.showSubmit = true;
   }
 
   deleteFromMultipleCdaParking(index: any) {
@@ -294,5 +297,10 @@ export class BudgetApproverComponent implements OnInit {
         },
         complete: () => console.info('complete'),
       });
+  }
+  showUpdate: boolean = false;
+  viewCDAParking() {
+    this.showUpdate = true;
+    this.showSubmit = false;
   }
 }

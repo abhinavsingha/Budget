@@ -39,7 +39,7 @@
         <div class="card-body">
           <form [formGroup]="formdata" (ngSubmit)="showList(formdata.value)">
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
@@ -90,7 +90,8 @@
                     <div class="form-group">
                       <label>Rupees in<span class="text-danger"></span></label>
                       <ng-select class="form-control select2bs4" style="width: 100%" [items]="amountType"
-                                 (change)="setAmountType()"  bindLabel="amountType" placeholder="Select Amount Unit" formControlName="amountType"></ng-select>
+                        (change)="setAmountType()" bindLabel="amountType" placeholder="Select Amount Unit"
+                        formControlName="amountType"></ng-select>
                     </div>
                   </div>
                   <!-- <div class=" col-md-6">
@@ -103,7 +104,7 @@
                 </div>
 
               </div>
-              <div class="col-md-6">
+              <div class="col-md-8">
 
 
                 <div class="card-body table-responsive p-0" style="height:202px;">
@@ -113,8 +114,8 @@
                         <th>Sr No</th>
                         <th>Sub Head</th>
                         <th>Fund Available</th>
-                        <th>Amount (in {{amountUnit}})</th>
-<!--                        <th>Amount Unit</th>-->
+                        <th style="width:10%;">Amount (in {{amountUnit}})</th>
+                        <!--                        <th>Amount Unit</th>-->
                         <!-- <th>CDA Parking</th> -->
                         <th>Action</th>
                       </tr>
@@ -130,25 +131,10 @@
                         </td>
                         <td>
                           <input type="number" [(ngModel)]="subHeadData.amount" [ngModelOptions]="{standalone: true}"
-                            id="Aallocationamount" placeholder="Please Enter Amount" (change)="allocatedAmount(i)"/>
+                            id="Aallocationamount" placeholder="Please Enter Amount" (change)="allocatedAmount(i)"
+                            style="width:102px;" />
 
                         </td>
-<!--                        <td>-->
-
-<!--                          <ng-select class="form-control select2bs4" style="width: 100%" [items]="amountUnit"-->
-<!--                            bindLabel="unit" [ngModelOptions]="{standalone: true}" placeholder="Select Unit"-->
-<!--                            [(ngModel)]="subHeadData.amountUnit">-->
-<!--                          </ng-select>-->
-
-<!--                          &lt;!&ndash;                                        <select class="form-control" id="unit" [(ngModel)]="subHeadData.amountUnit" required [selectedIndex]="0" (change)="test()">&ndash;&gt;-->
-<!--                          &lt;!&ndash;                                        <option value='10000000'>Crore</option>&ndash;&gt;-->
-<!--                          &lt;!&ndash;                                        <option value='100000'>Lakh</option>&ndash;&gt;-->
-<!--                          &lt;!&ndash;                                        <option value='1000'>Thousand</option>&ndash;&gt;-->
-<!--                          &lt;!&ndash;                                        <option value='100'>Hundred</option>&ndash;&gt;-->
-<!--                          &lt;!&ndash;                                      </select>&ndash;&gt;-->
-<!--                        </td>-->
-                        <!-- <td><button type="button" class="btn btn-warning" data-toggle="modal"
-                                                  data-target="#modal-lg">Add CDA</button></td> -->
                         <td>
                           <button type=" submit" class="btn btn-primary mr-2"
                             (click)="addSubHeadValue(subHeadData, formdata.value, i)">Add</button>
