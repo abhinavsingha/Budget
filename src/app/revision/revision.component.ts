@@ -57,6 +57,7 @@ export class RevisionComponent {
   formdata = new FormGroup({
     finYear: new FormControl('Select Financial Year', Validators.required),
     subHead: new FormControl(),
+    subHeadType:new FormControl(),
     majorHead: new FormControl(),
 
     minorHead: new FormControl(),
@@ -77,8 +78,8 @@ export class RevisionComponent {
   ngOnInit(): void {
     $.getScript('assets/js/adminlte.js');
     this.getBudgetFinYear();
-    this.getSubHeadsData();
     this.getCgUnitData();
+    this.getSubHeadType()
     this.getNewEmptyEntries();
     this.getUnitDatas();
     this.getDashBoardDta()
@@ -100,6 +101,7 @@ export class RevisionComponent {
 
   newFormGroup() {
     this.formdata = new FormGroup({
+      subHeadType:new FormControl(),
       finYear: new FormControl('Select Financial Year', Validators.required),
       subHead: new FormControl(),
       majorHead: new FormControl(),
@@ -177,7 +179,11 @@ export class RevisionComponent {
 
   getSubHeadsData() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getSubHeadsData).subscribe((res) => {
+    let json={
+      budgetHeadType:this.formdata.get('subHeadType')?.value.subHeadTypeId,
+      majorHead:this.formdata.get('majorHead')?.value.majorHead
+    }
+    this.apiService.postApi(this.cons.api.getAllSubHeadByMajorHead,json).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.subHeads = result['response'];
@@ -544,6 +550,7 @@ export class RevisionComponent {
         let result: { [key: string]: any } = v;
         if (result['message'] == 'success') {
           this.dasboardData = result['response'];
+          this.formdata.get('allocationType')?.setValue(this.dasboardData.allocationType);
           console.log('DATA>>>>>>>' + this.dasboardData);
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
@@ -599,11 +606,35 @@ export class RevisionComponent {
       });
   }
   amountUnit:string='';
+
   setAmountType() {
     this.amountUnit=this.formdata.get('amountType')?.value.amountType;
   }
 
   resetAllocationType() {
     this.formdata.get('allocationType')?.reset();
+  }
+  subHeadType: any;
+  getSubHeadType(){
+    this.apiService
+      .getApi(this.cons.api.getSubHeadType)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+
+          if (result['message'] == 'success') {
+            this.subHeadType = result['response'];
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
   }
 }

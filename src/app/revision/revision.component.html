@@ -52,37 +52,46 @@
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label>Sub Head</label>
-                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeads"
-                        bindLabel="subHeadDescr" placeholder="Select Sub Head" formControlName="subHead"
-                        (change)="getAvailableFund($event,formdata.value)" (change)="resetAllocationType()"></ng-select>
+                      <label>Allocation Type</label>
+                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="allocationType"
+                                 bindLabel="allocDesc" placeholder="Select Allocation Type" formControlName="allocationType" (change)="getBudgetRevisionData(formdata.value)">
+                      </ng-select>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Major Head</label>
                       <ng-select  [items]="majorHeadData"
-                                 bindLabel="majorHead" class="form-control select2bs4" formControlName="majorHead"
-                                 name="majorHead"
-                                 placeholder="Select Major Head" style="width: 100%" (change)="resetAllocationType()">
+                                  bindLabel="majorHead" class="form-control select2bs4" formControlName="majorHead"
+                                  name="majorHead"
+                                  placeholder="Select Major Head" style="width: 100%">
                       </ng-select>
                     </div>
                   </div>
+
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Sub Head Type<span class="text-danger"></span></label>
+                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeadType"
+                                 (change)="getSubHeadsData()"  bindLabel="subType" placeholder="Select Amount Unit" formControlName="subHeadType"></ng-select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Sub Head</label>
+                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeads"
+                        bindLabel="subHeadDescr" placeholder="Select Sub Head" formControlName="subHead"
+                        (change)="getAvailableFund($event,formdata.value)" (change)="getBudgetRevisionData(formdata.value)"></ng-select>
+                    </div>
+                  </div>
+
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Minor Head</label>
                       <ng-select  [items]="minorHeadData"
                                   bindLabel="minorHead" class="form-control select2bs4" formControlName="minorHead"
                                   name="minorHead"
-                                  placeholder="Select Minor Head" style="width: 100%" (change)="resetAllocationType()">
-                      </ng-select>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Allocation Type</label>
-                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="allocationType"
-                                 bindLabel="allocDesc" placeholder="Select Allocation Type" formControlName="allocationType" (change)="getBudgetRevisionData(formdata.value)">
+                                  placeholder="Select Minor Head" style="width: 100%">
                       </ng-select>
                     </div>
                   </div>
