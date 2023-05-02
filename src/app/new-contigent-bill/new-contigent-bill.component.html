@@ -37,7 +37,7 @@
         <div class="card-body" id="cbForm">
           <form (ngSubmit)="submitList()" [formGroup]="formdata">
             <div class="row">
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label>Financial Year</label>
                   <ng-select [items]="finYearData" bindLabel="finYear" class="form-control select2bs4"
@@ -46,17 +46,24 @@
                   </ng-select>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label>Major Head</label>
-                  <ng-select (change)="setSubHead()" [(ngModel)]="majorHead" [items]="majorHeadData"
+                  <ng-select [(ngModel)]="majorHead" [items]="majorHeadData"
                              bindLabel="majorHead" class="form-control select2bs4" formControlName="majorHead"
                              name="majorHead"
                              placeholder="Select Major Head" style="width: 100%">
                   </ng-select>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Sub Head Type<span class="text-danger"></span></label>
+                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeadType"
+                             (change)="setSubHead()" (change)="formatSubhead()" bindLabel="subType" placeholder="Select Amount Unit" formControlName="subHeadType"></ng-select>
+                </div>
+              </div>
+              <div class="col-md-3">
                 <div class="form-group">
                   <label>Sub Head</label>
                   <ng-select [(ngModel)]="subHead" [items]="subHeadData" bindLabel="subHeadDescr" class="form-control select2bs4"
@@ -65,7 +72,7 @@
                   </ng-select>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label>CB Unit</label>
                   <input class="form-control" formControlName="unit" id="unit" readonly type="text" readonly/>
@@ -74,7 +81,7 @@
 <!--                  </ng-select>-->
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label>Minor Head</label>
                   <ng-select [items]="minorHeadData" bindLabel="minorHead" class="form-control select2bs4"
@@ -83,47 +90,47 @@
                   </ng-select>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label>Budget Alloted</label>
                   <input class="form-control" formControlName="budgetAllocated" id="budgetAllotted" readonly
                          type="number" placeholder="Budget Alloted"/>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label>CB Amount</label>
                   <input (change)="updateExpenditure()" class="form-control" formControlName="amount"
                          id="Amount"  type="number" placeholder="Enter Amount in INR"/>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label>Proggressive Expenditure Including This Bill</label>
                   <input class="form-control" formControlName="progressive" id="Proggressive" readonly type="number" placeholder="Progressive Amount"/>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label>Balance Fund</label>
                   <input class="form-control" formControlName="balance" id="BalanceFund" readonly type="text"/>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label>CB No.</label>
                   <input class="form-control" formControlName="cbNo" id="PrevAllocation" placeholder="Enter CB Number"
                          type="text"/>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label>CB Date</label>
                   <input class="form-control" formControlName="cbDate" id="cbDate" placeholder="Enter Date"
                          type="date" (change)="checkDate()"/>
                 </div>
               </div>
-              <!--              <div class="col-md-4">-->
+              <!--              <div class="col-md-3">-->
               <!--                <div class="form-group">-->
               <!--                  <label>Remarks</label>-->
               <!--                  <input type="text" class="form-control" id="remarks" placeholder="Enter Remarks"-->
@@ -131,7 +138,7 @@
               <!--                </div>-->
               <!--              </div>-->
 
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label>Sanction Unit</label>
                   <input class="form-control" formControlName="authorityUnit" id="authorityUnit" placeholder=""
@@ -141,20 +148,20 @@
 <!--                  </ng-select>-->
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label>Sanction</label>
                   <input class="form-control" formControlName="authority" id="authority" placeholder="Enter Remarks"
                          type="text"/>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label>Sanction Date</label>
                   <input class="form-control" formControlName="date" id="date" placeholder="Enter Date" type="date"/>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label for="InputFile">Sanction File</label>
                   <div class="input-group">
@@ -169,28 +176,28 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label>Firm Name</label>
                   <input class="form-control" formControlName="firmName" id="FirmName" placeholder="Enter Firm Name"
                          type="text"/>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label>Invoice Number</label>
                   <input class="form-control" formControlName="invoiceNo" id="invoiceNo" placeholder="Enter Invoice Number"
                          type="text"/>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label>Invoice Date</label>
                   <input class="form-control" formControlName="invoiceDate" id="invoiceDate" placeholder="Enter Invoice Date"
                          type="date"/>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label for="invoice">Invoice Upload</label>
                   <div class="input-group">
@@ -205,21 +212,21 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label>File Number</label>
                   <input class="form-control" formControlName="fileNo" id="fileNumber" placeholder="Enter File Number"
                          type="text"/>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label>File Date</label>
                   <input class="form-control" formControlName="fileDate" id="fileDate" placeholder="Enter Invoice Date"
                          type="date"/>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label>On Account Of</label>
                   <textarea class="form-control" formControlName="onAccOf" id="onAccOf"
@@ -227,7 +234,7 @@
                             type="text"></textarea>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label>Authority Details</label>
                   <textarea class="form-control" formControlName="authDetail" id="authDetail"
@@ -235,7 +242,7 @@
                             type="text"></textarea>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label>Return Remarks</label>
                   <input class="form-control" formControlName="returnRemarks" id="ReturnRemarks" placeholder="Return Remarks"
@@ -244,7 +251,8 @@
 
               </div>
 
-              <div class="col-md-6">
+              <div class="col-md-3">
+                <label style="opacity: 0;">.</label><br>
                 <button (click)="updateList()" class="btn btn-primary mr-2" type="button">Update CB</button>
                 <button (click)="addToList()" class="btn btn-primary" type="button">Save CB</button>
                 <!--                <button type="submit" class="btn btn-primary" (click)="dummydata()"></button>-->

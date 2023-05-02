@@ -114,6 +114,7 @@ export class NewContigentBillComponent implements OnInit {
     authDetail: new FormControl(
       'S1.10.1 of Shedule-10 of DFPCG-2017 vide Govt. of India, Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017'
     ),
+    subHeadType:new FormControl(),
     amount: new FormControl(),
     progressive: new FormControl(),
     balance: new FormControl(),
@@ -171,6 +172,10 @@ export class NewContigentBillComponent implements OnInit {
     this.getCgUnitData();
     this.getCBData();
     this.getDashboardData();
+    this.getSubHeadType();
+  }
+  formatSubhead(){
+    this.formdata.get('subHead')?.reset();
   }
 
   addToList() {
@@ -259,7 +264,28 @@ export class NewContigentBillComponent implements OnInit {
       Swal.fire('Enter missing data');
     }
   }
+  getSubHeadType(){
+    this.apiService
+      .getApi(this.cons.api.getSubHeadType)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
 
+          if (result['message'] == 'success') {
+            this.subHeadType = result['response'];
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
+  }
   getBudgetAllotted() {
     this.SpinnerService.show();
     let url = this.cons.api.getAvailableFund + '/' + this.unitId;
@@ -480,11 +506,13 @@ export class NewContigentBillComponent implements OnInit {
   setSubHead() {
     this.SpinnerService.show();
     this.formdata.get('minorHead')?.setValue(this.majorHead);
-    let url =
-      this.cons.api.getAllSubHeadByMajorHead + '/' + this.majorHead.majorHead;
-    this.apiService.getApi(url).subscribe(
-      (results) => {
-        let result: { [key: string]: any } = results;
+    this.SpinnerService.show();
+    let json={
+      budgetHeadType:this.formdata.get('subHeadType')?.value.subHeadTypeId,
+      majorHead:this.formdata.get('majorHead')?.value.majorHead
+    }
+    this.apiService.postApi(this.cons.api.getAllSubHeadByMajorHead,json).subscribe((res) => {
+        let result: { [key: string]: any } = res;
         this.subHeadData = result['response'];
         this.SpinnerService.hide();
       },
@@ -1034,11 +1062,7 @@ export class NewContigentBillComponent implements OnInit {
       }
     );
   }
-
-  // onFileInputChange(event: any) {
-  //   const file = event.target.files[0];
-  //   console.log('Selected file:', file);
-  // }
+  subHeadType: any;
 
   checkDate() {
     const date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
