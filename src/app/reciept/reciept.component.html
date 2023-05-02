@@ -67,26 +67,30 @@
                         formControlName="minorHead" readonly />
                     </div>
                   </div>
-                  <!-- <div class="col-md-12">
-                    <div class="form-group">
-                      <label>Sub Head Type <span class="text-danger">*</span></label>
-                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeadTypeList"
-                        bindLabel="finYear" placeholder="Select Sub Head Type" formControlName="subHeadType">
-                      </ng-select>
-                    </div>
-                  </div> -->
                   <div class="col-md-12">
                     <div class="form-group">
                       <label>Rupees in<span class="text-danger"></span></label>
                       <ng-select class="form-control select2bs4" style="width: 100%" [items]="amountType"
-                                 bindLabel="amountType" placeholder="Select Amount Unit" formControlName="amountType"></ng-select>
+                        bindLabel="amountType" placeholder="Select Amount Unit"
+                        formControlName="amountType"></ng-select>
                     </div>
                   </div>
                   <div class=" col-md-12">
                     <div class="form-group">
                       <label>Remarks <span class="text-danger"></span></label>
                       <input type="text" class="form-control" id="remarks" placeholder="Enter Remarks"
-                             formControlName="remarks" />
+                        formControlName="remarks" />
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label class="control-label">Subhead Type</label>
+                      <select class="form-control select2bs4" style="width: 100%" placeholder="Select Subhead Type"
+                        id="subheadType">
+                        <option selected disabled>Select Subhead Type</option>
+                        <option value="01">Charged</option>
+                        <option value="02">Voted</option>
+                      </select>
                     </div>
                   </div>
 

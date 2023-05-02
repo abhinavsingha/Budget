@@ -46,66 +46,6 @@
         <!-- /.card-header -->
         <div class="card-body">
 
-          <!-- <div class="row">
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Financial Year</label>
-                  <select class="form-control select2bs4" style="width: 100%">
-                    <option selected="selected">2022-23</option>
-                    <option>2021-22</option>
-                    <option>2020-21</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>To Unit</label>
-                  <select class="form-control select2bs4" style="width: 100%">
-                    <option selected="selected">RHQ(W)</option>
-                    <option>RHQ(E)</option>
-                    <option>RHQ(S)</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Major Head</label>
-                  <select class="form-control select2bs4" style="width: 100%">
-                    <option selected="selected">2037</option>
-                    <option>2036</option>
-                    <option>2035</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Minor Head</label>
-                  <select class="form-control select2bs4" style="width: 100%">
-                    <option selected="selected">102</option>
-                    <option>103</option>
-                    <option>104</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Allocation Type</label>
-                  <select disabled class="form-control select2bs4" style="width: 100%">
-                    <option selected="selected">BE</option>
-                    <option>Initial</option>
-                    <option>Initial</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Remarks</label>
-                  <input disabled type="text" class="form-control" id="PrevAllocation" placeholder="CGHQ to RHQ" />
-                </div>
-              </div>
-
-
-            </div> -->
           <div class="row">
             <div class="col-sm-12">
               <div class="card-body table-responsive p-0">
@@ -114,14 +54,9 @@
                     <tr>
                       <th>Sr. No.</th>
                       <th>F.Y.</th>
-                      <!-- <th>Unit</th> -->
                       <th>Sub Head</th>
                       <th>Type</th>
                       <th>Allocated Fund</th>
-                      <!-- <th>Fund Allocated</th> -->
-                      <!-- <th>Balance Amount</th> -->
-                      <!-- <th>Remarks</th> -->
-                      <!-- <th>Status</th> -->
                       <th *ngIf="isInboxAndOutbox!= 'Outbox' && type!='BG' && userRole!='Budget Approver'">Action</th>
                     </tr>
                   </thead>
@@ -130,30 +65,23 @@
                       *ngFor="let buggetData of budgetDataList  | paginate :{itemsPerPage:15,currentPage:p} ; let i = index">
                       <td>{{15 *(p-1)+i+1}}</td>
                       <td>{{buggetData.finYear.finYear}}</td>
-                      <!-- <td>{{buggetData.toUnit.cgUnitShort}}</td> -->
                       <td>{{buggetData.subHead.subHeadDescr}}</td>
                       <td>{{buggetData.allocTypeId.allocDesc}}</td>
                       <td>{{buggetData.allocationAmount}}</td>
-                      <!-- <td>{{buggetData.allocationAmount}}</td> -->
-                      <!-- <td>{{buggetData.allocationAmount}}</td> -->
-                      <!-- <td>{{buggetData.remarks}}</td> -->
-                      <!-- <td>{{buggetData.status}}</td> -->
                       <td *ngIf="isInboxAndOutbox!= 'Outbox' && type!='BG' && userRole!='Budget Approver'">
                         <button type="submit" class="btn btn-warning mr-2" data-toggle="modal" data-target="#modal-lg"
                           (click)="addCDAParking(buggetData)">Add
                           CDA Parking</button>
-                        <button type="submit" class="btn btn-primary mr-2" data-toggle="modal"
-                          data-target="#modal-lg">View</button>
+                        <button type="submit" class="btn btn-primary mr-2" data-toggle="modal" data-target="#modal-lg"
+                          (click)="viewCDAParking()">View</button>
                       </td>
                     </tr>
-
                   </tbody>
                 </table>
               </div>
               <div class="row mt-2">
                 <div class="col-sm-12 col-md-5">
                   <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
-
                   </div>
                 </div>
                 <div class="col-sm-12 col-md-7">
@@ -167,42 +95,6 @@
           <!-- /.row -->
           <form [formGroup]="formdata">
             <div class="row">
-              <!-- <div class="col-md-4">
-                <div class="form-group">
-                  <label>Authority Unit</label>
-                  <select disabled class="form-control select2bs4" style="width: 100%">
-                    <option selected="selected">CGHQ</option>
-                    <option>RHQ(W)</option>
-                    <option>RHQ(S)</option>
-                  </select>
-                </div>
-              </div> -->
-              <!-- <div class="col-md-4">
-                <div class="form-group">
-                  <label>Authority</label>
-                  <input disabled type="text" class="form-control" id="BalanceFund" placeholder="BE/15/CGHQ" />
-                </div>
-              </div> -->
-              <!-- <div class="col-md-4">
-                <div class="form-group">
-                  <label>Date</label>
-                  <input disabled type="date" class="form-control" id="Date" placeholder="23/02/23" />
-                </div>
-              </div> -->
-              <!-- <div class="col-md-4">
-                <div class="form-group">
-                  <label for="exampleInputFile">View Document</label>
-                  <div class="input-group">
-                    <div class="custom-file">
-                      <input type="file" class="custom-file-input" id="exampleInputFile" disabled>
-                      <label class="custom-file-label" for="exampleInputFile">Doc.pdf</label>
-                    </div>
-                    <div class="input-group-append">
-                      <span class="input-group-text docBtn">View</span>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
               <div class="col-md-4" *ngIf="type=='BG' && userRole=='Budget Approver' && isInboxAndOutbox!= 'Outbox'">
                 <div class="form-group">
                   <label>Approve/Return Remarks</label>
@@ -214,7 +106,6 @@
           </form>
         </div>
         <!-- /.card-body -->
-
 
         <div class=" card-footer" *ngIf="type=='BG' && userRole=='Budget Approver' && isInboxAndOutbox!= 'Outbox'">
           <div class="row">
@@ -228,8 +119,6 @@
     <!-- /.container-fluid -->
   </section>
 
-
-
   <div class="modal fade" id="modal-lg">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -241,79 +130,13 @@
         </div>
         <div class="modal-body">
           <div class="row">
-            <!-- <div class="col-md-12">
-              <div class="card-tools float-right mb-2">
-                <div class="input-group input-group-sm">
-                  <input type="text" class="form-control" placeholder="Search Requests">
-                  <div class="input-group-append">
-                    <div class="btn btn-primary">
-                      <i class="fas fa-search"></i>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-              <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap">
-                  <thead>
-                    <tr>
-                      <th>S.No.</th>
-                      <th>F.Y.</th>
-                      <th>Unit</th>
-                      <th>Major Head</th>
-                      <th>Minor Head</th>
-                      <th>Sub Head</th>
-                      <th>Bud. Type</th>
-                      <th>Amount</th>
-                      <th>Remarks</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>2022-23</td>
-                      <td>CGHQ</td>
-                      <td>Dte. Budget</td>
-                      <td>Minor Head</td>
-                      <td>Sub Head</td>
-                      <td>BE</td>
-                      <td>550.0000</td>
-                      <td>Remarks</td>
-                    </tr>
-
-                  </tbody>
-                  <tfoot>
-                    <tr>
-                      <td><button type="button" class="btn btn-primary" id="btnCda">Add CDA Parking</button></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                  </tfoot>
-                </table>
-
-              </div>
-              <div class="row mt-2">
-                <div class="col-sm-12 col-md-12">
-                  <pagination-controls class="pagination float-right"></pagination-controls>
-
-                </div>
-              </div>
-            </div> -->
             <div class="col-sm-12" id="cdaParking">
               <div class="card-body table-responsive p-0">
                 <table class="table table-hover text-nowrap">
                   <thead>
                     <tr>
                       <th>CDA</th>
-                      <!-- <th>Existing</th> -->
                       <th>Current</th>
-                      <!-- <th>Total</th> -->
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -324,10 +147,9 @@
                           bindLabel="cdaName" placeholder="Select CDA Unit" appendTo="body"
                           [(ngModel)]="cdaParking.cdaParkingUnit">
                         </ng-select>
-                        <!-- <td>2.30</td> -->
+                      </td>
                       <td><input type="text" class="form-control" id="Aallocationamount"
                           placeholder="Please Enter Amount" [(ngModel)]="cdaParking.amount" /></td>
-                      <!-- <td>7.8</td> -->
                       <td><button type="button" class="btn btn-danger"
                           (click)="deleteFromMultipleCdaParking(i)">Delete</button></td>
                     </tr>
@@ -336,26 +158,19 @@
                     <tr>
                       <td><button type="button" class="btn btn-primary" id="btnCda" (click)="addNewRow()">Add
                           Row</button></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
+                      <td><b>Remaining Balance = 0.0000</b></td>
                       <td></td>
                     </tr>
                   </tfoot>
                 </table>
-
               </div>
-              <!-- <div class="row mt-2">
-                <div class="col-sm-12 col-md-12">
-                  <pagination-controls class="pagination float-right"></pagination-controls>
-                </div>
-              </div> -->
             </div>
           </div>
         </div>
-        <div class="modal-footer justify-content-between">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" (click)="saveCdaParkingData()">Submit</button>
+        <div class="modal-footer justify-content-start">
+          <button class="btn btn-danger mr-2" data-dismiss="modal">Close</button>
+          <button class="btn btn-primary mr-2" (click)="saveCdaParkingData()" *ngIf="showSubmit">Submit</button>
+          <button class="btn btn-warning" (click)="saveCdaParkingData()" *ngIf="showUpdate">Update</button>
         </div>
       </div>
       <!-- /.modal-content -->
