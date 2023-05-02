@@ -1115,6 +1115,7 @@ export class BudgetAllocationComponent implements OnInit {
   }
 
   countFinYear: any = 0;
+  amountUnit: string='';
   toUnitAndMajorHeadReset() {
     if (this.countFinYear > 0) {
       this.formdata.patchValue({
@@ -1201,4 +1202,8 @@ export class BudgetAllocationComponent implements OnInit {
   allocatedAmount(index: any) {
     this.subHeadFilterDatas[index].amount = Number(this.subHeadFilterDatas[index].amount).toFixed(4);
   }
+
+  setAmountType() {
+    this.amountUnit=this.formdata.get('amountType')?.value.amountType;
   }
+}
