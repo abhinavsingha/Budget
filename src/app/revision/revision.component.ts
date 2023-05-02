@@ -14,6 +14,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import Swal from "sweetalert2";
 
 class tableData {
   checked: boolean = false;
@@ -80,6 +81,7 @@ export class RevisionComponent {
     this.getCgUnitData();
     this.getNewEmptyEntries();
     this.getUnitDatas();
+    this.getDashBoardDta()
     this.getMajorHead();
     this.getAvailableFundData();
     this.getAllocationTypeData();
@@ -532,8 +534,37 @@ export class RevisionComponent {
         complete: () => console.info('complete'),
       });
   }
+  dasboardData:any;
+  getDashBoardDta() {
+    this.SpinnerService.show();
+
+    this.apiService.postApi(this.cons.api.getDashBoardDta, null).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.dasboardData = result['response'];
+          console.log('DATA>>>>>>>' + this.dasboardData);
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
+  }
   getBudgetRevisionData(formDataValue: any) {
+    if(formDataValue.finYear==null||formDataValue.finYear==undefined||formDataValue.subHead==undefined||formDataValue.subHead==null||
+      formDataValue.allocationType.allocTypeId==undefined||formDataValue.allocationType.allocTypeId==null){
+      Swal.fire('Enter missing Values');
+      return;
+    }
     let submitJson = {
+      unitId:this.dasboardData.userDetails.unitId,
       budgetFinancialYearId: formDataValue.finYear.serialNo,
       subHead: formDataValue.subHead.budgetCodeId,
       allocTypeId: formDataValue.allocationType.allocTypeId,
@@ -570,5 +601,9 @@ export class RevisionComponent {
   amountUnit:string='';
   setAmountType() {
     this.amountUnit=this.formdata.get('amountType')?.value.amountType;
+  }
+
+  resetAllocationType() {
+    this.formdata.get('allocationType')?.reset();
   }
 }
