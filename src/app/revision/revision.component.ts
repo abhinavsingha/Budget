@@ -33,6 +33,7 @@ class revision {
   revisedAmount: any;
   allocationTypeId: any;
   remark: any;
+  amountTypeId:any;
 }
 
 @Component({
@@ -56,6 +57,7 @@ export class RevisionComponent {
     finYear: new FormControl('Select Financial Year', Validators.required),
     subHead: new FormControl(),
     majorHead: new FormControl(),
+
     minorHead: new FormControl(),
     allocationType: new FormControl(),
     fundAvailable: new FormControl(),
@@ -63,6 +65,7 @@ export class RevisionComponent {
     balanceFund: new FormControl(),
     remarks: new FormControl('', Validators.required),
     reallocateFund: new FormControl(),
+    amountType:new FormControl(),
   });
   majorHeadData: any;
   minorHeadData: any;
@@ -80,6 +83,7 @@ export class RevisionComponent {
     this.getMajorHead();
     this.getAvailableFundData();
     this.getAllocationTypeData();
+    this.getAmountType();
     this.uploadDocuments.push(new UploadDocuments());
     $.getScript('assets/main.js');
   }
@@ -102,6 +106,7 @@ export class RevisionComponent {
       fundAvailable: new FormControl(),
       currentAllocation: new FormControl(),
       balanceFund: new FormControl(),
+      amountType:new FormControl(),
       reallocateFund: new FormControl(),
       remarks: new FormControl('', Validators.required),
     });
@@ -126,7 +131,29 @@ export class RevisionComponent {
       }
     });
   }
+  amountType: any;
+  getAmountType(){
+    this.apiService
+      .getApi(this.cons.api.showAllAmountUnit)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            this.amountType = result['response'];
 
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
+  }
   getAvailableFundData() {
     this.SpinnerService.show();
     this.apiService
@@ -470,6 +497,7 @@ export class RevisionComponent {
         amount: this.tabledata[i].amount,
         revisedAmount: this.tabledata[i].revisedAmount,
         allocationTypeId: this.tabledata[i].allocationType.allocationTypeId,
+        amountTypeId:this.formdata.get('amountType')?.value.amountTypeId,
         remark: 'test',
       };
       requestJson.push(entry);
@@ -538,5 +566,9 @@ export class RevisionComponent {
         },
         complete: () => console.info('complete'),
       });
+  }
+  amountUnit:string='';
+  setAmountType() {
+    this.amountUnit=this.formdata.get('amountType')?.value.amountType;
   }
 }

@@ -107,6 +107,13 @@
                         formControlName="balanceFund" readonly />
                     </div>
                   </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Rupees in<span class="text-danger"></span></label>
+                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="amountType"
+                                 (change)="setAmountType()"  bindLabel="amountType" placeholder="Select Amount Unit" formControlName="amountType"></ng-select>
+                    </div>
+                  </div>
 
                   <div class="col-md-6">
                     <label style="opacity:0">.</label>
@@ -124,7 +131,7 @@
                     <tr>
                       <th>Unit</th>
                       <th>Existing</th>
-                      <th>Revision Amount</th>
+                      <th>Revision Amount (in {{amountUnit}})</th>
                       <th>Revised</th>
 <!--                      <th>Action</th>-->
                     </tr>
@@ -201,7 +208,7 @@
                       <th>Bud. Type</th>
                       <th>Existing</th>
                       <th>RE</th>
-                      <th>Revised</th>
+                      <th>Revised (in {{amountUnit}})</th>
 <!--                      <th>Remarks</th>-->
                     </tr>
                   </thead>
