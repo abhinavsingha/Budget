@@ -153,7 +153,11 @@ export class RecieptComponent {
         }
       });
   }
-
+  setminorhead(selectedMajorHead: any){
+    this.formdata.patchValue({
+      minorHead: selectedMajorHead.minorHead,
+    });
+  }
   majorHeadChange(selectedMajorHead: any, formdataValue: any) {
     if (selectedMajorHead == undefined || selectedMajorHead == null) {
       this.formdata.reset();
@@ -189,9 +193,9 @@ export class RecieptComponent {
     }
 
     //Step-1 => Auto select Minor-Head
-    this.formdata.patchValue({
-      minorHead: selectedMajorHead.minorHead,
-    });
+    // this.formdata.patchValue({
+    //   minorHead: selectedMajorHead.minorHead,
+    // });
 
     // Step-2 => Get all sub head by major head cuz we need to set the sub head in next table
     this.getAllSubHeadByMajorHead(selectedMajorHead.majorHead, formdataValue);

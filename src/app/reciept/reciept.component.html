@@ -54,7 +54,7 @@
                     <div class="form-group">
                       <label>Major Head <span class="text-danger">*</span></label>
                       <ng-select class="form-control select2bs4" style="width: 100%" [items]="majorHeadList"
-                        bindLabel="majorHead" placeholder="Select Major Head" formControlName="majorHead">
+                        bindLabel="majorHead" placeholder="Select Major Head" formControlName="majorHead" (change)="setminorhead($event)">
                       </ng-select>
                     </div>
                   </div>
