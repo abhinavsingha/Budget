@@ -534,10 +534,10 @@ export class BudgetAllocationSubheadwiseComponent {
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
             this.fundAvailableByFinYearAndUnitAndAllocationType =
-              result['response'].fundAvailable;
+              parseFloat(result['response'].fundAvailable);
 
             this.formdata.patchValue({
-              fundAvailable: result['response'].fundAvailable,
+              fundAvailable: parseFloat(result['response'].fundAvailable),
             });
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
