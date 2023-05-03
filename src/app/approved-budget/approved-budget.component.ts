@@ -110,10 +110,12 @@ export class ApprovedBudgetComponent implements OnInit {
   path: any;
   getAllocationReport(authGroupId: any) {
     this.SpinnerService.show();
+    debugger;
     this.apiService
       .getApi(this.cons.api.getAllocationReport + '/' + authGroupId)
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
+        debugger;
         if (result['message'] == 'success') {
           if (result['response'].length > 0) {
             this.path = result['response'][0].path;

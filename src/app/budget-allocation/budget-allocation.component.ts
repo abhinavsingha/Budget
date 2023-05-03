@@ -79,6 +79,7 @@ export class BudgetAllocationComponent implements OnInit {
     unitId: new FormControl(),
     minorHeadId: new FormControl(),
     amountType: new FormControl(),
+    subHeadType: new FormControl(),
   });
 
   subHeadTableData = new FormGroup({
@@ -795,13 +796,14 @@ export class BudgetAllocationComponent implements OnInit {
     }
 
     this.SpinnerService.show();
-
+    debugger;
     let submitJson = {
       finYearId: formDataValue.finYearId.serialNo,
       codeSubHeadId: data.budgetCodeId,
       unitId: formDataValue.unitId.unit,
       codeMajorHeadId: data.majorHead,
       allocationType: formDataValue.allocationType.allocTypeId,
+      subHeadTypeId: formDataValue.subHeadType.subHeadTypeId,
     };
 
     this.apiService
@@ -1070,7 +1072,7 @@ export class BudgetAllocationComponent implements OnInit {
       majorHead: formdataValue.majorHeadId.majorHead,
       unitId: formdataValue.unitId.unit,
       allocationType: this.formdata.get('allocationType')?.value.allocTypeId,
-      budgetHeadType: formdataValue.subHeadType.subHeadTypeId,
+      subHeadTypeId: formdataValue.subHeadType.subHeadTypeId,
     };
 
     this.apiService.postApi(this.cons.api.getFilterData, submitJson).subscribe({
