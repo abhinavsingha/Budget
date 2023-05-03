@@ -149,6 +149,8 @@ export class NewContigentBillComponent implements OnInit {
   private uploadFileDate: any;
   private invoicePath: any;
   masterChecked: boolean = false;
+  dasboardData: any;
+  allocation: any;
 
   constructor(
     public sharedService: SharedService,
@@ -172,6 +174,7 @@ export class NewContigentBillComponent implements OnInit {
     this.getCgUnitData();
     this.getCBData();
     this.getDashboardData();
+    this.getDashBoardDta()
     this.getSubHeadType();
   }
 
@@ -285,6 +288,39 @@ export class NewContigentBillComponent implements OnInit {
       });
   }
 
+  getAvailableFundData(data:any) {
+    if(this.formdata.get('subHead')?.value==undefined)
+      return;
+    this.SpinnerService.show();
+    let submitJson = {
+      finYearId: data.finYearName.serialNo,
+      subHeadId: data.subHead.budgetCodeId,
+      allocationTypeId: this.allocation.allocTypeId,
+    };
+
+    this.apiService
+      .postApi(
+        this.cons.api.getAvailableFundFindByUnitIdAndFinYearId,
+        submitJson
+      )
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            this.formdata.get('budgetAllocated')?.setValue(parseFloat(result['response'].fundAvailable).toFixed(4));
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
+  }
   getBudgetAllotted() {
     this.SpinnerService.show();
     let url = this.cons.api.getAvailableFund + '/' + this.unitId;
@@ -421,6 +457,36 @@ export class NewContigentBillComponent implements OnInit {
         this.SpinnerService.hide();
       }
     );
+  }
+  getDashBoardDta() {
+    this.SpinnerService.show();
+
+    this.apiService.postApi(this.cons.api.getDashBoardDta, null).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+
+          this.dasboardData = result['response'];
+          this.sharedService.inbox = result['response'].inbox;
+          this.sharedService.outbox = result['response'].outBox;
+          this.unitId = result['response'].userDetails.unitId;
+          this.unitName = result['response'].userDetails.unit;
+          this.formdata.get('unit')?.setValue(this.unitName);
+          this.formdata.get('authorityUnit')?.setValue(this.unitName);
+          this.allocation=this.dasboardData.allocationType;
+          console.log('DATA>>>>>>>' + this.dasboardData);
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
   }
 
   private getCBData() {
