@@ -54,8 +54,7 @@
                     <div class="form-group">
                       <label>Major Head <span class="text-danger">*</span></label>
                       <ng-select class="form-control select2bs4" style="width: 100%" [items]="majorHeadList"
-                        bindLabel="majorHead" placeholder="Select Major Head" formControlName="majorHead"
-                        (change)="majorHeadChange($event, formdata.value)">
+                        bindLabel="majorHead" placeholder="Select Major Head" formControlName="majorHead">
                       </ng-select>
                     </div>
                   </div>
@@ -85,17 +84,13 @@
                   <div class="col-md-12">
                     <div class="form-group">
                       <label class="control-label">Subhead Type</label>
-                      <select class="form-control select2bs4" style="width: 100%" placeholder="Select Subhead Type"
-                        id="subheadType">
-                        <option selected disabled>Select Subhead Type</option>
-                        <option value="01">Charged</option>
-                        <option value="02">Voted</option>
-                      </select>
+                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeadType"
+                        bindLabel="subType" placeholder="Select Major Head" formControlName="subHeadType"
+                        (change)="majorHeadChange($event, formdata.value)">
+                      </ng-select>
                     </div>
                   </div>
-
                 </div>
-
               </form>
             </div>
             <div class="col-md-9">
@@ -313,11 +308,11 @@
           </div>
         </div>
         <!-- /.card-body -->
-        <div class="card-footer">
+        <!-- <div class="card-footer">
           <div class="row">
             <button type="submit" class="btn btn-primary"> <i class="fas fa-download"></i> Download</button>
           </div>
-        </div>
+        </div> -->
       </div>
       <!-- /.row -->
     </div>

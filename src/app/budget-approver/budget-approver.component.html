@@ -69,11 +69,12 @@
                       <td>{{buggetData.allocTypeId.allocDesc}}</td>
                       <td>{{buggetData.allocationAmount}}</td>
                       <td *ngIf="isInboxAndOutbox!= 'Outbox' && type!='BG' && userRole!='Budget Approver'">
-                        <button type="submit" class="btn btn-warning mr-2" data-toggle="modal" data-target="#modal-lg"
-                          (click)="addCDAParking(buggetData)">Add
+                        <button *ngIf="buggetData.isCDAparking == '0'" type="submit" class="btn btn-warning mr-2"
+                          data-toggle="modal" data-target="#modal-lg" (click)="addCDAParking(buggetData)">Add
                           CDA Parking</button>
-                        <button type="submit" class="btn btn-primary mr-2" data-toggle="modal" data-target="#modal-lg"
-                          (click)="viewCDAParking()">View</button>
+                        <button *ngIf="buggetData.isCDAparking == '1'" type="submit" class="btn btn-primary mr-2"
+                          data-toggle="modal" data-target="#modal-lg" (click)="viewCDAParking(buggetData)">View &
+                          Update</button>
                       </td>
                     </tr>
                   </tbody>
@@ -123,7 +124,8 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">CDA Parking(Amount : {{totalAmountToAllocateCDAParking}})</h4>
+          <h4 class="modal-title">CDA Parking(Amount : {{totalAmountToAllocateCDAParking}}) In
+            {{amountUnit}}</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -148,8 +150,9 @@
                           [(ngModel)]="cdaParking.cdaParkingUnit">
                         </ng-select>
                       </td>
-                      <td><input type="text" class="form-control" id="Aallocationamount"
-                          placeholder="Please Enter Amount" [(ngModel)]="cdaParking.amount" /></td>
+                      <td><input type="number" class="form-control" id="Aallocationamount"
+                          placeholder="Please Enter Amount" [(ngModel)]="cdaParking.amount"
+                          (keyup)="getCDAParkingAllocatedAmount()" /></td>
                       <td><button type="button" class="btn btn-danger"
                           (click)="deleteFromMultipleCdaParking(i)">Delete</button></td>
                     </tr>
@@ -158,7 +161,8 @@
                     <tr>
                       <td><button type="button" class="btn btn-primary" id="btnCda" (click)="addNewRow()">Add
                           Row</button></td>
-                      <td><b>Remaining Balance = 0.0000</b></td>
+                      <td><b>Remaining Balance = {{balancedRemaingCdaParkingAmount}} In
+                          {{amountUnit}}</b></td>
                       <td></td>
                     </tr>
                   </tfoot>
@@ -169,8 +173,10 @@
         </div>
         <div class="modal-footer justify-content-start">
           <button class="btn btn-danger mr-2" data-dismiss="modal">Close</button>
-          <button class="btn btn-primary mr-2" (click)="saveCdaParkingData()" *ngIf="showSubmit">Submit</button>
-          <button class="btn btn-warning" (click)="saveCdaParkingData()" *ngIf="showUpdate">Update</button>
+          <button class="btn btn-primary mr-2" (click)="saveCdaParkingData()" *ngIf="showSubmit"
+            [disabled]="isdisableSubmitButton">Submit</button>
+          <button class="btn btn-warning" (click)="updateCdaParkingDataApi()" *ngIf="showUpdate"
+            [disabled]="isdisableUpdateButton">Update</button>
         </div>
       </div>
       <!-- /.modal-content -->

@@ -133,11 +133,17 @@ export class DashboardComponent implements OnInit {
 
         if (result['message'] == 'success') {
           this.dasboardData = result['response'];
+          debugger;
           var roles = result['response'].userDetails.role[0].roleName;
           if (localStorage.getItem('user_role') != roles) {
             window.location.reload();
           }
           localStorage.setItem('user_role', roles);
+          localStorage.removeItem('defautAllocationType');
+          localStorage.setItem(
+            'defautAllocationType',
+            this.dasboardData.allocationType.allocType
+          );
           for (
             let i = 0;
             i < this.dasboardData.unitWiseExpenditureList.length;

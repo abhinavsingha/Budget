@@ -22,7 +22,7 @@ export class RecieptComponent {
     minorHead: new FormControl(),
     subHeadType: new FormControl(),
     remarks: new FormControl(),
-    amountType:new FormControl()
+    amountType: new FormControl(),
   });
 
   finYearList: any[] = [];
@@ -46,14 +46,17 @@ export class RecieptComponent {
 
   totalAmount: any = 0.0;
 
+  defaultAllocationType: any;
+
   ngOnInit(): void {
     this.getAmountType();
     this.getBudgetFinYear();
     this.majorDataNew();
     this.getAllocationTypeData();
-    this.uploadDocuments.push(new UploadDocuments());
     this.getUnitDatas();
     this.getBudgetRecipt();
+    this.getSubHeadType();
+    this.getModData();
 
     $.getScript('assets/main.js');
   }
@@ -76,6 +79,20 @@ export class RecieptComponent {
           finYear: this.finYearList[0],
         });
         this.SpinnerService.hide();
+      } else {
+        this.common.faliureAlert('Please try later', result['message'], '');
+      }
+    });
+  }
+
+  subHeadType: any[] = [];
+  getSubHeadType() {
+    this.SpinnerService.show();
+    this.apiService.getApi(this.cons.api.getSubHeadType).subscribe((res) => {
+      let result: { [key: string]: any } = res;
+      if (result['message'] == 'success') {
+        this.SpinnerService.hide();
+        this.subHeadType = result['response'];
       } else {
         this.common.faliureAlert('Please try later', result['message'], '');
       }
@@ -114,7 +131,7 @@ export class RecieptComponent {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.finalTableData = result['response'].budgetResponseist;
-
+        debugger;
         this.SpinnerService.hide();
       } else {
         this.common.faliureAlert('Please try later', result['message'], '');
@@ -234,11 +251,12 @@ export class RecieptComponent {
   }
 
   selectedFinYear: any;
+
   getAllSubHeadByMajorHead(formData: any, formdataValue: any) {
     this.SpinnerService.show();
-
     let submitJson = {
-      majorHeadId: formData,
+      budgetHeadType: formdataValue.subHeadType.subHeadTypeId,
+      majorHeadId: formdataValue.majorHead.majorHead,
       budgetFinancialYearId: formdataValue.finYear.serialNo,
     };
 
@@ -366,11 +384,11 @@ export class RecieptComponent {
         }
       }
     }
-
+    debugger;
     this.submitJson = {
       budgetFinancialYearId: this.selectedFinYear,
       allocationTypeId: this.finalSelectedAllocationType.allocTypeId,
-      amountTypeId:this.formdata.get('amountType')?.value.amountTypeId,
+      amountTypeId: this.formdata.get('amountType')?.value.amountTypeId,
       authListData: authRequestsList,
       receiptSubRequests: budgetRequest,
     };
@@ -395,11 +413,10 @@ export class RecieptComponent {
   }
 
   finallySubmit(data: any) {
-
     this.SpinnerService.show();
     // var newSubmitJson = this.submitJson;
     var newSubmitJson = data;
-
+    debugger;
     console.log(JSON.stringify(newSubmitJson) + ' =submitJson for save budget');
 
     this.apiService
@@ -445,27 +462,24 @@ export class RecieptComponent {
 
   isUpdate: boolean = false;
   amountType: any;
-  getAmountType(){
-    this.apiService
-      .getApi(this.cons.api.showAllAmountUnit)
-      .subscribe({
-        next: (v: object) => {
-          this.SpinnerService.hide();
-          let result: { [key: string]: any } = v;
-          if (result['message'] == 'success') {
-            this.amountType = result['response'];
-
-          } else {
-            this.common.faliureAlert('Please try later', result['message'], '');
-          }
-        },
-        error: (e) => {
-          this.SpinnerService.hide();
-          console.error(e);
-          this.common.faliureAlert('Error', e['error']['message'], 'error');
-        },
-        complete: () => console.info('complete'),
-      });
+  getAmountType() {
+    this.apiService.getApi(this.cons.api.showAllAmountUnit).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.amountType = result['response'];
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
   }
   updateReciept(data: any) {
     this.SpinnerService.show();
@@ -550,15 +564,30 @@ export class RecieptComponent {
 
   allocatedAmount(index: any) {
     this.totalAmount = 0;
-    this.subHeadList[index].amount=Number(this.subHeadList[index].amount).toFixed(4);
+    this.subHeadList[index].amount = Number(
+      this.subHeadList[index].amount
+    ).toFixed(4);
     for (var i = 0; i < this.subHeadList.length; i++) {
       if (this.subHeadList[i].amount != '') {
         this.totalAmount =
           parseFloat(this.totalAmount) + parseFloat(this.subHeadList[i].amount);
       }
     }
-
-    // this.getTotalAmount();
   }
 
+  getModData() {
+    this.SpinnerService.show();
+    this.apiService.getApi(this.cons.api.getModData).subscribe((res) => {
+      let result: { [key: string]: any } = res;
+      if (result['message'] == 'success') {
+        debugger;
+        let newUploadDocuments = new UploadDocuments();
+        newUploadDocuments.authUnit = result['response'];
+        this.uploadDocuments.push(newUploadDocuments);
+        this.SpinnerService.hide();
+      } else {
+        this.common.faliureAlert('Please try later', result['message'], '');
+      }
+    });
+  }
 }

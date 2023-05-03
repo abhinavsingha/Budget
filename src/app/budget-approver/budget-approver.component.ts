@@ -64,12 +64,6 @@ export class BudgetApproverComponent implements OnInit {
     public sharedService: SharedService
   ) {}
 
-  openDialog() {
-    // this.matDialog.open(DialogComponent, {
-    //   width: '350px',
-    // });
-  }
-
   getAlGroupId(groupId: any) {
     this.SpinnerService.show();
     this.apiService
@@ -205,17 +199,44 @@ export class BudgetApproverComponent implements OnInit {
   totalAmountToAllocateCDAParking: any;
   getCurrentSubHeadData: any;
   showSubmit: boolean = false;
+  amountUnit: any;
   addCDAParking(data: any) {
     this.getCurrentSubHeadData = data;
+    this.amountUnit = data.amountUnit.amountType;
     this.multipleCdaParking = [];
     this.multipleCdaParking.push(new MultiCdaParking());
     this.totalAmountToAllocateCDAParking = data.allocationAmount;
+    this.balancedRemaingCdaParkingAmount = this.totalAmountToAllocateCDAParking;
+    this.isdisableSubmitButton = true;
+    this.isdisableUpdateButton = true;
     this.showUpdate = false;
     this.showSubmit = true;
   }
 
   deleteFromMultipleCdaParking(index: any) {
     this.multipleCdaParking.splice(index, 1);
+    var amount = 0;
+    var unitIndex = this.multipleCdaParking.filter(
+      (data) => data.amount != null
+    );
+    for (var i = 0; i < unitIndex.length; i++) {
+      if (unitIndex[i].amount != '' || unitIndex[i].amount != null) {
+        amount = amount + parseFloat(unitIndex[i].amount);
+      }
+    }
+    this.balancedRemaingCdaParkingAmount = (
+      this.totalAmountToAllocateCDAParking - amount
+    ).toFixed(4);
+    if (
+      this.balancedRemaingCdaParkingAmount == '0' ||
+      this.balancedRemaingCdaParkingAmount == '0.0000'
+    ) {
+      this.isdisableSubmitButton = false;
+      this.isdisableUpdateButton = false;
+    } else {
+      this.isdisableSubmitButton = true;
+      this.isdisableUpdateButton = true;
+    }
   }
 
   addNewRow() {
@@ -298,9 +319,158 @@ export class BudgetApproverComponent implements OnInit {
         complete: () => console.info('complete'),
       });
   }
+
+  authGroupIdFromBackend: any;
   showUpdate: boolean = false;
-  viewCDAParking() {
+  viewCDAParking(budgetData: any) {
     this.showUpdate = true;
     this.showSubmit = false;
+
+    this.getCurrentSubHeadData = budgetData;
+    this.amountUnit = budgetData.amountUnit.amountType;
+    this.multipleCdaParking = [];
+    this.multipleCdaParking.push(new MultiCdaParking());
+    this.totalAmountToAllocateCDAParking = budgetData.allocationAmount;
+    this.balancedRemaingCdaParkingAmount = '0.0000';
+    this.isdisableSubmitButton = true;
+    this.isdisableUpdateButton = true;
+
+    this.SpinnerService.show();
+    let submitJson = {
+      financialYearId: budgetData.finYear.serialNo,
+      budgetHeadId: budgetData.subHead.budgetCodeId,
+      allocationTypeId: budgetData.allocTypeId.allocTypeId,
+    };
+    this.apiService
+      .postApi(this.cons.api.getCdaDataList, submitJson)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            // multipleCdaParking
+
+            var cdaParkingList = result['response'].cdaParking;
+            this.multipleCdaParking = [];
+
+            this.authGroupIdFromBackend = cdaParkingList[0].authGroupId;
+            for (var i = 0; i < cdaParkingList.length; i++) {
+              var dummyMultipleCdaParkingData = new MultiCdaParking();
+              dummyMultipleCdaParkingData.cdaParkingUnit =
+                cdaParkingList[i].ginNo;
+              dummyMultipleCdaParkingData.amount =
+                cdaParkingList[i].totalParkingAmount;
+              this.multipleCdaParking.push(dummyMultipleCdaParkingData);
+            }
+
+            var amount = 0;
+            var unitIndex = this.multipleCdaParking.filter(
+              (data) => data.amount != null
+            );
+            for (var i = 0; i < unitIndex.length; i++) {
+              if (unitIndex[i].amount != '' || unitIndex[i].amount != null) {
+                amount = amount + parseFloat(unitIndex[i].amount);
+              }
+            }
+            this.balancedRemaingCdaParkingAmount = (
+              this.totalAmountToAllocateCDAParking - amount
+            ).toFixed(4);
+            if (
+              this.balancedRemaingCdaParkingAmount == '0' ||
+              this.balancedRemaingCdaParkingAmount == '0.0000'
+            ) {
+              this.isdisableSubmitButton = false;
+              this.isdisableUpdateButton = false;
+            } else {
+              this.isdisableSubmitButton = true;
+              this.isdisableUpdateButton = true;
+            }
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
+  }
+
+  balancedRemaingCdaParkingAmount: any;
+  isdisableSubmitButton: boolean = true;
+  isdisableUpdateButton: boolean = true;
+  getCDAParkingAllocatedAmount() {
+    var amount = 0;
+    var unitIndex = this.multipleCdaParking.filter(
+      (data) => data.amount != null
+    );
+    for (var i = 0; i < unitIndex.length; i++) {
+      if (unitIndex[i].amount != '' || unitIndex[i].amount != null) {
+        amount = amount + parseFloat(unitIndex[i].amount);
+      }
+    }
+    debugger;
+    this.balancedRemaingCdaParkingAmount = (
+      this.totalAmountToAllocateCDAParking - amount
+    ).toFixed(4);
+    if (
+      this.balancedRemaingCdaParkingAmount == '0' ||
+      this.balancedRemaingCdaParkingAmount == '0.0000'
+    ) {
+      this.isdisableSubmitButton = false;
+      this.isdisableUpdateButton = false;
+    } else {
+      this.isdisableSubmitButton = true;
+      this.isdisableUpdateButton = true;
+    }
+  }
+
+  updateCdaParkingDataApi() {
+    this.getCurrentSubHeadData;
+    this.multipleCdaParking;
+    this.cdaParkingListResponseData = [];
+    for (var i = 0; i < this.multipleCdaParking.length; i++) {
+      this.cdaParkingListResponseData.push({
+        budgetFinancialYearId: this.getCurrentSubHeadData.finYear.serialNo,
+        allocationTypeID: this.getCurrentSubHeadData.allocTypeId.allocTypeId,
+        ginNo: this.multipleCdaParking[i].cdaParkingUnit.ginNo,
+        budgetHeadId: this.getCurrentSubHeadData.subHead.budgetCodeId,
+        currentParkingAmount: this.multipleCdaParking[i].cdaParkingUnit.amount,
+        availableParkingAmount: this.multipleCdaParking[i].amount,
+        authGroupId: this.getCurrentSubHeadData.authGroupId,
+      });
+    }
+    this.updateCdaParkingData(this.cdaParkingListResponseData);
+  }
+
+  updateCdaParkingData(data: any) {
+    this.SpinnerService.show();
+    var newSubmitJson = {
+      cdaRequest: data,
+      authGroupId: this.authGroupIdFromBackend,
+    };
+
+    this.apiService
+      .postApi(this.cons.api.updateCdaParkingData, newSubmitJson)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            // this.router.navigate(['/budget-approval']);
+            window.location.reload();
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
   }
 }
