@@ -174,9 +174,6 @@ export class NewContigentBillComponent implements OnInit {
     this.getDashboardData();
     this.getSubHeadType();
   }
-  formatSubhead(){
-    this.formdata.get('subHead')?.reset();
-  }
 
   addToList() {
     const undefinedValues: string[] = [];
@@ -264,6 +261,7 @@ export class NewContigentBillComponent implements OnInit {
       Swal.fire('Enter missing data');
     }
   }
+
   getSubHeadType(){
     this.apiService
       .getApi(this.cons.api.getSubHeadType)
@@ -286,6 +284,7 @@ export class NewContigentBillComponent implements OnInit {
         complete: () => console.info('complete'),
       });
   }
+
   getBudgetAllotted() {
     this.SpinnerService.show();
     let url = this.cons.api.getAvailableFund + '/' + this.unitId;
@@ -628,22 +627,34 @@ export class NewContigentBillComponent implements OnInit {
         this.formdata.get('majorHead')?.setValue(cbEntry.majorHead);
         this.majorHead = major;
         if (this.subHeadData == undefined) {
-          this.SpinnerService.show();
-          let url =
-            this.cons.api.getAllSubHeadByMajorHead +
-            '/' +
-            this.majorHead.majorHead;
-          this.apiService.getApi(url).subscribe((results) => {
-            let result: { [key: string]: any } = results;
-            this.subHeadData = result['response'];
-            for (let i = 0; i < this.subHeadData.length; i++) {
-              let sub = this.subHeadData[i];
-              if (sub.subHeadDescr == cbEntry.subHead) {
-                this.formdata.get('subHead')?.setValue(sub);
+          for(let i=0;i< this.subHeadType.length;i++){
+            if(this.subHeadType[i].subHeadTypeId==cbEntry.budgetHeadID.subHeadTypeId){
+              this.formdata.get('subHeadType')?.setValue(this.subHeadType[i]);
+              this.SpinnerService.show();
+              this.formdata.get('minorHead')?.setValue(this.majorHead);
+              this.SpinnerService.show();
+              let json={
+                budgetHeadType:this.formdata.get('subHeadType')?.value.subHeadTypeId,
+                majorHead:cbEntry.majorHead
               }
+              this.apiService.postApi(this.cons.api.getAllSubHeadByMajorHead,json).subscribe((res) => {
+                  let result: { [key: string]: any } = res;
+                  this.subHeadData = result['response'];
+                  for (let i = 0; i < this.subHeadData.length; i++) {
+                    let sub = this.subHeadData[i];
+                    if (sub.subHeadDescr == cbEntry.subHead) {
+                      this.formdata.get('subHead')?.setValue(sub);
+                    }
+                  }
+                  this.SpinnerService.hide();
+                },
+                (error) => {
+                  console.log(error);
+                  this.SpinnerService.hide();
+                }
+              );
             }
-            this.SpinnerService.hide();
-          });
+          }
         } else {
           for (let i = 0; i < this.subHeadData.length; i++) {
             let sub = this.subHeadData[i];
@@ -1079,12 +1090,39 @@ export class NewContigentBillComponent implements OnInit {
     }
   }
 
-  cleardata(key: string) {
-    if (key == 'finYear') {
+  cleardata(key: number) {
+    if(key<=0)
       this.formdata.get('majorHead')?.reset();
+    if(key<=1)
+      this.formdata.get('subHeadType')?.reset();
+    if(key<=2)
       this.formdata.get('subHead')?.reset();
+    if(key<=3)
       this.formdata.get('minorHead')?.reset();
-    }
+    if(key<=4)
+      this.formdata.get('amount')?.reset();
+    if(key<=5)
+      this.formdata.get('cbNo')?.reset();
+    if(key<=6)
+      this.formdata.get('cbDate')?.reset();
+    if(key<=8)
+      this.formdata.get('authority')?.reset();
+    if(key<=9)
+      this.formdata.get('date')?.reset();
+    if(key<=10)
+      this.formdata.get('firmName')?.reset();
+    if(key<=11)
+      this.formdata.get('invoiceNo')?.reset();
+    if(key<=12)
+      this.formdata.get('invoiceDate')?.reset();
+    if(key<=13)
+      this.formdata.get('fileNo')?.reset();
+    if(key<=14)
+      this.formdata.get('fileDate')?.reset();
+    if(key<=15)
+      this.formdata.get('onAccOf')?.setValue('Quarterly payment(3rd Qtr) towars hiring of Designer/Developer IT Manpower(Project SDOT)');
+    if(key<=16)
+      this.formdata.get('authDetail')?.setValue('S1.10.1 of Shedule-10 of DFPCG-2017 vide Govt. of India, Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017');
   }
 
   selectAll() {

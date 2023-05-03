@@ -96,12 +96,36 @@ export class ContigentBillApproverComponent implements OnInit {
     invoiceFile: new FormControl(),
     returnRemarks: new FormControl(),
   });
+  subHeadType:any;
   ngOnInit(): void {
     $.getScript('assets/js/adminlte.js');
     this.getContingentBill();
     this.getMajorHead();
     this.getFinancialYear();
     this.getCgUnitData();
+    this.getSubHeadType();
+  }
+  getSubHeadType(){
+    this.apiService
+      .getApi(this.cons.api.getSubHeadType)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+
+          if (result['message'] == 'success') {
+            this.subHeadType = result['response'];
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
   }
   private getContingentBill() {
     this.cbList = [];
@@ -227,28 +251,50 @@ export class ContigentBillApproverComponent implements OnInit {
     });
   }
   updateFormdata(cbEntry: cb) {
+    let subHeadType:any;
+    console.log('cbentry' + cbEntry);
     for (let i = 0; i < this.majorHeadData.length; i++) {
       let major = this.majorHeadData[i];
       if (major.majorHead == cbEntry.majorHead) {
         this.formdata.get('majorHead')?.setValue(cbEntry.majorHead);
         this.majorHead = major;
         if (this.subHeadData == undefined) {
-          this.SpinnerService.show();
-          let url =
-            this.cons.api.getAllSubHeadByMajorHead +
-            '/' +
-            this.majorHead.majorHead;
-          this.apiService.getApi(url).subscribe((results) => {
-            let result: { [key: string]: any } = results;
-            this.subHeadData = result['response'];
-            for (let i = 0; i < this.subHeadData.length; i++) {
-              let sub = this.subHeadData[i];
-              if (sub.subHeadDescr == cbEntry.subHead) {
-                this.formdata.get('subHead')?.setValue(sub);
+          for(let i=0;i< this.subHeadType.length;i++){
+            if(this.subHeadType[i].subHeadTypeId==cbEntry.budgetHeadID.subHeadTypeId){
+              // this.formdata.get('subHeadType')?.setValue(this.subHeadType[i]);
+              subHeadType=this.subHeadType[i];
+              this.SpinnerService.show();
+              this.formdata.get('minorHead')?.setValue(this.majorHead);
+              this.SpinnerService.show();
+              let json={
+                budgetHeadType:subHeadType.subHeadTypeId,
+                majorHead:cbEntry.majorHead
               }
+              this.apiService.postApi(this.cons.api.getAllSubHeadByMajorHead,json).subscribe((res) => {
+                  let result: { [key: string]: any } = res;
+                  this.subHeadData = result['response'];
+                  for (let i = 0; i < this.subHeadData.length; i++) {
+                    let sub = this.subHeadData[i];
+                    if (sub.subHeadDescr == cbEntry.subHead) {
+                      this.formdata.get('subHead')?.setValue(sub);
+                    }
+                  }
+                  this.SpinnerService.hide();
+                },
+                (error) => {
+                  console.log(error);
+                  this.SpinnerService.hide();
+                }
+              );
             }
-            this.SpinnerService.hide();
-          });
+          }
+        } else {
+          for (let i = 0; i < this.subHeadData.length; i++) {
+            let sub = this.subHeadData[i];
+            if (sub.subHeadDescr == cbEntry.subHead) {
+              this.formdata.get('subHead')?.setValue(sub);
+            }
+          }
         }
       }
     }

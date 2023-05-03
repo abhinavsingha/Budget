@@ -42,7 +42,7 @@
                   <label>Financial Year</label>
                   <ng-select [items]="finYearData" bindLabel="finYear" class="form-control select2bs4"
                              formControlName="finYearName" placeholder="Select Financial Year" required
-                             style="width: 100%" (change)="cleardata('finYear')">
+                             style="width: 100%" (change)="cleardata(0)">
                   </ng-select>
                 </div>
               </div>
@@ -51,7 +51,7 @@
                   <label>Major Head</label>
                   <ng-select [(ngModel)]="majorHead" [items]="majorHeadData"
                              bindLabel="majorHead" class="form-control select2bs4" formControlName="majorHead"
-                             name="majorHead"
+                             name="majorHead" (change)="cleardata(1)"
                              placeholder="Select Major Head" style="width: 100%">
                   </ng-select>
                 </div>
@@ -59,15 +59,15 @@
               <div class="col-md-3">
                 <div class="form-group">
                   <label>Sub Head Type<span class="text-danger"></span></label>
-                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeadType"
-                             (change)="setSubHead()" (change)="formatSubhead()" bindLabel="subType" placeholder="Select Amount Unit" formControlName="subHeadType"></ng-select>
+                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeadType" (change)="cleardata(2)"
+                             (change)="setSubHead()" bindLabel="subType" placeholder="Select Amount Unit" formControlName="subHeadType"></ng-select>
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
                   <label>Sub Head</label>
                   <ng-select [(ngModel)]="subHead" [items]="subHeadData" bindLabel="subHeadDescr" class="form-control select2bs4"
-                             formControlName="subHead" name="subHead" placeholder="Select Sub Head"
+                             formControlName="subHead" name="subHead" placeholder="Select Sub Head" (change)="cleardata(3)"
                              style="width: 100%">
                   </ng-select>
                 </div>
@@ -76,9 +76,6 @@
                 <div class="form-group">
                   <label>CB Unit</label>
                   <input class="form-control" formControlName="unit" id="unit" readonly type="text" readonly/>
-<!--                  <ng-select (change)="getBudgetAllotted()" [items]="unitData" bindLabel="descr" class="form-control select2bs4"-->
-<!--                             formControlName="unit" placeholder="Select Unit" style="width: 100%" [readonly]="true">-->
-<!--                  </ng-select>-->
                 </div>
               </div>
               <div class="col-md-3">
@@ -86,7 +83,7 @@
                   <label>Minor Head</label>
                   <ng-select [items]="minorHeadData" bindLabel="minorHead" class="form-control select2bs4"
                              formControlName="minorHead" placeholder="Select Minor Head"
-                             style="width: 100%">
+                             style="width: 100%" (change)="cleardata(4)">
                   </ng-select>
                 </div>
               </div>
@@ -101,7 +98,7 @@
                 <div class="form-group">
                   <label>CB Amount</label>
                   <input (change)="updateExpenditure()" class="form-control" formControlName="amount"
-                         id="Amount"  type="number" placeholder="Enter Amount in INR"/>
+                         id="Amount"  type="number" placeholder="Enter Amount in INR" (change)="cleardata(5)"/>
                 </div>
               </div>
               <div class="col-md-3">
@@ -120,45 +117,34 @@
                 <div class="form-group">
                   <label>CB No.</label>
                   <input class="form-control" formControlName="cbNo" id="PrevAllocation" placeholder="Enter CB Number"
-                         type="text"/>
+                         type="text" (change)="cleardata(6)"/>
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
                   <label>CB Date</label>
                   <input class="form-control" formControlName="cbDate" id="cbDate" placeholder="Enter Date"
-                         type="date" (change)="checkDate()"/>
+                         type="date" (change)="checkDate()" (change)="cleardata(7)" />
                 </div>
               </div>
-              <!--              <div class="col-md-3">-->
-              <!--                <div class="form-group">-->
-              <!--                  <label>Remarks</label>-->
-              <!--                  <input type="text" class="form-control" id="remarks" placeholder="Enter Remarks"-->
-              <!--                    formControlName="remarks" />-->
-              <!--                </div>-->
-              <!--              </div>-->
-
               <div class="col-md-3">
                 <div class="form-group">
                   <label>Sanction Unit</label>
                   <input class="form-control" formControlName="authorityUnit" id="authorityUnit" placeholder=""
                          type="text" readonly/>
-<!--                  <ng-select [items]="unitData" bindLabel="descr" class="form-control select2bs4" formControlName="authorityUnit"-->
-<!--                             placeholder="Select Authority Unit" style="width: 100%" [readonly]="true">-->
-<!--                  </ng-select>-->
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
                   <label>Sanction</label>
-                  <input class="form-control" formControlName="authority" id="authority" placeholder="Enter Remarks"
+                  <input class="form-control" (change)="cleardata(9)" formControlName="authority" id="authority" placeholder="Enter Remarks"
                          type="text"/>
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
                   <label>Sanction Date</label>
-                  <input class="form-control" formControlName="date" id="date" placeholder="Enter Date" type="date"/>
+                  <input class="form-control" (change)="cleardata(10)" formControlName="date" id="date" placeholder="Enter Date" type="date"/>
                 </div>
               </div>
               <div class="col-md-3">
@@ -180,21 +166,21 @@
                 <div class="form-group">
                   <label>Firm Name</label>
                   <input class="form-control" formControlName="firmName" id="FirmName" placeholder="Enter Firm Name"
-                         type="text"/>
+                         type="text" (change)="cleardata(11)"/>
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
                   <label>Invoice Number</label>
                   <input class="form-control" formControlName="invoiceNo" id="invoiceNo" placeholder="Enter Invoice Number"
-                         type="text"/>
+                         type="text" (change)="cleardata(12)"/>
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
                   <label>Invoice Date</label>
                   <input class="form-control" formControlName="invoiceDate" id="invoiceDate" placeholder="Enter Invoice Date"
-                         type="date"/>
+                         type="date" (change)="cleardata(13)"/>
                 </div>
               </div>
               <div class="col-md-3">
@@ -215,14 +201,14 @@
               <div class="col-md-3">
                 <div class="form-group">
                   <label>File Number</label>
-                  <input class="form-control" formControlName="fileNo" id="fileNumber" placeholder="Enter File Number"
+                  <input class="form-control" formControlName="fileNo" id="fileNumber" (change)="cleardata(14)" placeholder="Enter File Number"
                          type="text"/>
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
                   <label>File Date</label>
-                  <input class="form-control" formControlName="fileDate" id="fileDate" placeholder="Enter Invoice Date"
+                  <input class="form-control" formControlName="fileDate" (change)="cleardata(15)" id="fileDate" placeholder="Enter Invoice Date"
                          type="date"/>
                 </div>
               </div>

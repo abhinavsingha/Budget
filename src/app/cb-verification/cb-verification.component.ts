@@ -104,6 +104,7 @@ export class CbVerificationComponent {
     this.getMajorHead();
     this.getFinancialYear();
     this.getCgUnitData();
+    this.getSubHeadType();
   }
   private getContingentBill() {
     this.cbList = [];
@@ -228,32 +229,102 @@ export class CbVerificationComponent {
       if (cbEntry.checked) console.log(cbEntry.cbNo + ' ');
     });
   }
+  getSubHeadType(){
+    this.apiService
+      .getApi(this.cons.api.getSubHeadType)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+
+          if (result['message'] == 'success') {
+            this.subHeadType = result['response'];
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
+  }
   updateFormdata(cbEntry: cb) {
+    // for (let i = 0; i < this.majorHeadData.length; i++) {
+    //   let major = this.majorHeadData[i];
+    //   if (major.majorHead == cbEntry.majorHead) {
+    //     this.formdata.get('majorHead')?.setValue(cbEntry.majorHead);
+    //     this.majorHead = major;
+    //     if (this.subHeadData == undefined) {
+    //       this.SpinnerService.show();
+    //       let url =
+    //         this.cons.api.getAllSubHeadByMajorHead +
+    //         '/' +
+    //         this.majorHead.majorHead;
+    //       this.apiService.getApi(url).subscribe((results) => {
+    //         let result: { [key: string]: any } = results;
+    //         this.subHeadData = result['response'];
+    //         for (let i = 0; i < this.subHeadData.length; i++) {
+    //           let sub = this.subHeadData[i];
+    //           if (sub.subHeadDescr == cbEntry.subHead) {
+    //             this.formdata.get('subHead')?.setValue(sub);
+    //           }
+    //         }
+    //         this.SpinnerService.hide();
+    //       });
+    //     }
+    //   }
+    // }
+    let subHeadType:any;
+    console.log('cbentry' + cbEntry);
     for (let i = 0; i < this.majorHeadData.length; i++) {
       let major = this.majorHeadData[i];
       if (major.majorHead == cbEntry.majorHead) {
         this.formdata.get('majorHead')?.setValue(cbEntry.majorHead);
         this.majorHead = major;
         if (this.subHeadData == undefined) {
-          this.SpinnerService.show();
-          let url =
-            this.cons.api.getAllSubHeadByMajorHead +
-            '/' +
-            this.majorHead.majorHead;
-          this.apiService.getApi(url).subscribe((results) => {
-            let result: { [key: string]: any } = results;
-            this.subHeadData = result['response'];
-            for (let i = 0; i < this.subHeadData.length; i++) {
-              let sub = this.subHeadData[i];
-              if (sub.subHeadDescr == cbEntry.subHead) {
-                this.formdata.get('subHead')?.setValue(sub);
+          for(let i=0;i< this.subHeadType.length;i++){
+            if(this.subHeadType[i].subHeadTypeId==cbEntry.budgetHeadID.subHeadTypeId){
+              // this.formdata.get('subHeadType')?.setValue(this.subHeadType[i]);
+              subHeadType=this.subHeadType[i];
+              this.SpinnerService.show();
+              this.formdata.get('minorHead')?.setValue(this.majorHead);
+              this.SpinnerService.show();
+              let json={
+                budgetHeadType:subHeadType.subHeadTypeId,
+                majorHead:cbEntry.majorHead
               }
+              this.apiService.postApi(this.cons.api.getAllSubHeadByMajorHead,json).subscribe((res) => {
+                  let result: { [key: string]: any } = res;
+                  this.subHeadData = result['response'];
+                  for (let i = 0; i < this.subHeadData.length; i++) {
+                    let sub = this.subHeadData[i];
+                    if (sub.subHeadDescr == cbEntry.subHead) {
+                      this.formdata.get('subHead')?.setValue(sub);
+                    }
+                  }
+                  this.SpinnerService.hide();
+                },
+                (error) => {
+                  console.log(error);
+                  this.SpinnerService.hide();
+                }
+              );
             }
-            this.SpinnerService.hide();
-          });
+          }
+        } else {
+          for (let i = 0; i < this.subHeadData.length; i++) {
+            let sub = this.subHeadData[i];
+            if (sub.subHeadDescr == cbEntry.subHead) {
+              this.formdata.get('subHead')?.setValue(sub);
+            }
+          }
         }
       }
     }
+
     this.formdata.get('budgetAllocated')?.setValue(cbEntry.budgetAllocated);
 
     this.formdata.get('amount')?.setValue(cbEntry.amount);
@@ -283,6 +354,92 @@ export class CbVerificationComponent {
     this.formdata.get('file')?.setValue(cbEntry.file);
 
   }
+  subHeadType:any;
+  // updateFormdata(cbEntry: cb) {
+  //   let subHeadType:any;
+  //   console.log('cbentry' + cbEntry);
+  //   for (let i = 0; i < this.majorHeadData.length; i++) {
+  //     let major = this.majorHeadData[i];
+  //     if (major.majorHead == cbEntry.majorHead) {
+  //       this.formdata.get('majorHead')?.setValue(cbEntry.majorHead);
+  //       this.majorHead = major;
+  //       if (this.subHeadData == undefined) {
+  //         for(let i=0;i< this.subHeadType.length;i++){
+  //           if(this.subHeadType[i].subHeadTypeId==cbEntry.budgetHeadID.subHeadTypeId){
+  //             // this.formdata.get('subHeadType')?.setValue(this.subHeadType[i]);
+  //             subHeadType=this.subHeadType[i];
+  //             this.SpinnerService.show();
+  //             this.formdata.get('minorHead')?.setValue(this.majorHead);
+  //             this.SpinnerService.show();
+  //             let json={
+  //               budgetHeadType:subHeadType.subHeadTypeId,
+  //               majorHead:cbEntry.majorHead
+  //             }
+  //             this.apiService.postApi(this.cons.api.getAllSubHeadByMajorHead,json).subscribe((res) => {
+  //                 let result: { [key: string]: any } = res;
+  //                 this.subHeadData = result['response'];
+  //                 for (let i = 0; i < this.subHeadData.length; i++) {
+  //                   let sub = this.subHeadData[i];
+  //                   if (sub.subHeadDescr == cbEntry.subHead) {
+  //                     this.formdata.get('subHead')?.setValue(sub);
+  //                   }
+  //                 }
+  //                 this.SpinnerService.hide();
+  //               },
+  //               (error) => {
+  //                 console.log(error);
+  //                 this.SpinnerService.hide();
+  //               }
+  //             );
+  //           }
+  //         }
+  //       } else {
+  //         for (let i = 0; i < this.subHeadData.length; i++) {
+  //           let sub = this.subHeadData[i];
+  //           if (sub.subHeadDescr == cbEntry.subHead) {
+  //             this.formdata.get('subHead')?.setValue(sub);
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  //   this.formdata.get('amount')?.setValue(cbEntry.amount);
+  //   this.formdata.get('unit')?.setValue(this.unitName);
+  //   this.formdata.get('authorityUnit')?.setValue(this.unitName);
+  //   this.formdata.get('budgetAllocated')?.setValue(cbEntry.budgetAllocated);
+  //   this.getExpenditure();
+  //   this.budgetAllotted = cbEntry.budgetAllocated;
+  //   this.formdata.get('progressive')?.setValue(cbEntry.progressiveAmount);
+  //   this.formdata
+  //     .get('balance')
+  //     ?.setValue(cbEntry.budgetAllocated - cbEntry.progressiveAmount);
+  //   // this.formdata.get('file')?.setValue(cbEntry.file);
+  //   this.formdata.get('cbNo')?.setValue(cbEntry.cbNo);
+  //   this.formdata.get('cbDate')?.setValue(cbEntry.cbDate);
+  //   // this.formdata.get('remarks')?.setValue(cbEntry.remarks);
+  //   this.formdata.get('authority')?.setValue(cbEntry.authority);
+  //   this.formdata.get('date')?.setValue(cbEntry.date);
+  //   this.formdata.get('firmName')?.setValue(cbEntry.firmName);
+  //   this.formdata.get('invoiceNo')?.setValue(cbEntry.invoiceNo);
+  //   this.formdata.get('invoiceDate')?.setValue(cbEntry.invoiceDate);
+  //   this.viewFile(cbEntry.file);
+  //   this.openPdfUrlInNewTab(cbEntry.invoicePath);
+  //
+  //   this.formdata.get('returnRemarks')?.setValue(cbEntry.returnRemarks);
+  //   for (let i = 0; i < this.minorHeadData.length; i++) {
+  //     if (this.minorHeadData[i].minorHead == cbEntry.minorHead) {
+  //       this.formdata.get('minorHead')?.setValue(this.minorHeadData[i]);
+  //     }
+  //   }
+  //   for (let i = 0; i < this.finYearData.length; i++) {
+  //     if (this.finYearData[i].finYear == cbEntry.finYearName)
+  //       this.formdata.get('finYearName')?.setValue(this.finYearData[i]);
+  //   }
+  //   this.formdata.get('fileNo')?.setValue(cbEntry.fileNo);
+  //   this.formdata.get('fileDate')?.setValue(cbEntry.fileDate);
+  //   this.formdata.get('onAccOf')?.setValue(cbEntry.onAccOf);
+  //   this.formdata.get('authDetail')?.setValue(cbEntry.authDetail);
+  // }
   getBudgetAllotted() {
     this.budgetAllotted = 0;
     this.formdata.get('budgetAllocated')?.setValue(this.budgetAllotted);
