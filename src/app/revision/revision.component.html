@@ -64,7 +64,7 @@
                       <ng-select  [items]="majorHeadData"
                                   bindLabel="majorHead" class="form-control select2bs4" formControlName="majorHead"
                                   name="majorHead"
-                                  placeholder="Select Major Head" style="width: 100%">
+                                  placeholder="Select Major Head" style="width: 100%" (change)="clearsubhead()">
                       </ng-select>
                     </div>
                   </div>
@@ -81,7 +81,7 @@
                       <label>Sub Head</label>
                       <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeads"
                         bindLabel="subHeadDescr" placeholder="Select Sub Head" formControlName="subHead"
-                        (change)="getAvailableFund($event,formdata.value)" (change)="getBudgetRevisionData(formdata.value)"></ng-select>
+                        (change)="getAvailableFundData(formdata.value)" ></ng-select>
                     </div>
                   </div>
 
@@ -91,14 +91,14 @@
                       <ng-select  [items]="minorHeadData"
                                   bindLabel="minorHead" class="form-control select2bs4" formControlName="minorHead"
                                   name="minorHead"
-                                  placeholder="Select Minor Head" style="width: 100%">
+                                  placeholder="Select Minor Head" style="width: 100%" [readonly]="true">
                       </ng-select>
                     </div>
                   </div>
                   <div class=" col-md-6">
                     <div class="form-group">
                       <label>Available Fund</label>
-                      <input type="number" class="form-control" id="balance" placeholder="2.22"
+                      <input type="number" class="form-control" id="balance" placeholder="Fund Available"
                         formControlName="fundAvailable" readonly />
                     </div>
                   </div>
@@ -112,7 +112,7 @@
                   <div class=" col-md-6">
                     <div class="form-group">
                       <label>Balance Fund</label>
-                      <input type="number" class="form-control" id="PrevAllocation" placeholder="7.432"
+                      <input type="number" class="form-control" id="PrevAllocation" placeholder="Balance Fund"
                         formControlName="balanceFund" readonly />
                     </div>
                   </div>
@@ -120,7 +120,7 @@
                     <div class="form-group">
                       <label>Rupees in<span class="text-danger"></span></label>
                       <ng-select class="form-control select2bs4" style="width: 100%" [items]="amountType"
-                                 (change)="setAmountType()"  bindLabel="amountType" placeholder="Select Amount Unit" formControlName="amountType"></ng-select>
+                                 (change)="getBudgetRevisionData(formdata.value)"  bindLabel="amountType" placeholder="Select Amount Unit" formControlName="amountType"></ng-select>
                     </div>
                   </div>
 
@@ -141,21 +141,21 @@
                       <th>Unit</th>
                       <th>Existing</th>
                       <th>Revision Amount (in {{amountUnit}})</th>
-                      <th>Revised</th>
+                      <th>Revised (in {{amountUnit}})</th>
 <!--                      <th>Action</th>-->
                     </tr>
                   </thead>
                   <tbody>
                   <tr *ngFor="let subHeadWiseUnit of budgetRevisionUnitList2; let i = index">
                     <td *ngIf="!subHeadWiseUnit.isSelected">{{subHeadWiseUnit.unit.descr}}</td>
-                    <td *ngIf="!subHeadWiseUnit.isSelected">{{subHeadWiseUnit.existingAmount}}</td>
+                    <td *ngIf="!subHeadWiseUnit.isSelected">{{subHeadWiseUnit.existingAmount}} </td>
                     <td *ngIf="!subHeadWiseUnit.isSelected"><input type="number" (change)="revisionAmount(i)" [(ngModel)]="subHeadWiseUnit.revisionAmount"></td>
                     <td *ngIf="!subHeadWiseUnit.isSelected">{{subHeadWiseUnit.revisiedAmount}}</td>
                   </tr>
                   </tbody>
                   <tfoot>
                   <tr>
-                    <td>Total</td>
+                    <td>Total (in {{amountUnit}})</td>
                     <td>{{totalExistingAmount}}</td>
                     <td>{{totlaRevisionAmount}}</td>
                     <td>{{totalRevisiedAmount}}</td>
@@ -193,9 +193,9 @@
                     <td>{{td.unit.descr}}</td>
                     <td>{{td.subHead.subHeadDescr}}</td>
                     <td>{{td.allocationType.allocationType}}</td>
-                    <td>{{td.amount}}</td>
+                    <td>{{td.amount}} {{td.amountType.amountType}}</td>
                     <td>{{td.revisedAmount}}</td>
-                    <td>{{td.amount+td.revisedAmount}}</td>
+                    <td>{{td.bal}}</td>
                   </tr>
                   </tbody>
                 </table>

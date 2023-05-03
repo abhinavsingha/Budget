@@ -5,4 +5,5 @@ export class BudgetRevisionUnitList {
   revisionAmount: any = 0;
   revisiedAmount: any;
   isSelected: boolean = false;
+  amountType:string='';
 }
