@@ -96,7 +96,7 @@
                     <div class="form-group">
                       <label>Rupees in<span class="text-danger"></span></label>
                       <ng-select class="form-control select2bs4" style="width: 100%" [items]="amountType"
-                                (change)="setAmountUnit()" bindLabel="amountType" placeholder="Select Amount Unit" formControlName="amountType"></ng-select>
+                                 [(ngModel)]="amountUnit" bindLabel="amountType" placeholder="Select Amount Unit" formControlName="amountType"></ng-select>
                     </div>
                   </div>
                   <!-- <div class=" col-md-6">
@@ -134,7 +134,7 @@
                   <thead>
                     <tr>
                       <th>Unit</th>
-                      <th>Amount (in {{amountUnit}})</th>
+                      <th>Amount (in {{amountUnit.amountType}})</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -184,7 +184,7 @@
                       <th>Unit</th>
                       <th>Sub Head</th>
                       <th>Allocation Type</th>
-                      <th>Amount (in {{amountUnit}})</th>
+                      <th>Amount (in {{amountUnit.amountType}})</th>
                       <!-- <th>Remarks</th> -->
                     </tr>
                   </thead>

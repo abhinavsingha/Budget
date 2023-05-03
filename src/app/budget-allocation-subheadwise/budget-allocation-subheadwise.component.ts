@@ -301,7 +301,7 @@ export class BudgetAllocationSubheadwiseComponent {
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
             this.amountType = result['response'];
-
+            this.amountUnit=this.amountType[1];
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
@@ -397,7 +397,7 @@ export class BudgetAllocationSubheadwiseComponent {
         amount: this.budgetAllocationArray[i].amount,
         remark: this.budgetAllocationArray[i].remarks,
         allocationTypeId: 'ALL_101',
-        amountTypeId:this.formdata.get('amountType')?.value.amountTypeId
+        amountTypeId:this.amountUnit.amountTypeId
       });
     }
 
@@ -567,8 +567,8 @@ export class BudgetAllocationSubheadwiseComponent {
     // });
     // this.getTotalAmount();
   }
-amountUnit:string='';
+amountUnit:any;
   setAmountUnit() {
-    this.amountUnit=this.formdata.get('amountType')?.value.amountType;
+    this.amountUnit=this.formdata.get('amountType')?.value;
   }
 }
