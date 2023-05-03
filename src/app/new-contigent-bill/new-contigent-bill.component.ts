@@ -151,6 +151,7 @@ export class NewContigentBillComponent implements OnInit {
   masterChecked: boolean = false;
   dasboardData: any;
   allocation: any;
+  private FundAllotted: any;
 
   constructor(
     public sharedService: SharedService,
@@ -288,26 +289,20 @@ export class NewContigentBillComponent implements OnInit {
       });
   }
 
-  getAvailableFundData(data:any) {
-    if(this.formdata.get('subHead')?.value==undefined)
-      return;
+  getAvailableFundData() {
     this.SpinnerService.show();
-    let submitJson = {
-      finYearId: data.finYearName.serialNo,
-      subHeadId: data.subHead.budgetCodeId,
-      allocationTypeId: this.allocation.allocTypeId,
-    };
-
     this.apiService
-      .postApi(
-        this.cons.api.getAvailableFundFindByUnitIdAndFinYearId,
-        submitJson
+      .getApi(
+        this.cons.api.getAvailableFund+'/'+this.dasboardData.userDetails.unitId
       )
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
+            this.FundAllotted=result['response'];
+            this.expenditure = this.FundAllotted.expenditure;
+            this.formdata.get('progressive')?.setValue(this.expenditure);
             this.formdata.get('budgetAllocated')?.setValue(parseFloat(result['response'].fundAvailable).toFixed(4));
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
@@ -331,7 +326,7 @@ export class NewContigentBillComponent implements OnInit {
         this.budgetAllotted = result['response'].fundAvailable;
         this.formdata.get('budgetAllocated')?.setValue(this.budgetAllotted);
         this.SpinnerService.hide();
-        this.getExpenditure();
+        // this.getExpenditure();
       },
       (error) => {
         console.log(error);
@@ -341,7 +336,7 @@ export class NewContigentBillComponent implements OnInit {
         this.formdata.get('budgetAllocated')?.setValue(this.budgetAllotted);
       }
     );
-    this.getExpenditure();
+    // this.getExpenditure();
   }
 
   getCheckedRows(cbNo: any) {
@@ -425,11 +420,11 @@ export class NewContigentBillComponent implements OnInit {
     });
   }
 
-  private getExpenditure() {
-    this.expenditure = 0;
-    this.formdata.get('progressive')?.setValue(this.expenditure);
-    // this.updateExpenditure();
-  }
+  // getExpenditure() {
+  //   this.expenditure = this.FundAllotted.expenditure;
+  //   this.formdata.get('progressive')?.setValue(this.expenditure);
+  //   // this.updateExpenditure();
+  // }
   unitId: any;
   unitName: any;
   private getDashboardData() {
@@ -686,6 +681,7 @@ export class NewContigentBillComponent implements OnInit {
   }
 
   updateFormdata(cbEntry: newCb) {
+    this.getAvailableFundData();
     console.log('cbentry' + cbEntry);
     for (let i = 0; i < this.majorHeadData.length; i++) {
       let major = this.majorHeadData[i];
@@ -735,7 +731,6 @@ export class NewContigentBillComponent implements OnInit {
     this.formdata.get('unit')?.setValue(this.unitName);
     this.formdata.get('authorityUnit')?.setValue(this.unitName);
     this.formdata.get('budgetAllocated')?.setValue(cbEntry.budgetAllocated);
-    this.getExpenditure();
     this.budgetAllotted = cbEntry.budgetAllocated;
     this.formdata.get('progressive')?.setValue(cbEntry.progressiveAmount);
     this.formdata
