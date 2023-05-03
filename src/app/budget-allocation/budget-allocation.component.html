@@ -69,6 +69,14 @@
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
+                      <label>Subhead Type</label>
+                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeadType"
+                        bindLabel="subType" placeholder="Select Major Head" formControlName="subHeadType">
+                      </ng-select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
                       <label>Major Head</label>
                       <ng-select class="form-control select2bs4" style="width: 100%" [items]="majorDataNew"
                         bindLabel="majorHead" placeholder="Select Major Head" formControlName="majorHeadId"
@@ -86,6 +94,7 @@
                         value="asdf" formControlName="minorHeadId" readonly />
                     </div>
                   </div>
+
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Rupees in<span class="text-danger"></span></label>
@@ -133,7 +142,6 @@
                           <input type="number" [(ngModel)]="subHeadData.amount" [ngModelOptions]="{standalone: true}"
                             id="Aallocationamount" placeholder="Please Enter Amount" (change)="allocatedAmount(i)"
                             style="width:102px;" />
-
                         </td>
                         <td>
                           <button type=" submit" class="btn btn-primary mr-2"

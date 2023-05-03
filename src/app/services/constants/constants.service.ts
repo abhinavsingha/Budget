@@ -53,6 +53,9 @@ export class ConstantsService {
     saveCdaParkingData:
       this.serviceUrl + 'cdaParkingController/saveCdaParkingData',
 
+    updateCdaParkingData:
+      this.serviceUrl + 'cdaParkingController/updateCdaParkingData',
+
     getAllUser: this.serviceUrl + 'mangeUser/getAllUser',
 
     getUserInfo: 'https://icg.net.in/cghrdata/getAllData/getUserInfo',
@@ -164,5 +167,9 @@ export class ConstantsService {
     showAllAmountUnit: this.serviceUrl + 'dashBoard/showAllAmountUnit',
 
     getSubHeadType: this.serviceUrl + 'budgetAllocation/getSubHeadType',
+
+    getModData: this.serviceUrl + 'budgetRecipet/getModData',
+
+    getCdaDataList: this.serviceUrl + 'cdaParkingController/getCdaDataList',
   };
 }

@@ -78,7 +78,7 @@ export class BudgetAllocationComponent implements OnInit {
     majorHeadId: new FormControl(),
     unitId: new FormControl(),
     minorHeadId: new FormControl(),
-    amountType:new FormControl()
+    amountType: new FormControl(),
   });
 
   subHeadTableData = new FormGroup({
@@ -113,12 +113,13 @@ export class BudgetAllocationComponent implements OnInit {
     this.getBudgetFinYear();
     this.getCgUnitDataNew();
     this.getMajorDataNew();
-    // this.getUserDetails('');
     this.getUnitDatas();
     this.getAllocationTypeData();
     this.deleteDataByPid();
     this.getAmountType();
     this.uploadDocuments.push(new UploadDocuments());
+
+    this.getSubHeadType();
 
     $.getScript('assets/js/adminlte.js');
     $.getScript('assets/main.js');
@@ -184,29 +185,25 @@ export class BudgetAllocationComponent implements OnInit {
       });
   }
   amountType: any;
-  getAmountType(){
-    this.apiService
-      .getApi(this.cons.api.showAllAmountUnit)
-      .subscribe({
-        next: (v: object) => {
-          this.SpinnerService.hide();
-          let result: { [key: string]: any } = v;
-          if (result['message'] == 'success') {
-            this.amountType = result['response'];
-
-          } else {
-            this.common.faliureAlert('Please try later', result['message'], '');
-          }
-        },
-        error: (e) => {
-          this.SpinnerService.hide();
-          console.error(e);
-          this.common.faliureAlert('Error', e['error']['message'], 'error');
-        },
-        complete: () => console.info('complete'),
-      });
+  getAmountType() {
+    this.apiService.getApi(this.cons.api.showAllAmountUnit).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.amountType = result['response'];
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
   }
-
 
   arrayWithUnitMajorHeadAndSubHead: any[] = [];
   putInNewList() {
@@ -595,7 +592,7 @@ export class BudgetAllocationComponent implements OnInit {
         amount: this.tableData[i].selectedSubHead.amount,
         remark: this.tableData[i].remarks,
         allocationTypeId: this.tableData[i].allocationType.allocTypeId,
-        amountTypeId:this.formdata.get('amountType')?.value.amountTypeId
+        amountTypeId: this.formdata.get('amountType')?.value.amountTypeId,
       });
     }
 
@@ -1067,12 +1064,13 @@ export class BudgetAllocationComponent implements OnInit {
     this.formdata.patchValue({
       minorHeadId: formdataValue.majorHeadId.minorHead,
     });
-
+    debugger;
     let submitJson = {
       finyearId: formdataValue.finYearId.serialNo,
       majorHead: formdataValue.majorHeadId.majorHead,
       unitId: formdataValue.unitId.unit,
       allocationType: this.formdata.get('allocationType')?.value.allocTypeId,
+      budgetHeadType: formdataValue.subHeadType.subHeadTypeId,
     };
 
     this.apiService.postApi(this.cons.api.getFilterData, submitJson).subscribe({
@@ -1115,7 +1113,7 @@ export class BudgetAllocationComponent implements OnInit {
   }
 
   countFinYear: any = 0;
-  amountUnit: string='';
+  amountUnit: string = '';
   toUnitAndMajorHeadReset() {
     if (this.countFinYear > 0) {
       this.formdata.patchValue({
@@ -1200,10 +1198,26 @@ export class BudgetAllocationComponent implements OnInit {
     );
   }
   allocatedAmount(index: any) {
-    this.subHeadFilterDatas[index].amount = Number(this.subHeadFilterDatas[index].amount).toFixed(4);
+    this.subHeadFilterDatas[index].amount = Number(
+      this.subHeadFilterDatas[index].amount
+    ).toFixed(4);
   }
 
   setAmountType() {
-    this.amountUnit=this.formdata.get('amountType')?.value.amountType;
+    this.amountUnit = this.formdata.get('amountType')?.value.amountType;
+  }
+
+  subHeadType: any[] = [];
+  getSubHeadType() {
+    this.SpinnerService.show();
+    this.apiService.getApi(this.cons.api.getSubHeadType).subscribe((res) => {
+      let result: { [key: string]: any } = res;
+      if (result['message'] == 'success') {
+        this.SpinnerService.hide();
+        this.subHeadType = result['response'];
+      } else {
+        this.common.faliureAlert('Please try later', result['message'], '');
+      }
+    });
   }
 }
