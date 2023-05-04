@@ -308,7 +308,7 @@ export class BudgetAllocationReportComponent implements OnInit {
       // It is for Subhead Wise
       let submitJson = {
         finYearId: formdata.finYear.serialNo,
-        unitId: formdata.subHead.budgetCodeId,
+        subHeadId: formdata.subHead.budgetCodeId,
       };
       debugger;
       this.apiService
