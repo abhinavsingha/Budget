@@ -291,10 +291,12 @@ export class NewContigentBillComponent implements OnInit {
 
   getAvailableFundData() {
     this.SpinnerService.show();
+    let json={
+      budgetHeadId:this.formdata.get('subHead')?.value.budgetCodeId
+    }
     this.apiService
-      .getApi(
-        this.cons.api.getAvailableFund+'/'+this.dasboardData.userDetails.unitId
-      )
+      .postApi(
+        this.cons.api.getAvailableFund,json)
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
