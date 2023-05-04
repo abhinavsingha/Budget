@@ -63,14 +63,14 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Major Head</label>
-                      <input type="number" class="form-control" id="PrevAllocation" placeholder="Major Head"
+                      <input type="number" class="form-control" id="majorHead" placeholder="Major Head"
                         formControlName="majorHead" readonly />
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Minor Head</label>
-                      <input type="number" class="form-control" id="PrevAllocation" placeholder="Minor Head"
+                      <input type="number" class="form-control" id="minorHead" placeholder="Minor Head"
                         formControlName="minorHead" readonly />
                     </div>
                   </div>
@@ -88,7 +88,7 @@
                   <div class=" col-md-6">
                     <div class="form-group">
                       <label>Fund Available</label>
-                      <input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Remarks"
+                      <input type="text" class="form-control" id="fundAvailable" placeholder="Enter Remarks"
                         formControlName="fundAvailable" readonly />
                     </div>
                   </div>
@@ -97,7 +97,7 @@
                       <label>Rupees in<span class="text-danger"></span></label>
                       <ng-select class="form-control select2bs4" style="width: 100%" [items]="amountTypeas"
                         [(ngModel)]="amountUnit" bindLabel="amountType" placeholder="Select Amount Unit"
-                        formControlName="amountType"></ng-select>
+                        formControlName="amountType" (change)="setAmountUnit()"></ng-select>
                     </div>
                   </div>
                   <!-- <div class=" col-md-6">
@@ -118,8 +118,7 @@
                     <div class="form-group">
                       <label>Remarks</label>
                       <input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Remarks"
-                        formControlName="remarks"
-                        [ngClass]="{'is-invalid' : submitted && formdata.controls.remarks.errors}" />
+                        formControlName="remarks"/>
                     </div>
                   </div>
                   <div class="col-md-6">

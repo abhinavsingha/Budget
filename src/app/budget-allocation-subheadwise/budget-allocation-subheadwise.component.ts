@@ -565,7 +565,7 @@ export class BudgetAllocationSubheadwiseComponent {
     this.subHeadWiseUnitList[index].amount = Number(
       this.subHeadWiseUnitList[index].amount
     ).toFixed(4);
-
+    this.subHeadWiseUnitList[index].amountUnit=this.formdata.get('amountType')?.value;
     // this.subHeadWiseUnitList;
     // let amount = 0;
     // for (var i = 0; i < this.subHeadWiseUnitList.length; i++) {
@@ -579,5 +579,19 @@ export class BudgetAllocationSubheadwiseComponent {
   amountUnit: any;
   setAmountUnit() {
     this.amountUnit = this.formdata.get('amountType')?.value;
+    for(let i=0;i<this.subHeadWiseUnitList.length;i++){
+      if(this.subHeadWiseUnitList[i].amount!=undefined){
+        this.subHeadWiseUnitList[i].amount=(this.subHeadWiseUnitList[i].amount*this.subHeadWiseUnitList[i].amountUnit.amount/this.formdata.get('amountType')?.value.amount).toFixed(4);
+        this.subHeadWiseUnitList[i].amountUnit=this.amountUnit = this.formdata.get('amountType')?.value;
+      }
+      this.budgetAllocationArray
+    }
+    for(let i=0;i<this.budgetAllocationArray.length;i++) {
+      // if (this.subHeadWiseUnitList[i].amount != undefined) {
+      this.budgetAllocationArray[i].amount = (this.budgetAllocationArray[i].amount * this.budgetAllocationArray[i].amountType.amount / this.formdata.get('amountType')?.value.amount).toFixed(4);
+      this.budgetAllocationArray[i].amountType = this.amountUnit = this.formdata.get('amountType')?.value;
+      // }
+    }
+
   }
 }
