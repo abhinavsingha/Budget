@@ -95,8 +95,9 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Rupees in<span class="text-danger"></span></label>
-                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="amountType"
-                                 [(ngModel)]="amountUnit" bindLabel="amountType" placeholder="Select Amount Unit" formControlName="amountType"></ng-select>
+                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="amountTypeas"
+                        [(ngModel)]="amountUnit" bindLabel="amountType" placeholder="Select Amount Unit"
+                        formControlName="amountType"></ng-select>
                     </div>
                   </div>
                   <!-- <div class=" col-md-6">
@@ -134,7 +135,7 @@
                   <thead>
                     <tr>
                       <th>Unit</th>
-                      <th>Amount (in {{amountUnit.amountType}})</th>
+                      <th>Amount</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -160,7 +161,6 @@
                     <tr>
                       <td></td>
                       <td></td>
-                      <td></td>
                       <td><button type="submit" class="btn btn-primary mr-2"
                           (click)="moveDataToNextGrid(formdata.value)">Add Row</button></td>
                     </tr>
@@ -184,7 +184,7 @@
                       <th>Unit</th>
                       <th>Sub Head</th>
                       <th>Allocation Type</th>
-                      <th>Amount (in {{amountUnit.amountType}})</th>
+                      <th>Amount</th>
                       <!-- <th>Remarks</th> -->
                     </tr>
                   </thead>

@@ -51,7 +51,8 @@
                   <th>Type</th>
                   <th>Created Date & Time</th>
                   <!-- <th>Created By</th> -->
-                  <th>Unit Name</th>
+                  <th>From Unit</th>
+                  <th>To Unit</th>
                   <th>Status</th>
                   <th>Action</th>
                 </thead>
@@ -70,6 +71,7 @@
                     <td>{{li.type}}</td>
                     <td>{{li.createDate}}</td>
                     <!-- <td>{{li.createBy}}</td> -->
+                    <td>{{li.unitName}}</td>
                     <td>{{li.unitName}}</td>
                     <td>{{li.status}}</td>
                     <td><button type="submit" class="btn btn-warning mr-2" (click)="redirect(li)"> <i

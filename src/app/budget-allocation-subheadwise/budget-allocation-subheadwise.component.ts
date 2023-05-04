@@ -53,7 +53,7 @@ export class BudgetAllocationSubheadwiseComponent {
     currentAllocation: new FormControl(),
     balanceFund: new FormControl(),
     remarks: new FormControl(),
-    amountType:new FormControl()
+    amountType: new FormControl(),
   });
 
   ngOnInit(): void {
@@ -95,7 +95,7 @@ export class BudgetAllocationSubheadwiseComponent {
       currentAllocation: new FormControl(),
       balanceFund: new FormControl(),
       remarks: new FormControl('', Validators.required),
-      amountType:new FormControl()
+      amountType: new FormControl(),
     });
   }
 
@@ -184,6 +184,7 @@ export class BudgetAllocationSubheadwiseComponent {
   }
 
   saveFirstForm(formDataValue: any) {
+    debugger;
     if (
       formDataValue.finYear == null ||
       formDataValue.subHead == null ||
@@ -255,6 +256,7 @@ export class BudgetAllocationSubheadwiseComponent {
         amount: selectedUnitDataWithAmount[i].amount,
         remarks: formDataValue.remarks,
         isChecked: false,
+        amountType: formDataValue.amountType,
       });
     }
 
@@ -291,28 +293,26 @@ export class BudgetAllocationSubheadwiseComponent {
     }
   }
   uploadFileResponse: any;
-  amountType: any;
-  getAmountType(){
-    this.apiService
-      .getApi(this.cons.api.showAllAmountUnit)
-      .subscribe({
-        next: (v: object) => {
-          this.SpinnerService.hide();
-          let result: { [key: string]: any } = v;
-          if (result['message'] == 'success') {
-            this.amountType = result['response'];
-            this.amountUnit=this.amountType[1];
-          } else {
-            this.common.faliureAlert('Please try later', result['message'], '');
-          }
-        },
-        error: (e) => {
-          this.SpinnerService.hide();
-          console.error(e);
-          this.common.faliureAlert('Error', e['error']['message'], 'error');
-        },
-        complete: () => console.info('complete'),
-      });
+  amountTypeas: any;
+  getAmountType() {
+    this.apiService.getApi(this.cons.api.showAllAmountUnit).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.amountTypeas = result['response'];
+          this.amountUnit = this.amountTypeas[1];
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
   }
 
   uploadFile(index: any) {
@@ -396,8 +396,9 @@ export class BudgetAllocationSubheadwiseComponent {
         subHeadId: this.budgetAllocationArray[i].subHeadName.budgetCodeId,
         amount: this.budgetAllocationArray[i].amount,
         remark: this.budgetAllocationArray[i].remarks,
-        allocationTypeId: 'ALL_101',
-        amountTypeId:this.amountUnit.amountTypeId
+        allocationTypeId:
+          this.budgetAllocationArray[i].allocationType.allocTypeId,
+        amountTypeId: this.budgetAllocationArray[i].amountType.amountTypeId,
       });
     }
 
@@ -533,8 +534,9 @@ export class BudgetAllocationSubheadwiseComponent {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
-            this.fundAvailableByFinYearAndUnitAndAllocationType =
-              parseFloat(result['response'].fundAvailable);
+            this.fundAvailableByFinYearAndUnitAndAllocationType = parseFloat(
+              result['response'].fundAvailable
+            );
 
             this.formdata.patchValue({
               fundAvailable: parseFloat(result['response'].fundAvailable),
@@ -555,7 +557,9 @@ export class BudgetAllocationSubheadwiseComponent {
   allocatedTotalAmount: number = 0;
 
   allocatedAmount(index: any) {
-    this.subHeadWiseUnitList[index].amount=Number(this.subHeadWiseUnitList[index].amount).toFixed(4);
+    this.subHeadWiseUnitList[index].amount = Number(
+      this.subHeadWiseUnitList[index].amount
+    ).toFixed(4);
 
     // this.subHeadWiseUnitList;
     // let amount = 0;
@@ -567,8 +571,8 @@ export class BudgetAllocationSubheadwiseComponent {
     // });
     // this.getTotalAmount();
   }
-amountUnit:any;
+  amountUnit: any;
   setAmountUnit() {
-    this.amountUnit=this.formdata.get('amountType')?.value;
+    this.amountUnit = this.formdata.get('amountType')?.value;
   }
 }

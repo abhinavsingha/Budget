@@ -336,7 +336,7 @@ export class BudgetAllocationReportComponent implements OnInit {
         });
     } else if (formdata.reportType == '01') {
       //It is for BE report
-      this.SpinnerService.show();
+
       this.apiService
         .getApi(
           this.cons.api.getBEAllocationReport +
@@ -355,7 +355,7 @@ export class BudgetAllocationReportComponent implements OnInit {
         });
     } else if (formdata.reportType == '02') {
       //It is for RE report
-      this.SpinnerService.show();
+
       this.apiService
         .getApi(
           this.cons.api.getBEAllocationReport +
