@@ -194,6 +194,7 @@ export class BudgetAllocationComponent implements OnInit {
         let result: { [key: string]: any } = v;
         if (result['message'] == 'success') {
           this.amountType = result['response'];
+          this.amountUnits=this.amountType[0];
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
@@ -797,7 +798,7 @@ export class BudgetAllocationComponent implements OnInit {
     }
 
     this.SpinnerService.show();
-    debugger;
+    // debugger;
     let submitJson = {
       finYearId: formDataValue.finYearId.serialNo,
       codeSubHeadId: data.budgetCodeId,
@@ -826,8 +827,13 @@ export class BudgetAllocationComponent implements OnInit {
 
             if (this.subHeadFilterDatas != undefined) {
               for (let i = 0; i < this.subHeadFilterDatas.length; i++) {
+                if(this.subHeadFilterDatas[i].amountUnit!=null){
+                  this.subHeadFilterDatas[i].totalAmount=(this.subHeadFilterDatas[i].totalAmount*this.subHeadFilterDatas[i].amountUnit.amount/formDataValue.amountType.amount).toFixed(4);
+                  this.subHeadFilterDatas[i].amountUnit=formDataValue.amountType;
+                }
+
                 this.subHeadFilterDatas[i].amount = undefined;
-                this.subHeadFilterDatas[i].amountUnit = undefined;
+                this.subHeadFilterDatas[i].amountUnit2 = undefined;
               }
             }
           } else {
@@ -1067,7 +1073,7 @@ export class BudgetAllocationComponent implements OnInit {
     this.formdata.patchValue({
       minorHeadId: formdataValue.majorHeadId.minorHead,
     });
-    debugger;
+    // debugger;
     let submitJson = {
       finyearId: formdataValue.finYearId.serialNo,
       majorHead: formdataValue.majorHeadId.majorHead,
@@ -1083,11 +1089,16 @@ export class BudgetAllocationComponent implements OnInit {
 
         if (result['message'] == 'success') {
           this.subHeadFilterDatas = result['response'].subHeads;
-          debugger;
+          // debugger;
           if (this.subHeadFilterDatas != undefined) {
             for (let i = 0; i < this.subHeadFilterDatas.length; i++) {
+              if(this.subHeadFilterDatas[i].amountUnit!=null){
+                this.subHeadFilterDatas[i].totalAmount=(this.subHeadFilterDatas[i].totalAmount*this.subHeadFilterDatas[i].amountUnit.amount/formdataValue.amountType.amount).toFixed(4);
+                this.subHeadFilterDatas[i].amountUnit=formdataValue.amountType;
+              }
+
               this.subHeadFilterDatas[i].amount = undefined;
-              this.subHeadFilterDatas[i].amountUnit = undefined;
+              this.subHeadFilterDatas[i].amountUnit2 = undefined;
             }
           }
         } else {
@@ -1184,7 +1195,7 @@ export class BudgetAllocationComponent implements OnInit {
     // this.SpinnerService.show();
     this.apiService.postApi(this.cons.api.getDashboardData, null).subscribe(
       (results) => {
-        debugger;
+        // debugger;
         this.SpinnerService.hide();
         $.getScript('assets/js/adminlte.js');
 
@@ -1206,17 +1217,43 @@ export class BudgetAllocationComponent implements OnInit {
       }
     );
   }
-  allocatedAmount(index: any) {
+  allocatedAmount(index: any,formdata
+  :any) {
+    if(formdata.amountType==undefined){
+      Swal.fire("Please Select Rupees in");
+      this.subHeadFilterDatas[index].amount=undefined;
+      return;
+    }
     this.subHeadFilterDatas[index].amount = Number(
       this.subHeadFilterDatas[index].amount
     ).toFixed(4);
+    this.subHeadFilterDatas[index].amountUnit2=formdata.amountType
   }
 
   setAmountType() {
     this.amountUnit = this.formdata.get('amountType')?.value.amountType;
+    for(let i=0;i<this.subHeadFilterDatas.length;i++){
+      if(this.subHeadFilterDatas[i].amountUnit!=null){
+        this.subHeadFilterDatas[i].totalAmount=(this.subHeadFilterDatas[i].totalAmount*this.subHeadFilterDatas[i].amountUnit.amount/this.formdata.get('amountType')?.value.amount).toFixed(4);
+        this.subHeadFilterDatas[i].amountUnit=this.formdata.get('amountType')?.value;
+
+      }
+      if(this.subHeadFilterDatas[i].amount!=undefined){
+        this.subHeadFilterDatas[i].amount=(this.subHeadFilterDatas[i].amount*this.subHeadFilterDatas[i].amountUnit2.amount/ this.formdata.get('amountType')?.value.amount).toFixed(4);
+        this.subHeadFilterDatas[i].amountUnit2= this.formdata.get('amountType')?.value;
+      }
+    }
+    for(let i=0;i<this.tableData.length;i++){
+      debugger;
+      this.tableData[i].selectedSubHead.amount=(this.tableData[i].selectedSubHead.amount*this.tableData[i].selectedSubHead.amountUnit2.amount/this.formdata.get('amountType')?.value.amount).toFixed(4);
+      this.tableData[i].selectedSubHead.amountUnit2=this.formdata.get('amountType')?.value;
+      this.tableData[i].selectedSubHead.totalAmount=(this.tableData[i].selectedSubHead.totalAmount*this.tableData[i].selectedSubHead.amountUnit.amount/this.formdata.get('amountType')?.value.amount).toFixed(4);
+      this.tableData[i].selectedSubHead.amountUnit=this.formdata.get('amountType')?.value;
+    }
   }
 
   subHeadType: any[] = [];
+  amountUnits: any;
   getSubHeadType() {
     this.SpinnerService.show();
     this.apiService.getApi(this.cons.api.getSubHeadType).subscribe((res) => {

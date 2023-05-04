@@ -90,7 +90,7 @@
                       <!-- <ng-select class="form-control select2bs4" style="width: 100%" [items]="minorHead"
                         bindLabel="minorHead" (change)="getAvailableFund($event)" placeholder="Select Minor Head"
                         formControlName="unit"> -->
-                      <input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Minor Head"
+                      <input type="text" class="form-control" id="minorHeadId" placeholder="Enter Minor Head"
                         value="asdf" formControlName="minorHeadId" readonly />
                     </div>
                   </div>
@@ -98,8 +98,8 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Rupees in<span class="text-danger"></span></label>
-                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="amountType"
-                        (change)="setAmountType()" bindLabel="amountType" placeholder="Select Amount Unit"
+                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="amountType"  [(ngModel)]="amountUnits"
+                                 (change)="setAmountType()" bindLabel="amountType" placeholder="Select Amount Unit"
                         formControlName="amountType"></ng-select>
                     </div>
                   </div>
@@ -140,7 +140,7 @@
                         </td>
                         <td>
                           <input type="number" [(ngModel)]="subHeadData.amount" [ngModelOptions]="{standalone: true}"
-                            id="Aallocationamount" placeholder="Please Enter Amount" (change)="allocatedAmount(i)"
+                            id="subHeadDataAmount" placeholder="Please Enter Amount" (change)="allocatedAmount(i,formdata.value)"
                             style="width:102px;" />
                         </td>
                         <td>

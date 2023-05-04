@@ -133,7 +133,7 @@ export class DashboardComponent implements OnInit {
 
         if (result['message'] == 'success') {
           this.dasboardData = result['response'];
-          debugger;
+          // debugger;
           var roles = result['response'].userDetails.role[0].roleName;
           if (localStorage.getItem('user_role') != roles) {
             window.location.reload();
