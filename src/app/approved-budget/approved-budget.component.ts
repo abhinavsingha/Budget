@@ -72,6 +72,7 @@ export class ApprovedBudgetComponent implements OnInit {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
+            debugger;
             this.userRole = result['response'].userDetails.role[0].roleName;
 
             this.sharedService.inbox = result['response'].inbox;
@@ -153,6 +154,7 @@ export class ApprovedBudgetComponent implements OnInit {
     this.SpinnerService.show();
     this.apiService.postApi(this.cons.api.fileUpload, formData).subscribe({
       next: (v: object) => {
+        debugger;
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
 
@@ -217,4 +219,8 @@ export class ApprovedBudgetComponent implements OnInit {
   }
 
   downloadReport() {}
+
+  previewURL() {
+    window.open(this.invoicePath, '_blank');
+  }
 }

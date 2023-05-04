@@ -65,6 +65,7 @@ export class BudgetAllocationSubheadwiseComponent {
     this.getNewEmptyEntries();
     this.getUnitDatas();
     this.uploadDocuments.push(new UploadDocuments());
+    this.getDashboardData();
     $.getScript('assets/main.js');
   }
 
@@ -485,6 +486,10 @@ export class BudgetAllocationSubheadwiseComponent {
         let result: { [key: string]: any } = results;
         if (result['message'] == 'success') {
           // this.userRole = result['response'].userDetails.role[0].roleName;
+          this.formdata.patchValue({
+            allocationType: result['response'].allocationType,
+          });
+
           this.sharedService.inbox = result['response'].inbox;
           this.sharedService.outbox = result['response'].outBox;
         }

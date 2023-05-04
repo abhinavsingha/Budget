@@ -45,8 +45,14 @@ export class BudgetApproverComponent implements OnInit {
       localStorage.getItem('type') != undefined
     ) {
       this.type = localStorage.getItem('type');
+
+      if (this.type == 'BR') {
+        this.getAllGroupIdAndUnitId(localStorage.getItem('group_id'));
+      } else {
+        this.getAlGroupId(localStorage.getItem('group_id'));
+      }
     }
-    this.getAlGroupId(localStorage.getItem('group_id'));
+
     this.getCdaUnitList();
     this.multipleCdaParking.push(new MultiCdaParking());
     this.getDashBoardDta();
@@ -64,6 +70,22 @@ export class BudgetApproverComponent implements OnInit {
     public sharedService: SharedService
   ) {}
 
+  getAllGroupIdAndUnitId(groupId: any) {
+    this.SpinnerService.show();
+    this.apiService
+      .getApi(this.cons.api.getAllGroupIdAndUnitId + '/' + groupId)
+      .subscribe((res) => {
+        let result: { [key: string]: any } = res;
+        if (result['message'] == 'success') {
+          debugger;
+          this.budgetDataList = result['response'].budgetResponseist;
+          this.SpinnerService.hide();
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      });
+  }
+
   getAlGroupId(groupId: any) {
     this.SpinnerService.show();
     this.apiService
@@ -71,6 +93,7 @@ export class BudgetApproverComponent implements OnInit {
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
+          debugger;
           this.budgetDataList = result['response'].budgetResponseist;
           this.SpinnerService.hide();
         } else {

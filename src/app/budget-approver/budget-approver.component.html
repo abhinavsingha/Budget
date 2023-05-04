@@ -57,6 +57,8 @@
                       <th>Sub Head</th>
                       <th>Type</th>
                       <th>Allocated Fund</th>
+                      <th *ngIf="isInboxAndOutbox!= 'Outbox' && type!='BG' && userRole!='Budget Approver'">Rem. Amount
+                      </th>
                       <th *ngIf="isInboxAndOutbox!= 'Outbox' && type!='BG' && userRole!='Budget Approver'">Action</th>
                     </tr>
                   </thead>
@@ -67,7 +69,9 @@
                       <td>{{buggetData.finYear.finYear}}</td>
                       <td>{{buggetData.subHead.subHeadDescr}}</td>
                       <td>{{buggetData.allocTypeId.allocDesc}}</td>
-                      <td>{{buggetData.allocationAmount}}</td>
+                      <td>{{buggetData.allocationAmount}} In {{buggetData.amountUnit.amountType}}</td>
+                      <td *ngIf="isInboxAndOutbox!= 'Outbox' && type!='BG' && userRole!='Budget Approver'">
+                        {{buggetData.balanceAmount}} In {{buggetData.amountUnit.amountType}}</td>
                       <td *ngIf="isInboxAndOutbox!= 'Outbox' && type!='BG' && userRole!='Budget Approver'">
                         <button *ngIf="buggetData.isCDAparking == '0'" type="submit" class="btn btn-warning mr-2"
                           data-toggle="modal" data-target="#modal-lg" (click)="addCDAParking(buggetData)">Add

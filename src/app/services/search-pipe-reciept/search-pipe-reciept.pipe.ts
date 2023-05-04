@@ -11,12 +11,14 @@ export class SearchPipeRecieptPipe implements PipeTransform {
     if (!searchText) {
       return items;
     }
+    debugger;
     return items.filter((it) => {
       return (
         it.allocTypeId.allocDesc
           .toLowerCase()
           .includes(searchText.toLowerCase()) ||
-        it.finYear.finYear.includes(searchText)
+        it.finYear.finYear.includes(searchText) ||
+        it.subHead.subHeadDescr.toLowerCase().includes(searchText.toLowerCase())
       );
     });
   }

@@ -358,7 +358,7 @@ export class BudgetAllocationReportComponent implements OnInit {
 
       this.apiService
         .getApi(
-          this.cons.api.getBEAllocationReport +
+          this.cons.api.getREAllocationReport +
             '/' +
             formdata.finYear.serialNo +
             '/RE'

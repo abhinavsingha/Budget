@@ -118,6 +118,7 @@ export class BudgetAllocationComponent implements OnInit {
     this.getAllocationTypeData();
     this.deleteDataByPid();
     this.getAmountType();
+    this.getDashboardData();
     this.uploadDocuments.push(new UploadDocuments());
 
     this.getSubHeadType();
@@ -1082,7 +1083,7 @@ export class BudgetAllocationComponent implements OnInit {
 
         if (result['message'] == 'success') {
           this.subHeadFilterDatas = result['response'].subHeads;
-
+          debugger;
           if (this.subHeadFilterDatas != undefined) {
             for (let i = 0; i < this.subHeadFilterDatas.length; i++) {
               this.subHeadFilterDatas[i].amount = undefined;
@@ -1178,10 +1179,12 @@ export class BudgetAllocationComponent implements OnInit {
       complete: () => console.info('complete'),
     });
   }
+
   private getDashboardData() {
     // this.SpinnerService.show();
     this.apiService.postApi(this.cons.api.getDashboardData, null).subscribe(
       (results) => {
+        debugger;
         this.SpinnerService.hide();
         $.getScript('assets/js/adminlte.js');
 
@@ -1189,6 +1192,10 @@ export class BudgetAllocationComponent implements OnInit {
         let result: { [key: string]: any } = results;
         if (result['message'] == 'success') {
           // this.userRole = result['response'].userDetails.role[0].roleName;
+          this.formdata.patchValue({
+            allocationType: result['response'].allocationType,
+          });
+
           this.sharedService.inbox = result['response'].inbox;
           this.sharedService.outbox = result['response'].outBox;
         }

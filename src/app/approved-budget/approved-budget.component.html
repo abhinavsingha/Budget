@@ -132,6 +132,13 @@
               </div>
               <div class="col-md-4">
                 <div class="form-group">
+                  <label>Remarks</label>
+                  <input type="text" class="form-control" id="PrevAllocation" placeholder="CGHQ to RHQ"
+                    formControlName="remarks" />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
                   <label for="invoice">Upload Document</label>
                   <div class="input-group">
                     <div class="custom-file">
@@ -157,13 +164,16 @@
                 <!--                    </div>-->
                 <!--                    </div>-->
               </div>
+
               <div class="col-md-4">
                 <div class="form-group">
-                  <label>Remarks</label>
-                  <input type="text" class="form-control" id="PrevAllocation" placeholder="CGHQ to RHQ"
-                    formControlName="remarks" />
+                  <label style="opacity: 0;">.</label><br>
+                  <button type="submit" class="btn btn-warning mr-2" (click)="previewURL()"><i class="fas fa-eye"></i>
+                    View</button>
                 </div>
               </div>
+
+
             </div>
           </form>
         </div>

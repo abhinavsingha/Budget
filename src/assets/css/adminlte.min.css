@@ -1643,11 +1643,12 @@ pre code {
   color: #212529;
   background-color: transparent;
 }
-.table td,
-.table th {
+.table td, .table th {
   padding: 0.35rem;
   vertical-align: top;
   border-top: 1px solid #dee2e6;
+  white-space: normal !important;
+  word-wrap: break-word;
 }
 .table thead th {
   vertical-align: bottom;

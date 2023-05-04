@@ -96,6 +96,9 @@ export class ConstantsService {
 
     getAlGroupId: this.serviceUrl + 'budgetAllocation/getAlGroupId',
 
+    getAllGroupIdAndUnitId:
+      this.serviceUrl + 'budgetAllocation/getAllGroupIdAndUnitId',
+
     approveBudgetOrReject:
       this.serviceUrl + 'budgetAllocation/approveBudgetOrReject',
 
@@ -163,6 +166,9 @@ export class ConstantsService {
 
     getBEAllocationReport:
       this.serviceUrl + 'reportController/getBEAllocationReport',
+
+    getREAllocationReport:
+      this.serviceUrl + 'reportController/getREAllocationReport',
 
     showAllAmountUnit: this.serviceUrl + 'dashBoard/showAllAmountUnit',
 

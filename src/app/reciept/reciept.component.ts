@@ -153,7 +153,7 @@ export class RecieptComponent {
         }
       });
   }
-  setminorhead(selectedMajorHead: any){
+  setminorhead(selectedMajorHead: any) {
     this.formdata.patchValue({
       minorHead: selectedMajorHead.minorHead,
     });
