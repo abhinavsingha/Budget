@@ -307,8 +307,13 @@ export class NewContigentBillComponent implements OnInit {
             this.FundAllotted=result['response'];
             this.expenditure = this.FundAllotted.expenditure;
             this.formdata.get('progressive')?.setValue(this.expenditure);
-            this.budgetAllotted=(parseFloat(result['response'].fundAvailable)*parseFloat(result['response'].amountType.amount) ).toFixed(4);
-            this.formdata.get('budgetAllocated')?.setValue((parseFloat(result['response'].fundAvailable)*parseFloat(result['response'].amountType.amount) ).toFixed(4));
+            if(result['response'].fundAvailable==0){
+              this.budgetAllotted=0;
+              this.formdata.get('budgetAllocated')?.setValue(0);
+            }else{
+              this.budgetAllotted=(parseFloat(result['response'].fundAvailable)*parseFloat(result['response'].amountType.amount) ).toFixed(4);
+              this.formdata.get('budgetAllocated')?.setValue((parseFloat(result['response'].fundAvailable)*parseFloat(result['response'].amountType.amount) ).toFixed(4));
+            }
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
