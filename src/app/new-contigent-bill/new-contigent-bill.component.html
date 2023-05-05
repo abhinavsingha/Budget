@@ -67,7 +67,7 @@
                 <div class="form-group">
                   <label>Sub Head</label>
                   <ng-select [(ngModel)]="subHead" [items]="subHeadData" bindLabel="subHeadDescr" class="form-control select2bs4"
-                             formControlName="subHead" name="subHead" placeholder="Select Sub Head" (change)="getAvailableFundData()" (change)="cleardata(4)"
+                             formControlName="subHead" name="subHead" placeholder="Select Sub Head" (change)="getAvailableFundData()" (change)="cleardata(4)" (change)="getCbNo(formdata.value)"
                              style="width: 100%">
                   </ng-select>
                 </div>
@@ -98,7 +98,7 @@
                 <div class="form-group">
                   <label>CB Amount</label>
                   <input (change)="updateExpenditure()" class="form-control" formControlName="amount"
-                         id="Amount"  type="number" placeholder="Enter Amount in INR" (change)="cleardata(5)"/>
+                         id="Amount"  type="number" placeholder="Enter Amount in INR"/>
                 </div>
               </div>
               <div class="col-md-3">
@@ -116,8 +116,9 @@
               <div class="col-md-3">
                 <div class="form-group">
                   <label>CB No.</label>
+<!--                  Unit/subhead/01/fin-year-->
                   <input class="form-control" formControlName="cbNo" id="PrevAllocation" placeholder="Enter CB Number"
-                         type="text" (change)="cleardata(6)"/>
+                         type="text" (change)="cleardata(6)" readonly/>
                 </div>
               </div>
               <div class="col-md-3">

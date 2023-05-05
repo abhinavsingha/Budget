@@ -57,6 +57,7 @@
                       <th>To Unit</th>
                       <th>Sub Head</th>
                       <th>Type</th>
+                      <th>Remaining Amount</th>
                       <th>Allocated Fund</th>
                       <th *ngIf="isInboxAndOutbox!= 'Outbox' && type!='Budget Allocation' && userRole!='Budget Approver'">Rem. Amount
                       </th>
@@ -71,7 +72,9 @@
                       <td>{{buggetData.toUnit.descr}}</td>
                       <td>{{buggetData.subHead.subHeadDescr}}</td>
                       <td>{{buggetData.allocTypeId.allocDesc}}</td>
-                      <td>{{buggetData.allocationAmount}} In {{buggetData.amountUnit.amountType}}</td>
+                      <td *ngIf="buggetData.balanceAmount1!=undefined">{{buggetData.balanceAmount1}}</td>
+                      <td *ngIf="buggetData.balanceAmount1==undefined">{{buggetData.balanceAmount}}</td>
+                      <td>{{buggetData.allocationAmount}} {{buggetData.amountUnit.amountType}}</td>
                       <td *ngIf="isInboxAndOutbox!= 'Outbox' && type!='Budget Allocation' && userRole!='Budget Approver'">
                         {{buggetData.balanceAmount}} In {{buggetData.amountUnit.amountType}}</td>
                       <td *ngIf="isInboxAndOutbox!= 'Outbox' && type!='Budget Allocation' && userRole!='Budget Approver'">

@@ -195,6 +195,7 @@ export class BudgetAllocationComponent implements OnInit {
         if (result['message'] == 'success') {
           this.amountType = result['response'];
           this.amountUnits=this.amountType[0];
+          this.amountUnit=this.amountUnits.amountType;
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
@@ -1050,7 +1051,7 @@ export class BudgetAllocationComponent implements OnInit {
       formdataValue.unitId.length == 0 ||
       formdataValue.finYearId.length == 0 ||
       formdataValue.allocationType == null ||
-      formdataValue.allocationType.length == 0
+      formdataValue.allocationType.length == 0||formdataValue.subHeadType==undefined
     ) {
       this.formdata.patchValue({
         majorHeadId: [],
@@ -1060,7 +1061,7 @@ export class BudgetAllocationComponent implements OnInit {
       });
       this.common.faliureAlert(
         'Please try again...!',
-        'Please select Financial Year, To Unit and allocation type.',
+        'Please select Financial Year, To Unit, SubHead Type and allocation type.',
         ''
       );
       return;

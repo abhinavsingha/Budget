@@ -14,6 +14,7 @@ import * as $ from 'jquery';
 // import { UploadDocuments } from '../model/upload-documents';
 
 class newCb {
+  cbId:any;
   onAccOf: any;
   authDetail: any;
   contingentBilId: any;
@@ -52,6 +53,7 @@ class newCb {
 }
 
 class submitCb {
+  allocationTypeId:any;
   invoiceDocId: any;
   authorityDetails: any;
   onAccountOf: any;
@@ -199,6 +201,7 @@ export class NewContigentBillComponent implements OnInit {
     }
     if (undefinedValues.length == 0) {
       const cb: newCb = {
+        cbId:undefined,
         onAccOf: this.formdata.get('onAccOf')?.value,
         authDetail: this.formdata.get('authDetail')?.value,
         authUnitId: this.unitId,
@@ -304,7 +307,8 @@ export class NewContigentBillComponent implements OnInit {
             this.FundAllotted=result['response'];
             this.expenditure = this.FundAllotted.expenditure;
             this.formdata.get('progressive')?.setValue(this.expenditure);
-            this.formdata.get('budgetAllocated')?.setValue(parseFloat(result['response'].fundAvailable).toFixed(4));
+            this.budgetAllotted=(parseFloat(result['response'].fundAvailable)*parseFloat(result['response'].amountType.amount) ).toFixed(4);
+            this.formdata.get('budgetAllocated')?.setValue((parseFloat(result['response'].fundAvailable)*parseFloat(result['response'].amountType.amount) ).toFixed(4));
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
@@ -506,6 +510,7 @@ export class NewContigentBillComponent implements OnInit {
               let result: { [key: string]: any } = res;
               this.budgetAllotted = result['response'].fundAvailable;
               const entry: newCb = {
+                cbId:getCbList[i].cbId,
                 authUnitId: getCbList[i].authoritiesList[0].authUnit,
                 unitId: getCbList[i].cbUnitId.unit,
                 uploadFileDate: getCbList[i].fileDate,
@@ -548,7 +553,8 @@ export class NewContigentBillComponent implements OnInit {
                 invoicePath: getCbList[i].invoiceUploadId.pathURL,
                 authGroupId: getCbList[i].authoritiesList[0].authGroupId,
               };
-              if (entry.status == 'Approved') this.approvedPresent = true;
+              if (entry.status == 'Approved')
+                this.approvedPresent = true;
               this.cbList.push(entry);
               this.SpinnerService.hide();
             },
@@ -588,6 +594,12 @@ export class NewContigentBillComponent implements OnInit {
   }
 
   updateExpenditure() {
+    if(this.formdata.get('amount')?.value>this.budgetAllotted){
+      this.formdata.get('amount')?.reset();
+      this.common.warningAlert('CB Amount Exceed Limit', "CB amount cannot be greater than Budget Alloted", '');
+      // Swal.fire("CB amount cannot be greater than Budget Alloted")
+      return;
+    }
     if (this.formdata.get('amount')?.value == null) {
       this.formdata.get('amount')?.reset();
       Swal.fire('Invalid amount. Enter Number');
@@ -809,6 +821,7 @@ export class NewContigentBillComponent implements OnInit {
             if (this.majorHeadData[j].majorHead == this.cbList[i].majorHead)
               budgetId = this.majorHeadData[j].budgetCodeId;
             const updateCb: submitCb = {
+              allocationTypeId:this.allocation.allocTypeId,
               onAccountOf: 'onAccountOf',
               authorityDetails:
                 'Sl. 10.1 of Schedule -10 of DFPCG-2017 vide Govt. of India , Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017',
@@ -859,6 +872,7 @@ export class NewContigentBillComponent implements OnInit {
           }
         } else if (this.cbList[i].status == 'Pending for Submission') {
           let entry: newCb = {
+            cbId:undefined,
             authUnitId: this.unitId,
             unitId: this.unitId,
             finSerialNo: this.formdata.get('finYearName')?.value.serialNo,
@@ -941,6 +955,7 @@ export class NewContigentBillComponent implements OnInit {
           invoiceDocId: this.cbList[i].invoiceFile,
           authList: authList,
           contingentBilId: undefined,
+          allocationTypeId:this.allocation.allocTypeId
         };
         if (this.cbList[i].status == 'Pending for Submission')
           submitList.push(cb);
@@ -1020,10 +1035,10 @@ export class NewContigentBillComponent implements OnInit {
   downloadBill(cb: any) {
     console.log(cb);
     let json = {
-      authGroupId: cb.authGroupId,
+      cbId: cb.cbId,
     };
     this.SpinnerService.show();
-    this.apiService.postApi(this.cons.api.getCbRevisedReport, json).subscribe(
+    this.apiService.postApi(this.cons.api.getContingentBillReport, json).subscribe(
       (results) => {
         let result: { [key: string]: any } = results;
         this.downloadPdf(result['response'][0].path);
@@ -1196,5 +1211,11 @@ export class NewContigentBillComponent implements OnInit {
       console.log(this.cbList[i].checked);
     }
     console.log(this.masterChecked);
+  }
+
+  getCbNo(formdata:any){
+    const cbCount=this.cbList.length+1;
+    const cbNo=this.dasboardData.userDetails.unitId+"/"+formdata.subHead.budgetCodeId+"/"+cbCount+"/"+formdata.finYearName.finYear;
+    this.formdata.get('cbNo')?.setValue(cbNo);
   }
 }
