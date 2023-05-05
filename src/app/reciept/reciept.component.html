@@ -233,10 +233,10 @@
               </div>
             </div>
           </div>
-            <div class="card-tools mr-2">
+            <div class="card-tools mr-2" style="width:17%;">
           <div class="form-group input-group input-group-sm row" [formGroup]="formdata">
-            <label class="float-left">Rupees in: </label>
-            <ng-select class="form-control select2bs4" style="width: 100%" [items]="amountType"
+            <label class="float-left col-md-5">Rupees in: </label>
+            <ng-select class="form-control select2bs4 col-md-7" style="width: 100%" [items]="amountType"
                        bindLabel="amountType" placeholder="Select Amount Unit" [(ngModel)]="defaultAmountType2"
                        formControlName="amountType2" (change)="setAmountType2(formdata.value)"></ng-select>
           </div>

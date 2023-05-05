@@ -50,6 +50,7 @@ export class BudgetAllocationReportComponent implements OnInit {
     finYear: new FormControl(),
     toUnit: new FormControl(),
     subHead: new FormControl(),
+    amountType:new FormControl(),
     reportType: new FormControl('--Select Report Type--'),
   });
   entry: any;
@@ -61,6 +62,7 @@ export class BudgetAllocationReportComponent implements OnInit {
     this.majorDataNew();
     this.getSubHeadsData();
     this.getAllocationType();
+    this.getAmountType();
   }
 
   constructor(
@@ -267,7 +269,7 @@ export class BudgetAllocationReportComponent implements OnInit {
   }
 
   downloadReport(formdata: any) {
-    if (formdata.finYear == null || formdata.finYear == undefined) {
+    if (formdata.finYear == null || formdata.finYear == undefined ||formdata.amountType==undefined) {
       this.common.warningAlert(
         'Please try later',
         'Please Select all mandatory data.',
@@ -279,6 +281,7 @@ export class BudgetAllocationReportComponent implements OnInit {
       let submitJson = {
         finYearId: formdata.finYear.serialNo,
         unitId: formdata.toUnit.unit,
+        amountTypeId: formdata.amountType.amountTypeId
       };
 
       this.apiService
@@ -309,6 +312,7 @@ export class BudgetAllocationReportComponent implements OnInit {
       let submitJson = {
         finYearId: formdata.finYear.serialNo,
         subHeadId: formdata.subHead.budgetCodeId,
+        amountTypeId: formdata.amountType.amountTypeId
       };
       debugger;
       this.apiService
@@ -342,7 +346,7 @@ export class BudgetAllocationReportComponent implements OnInit {
           this.cons.api.getBEAllocationReport +
             '/' +
             formdata.finYear.serialNo +
-            '/BE'
+            '/BE'+'/'+formdata.amountType.amountTypeId
         )
         .subscribe((res) => {
           let result: { [key: string]: any } = res;
@@ -361,7 +365,7 @@ export class BudgetAllocationReportComponent implements OnInit {
           this.cons.api.getREAllocationReport +
             '/' +
             formdata.finYear.serialNo +
-            '/RE'
+            '/RE'+'/'+formdata.amountType.amountTypeId
         )
         .subscribe((res) => {
           let result: { [key: string]: any } = res;
@@ -410,6 +414,28 @@ export class BudgetAllocationReportComponent implements OnInit {
 
   showUnit: boolean = false;
   showSubHead: boolean = false;
+  amountType: any;
+  getAmountType() {
+    this.apiService.getApi(this.cons.api.showAllAmountUnit).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.amountType = result['response'];
+
+
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
+  }
   selectReportType(data: any) {
     if (data.reportType == '03') {
       this.showUnit = true;
