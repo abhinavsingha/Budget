@@ -46,7 +46,7 @@ export class BudgetApproverComponent implements OnInit {
     ) {
       this.type = localStorage.getItem('type');
 
-      if (this.type == 'BR') {
+      if (this.type == 'Budget Reciept') {
         this.getAllGroupIdAndUnitId(localStorage.getItem('group_id'));
       } else {
         this.getAlGroupId(localStorage.getItem('group_id'));

@@ -85,7 +85,7 @@ export class InboxComponent implements OnInit {
       localStorage.setItem('type', li.type);
     }
 
-    if (li.type == 'CB') {
+    if (li.type == 'Contingent Bill') {
       this.sharedService.sharedValue = li.groupId;
       this.sharedService.redirectedFrom = 'inbox';
       if (li.status == 'Pending') {
@@ -95,7 +95,7 @@ export class InboxComponent implements OnInit {
       }
 
       // window.location.href =;
-    } else if (li.type == 'BG') {
+    } else if (li.type == 'Budget Allocation') {
       if (li.status == 'Approved') {
         this.router.navigate(['/budget-approved']);
       } else if (li.status == 'Fully Approved') {
@@ -104,7 +104,7 @@ export class InboxComponent implements OnInit {
         this.router.navigate(['/budget-approval']);
       }
       // window.location.href = '/budget-approval';
-    } else if (li.type == 'BR') {
+    } else if (li.type == 'Budget Reciept') {
       this.router.navigate(['/budget-approval']);
       this.sharedService.redirectedFrom = 'inbox';
       // window.location.href = '/budget-approval';
@@ -120,10 +120,20 @@ export class InboxComponent implements OnInit {
         let list: any = result['response'].inboxList;
 
         if (list.length > 0) {
+          let type='';
           for (let i = 0; i < list.length; i++) {
+            if(list[i].isBgOrCg=="BG"){
+              type='Budget Allocation';
+            }
+            else if(list[i].isBgOrCg=="BR"){
+              type='Budget Reciept';
+            }
+            else if(list[i].isBgOrCg=="CB"){
+              type='Contingent Bill';
+            }
             const entry: InboxList = {
               serial: i + 1,
-              type: list[i].isBgOrCg,
+              type: type,
               createDate: this.convertEpochToDateTime(list[i].createdOn),
               //   this.datePipe.transform(
               //   new Date(list[i].createdOn),

@@ -84,7 +84,7 @@ export class OutboxComponent implements OnInit {
       localStorage.setItem('type', li.type);
     }
 
-    if (li.type == 'CB') {
+    if (li.type == 'Contingent Bill') {
       this.sharedService.sharedValue = li.groupId;
       this.sharedService.redirectedFrom = 'outbox';
       if (li.status == 'Pending') {
@@ -94,7 +94,7 @@ export class OutboxComponent implements OnInit {
       }
 
       // window.location.href =;
-    } else if (li.type == 'BG') {
+    } else if (li.type == 'Budget Allocation') {
       if (li.status == 'Approved') {
         this.router.navigate(['/budget-approval']);
       } else if (li.status == 'Fully Approved') {
@@ -104,7 +104,7 @@ export class OutboxComponent implements OnInit {
       }
       // this.sharedService.redirectedFrom = 'inbox';
       // window.location.href = '/budget-approval';
-    } else if (li.type == 'BR') {
+    } else if (li.type == 'Budget Allocation') {
       this.router.navigate(['/budget-approval']);
       // this.sharedService.redirectedFrom = 'inbox';
       // window.location.href = '/budget-approval';
@@ -119,10 +119,20 @@ export class OutboxComponent implements OnInit {
         this.SpinnerService.hide();
         let list: any = result['response'].outList;
         if (list != null) {
+          let type='';
           for (let i = 0; i < list.length; i++) {
+            if(list[i].isBgOrCg=="BG"){
+              type='Budget Allocation';
+            }
+            else if(list[i].isBgOrCg=="BR"){
+              type='Budget Reciept';
+            }
+            else if(list[i].isBgOrCg=="CB"){
+              type='Contingent Bill';
+            }
             const entry: InboxList = {
               serial: i + 1,
-              type: list[i].isBgOrCg,
+              type: type,
               createDate: this.convertEpochToDateTime(list[i].createdOn),
               //   this.datePipe.transform(
               //   new Date(list[i].createdOn),

@@ -46,10 +46,11 @@
                       <tr>
                         <th>Sr. No.</th>
                         <th>F.Y.</th>
-                        <th>Unit</th>
+                        <th>To Unit</th>
                         <th>Sub Head</th>
                         <th>Type</th>
-                        <th>Fund Allocated(Crores)</th>
+                        <th>Remaining Balance</th>
+                        <th>Fund Allocated</th>
                         <th>Remarks</th>
                       </tr>
                     </thead>
@@ -61,7 +62,8 @@
                         <td>{{buggetData.toUnit.cgUnitShort}}</td>
                         <td>{{buggetData.subHead.subHeadDescr}}</td>
                         <td>{{buggetData.allocTypeId.allocDesc}}</td>
-                        <td>{{buggetData.allocationAmount}}</td>
+                        <td>{{buggetData.balanceAmount}} {{buggetData.amountUnit.amountType}}</td>
+                        <td>{{buggetData.allocationAmount}} {{buggetData.amountUnit.amountType}}</td>
                         <td>{{buggetData.remarks}}</td>
                       </tr>
                     </tbody>
