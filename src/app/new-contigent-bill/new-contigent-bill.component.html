@@ -67,7 +67,7 @@
                 <div class="form-group">
                   <label>Sub Head</label>
                   <ng-select [(ngModel)]="subHead" [items]="subHeadData" bindLabel="subHeadDescr" class="form-control select2bs4"
-                             formControlName="subHead" name="subHead" placeholder="Select Sub Head" (change)="getAvailableFundData()" (change)="cleardata(3)"
+                             formControlName="subHead" name="subHead" placeholder="Select Sub Head" (change)="getAvailableFundData()" (change)="cleardata(4)"
                              style="width: 100%">
                   </ng-select>
                 </div>
@@ -286,6 +286,8 @@
                         </button>
                       </td>
                       <td>
+                        <form>
+                        <div class="form-group">
                         <div *ngIf="cb.status === 'Approved'" class="input-group">
                           <div [formGroup]="formData" class="custom-file">
                             <input #uploadFileInput class="custom-file-input" formControlName="uploadFile" id="uploadFile"
@@ -297,6 +299,8 @@
                                     style="cursor: pointer">Upload</span>
                           </div>
                         </div>
+                        </div>
+                        </form>
                       </td>
                     </tr>
                     </tbody>

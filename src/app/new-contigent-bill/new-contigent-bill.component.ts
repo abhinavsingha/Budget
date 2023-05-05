@@ -165,16 +165,15 @@ export class NewContigentBillComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    $.getScript('assets/js/adminlte.js');
-    $.getScript('assets/main.js');
-    this.getMajorHead();
-    this.getFinancialYear();
-    this.getCgUnitData();
+    $.getScript('../../assets/js/adminlte.js');
+    // this.getMajorHead();
+    // this.getFinancialYear();
+    // this.getCgUnitData();
     this.getMajorHead();
     this.getFinancialYear();
     this.getCgUnitData();
     this.getCBData();
-    this.getDashboardData();
+    // this.getDashboardData();
     this.getDashBoardDta()
     this.getSubHeadType();
   }
@@ -318,28 +317,28 @@ export class NewContigentBillComponent implements OnInit {
         complete: () => console.info('complete'),
       });
   }
-  getBudgetAllotted() {
-    this.SpinnerService.show();
-    let url = this.cons.api.getAvailableFund + '/' + this.unitId;
-    this.apiService.getApi(url).subscribe(
-      (res) => {
-        this.SpinnerService.hide();
-        let result: { [key: string]: any } = res;
-        this.budgetAllotted = result['response'].fundAvailable;
-        this.formdata.get('budgetAllocated')?.setValue(this.budgetAllotted);
-        this.SpinnerService.hide();
-        // this.getExpenditure();
-      },
-      (error) => {
-        console.log(error);
-        this.SpinnerService.hide();
-        //remove after test
-        this.budgetAllotted = 0;
-        this.formdata.get('budgetAllocated')?.setValue(this.budgetAllotted);
-      }
-    );
-    // this.getExpenditure();
-  }
+  // getBudgetAllotted() {
+  //   this.SpinnerService.show();
+  //   let url = this.cons.api.getAvailableFund + '/' + this.unitId;
+  //   this.apiService.getApi(url).subscribe(
+  //     (res) => {
+  //       this.SpinnerService.hide();
+  //       let result: { [key: string]: any } = res;
+  //       this.budgetAllotted = result['response'].fundAvailable;
+  //       this.formdata.get('budgetAllocated')?.setValue(this.budgetAllotted);
+  //       this.SpinnerService.hide();
+  //       // this.getExpenditure();
+  //     },
+  //     (error) => {
+  //       console.log(error);
+  //       this.SpinnerService.hide();
+  //       //remove after test
+  //       this.budgetAllotted = 0;
+  //       this.formdata.get('budgetAllocated')?.setValue(this.budgetAllotted);
+  //     }
+  //   );
+  //   // this.getExpenditure();
+  // }
 
   getCheckedRows(cbNo: any) {
     this.cbList.forEach((cbEntry) => {
@@ -446,7 +445,7 @@ export class NewContigentBillComponent implements OnInit {
           this.unitName = result['response'].userDetails.unit;
           this.formdata.get('unit')?.setValue(this.unitName);
           this.formdata.get('authorityUnit')?.setValue(this.unitName);
-          this.getBudgetAllotted();
+          this.getAvailableFundData();
         }
       },
       (error) => {
@@ -496,10 +495,13 @@ export class NewContigentBillComponent implements OnInit {
 
         for (let i = 0; i < getCbList.length; i++) {
           let url =
-            this.cons.api.getAvailableFund + '/' + getCbList[i].cbUnitId.unit;
+            this.cons.api.getAvailableFund;
           console.log(url);
+          let json={
+            budgetHeadId:getCbList[i].budgetHeadID.budgetCodeId
+          }
           this.SpinnerService.show();
-          this.apiService.getApi(url).subscribe(
+          this.apiService.postApi(url,json).subscribe(
             (res) => {
               let result: { [key: string]: any } = res;
               this.budgetAllotted = result['response'].fundAvailable;
@@ -602,7 +604,7 @@ export class NewContigentBillComponent implements OnInit {
       this.formdata
         .get('balance')
         ?.setValue(
-          this.budgetAllotted -
+          parseFloat(this.formdata.get('budgetAllocated')?.value) -
             (parseFloat(this.expenditure) + this.formdata.get('amount')?.value)
         );
     }
