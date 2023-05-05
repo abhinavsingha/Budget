@@ -112,8 +112,8 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Authority Unit</label>
-                  <ng-select [items]="unitData" bindLabel="descr" class="form-control select2bs4"
-                    formControlName="authUnit" placeholder="Select Unit" style="width: 100%">
+                  <ng-select [items]="unitData" bindLabel="descr" class="form-control select2bs4" [(ngModel)]="currentUnit"
+                    formControlName="authUnit" placeholder="Select Unit" style="width: 100%" >
                   </ng-select>
                 </div>
               </div>

@@ -33,6 +33,7 @@ export class ApprovedBudgetComponent implements OnInit {
   unitData: any;
   invoice: any;
   invoicePath: any;
+  private userUnitId: any;
   constructor(
     private SpinnerService: NgxSpinnerService,
     private cons: ConstantsService,
@@ -44,7 +45,7 @@ export class ApprovedBudgetComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getCgUnitData();
+    // this.getCgUnitData();
     if (
       localStorage.getItem('isInboxOrOutbox') != null ||
       localStorage.getItem('isInboxOrOutbox') != undefined
@@ -74,9 +75,10 @@ export class ApprovedBudgetComponent implements OnInit {
           if (result['message'] == 'success') {
             debugger;
             this.userRole = result['response'].userDetails.role[0].roleName;
-
+            this.userUnitId=result['response'].userDetails.unitId;
             this.sharedService.inbox = result['response'].inbox;
             this.sharedService.outbox = result['response'].outBox;
+            this.getCgUnitData();
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
@@ -109,14 +111,15 @@ export class ApprovedBudgetComponent implements OnInit {
   }
 
   path: any;
+  currentUnit: any;
   getAllocationReport(authGroupId: any) {
     this.SpinnerService.show();
-    debugger;
+    // debugger;
     this.apiService
       .getApi(this.cons.api.getAllocationReport + '/' + authGroupId)
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
-        debugger;
+        // debugger;
         if (result['message'] == 'success') {
           if (result['response'].length > 0) {
             this.path = result['response'][0].path;
@@ -138,6 +141,45 @@ export class ApprovedBudgetComponent implements OnInit {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = res;
         this.unitData = result['response'];
+        // if(this.userUnitId==undefined){
+        //   var newSubmitJson = null;
+        //   this.apiService
+        //     .postApi(this.cons.api.getDashBoardDta, newSubmitJson)
+        //     .subscribe({
+        //       next: (v: object) => {
+        //         this.SpinnerService.hide();
+        //         let result: { [key: string]: any } = v;
+        //         if (result['message'] == 'success') {
+        //           debugger;
+        //           this.userUnitId=result['response'].userDetails.unitId;
+        //
+        //         } else {
+        //           this.common.faliureAlert('Please try later', result['message'], '');
+        //         }
+        //       },
+        //       error: (e) => {
+        //         this.SpinnerService.hide();
+        //         console.error(e);
+        //         this.common.faliureAlert('Error', e['error']['message'], 'error');
+        //       },
+        //       complete: () => console.info('complete'),
+        //     });
+        // }
+        for(let i=0;i<this.unitData.length;i++){
+          if(this.userUnitId=='001321'){
+            if(this.unitData[i].unit=='000225')
+            {
+              this.currentUnit=this.unitData[i];
+              this.formdata.get('authUnit')?.setValue(this.currentUnit);
+            }
+          }
+          else{
+            if(this.unitData[i].unit==this.userUnitId){
+              this.currentUnit=this.unitData[i];
+              this.formdata.get('authUnit')?.setValue(this.currentUnit);
+            }
+          }
+        }
       },
       (error) => {
         console.log(error);
@@ -154,7 +196,7 @@ export class ApprovedBudgetComponent implements OnInit {
     this.SpinnerService.show();
     this.apiService.postApi(this.cons.api.fileUpload, formData).subscribe({
       next: (v: object) => {
-        debugger;
+        // debugger;
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
 
