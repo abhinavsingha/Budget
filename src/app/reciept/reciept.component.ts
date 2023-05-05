@@ -23,6 +23,7 @@ export class RecieptComponent {
     subHeadType: new FormControl(),
     remarks: new FormControl(),
     amountType: new FormControl(),
+    amountType2:new FormControl()
   });
 
   finYearList: any[] = [];
@@ -473,6 +474,7 @@ export class RecieptComponent {
 
   isUpdate: boolean = false;
   amountType: any;
+  defaultAmountType2: any;
   getAmountType() {
     this.apiService.getApi(this.cons.api.showAllAmountUnit).subscribe({
       next: (v: object) => {
@@ -481,6 +483,8 @@ export class RecieptComponent {
         if (result['message'] == 'success') {
           this.amountType = result['response'];
           this.defaultAmountType=this.amountType[0];
+          this.defaultAmountType2=this.amountType[0];
+
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
@@ -614,9 +618,16 @@ export class RecieptComponent {
       this.subHeadList[i].amount=(this.subHeadList[i].amount*this.subHeadList[i].amountType.amount/formData.amountType.amount).toFixed(4);
       this.subHeadList[i].amountType=formData.amountType;
     }
+    // for (let i = 0; i < this.finalTableData.length; i++) {
+    //   this.finalTableData[i].allocationAmount = (this.finalTableData[i].allocationAmount * this.finalTableData[i].amountUnit.amount / formData.amountType.amount).toFixed(4);
+    //   this.finalTableData[i].amountUnit=formData.amountType;
+    // }
+  }
+
+  setAmountType2(formData: any) {
     for (let i = 0; i < this.finalTableData.length; i++) {
-      this.finalTableData[i].allocationAmount = (this.finalTableData[i].allocationAmount * this.finalTableData[i].amountUnit.amount / formData.amountType.amount).toFixed(4);
-      this.finalTableData[i].amountType=formData.amountType;
+      this.finalTableData[i].allocationAmount = (this.finalTableData[i].allocationAmount * this.finalTableData[i].amountUnit.amount / formData.amountType2.amount).toFixed(4);
+      this.finalTableData[i].amountUnit=formData.amountType2;
     }
   }
 }

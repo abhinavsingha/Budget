@@ -119,23 +119,28 @@ export class CdaParkingReportComponent implements OnInit {
 
   formdata = new FormGroup({
     finYear: new FormControl(),
-    subHead: new FormControl(),
+    majorHead: new FormControl(),
     cdas: new FormControl(),
+    amountType: new FormControl(),
+
   });
 
   updateBudgetFormData = new FormGroup({
     cdas: new FormControl(),
     subHead: new FormControl(),
   });
+  cdaUnitList: any[] = [{cda:"All CDA"},{cda:"Mumbai CDA"}];
+  amountType: any;
 
   ngOnInit(): void {
     $.getScript('assets/js/adminlte.js');
     this.getBudgetFinYear();
-    this.getCgUnitData();
+    // this.getCgUnitData();
     this.getSubHeadsData();
-    this.getCdaData();
+    // this.getCdaData();
     this.majorDataNew();
-    this.getCdaUnitList();
+    this.getAmountType();
+    // this.getCdaUnitList();
   }
 
   @ViewChild('authFileInput') authFileInput: any;
@@ -162,21 +167,6 @@ export class CdaParkingReportComponent implements OnInit {
       }
     });
   }
-  getCgUnitData() {
-    this.SpinnerService.show();
-
-    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
-      this.SpinnerService.hide();
-      let result: { [key: string]: any } = res;
-      if (result['message'] == 'success') {
-        this.allunits = result['response'];
-        this.SpinnerService.hide();
-      } else {
-        this.common.faliureAlert('Please try later', result['message'], '');
-      }
-    });
-  }
-
   getSubHeadsData() {
     this.SpinnerService.show();
     this.apiService.getApi(this.cons.api.getSubHeadsData).subscribe((res) => {
@@ -201,21 +191,18 @@ export class CdaParkingReportComponent implements OnInit {
       }
     });
   }
-
-  // getCdaData
-  getCdaData() {
-    this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getCdaData).subscribe((res) => {
-      let result: { [key: string]: any } = res;
-      if (result['message'] == 'success') {
-        this.budgetCda = result['response'];
-        this.SpinnerService.hide();
-      } else {
-        this.common.faliureAlert('Please try later', result['message'], '');
-      }
-    });
-  }
-
+  // getCdaData() {
+  //   this.SpinnerService.show();
+  //   this.apiService.getApi(this.cons.api.getCdaData).subscribe((res) => {
+  //     let result: { [key: string]: any } = res;
+  //     if (result['message'] == 'success') {
+  //       this.budgetCda = result['response'];
+  //       this.SpinnerService.hide();
+  //     } else {
+  //       this.common.faliureAlert('Please try later', result['message'], '');
+  //     }
+  //   });
+  // }
   getCdaParkingReport() {
     this.SpinnerService.show();
 
@@ -248,70 +235,7 @@ export class CdaParkingReportComponent implements OnInit {
           }
 
           console.log('DATA>>>>>>>' + this.CdaParkingReport);
-          this.draw();
-        } else {
-          this.common.faliureAlert('Please try later', result['message'], '');
-        }
-      },
-      error: (e) => {
-        this.SpinnerService.hide();
-        console.error(e);
-        this.common.faliureAlert('Error', e['error']['message'], 'error');
-      },
-      complete: () => console.info('complete'),
-    });
-  }
-
-  viewData(data: any) {
-    this.cdaParkingReportList = [];
-    this.SpinnerService.show();
-    let submitJson = {
-      budgetFinancialYearId: data.finYear.serialNo,
-      unitId: data.toUnit.unit,
-    };
-    this.apiService.getApi(this.cons.api.getCdaParkingReport).subscribe({
-      next: (v: object) => {
-        this.SpinnerService.hide();
-        let result: { [key: string]: any } = v;
-
-        if (result['message'] == 'success') {
-          this.CdaParkingReport = result['response'];
-          for (
-            let i = 0;
-            i < this.CdaParkingReport.cdaParkingReportList.length;
-            i++
-          ) {
-            const dataEntry: CdaParkingReportList = {
-              financialYear:
-                this.CdaParkingReport.cdaParkingReportList[i].financialYearId
-                  .finYear,
-              unit: this.CdaParkingReport.cdaParkingReportList[i].unit
-                .cgUnitShort,
-              SubHead:
-                this.CdaParkingReport.cdaParkingReportList[i].subHead
-                  .budgetCodeId,
-              CDA: this.CdaParkingReport.cdaParkingReportList[i].cda,
-              // SubHead: undefined,
-              total: 0,
-            };
-
-            this.cdaParkingReportList.push(dataEntry);
-          }
-          for (let i = 0; i < this.cdaParkingReportList.length; i++) {
-            if (
-              this.formdata.get('finYear')?.value.finYear !=
-                this.cdaParkingReportList[i].financialYear ||
-              // this.formdata.get('unit')?.value.Tounit !=
-              this.cdaParkingReportList[i].unit ||
-              this.formdata.get('subHead')?.value.subHeadDescr !=
-                this.cdaParkingReportList[i].SubHead
-            ) {
-              this.cdaParkingReportList.pop();
-            }
-          }
-          // console.log('DATA>>>>>>>'+this.dasboardData);
           // this.draw();
-          this.SpinnerService.hide(); // ;
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
@@ -321,27 +245,30 @@ export class CdaParkingReportComponent implements OnInit {
         console.error(e);
         this.common.faliureAlert('Error', e['error']['message'], 'error');
       },
-
       complete: () => console.info('complete'),
     });
   }
+  getAmountType(){
+    this.apiService
+      .getApi(this.cons.api.showAllAmountUnit)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            this.amountType = result['response'];
 
-  draw() {
-    throw new Error('Method not implemented.');
-  }
-
-  cdaUnitList: any[] = [];
-  getCdaUnitList() {
-    this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getCdaUnitList).subscribe((res) => {
-      let result: { [key: string]: any } = res;
-      if (result['message'] == 'success') {
-        this.cdaUnitList = result['response'];
-        this.SpinnerService.hide();
-      } else {
-        this.common.faliureAlert('Please try later', result['message'], '');
-      }
-    });
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
   }
 
   downloadCDAParkingReport(formdata: any) {
@@ -351,8 +278,8 @@ export class CdaParkingReportComponent implements OnInit {
       formdata.finYear == undefined ||
       formdata.cdas == null ||
       formdata.cdas == undefined ||
-      formdata.subHead == null ||
-      formdata.subHead == undefined
+      formdata.majorHead == null ||
+      formdata.majorHead == undefined
     ) {
       this.common.faliureAlert(
         'Please try again.',
@@ -364,8 +291,9 @@ export class CdaParkingReportComponent implements OnInit {
 
     let submitJson = {
       financialYearId: formdata.finYear.serialNo,
-      ginNo: formdata.cdas.ginNo,
-      budgetHeadId: formdata.subHead.budgetCodeId,
+      cdaType: formdata.cdas.cda,
+      majorHead: formdata.majorHead.majorHead,
+      amountType:formdata.amountType.amountTypeId
     };
     debugger;
     this.apiService

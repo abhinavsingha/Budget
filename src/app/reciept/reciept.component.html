@@ -135,9 +135,6 @@
                   </tbody>
                   <tfoot>
                     <tr>
-
-
-
                       <td class="font-weight-bold">Total</td>
                       <td></td>
                       <td *ngIf="isSelectedRE || isSelectedMA ||isSectedVOA"></td>
@@ -236,7 +233,16 @@
               </div>
             </div>
           </div>
+            <div class="card-tools mr-2">
+          <div class="form-group input-group input-group-sm row" [formGroup]="formdata">
+            <label class="float-left">Rupees in: </label>
+            <ng-select class="form-control select2bs4" style="width: 100%" [items]="amountType"
+                       bindLabel="amountType" placeholder="Select Amount Unit" [(ngModel)]="defaultAmountType2"
+                       formControlName="amountType2" (change)="setAmountType2(formdata.value)"></ng-select>
+          </div>
         </div>
+        </div>
+
         <!-- /.card-header -->
         <div class="card-body">
           <div class="card-body table-responsive p-0 mt-4">
@@ -248,7 +254,7 @@
                     <th>F.Y.</th>
                     <th>Sub Head</th>
                     <th>Type</th>
-                    <th>Amount(in {{defaultAmountType.amountType}})</th>
+                    <th>Amount(in {{defaultAmountType2.amountType}})</th>
                     <th>Remarks</th>
                     <!-- <th class="thhead">Document</th> -->
                     <th>Action</th>
