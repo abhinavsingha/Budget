@@ -386,6 +386,7 @@ export class ContigentBillApproverComponent implements OnInit {
           let result: { [key: string]: any } = v;
 
           if (result['message'] == 'success') {
+            this.common.successAlert('Approved', result['message'], '');
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
@@ -436,6 +437,7 @@ export class ContigentBillApproverComponent implements OnInit {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
+            this.common.successAlert('Rejected', result['message'], '');
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
