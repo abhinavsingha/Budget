@@ -71,8 +71,8 @@
                     <div class="form-group">
                       <label>Rupees in<span class="text-danger"></span></label>
                       <ng-select class="form-control select2bs4" style="width: 100%" [items]="amountType"
-                        bindLabel="amountType" placeholder="Select Amount Unit"
-                        formControlName="amountType"></ng-select>
+                        bindLabel="amountType" placeholder="Select Amount Unit" [(ngModel)]="defaultAmountType"
+                        formControlName="amountType" (change)="setAmountType(formdata.value)"></ng-select>
                     </div>
                   </div>
                   <div class=" col-md-12">
@@ -129,7 +129,7 @@
                       </td>
                       <td><input type="number" class="form-control" id="Aallocationamount"
                           placeholder="Please Enter Amount Here" [(ngModel)]="subHeadData.amount"
-                          [ngModelOptions]="{standalone: true}" (change)="allocatedAmount(i)" /></td>
+                          [ngModelOptions]="{standalone: true}" (change)="allocatedAmount(i,formdata.value)" /></td>
                     </tr>
 
                   </tbody>
@@ -241,14 +241,14 @@
         <div class="card-body">
           <div class="card-body table-responsive p-0 mt-4">
             <form>
-              <table class="table table-hover text-nowrap">
+              <table class="table table-hover text-nowrap" *ngIf="defaultAmountType!=undefined">
                 <thead>
                   <tr>
                     <th>Sr. No.</th>
                     <th>F.Y.</th>
                     <th>Sub Head</th>
                     <th>Type</th>
-                    <th>Amount(crores)</th>
+                    <th>Amount(in {{defaultAmountType.amountType}})</th>
                     <th>Remarks</th>
                     <!-- <th class="thhead">Document</th> -->
                     <th>Action</th>
@@ -259,7 +259,7 @@
                     *ngFor="let tableData of finalTableData  | searchPipeReciept: searchText | paginate :{itemsPerPage:10,currentPage:p}; let i = index">
                     <td>{{10 *(p-1)+i+1}}</td>
                     <td>{{tableData.finYear.finYear}}</td>
-                    <td>{{tableData.subHead.subHeadDescr}}</td>
+                    <td *ngIf="tableData.subHead!= undefined">{{tableData.subHead.subHeadDescr}}</td>
                     <td>{{tableData.allocTypeId.allocDesc}}</td>
                     <td>{{tableData.allocationAmount}}</td>
                     <td>{{tableData.remarks}}</td>

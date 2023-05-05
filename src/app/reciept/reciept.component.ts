@@ -47,6 +47,7 @@ export class RecieptComponent {
   totalAmount: any = 0.0;
 
   defaultAllocationType: any;
+  defaultAmountType: any;
 
   ngOnInit(): void {
     this.getAmountType();
@@ -131,6 +132,11 @@ export class RecieptComponent {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.finalTableData = result['response'].budgetResponseist;
+        if(this.defaultAmountType!=undefined) {
+          for (let i = 0; i < this.finalTableData.length; i++) {
+            this.finalTableData[i].allocationAmount = (this.finalTableData[i].allocationAmount * this.finalTableData[i].amountUnit.amount / this.defaultAmountType.amount).toFixed(4);
+          }
+        }
         debugger;
         this.SpinnerService.hide();
       } else {
@@ -284,6 +290,7 @@ export class RecieptComponent {
               this.subHeadList[i].budgetCodeId =
                 this.subHeadList[i].budgetHead.budgetCodeId;
               this.subHeadList[i].amount = '';
+              this.subHeadList[i].amountType=undefined;
             }
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
@@ -473,6 +480,7 @@ export class RecieptComponent {
         let result: { [key: string]: any } = v;
         if (result['message'] == 'success') {
           this.amountType = result['response'];
+          this.defaultAmountType=this.amountType[0];
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
@@ -566,7 +574,13 @@ export class RecieptComponent {
     });
   }
 
-  allocatedAmount(index: any) {
+  allocatedAmount(index: any,formdata:any) {
+    if(formdata.amountType==undefined){
+      this.subHeadList[index].amount=undefined;
+      Swal.fire('Please enter Rupees in.');
+      return;
+    }
+    this.subHeadList[index].amountType=formdata.amountType;
     this.totalAmount = 0;
     this.subHeadList[index].amount = Number(
       this.subHeadList[index].amount
@@ -593,5 +607,16 @@ export class RecieptComponent {
         this.common.faliureAlert('Please try later', result['message'], '');
       }
     });
+  }
+
+  setAmountType(formData: any) {
+    for(let i=0;i<this.subHeadList.length;i++){
+      this.subHeadList[i].amount=(this.subHeadList[i].amount*this.subHeadList[i].amountType.amount/formData.amountType.amount).toFixed(4);
+      this.subHeadList[i].amountType=formData.amountType;
+    }
+    for (let i = 0; i < this.finalTableData.length; i++) {
+      this.finalTableData[i].allocationAmount = (this.finalTableData[i].allocationAmount * this.finalTableData[i].amountUnit.amount / formData.amountType.amount).toFixed(4);
+      this.finalTableData[i].amountType=formData.amountType;
+    }
   }
 }
