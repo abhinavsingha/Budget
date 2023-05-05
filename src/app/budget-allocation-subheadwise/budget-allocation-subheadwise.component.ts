@@ -562,6 +562,12 @@ export class BudgetAllocationSubheadwiseComponent {
   allocatedTotalAmount: number = 0;
 
   allocatedAmount(index: any) {
+    if(this.formdata.get('amountType')?.value==undefined){
+      Swal.fire('Please fill Rupees in');
+      this.subHeadWiseUnitList[index].amount=undefined;
+      return;
+
+    }
     this.subHeadWiseUnitList[index].amount = Number(
       this.subHeadWiseUnitList[index].amount
     ).toFixed(4);
