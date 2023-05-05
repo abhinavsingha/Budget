@@ -54,12 +54,13 @@
                     <tr>
                       <th>Sr. No.</th>
                       <th>F.Y.</th>
+                      <th>To Unit</th>
                       <th>Sub Head</th>
                       <th>Type</th>
                       <th>Allocated Fund</th>
-                      <th *ngIf="isInboxAndOutbox!= 'Outbox' && type!='BG' && userRole!='Budget Approver'">Rem. Amount
+                      <th *ngIf="isInboxAndOutbox!= 'Outbox' && type!='Budget Allocation' && userRole!='Budget Approver'">Rem. Amount
                       </th>
-                      <th *ngIf="isInboxAndOutbox!= 'Outbox' && type!='BG' && userRole!='Budget Approver'">Action</th>
+                      <th *ngIf="isInboxAndOutbox!= 'Outbox' && type!='Budget Allocation' && userRole!='Budget Approver'">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -67,12 +68,13 @@
                       *ngFor="let buggetData of budgetDataList  | paginate :{itemsPerPage:15,currentPage:p} ; let i = index">
                       <td>{{15 *(p-1)+i+1}}</td>
                       <td>{{buggetData.finYear.finYear}}</td>
+                      <td>{{buggetData.toUnit.descr}}</td>
                       <td>{{buggetData.subHead.subHeadDescr}}</td>
                       <td>{{buggetData.allocTypeId.allocDesc}}</td>
                       <td>{{buggetData.allocationAmount}} In {{buggetData.amountUnit.amountType}}</td>
-                      <td *ngIf="isInboxAndOutbox!= 'Outbox' && type!='BG' && userRole!='Budget Approver'">
+                      <td *ngIf="isInboxAndOutbox!= 'Outbox' && type!='Budget Allocation' && userRole!='Budget Approver'">
                         {{buggetData.balanceAmount}} In {{buggetData.amountUnit.amountType}}</td>
-                      <td *ngIf="isInboxAndOutbox!= 'Outbox' && type!='BG' && userRole!='Budget Approver'">
+                      <td *ngIf="isInboxAndOutbox!= 'Outbox' && type!='Budget Allocation' && userRole!='Budget Approver'">
                         <button *ngIf="buggetData.isCDAparking == '0'" type="submit" class="btn btn-warning mr-2"
                           data-toggle="modal" data-target="#modal-lg" (click)="addCDAParking(buggetData)">Add
                           CDA Parking</button>
@@ -100,7 +102,7 @@
           <!-- /.row -->
           <form [formGroup]="formdata">
             <div class="row">
-              <div class="col-md-4" *ngIf="type=='BG' && userRole=='Budget Approver' && isInboxAndOutbox!= 'Outbox'">
+              <div class="col-md-4" *ngIf="type=='Budget Allocation' && userRole=='Budget Approver' && isInboxAndOutbox!= 'Outbox'">
                 <div class="form-group">
                   <label>Approve/Return Remarks</label>
                   <input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Remarks"
@@ -112,7 +114,7 @@
         </div>
         <!-- /.card-body -->
 
-        <div class=" card-footer" *ngIf="type=='BG' && userRole=='Budget Approver' && isInboxAndOutbox!= 'Outbox'">
+        <div class=" card-footer" *ngIf="type=='Budget Allocation' && userRole=='Budget Approver' && isInboxAndOutbox!= 'Outbox'">
           <div class="row">
             <button type="submit" class="btn btn-primary mr-2" (click)="approveForm(formdata.value)">Approve</button>
             <button type="submit" class="btn btn-danger" (click)="returnForm(formdata.value)">Return</button>

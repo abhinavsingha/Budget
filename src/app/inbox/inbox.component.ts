@@ -93,9 +93,9 @@ export class InboxComponent implements OnInit {
       } else if (li.status == 'Verified') {
         this.router.navigate(['/contingent-bill-aprover']);
       }
-
       // window.location.href =;
-    } else if (li.type == 'Budget Allocation') {
+    }
+    else if (li.type == 'Budget Allocation') {
       if (li.status == 'Approved') {
         this.router.navigate(['/budget-approved']);
       } else if (li.status == 'Fully Approved') {
