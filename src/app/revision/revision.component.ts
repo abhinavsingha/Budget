@@ -15,6 +15,7 @@ import {
   Validators,
 } from '@angular/forms';
 import Swal from "sweetalert2";
+import {SharedService} from "../services/shared/shared.service";
 
 class tableData {
   checked: boolean = false;
@@ -93,6 +94,7 @@ export class RevisionComponent {
   }
 
   constructor(
+    private sharedService: SharedService,
     private SpinnerService: NgxSpinnerService,
     private cons: ConstantsService,
     private apiService: ApiCallingServiceService,
@@ -378,51 +380,6 @@ export class RevisionComponent {
     }
     this.getTotalAmount();
   }
-
-  // getAvailableFundFindByUnitIdAndFinYearId($event: any, i: number) {
-  //   const finYear = this.formdata.get('finYear')?.value;
-  //   let formData = {};
-  //   if (finYear != null) {
-  //     formData = {
-  //       unitId: this.budgetRevisionUnitList[i].unit.unit,
-  //       finYearId: JSON.parse(finYear).serialNo,
-  //     };
-  //
-  //     this.apiService
-  //       .postApi(
-  //         this.cons.api.getAvailableFundFindByUnitIdAndFinYearId,
-  //         formData
-  //       )
-  //       .subscribe({
-  //         next: (v: object) => {
-  //           this.SpinnerService.hide();
-  //           let result: { [key: string]: any } = v;
-  //
-  //           if (result['message'] == 'success') {
-  //             // this.newSubcList = [];
-  //
-  //             this.common.successAlert(
-  //               'Success',
-  //               result['response']['msg'],
-  //               'success'
-  //             );
-  //           } else {
-  //             this.common.faliureAlert(
-  //               'Please try later',
-  //               result['message'],
-  //               ''
-  //             );
-  //           }
-  //         },
-  //         error: (e) => {
-  //           this.SpinnerService.hide();
-  //           console.error(e);
-  //           this.common.faliureAlert('Error', e['error']['message'], 'error');
-  //         },
-  //         complete: () => console.info('complete'),
-  //       });
-  //   }
-  // }
   tabledata: tableData[] = [];
   masterChecked: boolean = false;
   saveDataToTable() {
@@ -465,7 +422,6 @@ export class RevisionComponent {
     }
     this.getTotalAmount();
   }
-
   selectAll() {
     for (let i = 0; i < this.tabledata.length; i++) {
       this.tabledata[i].checked = this.masterChecked;
@@ -473,7 +429,6 @@ export class RevisionComponent {
     }
     console.log(this.masterChecked);
   }
-
   deleteTableData() {
     for (let i = this.tabledata.length - 1; i >= 0; i--) {
       if (this.tabledata[i].checked) {
@@ -573,6 +528,29 @@ export class RevisionComponent {
               result['response']['msg'],
               'success'
             );
+            this.updateInbox();
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
+  }
+  updateInbox(){
+    this.apiService
+      .getApi(this.cons.api.updateInboxOutBox)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            this.sharedService.inbox = result['response'].inbox;
+            this.sharedService.outbox = result['response'].outBox;
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
@@ -654,12 +632,10 @@ export class RevisionComponent {
       });
   }
   amountUnit:string='';
-
   setAmountType() {
     this.amountUnit=this.formdata.get('amountType')?.value.amountType;
     this.getTotalAmount()
   }
-
   resetAllocationType() {
     this.formdata.get('allocationType')?.reset();
   }
@@ -686,7 +662,6 @@ export class RevisionComponent {
         complete: () => console.info('complete'),
       });
   }
-
   clearsubhead() {
     this.formdata.get('subHeadType')?.reset();
     this.formdata.get('subHead')?.reset();
