@@ -40,6 +40,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import {SharedService} from "../services/shared/shared.service";
 
 class CdaRequest {
   cdaRequest: CdaSubRequest[] | undefined;
@@ -122,7 +123,7 @@ export class CdaParkingReportComponent implements OnInit {
     majorHead: new FormControl(),
     cdas: new FormControl(),
     amountType: new FormControl(),
-
+    allocationType: new FormControl()
   });
 
   updateBudgetFormData = new FormGroup({
@@ -131,21 +132,22 @@ export class CdaParkingReportComponent implements OnInit {
   });
   cdaUnitList: any[] = [{cda:"All CDA"},{cda:"Mumbai CDA"}];
   amountType: any;
+  allocationType: any;
 
   ngOnInit(): void {
     $.getScript('assets/js/adminlte.js');
     this.getBudgetFinYear();
-    // this.getCgUnitData();
     this.getSubHeadsData();
-    // this.getCdaData();
     this.majorDataNew();
     this.getAmountType();
-    // this.getCdaUnitList();
+    this.getAllocationTypeData();
+    this.getDashboardData();
   }
 
   @ViewChild('authFileInput') authFileInput: any;
   private authFile: any;
   constructor(
+    private sharedService: SharedService,
     private httpService: ApiCallingServiceService,
     private SpinnerService: NgxSpinnerService,
     private cons: ConstantsService,
@@ -154,7 +156,32 @@ export class CdaParkingReportComponent implements OnInit {
     private http: HttpClient,
     private common: CommonService // private select :NgSelectModule
   ) {}
+  private getDashboardData() {
+    // this.SpinnerService.show();
+    this.apiService.postApi(this.cons.api.getDashboardData, null).subscribe(
+      (results) => {
+        // debugger;
+        this.SpinnerService.hide();
+        $.getScript('assets/js/adminlte.js');
 
+        // this.dummydata();
+        let result: { [key: string]: any } = results;
+        if (result['message'] == 'success') {
+          // this.userRole = result['response'].userDetails.role[0].roleName;
+          this.formdata.patchValue({
+            allocationType: result['response'].allocationType,
+          });
+
+          this.sharedService.inbox = result['response'].inbox;
+          this.sharedService.outbox = result['response'].outBox;
+        }
+      },
+      (error) => {
+        console.log(error);
+        this.SpinnerService.hide();
+      }
+    );
+  }
   getBudgetFinYear() {
     this.SpinnerService.show();
     this.apiService.getApi(this.cons.api.getBudgetFinYear).subscribe((res) => {
@@ -191,18 +218,7 @@ export class CdaParkingReportComponent implements OnInit {
       }
     });
   }
-  // getCdaData() {
-  //   this.SpinnerService.show();
-  //   this.apiService.getApi(this.cons.api.getCdaData).subscribe((res) => {
-  //     let result: { [key: string]: any } = res;
-  //     if (result['message'] == 'success') {
-  //       this.budgetCda = result['response'];
-  //       this.SpinnerService.hide();
-  //     } else {
-  //       this.common.faliureAlert('Please try later', result['message'], '');
-  //     }
-  //   });
-  // }
+nType: any;
   getCdaParkingReport() {
     this.SpinnerService.show();
 
@@ -270,7 +286,20 @@ export class CdaParkingReportComponent implements OnInit {
         complete: () => console.info('complete'),
       });
   }
-
+  getAllocationTypeData() {
+    this.SpinnerService.show();
+    this.apiService
+      .getApi(this.cons.api.getAllocationTypeData)
+      .subscribe((res) => {
+        let result: { [key: string]: any } = res;
+        if (result['message'] == 'success') {
+          this.allocationType = result['response'];
+          this.SpinnerService.hide();
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      });
+  }
   downloadCDAParkingReport(formdata: any) {
     debugger;
     if (
@@ -293,7 +322,8 @@ export class CdaParkingReportComponent implements OnInit {
       financialYearId: formdata.finYear.serialNo,
       cdaType: formdata.cdas.cda,
       majorHead: formdata.majorHead.majorHead,
-      amountType:formdata.amountType.amountTypeId
+      amountType:formdata.amountType.amountTypeId,
+      allocationType:formdata.allocationType.allocTypeId
     };
     debugger;
     this.apiService

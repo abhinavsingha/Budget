@@ -356,6 +356,9 @@ export class RevisionComponent {
       this.budgetRevisionUnitList2[index].revisionAmount=undefined;
       return;
     }
+    if(this.budgetRevisionUnitList2[index].unit.unit==this.dasboardData.userDetails.unitId){
+      this.userUnitRE=this.budgetRevisionUnitList2[index].revisionAmount;
+    }
     this.budgetRevisionUnitList2[index].revisiedAmount = (parseFloat(this.budgetRevisionUnitList2[index].existingAmount)+parseFloat(this.budgetRevisionUnitList2[index].revisionAmount)).toFixed(4);
     this.budgetRevisionUnitList2[index].revisionAmount=parseFloat(this.budgetRevisionUnitList2[index].revisionAmount).toFixed(4)
     this.getTotalAmount();
@@ -446,6 +449,8 @@ export class RevisionComponent {
     }
     this.getTotalAmount();
   }
+  allocation_withdrawl:any;
+  userUnitRE:any;
   getTotalAmount() {
     this.totalExistingAmount = 0.0;
     this.totlaRevisionAmount = 0.0;
@@ -466,10 +471,13 @@ export class RevisionComponent {
       }
     }
     this.totalExistingAmount=parseFloat(this.totalExistingAmount).toFixed(4);
-    this.formdata.get('reallocateFund')?.setValue(parseFloat(this.totlaRevisionAmount).toFixed(4));
-    this.formdata.get('balanceFund')?.setValue((parseFloat(this.formdata.get('fundAvailable')?.value)-parseFloat(this.totlaRevisionAmount)*parseFloat(this.formdata.get('amountType')?.value.amount)).toFixed(4));
 
-
+    if(this.userUnitRE!=undefined){
+      this.allocation_withdrawl=(parseFloat(this.totlaRevisionAmount)-parseFloat(this.userUnitRE)).toFixed(4);
+    }else
+      this.allocation_withdrawl=(parseFloat(this.totlaRevisionAmount)).toFixed(4);
+    this.formdata.get('reallocateFund')?.setValue(parseFloat(this.allocation_withdrawl).toFixed(4));
+    this.formdata.get('balanceFund')?.setValue((parseFloat(this.formdata.get('fundAvailable')?.value)-parseFloat(this.allocation_withdrawl)*parseFloat(this.formdata.get('amountType')?.value.amount)).toFixed(4));
 
   }
   getAllocationTypeData() {
@@ -506,7 +514,7 @@ export class RevisionComponent {
         revisedAmount: this.tabledata[i].revisedAmount,
         allocationTypeId: this.tabledata[i].allocationType.allocationTypeId,
         amountTypeId:this.formdata.get('amountType')?.value.amountTypeId,
-        remark: 'test',
+        remark: this.formdata.get('remarks')?.value,
       };
       requestJson.push(entry);
     }

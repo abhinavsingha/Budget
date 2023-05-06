@@ -78,7 +78,14 @@
                                bindLabel="amountType" placeholder="Select Amount Unit" formControlName="amountType"></ng-select>
                 </div>
               </div>
-
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Allocation Type</label>
+                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="allocationType"
+                             bindLabel="allocDesc" placeholder="Select Allocation Type" formControlName="allocationType">
+                  </ng-select>
+                </div>
+              </div>
 <!--              <div class="col-md-3">-->
 <!--                <div class="form-group">-->
 <!--                  <label class="control-label">CDA Unit</label>-->
@@ -99,6 +106,7 @@
                 class="fas fa-download"></i> Download</button>
           </div>
         </div>
+
       </div>
       <!-- /.row -->
     </div>
