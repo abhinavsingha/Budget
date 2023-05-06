@@ -105,6 +105,29 @@ export class ContigentBillApproverComponent implements OnInit {
     this.getCgUnitData();
     this.getSubHeadType();
   }
+  getDashBoardDta() {
+    this.SpinnerService.show();
+
+    this.apiService.postApi(this.cons.api.getDashBoardDta, null).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+
+          this.sharedService.inbox = result['response'].inbox;
+          this.sharedService.outbox = result['response'].outBox;
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
+  }
   getSubHeadType(){
     this.apiService
       .getApi(this.cons.api.getSubHeadType)
@@ -389,7 +412,7 @@ export class ContigentBillApproverComponent implements OnInit {
             this.common.successAlert('Approved', result['message'], '');
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
-          }
+          }this.getDashBoardDta();
         },
         error: (e) => {
           this.SpinnerService.hide();
@@ -440,7 +463,7 @@ export class ContigentBillApproverComponent implements OnInit {
             this.common.successAlert('Rejected', result['message'], '');
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
-          }
+          }this.getDashBoardDta();
         },
         error: (e) => {
           this.SpinnerService.hide();
@@ -449,9 +472,6 @@ export class ContigentBillApproverComponent implements OnInit {
         },
         complete: () => this.getContingentBill(),
       });
-    // }
-    // }
-    console.log(this.cbList);
   }
 
   viewFile(file: string) {

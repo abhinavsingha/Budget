@@ -66,6 +66,7 @@ export class CbVerificationComponent {
   subHeadData: any;
   budgetAllotted: any;
   expenditure: any;
+  private dasboardData: any;
   constructor(
     private apiService: ApiCallingServiceService,
     private cons: ConstantsService,
@@ -504,6 +505,7 @@ export class CbVerificationComponent {
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
+          this.getDashBoardDta();
         },
         error: (e) => {
           this.SpinnerService.hide();
@@ -555,6 +557,7 @@ export class CbVerificationComponent {
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
+          this.getDashBoardDta();
         },
         error: (e) => {
           this.SpinnerService.hide();
@@ -567,7 +570,31 @@ export class CbVerificationComponent {
     // }
     console.log(this.cbList);
   }
+  getDashBoardDta() {
+    this.SpinnerService.show();
 
+    this.apiService.postApi(this.cons.api.getDashBoardDta, null).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+
+          this.dasboardData = result['response'];
+          this.sharedService.inbox = result['response'].inbox;
+          this.sharedService.outbox = result['response'].outBox;
+          console.log('DATA>>>>>>>' + this.dasboardData);
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
+  }
   viewFile(file: string) {
     this.apiService
       .getApi(this.cons.api.fileDownload + this.formdata.get(file)?.value)

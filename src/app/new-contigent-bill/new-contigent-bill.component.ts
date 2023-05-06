@@ -14,6 +14,7 @@ import * as $ from 'jquery';
 // import { UploadDocuments } from '../model/upload-documents';
 
 class newCb {
+  isFlag:any;
   cbId:any;
   onAccOf: any;
   authDetail: any;
@@ -167,7 +168,7 @@ export class NewContigentBillComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    $.getScript('../../assets/js/adminlte.js');
+    // $.getScript('../../assets/js/adminlte.js');
     // this.getMajorHead();
     // this.getFinancialYear();
     // this.getCgUnitData();
@@ -201,6 +202,7 @@ export class NewContigentBillComponent implements OnInit {
     }
     if (undefinedValues.length == 0) {
       const cb: newCb = {
+        isFlag:undefined,
         cbId:undefined,
         onAccOf: this.formdata.get('onAccOf')?.value,
         authDetail: this.formdata.get('authDetail')?.value,
@@ -248,6 +250,8 @@ export class NewContigentBillComponent implements OnInit {
       if (!flag) {
         this.cbList.push(cb);
         this.formdata.reset();
+        this.getFinancialYear();
+        this.getDashBoardDta();
         this.formdata
           .get('onAccOf')
           ?.setValue(
@@ -311,8 +315,8 @@ export class NewContigentBillComponent implements OnInit {
               this.budgetAllotted=0;
               this.formdata.get('budgetAllocated')?.setValue(0);
             }else{
-              this.budgetAllotted=(parseFloat(result['response'].fundAvailable)*parseFloat(result['response'].amountType.amount) ).toFixed(4);
-              this.formdata.get('budgetAllocated')?.setValue((parseFloat(result['response'].fundAvailable)*parseFloat(result['response'].amountType.amount) ).toFixed(4));
+              this.budgetAllotted=(parseFloat(result['response'].fundAvailable)*parseFloat(result['response'].amountUnit.amount) ).toFixed(4);
+              this.formdata.get('budgetAllocated')?.setValue((parseFloat(result['response'].fundAvailable)*parseFloat(result['response'].amountUnit.amount) ).toFixed(4));
             }
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
@@ -515,6 +519,7 @@ export class NewContigentBillComponent implements OnInit {
               let result: { [key: string]: any } = res;
               this.budgetAllotted = result['response'].fundAvailable;
               const entry: newCb = {
+                isFlag:getCbList[i].isFlag,
                 cbId:getCbList[i].cbId,
                 authUnitId: getCbList[i].authoritiesList[0].authUnit,
                 unitId: getCbList[i].cbUnitId.unit,
@@ -877,6 +882,7 @@ export class NewContigentBillComponent implements OnInit {
           }
         } else if (this.cbList[i].status == 'Pending for Submission') {
           let entry: newCb = {
+            isFlag:undefined,
             cbId:undefined,
             authUnitId: this.unitId,
             unitId: this.unitId,

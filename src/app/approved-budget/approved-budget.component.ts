@@ -43,7 +43,6 @@ export class ApprovedBudgetComponent implements OnInit {
     public sharedService: SharedService,
     private router: Router
   ) {}
-
   ngOnInit(): void {
     // this.getCgUnitData();
     if (
@@ -109,7 +108,6 @@ export class ApprovedBudgetComponent implements OnInit {
         }
       });
   }
-
   path: any;
   currentUnit: any;
   getAllocationReport(authGroupId: any) {
@@ -132,7 +130,6 @@ export class ApprovedBudgetComponent implements OnInit {
         }
       });
   }
-
   getCgUnitData() {
     this.SpinnerService.show();
     var comboJson = null;
@@ -236,15 +233,7 @@ export class ApprovedBudgetComponent implements OnInit {
         next: (v: object) => {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
-
-          // console.log(JSON.stringify(result) + " =submitJson");
-
           if (result['message'] == 'success') {
-            // this.common.successAlert(
-            //   'Success',
-            //   result['response']['msg'],
-            //   'success'
-            // );
             this.router.navigate(['/dashboard']);
             this.getDashBoardDta();
           } else {
@@ -259,9 +248,7 @@ export class ApprovedBudgetComponent implements OnInit {
         complete: () => console.info('complete'),
       });
   }
-
   downloadReport() {}
-
   previewURL() {
     window.open(this.invoicePath, '_blank');
   }

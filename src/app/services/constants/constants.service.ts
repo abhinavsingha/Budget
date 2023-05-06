@@ -176,7 +176,8 @@ export class ConstantsService {
 
     getModData: this.serviceUrl + 'budgetRecipet/getModData',
 
-    getCdaDataList: this.serviceUrl + 'cdaParkingController/getCdaDataList', getContingentBillReport: this.serviceUrl+'reportController/getContingentBillReport'
+    getCdaDataList: this.serviceUrl + 'cdaParkingController/getCdaDataList', getContingentBillReport: this.serviceUrl+'reportController/getContingentBillReport',
+    updateInboxOutBox: this.serviceUrl+'dashBoard/updateInboxOutBox'
 
   };
 }

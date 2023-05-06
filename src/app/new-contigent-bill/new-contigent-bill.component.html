@@ -289,7 +289,7 @@
                       <td>
                         <form>
                         <div class="form-group">
-                        <div *ngIf="cb.status === 'Approved'" class="input-group">
+                        <div *ngIf="cb.status === 'Approved' && cb.isFlag=='0'" class="input-group">
                           <div [formGroup]="formData" class="custom-file">
                             <input #uploadFileInput class="custom-file-input" formControlName="uploadFile" id="uploadFile"
                                    type="file">

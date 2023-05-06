@@ -126,52 +126,6 @@ export class BudgetAllocationComponent implements OnInit {
     $.getScript('assets/js/adminlte.js');
     $.getScript('assets/main.js');
   }
-
-  // getUserDetails(token: any) {
-  //   this.SpinnerService.show();
-  //   this.apiService
-  //     .getToeknApi(this.cons.api.getUserNameApiUrl, this.token)
-  //     .subscribe({
-  //       next: (v: object) => {
-  //         // console.log("getToeknApi............" + JSON.stringify(v));
-  //         let result: { [key: string]: any } = v;
-
-  //         // if (result['upn'] != "") {
-  //         var userNameJson = {
-  //           userRoleId: 'ICGS Delhi',
-  //           userName: 'kya hai ye',
-  //           userUnitId: '000015',
-  //         };
-  //         var self = this;
-
-  //         this.apiService
-  //           .getApi(this.cons.api.getMajorData)
-  //           .subscribe((res) => {
-  //             let result: { [key: string]: any } = res;
-  //             if (result['message'] == 'success') {
-  //               localStorage.setItem('newToken', result['response']['token']);
-  //               this.getFinancialYear();
-  //               this.majorHead = result['response'].subHead;
-  //               this.minorHead = result['response'].subHead;
-  //               this.getCgUnitData();
-  //               this.getAllSubHeadDataFirst();
-  //               this.getAllSubHeadDataSecond();
-
-  //               this.SpinnerService.hide();
-  //             } else {
-  //               this.common.faliureAlert(
-  //                 'Please try later',
-  //                 result['message'],
-  //                 ''
-  //               );
-  //             }
-  //           });
-  //       },
-  //       error: (e) => {},
-  //       complete: () => console.info('complete'),
-  //     });
-  // }
-
   getAllocationTypeData() {
     this.SpinnerService.show();
     this.apiService
@@ -208,7 +162,6 @@ export class BudgetAllocationComponent implements OnInit {
       complete: () => console.info('complete'),
     });
   }
-
   arrayWithUnitMajorHeadAndSubHead: any[] = [];
   putInNewList() {
     const unitDatas = this.cgUnits;
@@ -246,7 +199,6 @@ export class BudgetAllocationComponent implements OnInit {
       'New Major Heads ............' + JSON.stringify(majorHeadWithSubHeads)
     );
   }
-
   majorHeadBySelectingUnit: any[] = [];
 
   selectedUnit() {
@@ -667,7 +619,7 @@ export class BudgetAllocationComponent implements OnInit {
               result['response']['msg'],
               'success'
             );
-            this.getDashboardData();
+            this.updateInbox();
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
@@ -1266,5 +1218,27 @@ export class BudgetAllocationComponent implements OnInit {
         this.common.faliureAlert('Please try later', result['message'], '');
       }
     });
+  }
+  updateInbox(){
+    this.apiService
+      .getApi(this.cons.api.updateInboxOutBox)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            this.sharedService.inbox = result['response'].inbox;
+            this.sharedService.outbox = result['response'].outBox;
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
   }
 }
