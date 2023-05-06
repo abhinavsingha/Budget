@@ -5,10 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { CommonService } from '../services/common/common.service';
 import { ApiCallingServiceService } from '../services/api-calling/api-calling-service.service';
 import { HttpClient } from '@angular/common/http';
-import Swal from 'sweetalert2';
 import * as FileSaver from 'file-saver';
-// import { NgSelectModule } from '@ng-select/ng-select';
-// import {Component, OnInit, ViewChild} from '@angular/core';
 
 class CdaParkingReportList {
   financialYear: any;
@@ -34,18 +31,12 @@ interface cpr {
 }
 
 import {
-  FormArray,
   FormBuilder,
   FormControl,
-  FormGroup,
-  Validators,
+  FormGroup
 } from '@angular/forms';
 import {SharedService} from "../services/shared/shared.service";
 
-class CdaRequest {
-  cdaRequest: CdaSubRequest[] | undefined;
-  authRequests: AuthRequest[] | undefined;
-}
 
 class cdaTableData {
   majorHead: any;
@@ -61,22 +52,6 @@ class cdaTableData {
   remarks: any;
   checked: boolean = false;
   ginNo: any;
-}
-class CdaSubRequest {
-  allocationTypeID: any;
-  ginNo: any;
-  budgetHeadId: any;
-  currentParkingAmount: any;
-  availableParkingAmount: any;
-  remark: any;
-  budgetFinancialYearId: any;
-}
-class AuthRequest {
-  authority: any;
-  authDate: any;
-  remark: any;
-  authUnitId: any;
-  authDocId: any;
 }
 
 @Component({
@@ -145,7 +120,6 @@ export class CdaParkingReportComponent implements OnInit {
   }
 
   @ViewChild('authFileInput') authFileInput: any;
-  private authFile: any;
   constructor(
     private sharedService: SharedService,
     private httpService: ApiCallingServiceService,
@@ -303,12 +277,8 @@ nType: any;
   downloadCDAParkingReport(formdata: any) {
     debugger;
     if (
-      formdata.finYear == null ||
-      formdata.finYear == undefined ||
-      formdata.cdas == null ||
-      formdata.cdas == undefined ||
-      formdata.majorHead == null ||
-      formdata.majorHead == undefined
+      formdata.finYear == null || formdata.cdas == null ||
+      formdata.majorHead == null
     ) {
       this.common.faliureAlert(
         'Please try again.',
