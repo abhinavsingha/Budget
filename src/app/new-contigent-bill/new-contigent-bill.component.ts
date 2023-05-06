@@ -169,14 +169,10 @@ export class NewContigentBillComponent implements OnInit {
 
   ngOnInit(): void {
     // $.getScript('../../assets/js/adminlte.js');
-    // this.getMajorHead();
-    // this.getFinancialYear();
-    // this.getCgUnitData();
     this.getMajorHead();
     this.getFinancialYear();
     this.getCgUnitData();
     this.getCBData();
-    // this.getDashboardData();
     this.getDashBoardDta()
     this.getSubHeadType();
   }
@@ -251,7 +247,7 @@ export class NewContigentBillComponent implements OnInit {
         this.cbList.push(cb);
         this.formdata.reset();
         this.getFinancialYear();
-        this.getDashBoardDta();
+        this.updateInbox()
         this.formdata
           .get('onAccOf')
           ?.setValue(
@@ -330,28 +326,6 @@ export class NewContigentBillComponent implements OnInit {
         complete: () => console.info('complete'),
       });
   }
-  // getBudgetAllotted() {
-  //   this.SpinnerService.show();
-  //   let url = this.cons.api.getAvailableFund + '/' + this.unitId;
-  //   this.apiService.getApi(url).subscribe(
-  //     (res) => {
-  //       this.SpinnerService.hide();
-  //       let result: { [key: string]: any } = res;
-  //       this.budgetAllotted = result['response'].fundAvailable;
-  //       this.formdata.get('budgetAllocated')?.setValue(this.budgetAllotted);
-  //       this.SpinnerService.hide();
-  //       // this.getExpenditure();
-  //     },
-  //     (error) => {
-  //       console.log(error);
-  //       this.SpinnerService.hide();
-  //       //remove after test
-  //       this.budgetAllotted = 0;
-  //       this.formdata.get('budgetAllocated')?.setValue(this.budgetAllotted);
-  //     }
-  //   );
-  //   // this.getExpenditure();
-  // }
 
   getCheckedRows(cbNo: any) {
     this.cbList.forEach((cbEntry) => {
@@ -1228,5 +1202,28 @@ export class NewContigentBillComponent implements OnInit {
     const cbCount=this.cbList.length+1;
     const cbNo=this.dasboardData.userDetails.unitId+"/"+formdata.subHead.budgetCodeId+"/"+cbCount+"/"+formdata.finYearName.finYear;
     this.formdata.get('cbNo')?.setValue(cbNo);
+  }
+
+  updateInbox(){
+    this.apiService
+      .getApi(this.cons.api.updateInboxOutBox)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            this.sharedService.inbox = result['response'].inbox;
+            this.sharedService.outbox = result['response'].outBox;
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
   }
 }
