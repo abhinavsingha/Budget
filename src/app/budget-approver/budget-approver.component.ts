@@ -171,10 +171,12 @@ export class BudgetApproverComponent implements OnInit {
               'success'
             );
             this.formdata.reset();
+            this.updateInbox();
             this.router.navigateByUrl('/inbox');
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
+
         },
         error: (e) => {
           this.SpinnerService.hide();
@@ -204,6 +206,7 @@ export class BudgetApproverComponent implements OnInit {
               result['response']['msg'],
               'success'
             );
+            this.updateInbox();
             this.formdata.reset();
             this.router.navigateByUrl('/inbox');
           } else {
@@ -484,6 +487,28 @@ export class BudgetApproverComponent implements OnInit {
           if (result['message'] == 'success') {
             // this.router.navigate(['/budget-approval']);
             window.location.reload();
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
+  }
+  updateInbox(){
+    this.apiService
+      .getApi(this.cons.api.updateInboxOutBox)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            this.sharedService.inbox = result['response'].inbox;
+            this.sharedService.outbox = result['response'].outBox;
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
