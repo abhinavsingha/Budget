@@ -254,7 +254,7 @@
               </div>
 
 
-              <div class="col-md-4" *ngIf="sharedService.redirectedFrom === 'inbox'">
+              <div class="col-md-4" *ngIf="sharedService.redirectedFrom === 'inbox'&&  sharedService.roleHeading != 'CB Creator'">
                 <div class="form-group">
                   <label>Return Remarks</label>
                   <input type="text" class="form-control" id="ReturnRemarks" placeholder="Return Remarks"
@@ -267,7 +267,7 @@
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
-          <div class="row" *ngIf="sharedService.redirectedFrom === 'inbox'">
+          <div class="row" *ngIf="sharedService.redirectedFrom === 'inbox' &&  sharedService.roleHeading != 'CB Creator'">
             <button type="button" class="btn btn-primary mr-2" (click)="confirmModel()">Approve</button>
             <button type="button" class="btn btn-danger" (click)="confirmRejectModel()">Return</button>
           </div>

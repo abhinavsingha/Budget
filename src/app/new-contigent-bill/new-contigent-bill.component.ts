@@ -168,7 +168,7 @@ export class NewContigentBillComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // $.getScript('../../assets/js/adminlte.js');
+    $.getScript('../../assets/js/adminlte.js');
     this.getMajorHead();
     this.getFinancialYear();
     this.getCgUnitData();
@@ -245,19 +245,9 @@ export class NewContigentBillComponent implements OnInit {
       }
       if (!flag) {
         this.cbList.push(cb);
-        this.formdata.reset();
+        this.cleardata(0);
         this.getFinancialYear();
-        this.updateInbox()
-        this.formdata
-          .get('onAccOf')
-          ?.setValue(
-            'Quarterly payment(3rd Qtr) towars hiring of Designer/Developer IT Manpower(Project SDOT)'
-          );
-        this.formdata
-          .get('authDetail')
-          ?.setValue(
-            'S1.10.1 of Shedule-10 of DFPCG-2017 vide Govt. of India, Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017'
-          );
+        this.updateInbox();
       } else {
         Swal.fire(
           'Duplicate Entry. Select Update to update previously entered CB'
@@ -972,8 +962,6 @@ export class NewContigentBillComponent implements OnInit {
                   }
                 }
               }
-              // this.cbList=[];
-              // this.getCBData();
               this.SpinnerService.hide();
             } else {
               this.common.faliureAlert(
@@ -985,17 +973,7 @@ export class NewContigentBillComponent implements OnInit {
             }
           },
         });
-      this.formdata.reset();
-      this.formdata
-        .get('onAccOf')
-        ?.setValue(
-          'Quarterly payment(3rd Qtr) towars hiring of Designer/Developer IT Manpower(Project SDOT)'
-        );
-      this.formdata
-        .get('authDetail')
-        ?.setValue(
-          'S1.10.1 of Shedule-10 of DFPCG-2017 vide Govt. of India, Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017'
-        );
+      this.cleardata(1);
     }
     this.SpinnerService.hide();
     console.log(submitList);
