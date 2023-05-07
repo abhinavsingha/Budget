@@ -94,7 +94,8 @@ export class OutboxComponent implements OnInit {
       }
 
       // window.location.href =;
-    } else if (li.type == 'Budget Allocation') {
+    }
+    else if (li.type == 'Budget Allocation') {
       if (li.status == 'Approved') {
         this.router.navigate(['/budget-approval']);
       } else if (li.status == 'Fully Approved') {
@@ -109,6 +110,9 @@ export class OutboxComponent implements OnInit {
       // this.sharedService.redirectedFrom = 'inbox';
       // window.location.href = '/budget-approval';
     }
+    else if(li.type == 'Budget Revision'){
+      this.router.navigate(['/revision-approval']);
+    }
   }
 
   private outboxlist() {
@@ -122,7 +126,10 @@ export class OutboxComponent implements OnInit {
           let type='';
           for (let i = 0; i < list.length; i++) {
             if(list[i].isBgOrCg=="BG"){
-              type='Budget Allocation';
+              if(list[i].remarks=="Budget Allocation Revision")
+                type='Budget Revision';
+              else
+                type='Budget Allocation';
             }
             else if(list[i].isBgOrCg=="BR"){
               type='Budget Reciept';

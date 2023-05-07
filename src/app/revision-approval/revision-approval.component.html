@@ -21,14 +21,14 @@
       <!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-  
+
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
         <div class="card card-default">
           <div class="card-header">
             <h3 class="card-title">Revision Approval </h3>
-  
+
             <div class="card-tools">
               <button
                 type="button"
@@ -41,66 +41,61 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body">
-            <form>
+            <form [formGroup]="formdata">
               <div class="row">
                 <div class="col-md-4">
-                  <div class="form-group">
+                  <div class="form-group" >
                     <label>Financial Year</label>
-                    <select class="form-control select2bs4" style="width: 100%">
-                      <option selected="selected">2022-23</option>
-                      <option>2021-22</option>
-                      <option>2020-21</option>
-                    </select>
+                    <ng-select [items]="finYear" bindLabel="finYear" class="form-control select2bs4"
+                               formControlName="finYear" placeholder="Select Financial Year"
+                               style="width: 100%" [readonly]="true" >
+                    </ng-select>
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
                     <label>Sub Head</label>
-                    <select class="form-control select2bs4" style="width: 100%">
-                      <option selected="selected">Office Expenses</option>
-                      <option>RHQ(E)</option>
-                      <option>RHQ(S)</option>
-                    </select>
+                    <ng-select [readonly]="true" name="subHead" class="form-control select2bs4" style="width: 100%"
+                               [items]="subHead" bindLabel="subHeadDescr" placeholder="Select Sub Head"
+                               formControlName="subHead" >
+                    </ng-select>
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
                     <label>Major Head</label>
-                    <select class="form-control select2bs4" style="width: 100%">
-                      <option selected="selected">2037</option>
-                      <option>2036</option>
-                      <option>2035</option>
-                    </select>
+                    <ng-select [readonly]="true" name="majorHead"  class="form-control select2bs4"
+                               style="width: 100%" [items]="majorHead" bindLabel="majorHead" placeholder="Select Major Head"
+                               formControlName="majorHead">
+                    </ng-select>
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
                     <label>Minor Head</label>
-                    <select class="form-control select2bs4" style="width: 100%">
-                      <option selected="selected">102</option>
-                      <option>103</option>
-                      <option>104</option>
-                    </select>
+                    <ng-select [readonly]="true" name="MinorHead" class="form-control select2bs4" style="width: 100%"
+                               [items]="minorHead" bindLabel="minorHead" placeholder="Select Minor Head"
+                               formControlName="minorHead"></ng-select>
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
                     <label>Allocation Type</label>
-                    <select disabled class="form-control select2bs4" style="width: 100%">
-                      <option selected="selected">BE</option>
-                      <option>Initial</option>
-                      <option>Initial</option>
-                    </select>
+                    <ng-select [readonly]="true" name="majorHead"  class="form-control select2bs4"
+                               style="width: 100%" [items]="allocationType" bindLabel="allocDesc" placeholder="Select Major Head"
+                               formControlName="allocationType">
+                    </ng-select>
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
                     <label>Remarks</label>
-                    <input disabled
+                    <input
                       type="text"
                       class="form-control"
-                      id="PrevAllocation"
+                      id="remarks"
                       placeholder="CGHQ to RHQ"
+                           formControlName="remarks" readonly
                     />
                   </div>
                 </div>
@@ -344,8 +339,7 @@
       </div>
       <!-- /.container-fluid -->
     </section>
-  
+
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-  

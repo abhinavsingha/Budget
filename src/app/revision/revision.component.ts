@@ -546,7 +546,7 @@ export class RevisionComponent {
           console.error(e);
           this.common.faliureAlert('Error', e['error']['message'], 'error');
         },
-        complete: () => window.location.reload(),
+        complete: () => console.log("done"),
       });
   }
   updateInbox(){

@@ -21,6 +21,7 @@ import { CdaParkingReportComponent } from './cda-parking-report/cda-parking-repo
 import { CbVerificationComponent } from './cb-verification/cb-verification.component';
 import { ApprovedBudgetComponent } from './approved-budget/approved-budget.component';
 import { ManageUserRoleComponent } from './manage-user-role/manage-user-role.component';
+import {RevisionApprovalComponent} from "./revision-approval/revision-approval.component";
 
 const routes: Routes = [
   // { path: '', component: LoginComponent },
@@ -54,6 +55,10 @@ const routes: Routes = [
   {
     path: 'revision',
     component: RevisionComponent,
+  },
+  {
+    path: 'revision-approval',
+    component: RevisionApprovalComponent,
   },
   {
     path: 'cda-parking',
