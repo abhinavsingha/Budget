@@ -46,6 +46,7 @@ export class RevisionApprovalComponent {
     doc:new FormControl(),
     returnRemark:new FormControl(),
   });
+  p: number = 1;
   finYear: any;
   subHead: any;
   majorHead: any;
