@@ -246,60 +246,80 @@
         <!-- /.card-header -->
         <div class="card-body">
           <div class="card-body table-responsive p-0 mt-4">
-            <form>
-              <table class="table table-hover text-nowrap" *ngIf="defaultAmountType!=undefined">
-                <thead>
-                  <tr>
-                    <th>Sr. No.</th>
-                    <th>F.Y.</th>
-                    <th>Sub Head</th>
-                    <th>Type</th>
-                    <th>Amount(in {{defaultAmountType2.amountType}})</th>
-                    <th>Remarks</th>
-                    <!-- <th class="thhead">Document</th> -->
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody *ngIf="searchText == ''">
-                  <tr
-                    *ngFor="let tableData of finalTableData  | searchPipeReciept: searchText | paginate :{itemsPerPage:10,currentPage:p}; let i = index">
-                    <td>{{10 *(p-1)+i+1}}</td>
-                    <td>{{tableData.finYear.finYear}}</td>
-                    <td *ngIf="tableData.subHead!= undefined">{{tableData.subHead.subHeadDescr}}</td>
-                    <td>{{tableData.allocTypeId.allocDesc}}</td>
-                    <td>{{tableData.allocationAmount}}</td>
-                    <td>{{tableData.remarks}}</td>
-                    <!-- <td>{{tableData.authList[0].docId.pathURL}}</td> -->
-                    <td>
+
+            <table class="table table-hover text-nowrap" *ngIf="defaultAmountType!=undefined">
+              <thead>
+                <tr>
+                  <th>Sr. No.</th>
+                  <th>F.Y.</th>
+                  <th>Sub Head</th>
+                  <th>Type</th>
+                  <th>Amount(in {{defaultAmountType2.amountType}})</th>
+                  <th>Remarks</th>
+                  <!-- <th class="thhead">Document</th> -->
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="searchText == ''">
+                <tr
+                  *ngFor="let tableData of finalTableData  | searchPipeReciept: searchText | paginate :{itemsPerPage:10,currentPage:p}; let i = index">
+                  <td>{{10 *(p-1)+i+1}}</td>
+                  <td>{{tableData.finYear.finYear}}</td>
+                  <td *ngIf="tableData.subHead!= undefined">{{tableData.subHead.subHeadDescr}}</td>
+                  <td>{{tableData.allocTypeId.allocDesc}}</td>
+                  <td>
+                    <div *ngIf="tableData.isEdit">
+                      <input type="text" class="form-control" id="amountUpdate"
+                        [(ngModel)]="tableData.allocationAmount" />
+                    </div>
+                    <div *ngIf="!tableData.isEdit">
+                      {{tableData.allocationAmount}}
+                    </div>
+                  </td>
+                  <td>{{tableData.remarks}}</td>
+                  <!-- <td>{{tableData.authList[0].docId.pathURL}}</td> -->
+                  <td>
+
+                    <div *ngIf="!tableData.isEdit">
                       <button type="submit" class="btn btn-primary mr-2" (click)="previewURL(tableData)"><i
                           class="fas fa-eye"></i> View</button>
-                      <button type="submit" class="btn btn-warning mr-2" (click)="updateReciept(tableData)"><i
-                          class="fas fa-edit"></i> Update</button>
-                      <!-- <button type="submit" class="btn btn-danger mr-2"><i class="fas fa-trash-alt"></i> Delete</button> -->
-                    </td>
-                  </tr>
-                </tbody>
-                <tbody *ngIf="searchText != '' ">
-                  <tr
-                    *ngFor="let tableData of finalTableData  | searchPipeReciept: searchText | paginate :{itemsPerPage:10,currentPage:p}; let i = index">
-                    <td>{{10 *(p-1)+i+1}}</td>
-                    <td>{{tableData.finYear.finYear}}</td>
-                    <td>{{tableData.subHead.subHeadDescr}}</td>
-                    <td>{{tableData.allocTypeId.allocDesc}}</td>
-                    <td>{{tableData.allocationAmount}}</td>
-                    <td>{{tableData.remarks}}</td>
-                    <!-- <td>{{tableData.authList[0].docId.pathURL}}</td> -->
-                    <td>
-                      <button type="submit" class="btn btn-primary mr-2" (click)="previewURL(tableData)"><i
-                          class="fas fa-eye"></i> View</button>
-                      <button type="submit" class="btn btn-warning mr-2" (click)="updateReciept(tableData)"><i
-                          class="fas fa-edit"></i> Update</button>
-                      <!-- <button type="submit" class="btn btn-danger mr-2"><i class="fas fa-trash-alt"></i> Delete</button> -->
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </form>
+                      <button type="submit" class="btn btn-warning mr-2"
+                        (click)="updateRecieptByInlineEditing(tableData, i)"><i class="fas fa-edit"></i> Edit</button>
+                    </div>
+                    <div *ngIf="tableData.isEdit">
+                      <button type="submit" class="btn btn-warning mr-2"
+                        (click)="updateRecieptByInlineEditing(tableData, i)"><i class="fas fa-edit"></i> Update</button>
+                      <button type="submit" class="btn btn-warning mr-2" (click)="tableData.isEdit = false"><i
+                          class="fas fa-edit"></i> Cancel</button>
+                    </div>
+
+                    <!-- <button type="submit" class="btn btn-danger mr-2"><i class="fas fa-trash-alt"></i> Delete</button> -->
+                  </td>
+                </tr>
+              </tbody>
+              <tbody *ngIf="searchText != '' ">
+                <tr
+                  *ngFor="let tableData of finalTableData  | searchPipeReciept: searchText | paginate :{itemsPerPage:10,currentPage:p}; let i = index">
+                  <td>{{10 *(p-1)+i+1}}</td>
+                  <td>{{tableData.finYear.finYear}}</td>
+                  <td>{{tableData.subHead.subHeadDescr}}</td>
+                  <td>{{tableData.allocTypeId.allocDesc}}</td>
+                  <td>{{tableData.allocationAmount}}</td>
+                  <td>{{tableData.remarks}}</td>
+                  <!-- <td>{{tableData.authList[0].docId.pathURL}}</td> -->
+                  <td>
+                    <button type="submit" class="btn btn-primary mr-2" (click)="previewURL(tableData)"><i
+                        class="fas fa-eye"></i> View</button>
+                    <button type="submit" class="btn btn-warning mr-2" (click)="updateReciept(tableData)"><i
+                        class="fas fa-edit"></i> Edit</button>
+
+
+                    <!-- <button type="submit" class="btn btn-danger mr-2"><i class="fas fa-trash-alt"></i> Delete</button> -->
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
           </div>
           <div class="row mt-2">
             <div class="col-sm-12 col-md-5">
