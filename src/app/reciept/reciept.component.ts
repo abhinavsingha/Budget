@@ -9,6 +9,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CommonService } from '../services/common/common.service';
 import Swal from 'sweetalert2';
 import { UploadDocuments } from '../model/upload-documents';
+import { elements } from 'chart.js';
 
 @Component({
   selector: 'app-reciept',
@@ -140,9 +141,10 @@ export class RecieptComponent {
                 this.finalTableData[i].amountUnit.amount) /
               this.defaultAmountType.amount
             ).toFixed(4);
+            this.finalTableData[i].isEdit = false;
           }
         }
-
+        debugger;
         this.SpinnerService.hide();
       } else {
         this.common.faliureAlert('Please try later', result['message'], '');
@@ -656,5 +658,13 @@ export class RecieptComponent {
       ).toFixed(4);
       this.finalTableData[i].amountUnit = formData.amountType2;
     }
+  }
+
+  updateRecieptByInlineEditing(data: any, index: any) {
+    this.finalTableData.forEach((element) => {
+      element.isEdit = false;
+    });
+    data.isEdit = true;
+    debugger;
   }
 }
