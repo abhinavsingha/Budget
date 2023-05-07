@@ -57,11 +57,15 @@
                       <th>To Unit</th>
                       <th>Sub Head</th>
                       <th>Type</th>
-                      <th>Remaining Amount</th>
+                      <!-- <th>Remaining Amount</th> -->
                       <th>Allocated Fund</th>
-<!--                      <th *ngIf="isInboxAndOutbox!= 'Outbox' && type!='Budget Allocation' && userRole!='Budget Approver'">Rem. Amount-->
-<!--                      </th>-->
-                      <th *ngIf="isInboxAndOutbox!= 'Outbox' && type!='Budget Allocation' && userRole!='Budget Approver'">Action</th>
+                      <th
+                        *ngIf="isInboxAndOutbox!= 'Outbox' && type!='Budget Allocation' && userRole!='Budget Approver'">
+                        Rem. Amount
+                      </th>
+                      <th
+                        *ngIf="isInboxAndOutbox!= 'Outbox' && type!='Budget Allocation' && userRole!='Budget Approver'">
+                        Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -72,12 +76,13 @@
                       <td>{{buggetData.toUnit.descr}}</td>
                       <td>{{buggetData.subHead.subHeadDescr}}</td>
                       <td>{{buggetData.allocTypeId.allocDesc}}</td>
-                      <td *ngIf="buggetData.balanceAmount1!=undefined">{{buggetData.balanceAmount1}}</td>
-                      <td *ngIf="buggetData.balanceAmount1==undefined">{{buggetData.balanceAmount}}</td>
+                      <!-- <td *ngIf="buggetData.balanceAmount1!=undefined">{{buggetData.balanceAmount1}}</td> -->
                       <td>{{buggetData.allocationAmount}} {{buggetData.amountUnit.amountType}}</td>
-<!--                      <td *ngIf="isInboxAndOutbox!= 'Outbox' && type!='Budget Allocation' && userRole!='Budget Approver'">-->
-<!--                        {{buggetData.balanceAmount}} In {{buggetData.amountUnit.amountType}}</td>-->
-                      <td *ngIf="isInboxAndOutbox!= 'Outbox' && type!='Budget Allocation' && userRole!='Budget Approver'">
+                      <td
+                        *ngIf="isInboxAndOutbox!= 'Outbox' && type!='Budget Allocation' && userRole!='Budget Approver'">
+                        {{buggetData.balanceAmount}} {{buggetData.remeningBalanceUnit.amountType}}</td>
+                      <td
+                        *ngIf="isInboxAndOutbox!= 'Outbox' && type!='Budget Allocation' && userRole!='Budget Approver'">
                         <button *ngIf="buggetData.isCDAparking == '0'" type="submit" class="btn btn-warning mr-2"
                           data-toggle="modal" data-target="#modal-lg" (click)="addCDAParking(buggetData)">Add
                           CDA Parking</button>
@@ -105,7 +110,8 @@
           <!-- /.row -->
           <form [formGroup]="formdata">
             <div class="row">
-              <div class="col-md-4" *ngIf="type=='Budget Allocation' && userRole=='Budget Approver' && isInboxAndOutbox!= 'Outbox'">
+              <div class="col-md-4"
+                *ngIf="type=='Budget Allocation' && userRole=='Budget Approver' && isInboxAndOutbox!= 'Outbox'">
                 <div class="form-group">
                   <label>Approve/Return Remarks</label>
                   <input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Remarks"
@@ -117,7 +123,8 @@
         </div>
         <!-- /.card-body -->
 
-        <div class=" card-footer" *ngIf="type=='Budget Allocation' && userRole=='Budget Approver' && isInboxAndOutbox!= 'Outbox'">
+        <div class=" card-footer"
+          *ngIf="type=='Budget Allocation' && userRole=='Budget Approver' && isInboxAndOutbox!= 'Outbox'">
           <div class="row">
             <button type="submit" class="btn btn-primary mr-2" (click)="approveForm(formdata.value)">Approve</button>
             <button type="submit" class="btn btn-danger" (click)="returnForm(formdata.value)">Return</button>

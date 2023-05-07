@@ -23,7 +23,7 @@ export class RecieptComponent {
     subHeadType: new FormControl(),
     remarks: new FormControl(),
     amountType: new FormControl(),
-    amountType2:new FormControl()
+    amountType2: new FormControl(),
   });
 
   finYearList: any[] = [];
@@ -133,12 +133,16 @@ export class RecieptComponent {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.finalTableData = result['response'].budgetResponseist;
-        if(this.defaultAmountType!=undefined) {
+        if (this.defaultAmountType != undefined) {
           for (let i = 0; i < this.finalTableData.length; i++) {
-            this.finalTableData[i].allocationAmount = (this.finalTableData[i].allocationAmount * this.finalTableData[i].amountUnit.amount / this.defaultAmountType.amount).toFixed(4);
+            this.finalTableData[i].allocationAmount = (
+              (this.finalTableData[i].allocationAmount *
+                this.finalTableData[i].amountUnit.amount) /
+              this.defaultAmountType.amount
+            ).toFixed(4);
           }
         }
-        debugger;
+
         this.SpinnerService.hide();
       } else {
         this.common.faliureAlert('Please try later', result['message'], '');
@@ -291,7 +295,7 @@ export class RecieptComponent {
               this.subHeadList[i].budgetCodeId =
                 this.subHeadList[i].budgetHead.budgetCodeId;
               this.subHeadList[i].amount = '';
-              this.subHeadList[i].amountType=undefined;
+              this.subHeadList[i].amountType = undefined;
             }
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
@@ -396,7 +400,7 @@ export class RecieptComponent {
         }
       }
     }
-    debugger;
+
     this.submitJson = {
       budgetFinancialYearId: this.selectedFinYear,
       allocationTypeId: this.finalSelectedAllocationType.allocTypeId,
@@ -428,7 +432,7 @@ export class RecieptComponent {
     this.SpinnerService.show();
     // var newSubmitJson = this.submitJson;
     var newSubmitJson = data;
-    debugger;
+
     console.log(JSON.stringify(newSubmitJson) + ' =submitJson for save budget');
 
     this.apiService
@@ -482,9 +486,8 @@ export class RecieptComponent {
         let result: { [key: string]: any } = v;
         if (result['message'] == 'success') {
           this.amountType = result['response'];
-          this.defaultAmountType=this.amountType[0];
-          this.defaultAmountType2=this.amountType[0];
-
+          this.defaultAmountType = this.amountType[0];
+          this.defaultAmountType2 = this.amountType[0];
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
@@ -519,12 +522,14 @@ export class RecieptComponent {
     let submitJson = {
       majorHeadId: data.subHead.majorHead,
       budgetFinancialYearId: data.finYear.serialNo,
+      budgetHeadType: data.subHead.subHeadTypeId,
     };
 
     this.apiService
       .postApi(this.cons.api.getBudgetReciptFilter, submitJson)
       .subscribe({
         next: (v: object) => {
+          debugger;
           this.SpinnerService.hide();
 
           let result: { [key: string]: any } = v;
@@ -578,13 +583,13 @@ export class RecieptComponent {
     });
   }
 
-  allocatedAmount(index: any,formdata:any) {
-    if(formdata.amountType==undefined){
-      this.subHeadList[index].amount=undefined;
+  allocatedAmount(index: any, formdata: any) {
+    if (formdata.amountType == undefined) {
+      this.subHeadList[index].amount = undefined;
       Swal.fire('Please enter Rupees in.');
       return;
     }
-    this.subHeadList[index].amountType=formdata.amountType;
+    this.subHeadList[index].amountType = formdata.amountType;
     this.totalAmount = 0;
     this.subHeadList[index].amount = Number(
       this.subHeadList[index].amount
@@ -602,7 +607,6 @@ export class RecieptComponent {
     this.apiService.getApi(this.cons.api.getModData).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
-        debugger;
         let newUploadDocuments = new UploadDocuments();
         newUploadDocuments.authUnit = result['response'];
         this.uploadDocuments.push(newUploadDocuments);
@@ -614,9 +618,12 @@ export class RecieptComponent {
   }
 
   setAmountType(formData: any) {
-    for(let i=0;i<this.subHeadList.length;i++){
-      this.subHeadList[i].amount=(this.subHeadList[i].amount*this.subHeadList[i].amountType.amount/formData.amountType.amount).toFixed(4);
-      this.subHeadList[i].amountType=formData.amountType;
+    for (let i = 0; i < this.subHeadList.length; i++) {
+      this.subHeadList[i].amount = (
+        (this.subHeadList[i].amount * this.subHeadList[i].amountType.amount) /
+        formData.amountType.amount
+      ).toFixed(4);
+      this.subHeadList[i].amountType = formData.amountType;
     }
     // for (let i = 0; i < this.finalTableData.length; i++) {
     //   this.finalTableData[i].allocationAmount = (this.finalTableData[i].allocationAmount * this.finalTableData[i].amountUnit.amount / formData.amountType.amount).toFixed(4);
@@ -626,8 +633,12 @@ export class RecieptComponent {
 
   setAmountType2(formData: any) {
     for (let i = 0; i < this.finalTableData.length; i++) {
-      this.finalTableData[i].allocationAmount = (this.finalTableData[i].allocationAmount * this.finalTableData[i].amountUnit.amount / formData.amountType2.amount).toFixed(4);
-      this.finalTableData[i].amountUnit=formData.amountType2;
+      this.finalTableData[i].allocationAmount = (
+        (this.finalTableData[i].allocationAmount *
+          this.finalTableData[i].amountUnit.amount) /
+        formData.amountType2.amount
+      ).toFixed(4);
+      this.finalTableData[i].amountUnit = formData.amountType2;
     }
   }
 }
