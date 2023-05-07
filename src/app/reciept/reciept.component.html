@@ -290,16 +290,11 @@
                     </div>
 
                     <div *ngIf="tableData.isEdit">
-                      <button type="submit" class="btn btn-primary mr-2" (click)="updateRecipetSave(tableData)"><i
-                          class="fas fa-eye"></i> Update</button>
+                      <button type="submit" class="btn btn-secondary mr-2" (click)="updateRecipetSave(tableData)">
+                        Update</button>
                       <button type="submit" class="btn btn-warning mr-2" (click)="cancelUpdate(tableData)"><i
                           class="fas fa-edit"></i> Cancel</button>
                     </div>
-
-
-
-
-                    <!-- <button type="submit" class="btn btn-danger mr-2"><i class="fas fa-trash-alt"></i> Delete</button> -->
                   </td>
                 </tr>
               </tbody>
@@ -308,7 +303,7 @@
                   *ngFor="let tableData of finalTableData  | searchPipeReciept: searchText | paginate :{itemsPerPage:10,currentPage:p}; let i = index">
                   <td>{{10 *(p-1)+i+1}}</td>
                   <td>{{tableData.finYear.finYear}}</td>
-                  <td>{{tableData.subHead.subHeadDescr}}</td>
+                  <td *ngIf="tableData.subHead!= undefined">{{tableData.subHead.subHeadDescr}}</td>
                   <td>{{tableData.allocTypeId.allocDesc}}</td>
                   <td>
                     <div *ngIf="tableData.isEdit">
@@ -322,6 +317,7 @@
                   <td>{{tableData.remarks}}</td>
                   <!-- <td>{{tableData.authList[0].docId.pathURL}}</td> -->
                   <td>
+
                     <div *ngIf="!tableData.isEdit">
                       <button type="submit" class="btn btn-primary mr-2" (click)="previewURL(tableData)"><i
                           class="fas fa-eye"></i> View</button>
@@ -330,9 +326,9 @@
                     </div>
 
                     <div *ngIf="tableData.isEdit">
-                      <button type="submit" class="btn btn-primary mr-2" (click)="previewURL(tableData)"><i
-                          class="fas fa-eye"></i> Update</button>
-                      <button type="submit" class="btn btn-warning mr-2" (click)="tableData.isEdit = false"><i
+                      <button type="submit" class="btn btn-secondary mr-2"
+                        (click)="updateRecipetSave(tableData)">Update</button>
+                      <button type="submit" class="btn btn-warning mr-2" (click)="cancelUpdate(tableData)"><i
                           class="fas fa-edit"></i> Cancel</button>
                     </div>
                   </td>

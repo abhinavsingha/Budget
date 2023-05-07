@@ -41,59 +41,43 @@
             <div class="row">
               <div class="col-md-3">
                 <div class="form-group">
-                  <label class="control-label">Financial Year </label>
+                  <label>Financial Year <span class="text-danger">*</span></label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [items]="budgetFinYears"
                     bindLabel="finYear" placeholder="Select Financial Year" formControlName="finYear" appendTo="body">
                   </ng-select>
                 </div>
               </div>
-<!--              <div class="col-md-3">-->
-<!--                <div class="form-group">-->
-<!--                  <label class="control-label">Sub Head</label>-->
-<!--                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeads"-->
-<!--                    bindLabel="subHeadDescr" placeholder="Select Sub Head" formControlName="subHead" appendTo="body">-->
-<!--                  </ng-select>-->
-<!--                </div>-->
-<!--              </div>-->
-                            <div class="col-md-3">
-                              <div class="form-group">
-                                <label class="control-label">Major Head</label>
-                                <ng-select class="form-control select2bs4" style="width: 100%" [items]="majorHeadList"
-                                  bindLabel="majorHead" placeholder="Select Sub Head" formControlName="majorHead">
-                                </ng-select>
-                              </div>
-                            </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label class="control-label">CDA</label>
-                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="cdaUnitList"
-                             bindLabel="cda" placeholder="Select CDA" formControlName="cdas">
-                  </ng-select>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label>Rupees in<span class="text-danger"></span></label>
+                  <label>Rupees in <span class="text-danger">*</span></label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [items]="amountType"
-                               bindLabel="amountType" placeholder="Select Amount Unit" formControlName="amountType"></ng-select>
+                    bindLabel="amountType" placeholder="Select Amount Unit" formControlName="amountType"></ng-select>
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>Allocation Type</label>
+                  <label>Allocation Type <span class="text-danger">*</span></label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [items]="allocationType"
-                             bindLabel="allocDesc" placeholder="Select Allocation Type" formControlName="allocationType">
+                    bindLabel="allocDesc" placeholder="Select Allocation Type" formControlName="allocationType">
                   </ng-select>
                 </div>
               </div>
-<!--              <div class="col-md-3">-->
-<!--                <div class="form-group">-->
-<!--                  <label class="control-label">CDA Unit</label>-->
-<!--                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="cdaUnitList"-->
-<!--                    bindLabel="cdaName" placeholder="Select CDA Unit" appendTo="body" formControlName="cdas">-->
-<!--                  </ng-select>-->
-<!--                </div>-->
-<!--              </div>-->
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Major Head <span class="text-danger">*</span></label>
+                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="majorHeadList"
+                    bindLabel="majorHead" placeholder="Select Major Head" formControlName="majorHead">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>CDA <span class="text-danger">*</span></label>
+                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="cdaUnitList" bindLabel="cda"
+                    placeholder="Select CDA" formControlName="cdas">
+                  </ng-select>
+                </div>
+              </div>
             </div>
           </form>
 

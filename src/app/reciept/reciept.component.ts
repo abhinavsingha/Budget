@@ -61,6 +61,7 @@ export class RecieptComponent {
     this.getSubHeadType();
     this.getModData();
 
+    $.getScript('assets/js/adminlte.js');
     $.getScript('assets/main.js');
   }
 

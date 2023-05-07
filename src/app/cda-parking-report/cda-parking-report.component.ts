@@ -30,13 +30,8 @@ interface cpr {
   // budgetAllocated:any;
 }
 
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup
-} from '@angular/forms';
-import {SharedService} from "../services/shared/shared.service";
-
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { SharedService } from '../services/shared/shared.service';
 
 class cdaTableData {
   majorHead: any;
@@ -98,14 +93,14 @@ export class CdaParkingReportComponent implements OnInit {
     majorHead: new FormControl(),
     cdas: new FormControl(),
     amountType: new FormControl(),
-    allocationType: new FormControl()
+    allocationType: new FormControl(),
   });
 
   updateBudgetFormData = new FormGroup({
     cdas: new FormControl(),
     subHead: new FormControl(),
   });
-  cdaUnitList: any[] = [{cda:"All CDA"},{cda:"Mumbai CDA"}];
+  cdaUnitList: any[] = [{ cda: 'All CDA' }, { cda: 'Mumbai CDA' }];
   amountType: any;
   allocationType: any;
 
@@ -134,7 +129,7 @@ export class CdaParkingReportComponent implements OnInit {
     // this.SpinnerService.show();
     this.apiService.postApi(this.cons.api.getDashboardData, null).subscribe(
       (results) => {
-        // debugger;
+        //
         this.SpinnerService.hide();
         $.getScript('assets/js/adminlte.js');
 
@@ -162,6 +157,9 @@ export class CdaParkingReportComponent implements OnInit {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.budgetFinYears = result['response'];
+        this.formdata.patchValue({
+          finYear: this.budgetFinYears[0],
+        });
         this.SpinnerService.hide();
       } else {
         this.common.faliureAlert('Please try later', result['message'], '');
@@ -192,7 +190,7 @@ export class CdaParkingReportComponent implements OnInit {
       }
     });
   }
-nType: any;
+  nType: any;
   getCdaParkingReport() {
     this.SpinnerService.show();
 
@@ -238,27 +236,27 @@ nType: any;
       complete: () => console.info('complete'),
     });
   }
-  getAmountType(){
-    this.apiService
-      .getApi(this.cons.api.showAllAmountUnit)
-      .subscribe({
-        next: (v: object) => {
-          this.SpinnerService.hide();
-          let result: { [key: string]: any } = v;
-          if (result['message'] == 'success') {
-            this.amountType = result['response'];
-
-          } else {
-            this.common.faliureAlert('Please try later', result['message'], '');
-          }
-        },
-        error: (e) => {
-          this.SpinnerService.hide();
-          console.error(e);
-          this.common.faliureAlert('Error', e['error']['message'], 'error');
-        },
-        complete: () => console.info('complete'),
-      });
+  getAmountType() {
+    this.apiService.getApi(this.cons.api.showAllAmountUnit).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.amountType = result['response'];
+          this.formdata.patchValue({
+            amountType: this.amountType[0],
+          });
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
   }
   getAllocationTypeData() {
     this.SpinnerService.show();
@@ -275,9 +273,9 @@ nType: any;
       });
   }
   downloadCDAParkingReport(formdata: any) {
-    debugger;
     if (
-      formdata.finYear == null || formdata.cdas == null ||
+      formdata.finYear == null ||
+      formdata.cdas == null ||
       formdata.majorHead == null
     ) {
       this.common.faliureAlert(
@@ -292,10 +290,10 @@ nType: any;
       financialYearId: formdata.finYear.serialNo,
       cdaType: formdata.cdas.cda,
       majorHead: formdata.majorHead.majorHead,
-      amountType:formdata.amountType.amountTypeId,
-      allocationType:formdata.allocationType.allocTypeId
+      amountType: formdata.amountType.amountTypeId,
+      allocationTypeId: formdata.allocationType.allocTypeId,
     };
-    debugger;
+
     this.apiService
       .postApi(this.cons.api.getCdaParkingReport, submitJson)
       .subscribe({
@@ -304,7 +302,10 @@ nType: any;
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
             // this.downloadPdf()
-            this.downloadPdf(result['response'][0].path);
+            this.downloadPdf(
+              result['response'].path,
+              result['response'].fileName
+            );
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
@@ -318,11 +319,11 @@ nType: any;
       });
   }
 
-  downloadPdf(pdfUrl: string): void {
+  downloadPdf(pdfUrl: string, fileName: any): void {
     this.http.get(pdfUrl, { responseType: 'blob' }).subscribe(
       (blob: Blob) => {
         this.SpinnerService.hide();
-        FileSaver.saveAs(blob, 'document.pdf');
+        FileSaver.saveAs(blob, fileName);
       },
       (error) => {
         this.SpinnerService.hide();

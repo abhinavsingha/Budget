@@ -43,16 +43,22 @@
 
               <div class="col-md-3">
                 <div class="form-group">
-                  <label class="control-label">Financial Year</label>
+                  <label>Financial Year <span class="text-danger">*</span></label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [items]="budgetFinYears"
                     bindLabel="finYear" placeholder="Select Financial Year" formControlName="finYear">
                   </ng-select>
                 </div>
               </div>
-
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Rupees in <span class="text-danger">*</span></label>
+                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="amountType"
+                    bindLabel="amountType" placeholder="Select Amount Unit" formControlName="amountType"></ng-select>
+                </div>
+              </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label class="control-label">Report Type</label>
+                  <label>Report Type <span class="text-danger">*</span></label>
                   <select class="form-control select2bs4" style="width: 100%" placeholder="Select Report Type"
                     id="reporttype" (change)="selectReportType(formdata.value)" formControlName="reportType">
                     <option selected disabled>--Select Report Type--</option>
@@ -66,7 +72,7 @@
 
               <div class="col-md-3" id="unitinput" *ngIf="showUnit">
                 <div class="form-group">
-                  <label class="control-label">Unit</label>
+                  <label>Unit <span class="text-danger">*</span></label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [items]="allunits" bindLabel="descr"
                     appendTo="body" placeholder="Select To Unit" formControlName="toUnit">
                   </ng-select>
@@ -74,21 +80,12 @@
               </div>
               <div class="col-md-3" id="subheadinput" *ngIf="showSubHead">
                 <div class="form-group">
-                  <label class="control-label">Sub Head</label>
+                  <label>Sub Head <span class="text-danger">*</span></label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeads"
                     bindLabel="subHeadDescr" placeholder="Select Sub Head" formControlName="subHead"></ng-select>
                 </div>
               </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Rupees in<span class="text-danger"></span></label>
-                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="amountType"
-                             bindLabel="amountType" placeholder="Select Amount Unit"
-                             formControlName="amountType" ></ng-select>
-                </div>
-              </div>
             </div>
-
           </div>
           <!-- /.card-body -->
           <div class="card-footer">

@@ -50,7 +50,7 @@ export class BudgetAllocationReportComponent implements OnInit {
     finYear: new FormControl(),
     toUnit: new FormControl(),
     subHead: new FormControl(),
-    amountType:new FormControl(),
+    amountType: new FormControl(),
     reportType: new FormControl('--Select Report Type--'),
   });
   entry: any;
@@ -80,6 +80,9 @@ export class BudgetAllocationReportComponent implements OnInit {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.budgetFinYears = result['response'];
+        this.formdata.patchValue({
+          finYear: this.budgetFinYears[0],
+        });
         this.SpinnerService.hide();
       } else {
         this.common.faliureAlert('Please try later', result['message'], '');
@@ -269,21 +272,41 @@ export class BudgetAllocationReportComponent implements OnInit {
   }
 
   downloadReport(formdata: any) {
-    if (formdata.finYear == null || formdata.finYear == undefined ||formdata.amountType==undefined) {
+    this.SpinnerService.show();
+    if (
+      formdata.finYear == null ||
+      formdata.finYear == undefined ||
+      formdata.amountType == undefined ||
+      formdata.amountType == null ||
+      formdata.reportType == '--Select Report Type--' ||
+      formdata.reportType == null
+    ) {
       this.common.warningAlert(
         'Please try later',
         'Please Select all mandatory data.',
         ''
       );
+      this.SpinnerService.hide();
+      return;
     }
     if (formdata.reportType == '03') {
       // It is for Unit Wise
+
+      if (formdata.toUnit == null || formdata.toUnit == undefined) {
+        this.common.warningAlert(
+          'Please try later',
+          'Please Select all mandatory data.',
+          ''
+        );
+        this.SpinnerService.hide();
+        return;
+      }
       let submitJson = {
         finYearId: formdata.finYear.serialNo,
         unitId: formdata.toUnit.unit,
-        amountTypeId: formdata.amountType.amountTypeId
+        amountTypeId: formdata.amountType.amountTypeId,
       };
-
+      debugger;
       this.apiService
         .postApi(this.cons.api.getUnitWiseAllocationReport, submitJson)
         .subscribe({
@@ -291,7 +314,10 @@ export class BudgetAllocationReportComponent implements OnInit {
             this.SpinnerService.hide();
             let result: { [key: string]: any } = v;
             if (result['message'] == 'success') {
-              this.downloadPdf(result['response'][0].path);
+              this.downloadPdf(
+                result['response'][0].path,
+                result['response'][0].fileName
+              );
             } else {
               this.common.faliureAlert(
                 'Please try later',
@@ -309,10 +335,19 @@ export class BudgetAllocationReportComponent implements OnInit {
         });
     } else if (formdata.reportType == '04') {
       // It is for Subhead Wise
+      if (formdata.subHead == null || formdata.subHead == undefined) {
+        this.common.warningAlert(
+          'Please try later',
+          'Please Select all mandatory data.',
+          ''
+        );
+        this.SpinnerService.hide();
+        return;
+      }
       let submitJson = {
         finYearId: formdata.finYear.serialNo,
         subHeadId: formdata.subHead.budgetCodeId,
-        amountTypeId: formdata.amountType.amountTypeId
+        amountTypeId: formdata.amountType.amountTypeId,
       };
       debugger;
       this.apiService
@@ -322,7 +357,10 @@ export class BudgetAllocationReportComponent implements OnInit {
             this.SpinnerService.hide();
             let result: { [key: string]: any } = v;
             if (result['message'] == 'success') {
-              this.downloadPdf(result['response'][0].path);
+              this.downloadPdf(
+                result['response'][0].path,
+                result['response'][0].fileName
+              );
             } else {
               this.common.faliureAlert(
                 'Please try later',
@@ -340,18 +378,23 @@ export class BudgetAllocationReportComponent implements OnInit {
         });
     } else if (formdata.reportType == '01') {
       //It is for BE report
-
+      debugger;
       this.apiService
         .getApi(
           this.cons.api.getBEAllocationReport +
             '/' +
             formdata.finYear.serialNo +
-            '/BE'+'/'+formdata.amountType.amountTypeId
+            '/BE' +
+            '/' +
+            formdata.amountType.amountTypeId
         )
         .subscribe((res) => {
           let result: { [key: string]: any } = res;
           if (result['message'] == 'success') {
-            this.downloadPdf(result['response'][0].path);
+            this.downloadPdf(
+              result['response'][0].path,
+              result['response'][0].fileName
+            );
             this.SpinnerService.hide();
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
@@ -359,18 +402,23 @@ export class BudgetAllocationReportComponent implements OnInit {
         });
     } else if (formdata.reportType == '02') {
       //It is for RE report
-
+      debugger;
       this.apiService
         .getApi(
           this.cons.api.getREAllocationReport +
             '/' +
             formdata.finYear.serialNo +
-            '/RE'+'/'+formdata.amountType.amountTypeId
+            '/RE' +
+            '/' +
+            formdata.amountType.amountTypeId
         )
         .subscribe((res) => {
           let result: { [key: string]: any } = res;
           if (result['message'] == 'success') {
-            this.downloadPdf(result['response'][0].path);
+            this.downloadPdf(
+              result['response'][0].path,
+              result['response'][0].fileName
+            );
             this.SpinnerService.hide();
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
@@ -380,12 +428,11 @@ export class BudgetAllocationReportComponent implements OnInit {
     debugger;
   }
 
-  downloadPdf(pdfUrl: string): void {
+  downloadPdf(pdfUrl: string, fileName: any): void {
     this.http.get(pdfUrl, { responseType: 'blob' }).subscribe(
       (blob: Blob) => {
-        //   this.http.get('https://icg.net.in/bmsreport/1681376372803.pdf', { responseType: 'blob' }).subscribe((blob: Blob) => {
         this.SpinnerService.hide();
-        FileSaver.saveAs(blob, 'document.pdf');
+        FileSaver.saveAs(blob, fileName);
       },
       (error) => {
         this.SpinnerService.hide();
@@ -403,7 +450,10 @@ export class BudgetAllocationReportComponent implements OnInit {
     this.apiService.postApi(this.cons.api.getCbRevisedReport, json).subscribe(
       (results) => {
         let result: { [key: string]: any } = results;
-        this.downloadPdf(result['response'][0].path);
+        this.downloadPdf(
+          result['response'][0].path,
+          result['response'][0].fileName
+        );
       },
       (error) => {
         console.log(error);
@@ -422,8 +472,9 @@ export class BudgetAllocationReportComponent implements OnInit {
         let result: { [key: string]: any } = v;
         if (result['message'] == 'success') {
           this.amountType = result['response'];
-
-
+          this.formdata.patchValue({
+            amountType: this.amountType[0],
+          });
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
