@@ -2441,7 +2441,7 @@ textarea.form-control.is-invalid {
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
-.control-label::after { 
+.control-label::after {
   color: #d00;
   font-family: 'FontAwesome';
   content: "*";
@@ -3470,6 +3470,7 @@ input[type="submit"].btn-block {
   -ms-flex-align: center;
   align-items: center;
 }
+
 .input-group > .custom-file:not(:last-child) .custom-file-label,
 .input-group > .custom-file:not(:last-child) .custom-file-label::after {
   border-top-right-radius: 0;
@@ -3531,14 +3532,31 @@ input[type="submit"].btn-block {
 .input-group-append {
   margin-left: -1px;
 }
+/*.input-group-text {*/
+/*  display: -ms-flexbox;*/
+/*  display: flex;*/
+/*  -ms-flex-align: center;*/
+/*  align-items: center;*/
+/*  padding: 0rem 0.75rem;*/
+/*  margin-bottom: 0;*/
+/*  font-size: 1rem;*/
+/*  font-weight: 400;*/
+/*  line-height: 1.5;*/
+/*  color: #495057;*/
+/*  text-align: center;*/
+/*  white-space: nowrap;*/
+/*  background-color: #e9ecef;*/
+/*  border: 1px solid #ced4da;*/
+/*  border-radius: 0.25rem;*/
+/*}*/
 .input-group-text {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-align: center;
   align-items: center;
-  padding: 0rem 0.75rem;
+  padding: 0rem 0.25rem;
   margin-bottom: 0;
-  font-size: 1rem;
+  font-size: .9rem;
   font-weight: 400;
   line-height: 1.5;
   color: #495057;
@@ -3877,6 +3895,22 @@ input[type="submit"].btn-block {
   border-radius: 0.25rem;
   box-shadow: none;
 }
+/*.custom-file-label::after {*/
+/*  position: absolute;*/
+/*  top: 0;*/
+/*  right: 0;*/
+/*  bottom: 0;*/
+/*  z-index: 3;*/
+/*  display: block;*/
+/*  height: 2.25rem;*/
+/*  padding: 0.375rem 0.75rem;*/
+/*  line-height: 1.5;*/
+/*  color: #495057;*/
+/*  content: "Browse";*/
+/*  background-color: #e9ecef;*/
+/*  border-left: inherit;*/
+/*  border-radius: 0 0.25rem 0.25rem 0;*/
+/*}*/
 .custom-file-label::after {
   position: absolute;
   top: 0;
@@ -3885,8 +3919,8 @@ input[type="submit"].btn-block {
   z-index: 3;
   display: block;
   height: 2.25rem;
-  padding: 0.375rem 0.75rem;
-  line-height: 1.5;
+  padding: 0.375rem 0.25rem;
+  line-height: 1;
   color: #495057;
   content: "Browse";
   background-color: #e9ecef;

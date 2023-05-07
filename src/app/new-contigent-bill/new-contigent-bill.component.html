@@ -158,7 +158,11 @@
                       <label class="custom-file-label" for="InputFile">Choose file</label>
                     </div>
                     <div class="input-group-append">
+
                       <span (click)="upload('browse')" class="input-group-text" style="cursor: pointer">Upload</span>
+                    </div>
+                    <div class="input-group-append" *ngIf="browse!=undefined">
+                      <span class="input-group-text" (click)="viewFile(browse)">View</span>
                     </div>
                   </div>
                 </div>
@@ -195,6 +199,10 @@
                     </div>
                     <div class="input-group-append">
                       <span (click)="upload('invoice')" class="input-group-text" style="cursor: pointer">Upload</span>
+                    </div>
+
+                    <div class="input-group-append" *ngIf="invoice!=undefined">
+                      <span class="input-group-text" (click)="viewFile(invoice)">View</span>
                     </div>
                   </div>
                 </div>

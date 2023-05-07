@@ -671,7 +671,7 @@ export class NewContigentBillComponent implements OnInit {
   }
 
   updateFormdata(cbEntry: newCb) {
-    this.getAvailableFundData();
+
     console.log('cbentry' + cbEntry);
     for (let i = 0; i < this.majorHeadData.length; i++) {
       let major = this.majorHeadData[i];
@@ -696,6 +696,7 @@ export class NewContigentBillComponent implements OnInit {
                     let sub = this.subHeadData[i];
                     if (sub.subHeadDescr == cbEntry.subHead) {
                       this.formdata.get('subHead')?.setValue(sub);
+                      this.getAvailableFundData();
                     }
                   }
                   this.SpinnerService.hide();
@@ -707,16 +708,19 @@ export class NewContigentBillComponent implements OnInit {
               );
             }
           }
-        } else {
+        }
+        else {
           for (let i = 0; i < this.subHeadData.length; i++) {
             let sub = this.subHeadData[i];
             if (sub.subHeadDescr == cbEntry.subHead) {
               this.formdata.get('subHead')?.setValue(sub);
+              this.getAvailableFundData();
             }
           }
         }
       }
     }
+
     this.formdata.get('amount')?.setValue(cbEntry.amount);
     this.formdata.get('unit')?.setValue(this.unitName);
     this.formdata.get('authorityUnit')?.setValue(this.unitName);
