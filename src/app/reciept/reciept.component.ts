@@ -135,6 +135,7 @@ export class RecieptComponent {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.finalTableData = result['response'].budgetResponseist;
+        debugger;
         if (this.defaultAmountType != undefined) {
           for (let i = 0; i < this.finalTableData.length; i++) {
             this.finalTableData[i].allocationAmount = (
@@ -145,7 +146,7 @@ export class RecieptComponent {
             this.finalTableData[i].isEdit = false;
           }
         }
-        debugger;
+
         this.SpinnerService.hide();
       } else {
         this.common.faliureAlert('Please try later', result['message'], '');
@@ -536,6 +537,7 @@ export class RecieptComponent {
     let selectedAllocationType = data.allocTypeId.allocType;
 
     this.autoSelectedAllocationType = data.allocTypeId.allocType;
+    debugger;
 
     let submitJson = {
       majorHeadId: data.subHead.majorHead,
@@ -547,7 +549,6 @@ export class RecieptComponent {
       .postApi(this.cons.api.getBudgetReciptFilter, submitJson)
       .subscribe({
         next: (v: object) => {
-          debugger;
           this.SpinnerService.hide();
 
           let result: { [key: string]: any } = v;
@@ -662,6 +663,7 @@ export class RecieptComponent {
 
   updateRecieptByInlineEditing(data: any, index: any) {
     this.finalTableData.forEach((element) => {
+      debugger;
       element.isEdit = false;
     });
     data.isEdit = true;
@@ -673,7 +675,6 @@ export class RecieptComponent {
   }
 
   updateRecipetSave(data: any) {
-    debugger;
     this.SpinnerService.show();
     let submitJson = {
       budgetFinancialYearId: data.finYear.serialNo,

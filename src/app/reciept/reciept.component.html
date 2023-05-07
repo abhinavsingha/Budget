@@ -285,8 +285,10 @@
                     <div *ngIf="!tableData.isEdit">
                       <button type="submit" class="btn btn-primary mr-2" (click)="previewURL(tableData)"><i
                           class="fas fa-eye"></i> View</button>
-                      <button type="submit" class="btn btn-warning mr-2"
+
+                      <button *ngIf="tableData.isCdaParked != '1'" type="submit" class="btn btn-warning mr-2"
                         (click)="updateRecieptByInlineEditing(tableData, i)"><i class="fas fa-edit"></i> Edit</button>
+
                     </div>
 
                     <div *ngIf="tableData.isEdit">
@@ -321,7 +323,7 @@
                     <div *ngIf="!tableData.isEdit">
                       <button type="submit" class="btn btn-primary mr-2" (click)="previewURL(tableData)"><i
                           class="fas fa-eye"></i> View</button>
-                      <button type="submit" class="btn btn-warning mr-2"
+                      <button *ngIf="tableData.isCdaParked != '1'" type="submit" class="btn btn-warning mr-2"
                         (click)="updateRecieptByInlineEditing(tableData, i)"><i class="fas fa-edit"></i> Edit</button>
                     </div>
 

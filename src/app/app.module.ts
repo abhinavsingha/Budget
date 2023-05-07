@@ -44,7 +44,7 @@ import { ApprovedBudgetComponent } from './approved-budget/approved-budget.compo
 import { SearchPipeRecieptPipe } from './services/search-pipe-reciept/search-pipe-reciept.pipe';
 import { ManageUserRoleComponent } from './manage-user-role/manage-user-role.component';
 import { SearchUserPipePipe } from './services/search-user/search-user-pipe.pipe';
-import {RevisionApprovalComponent} from "./revision-approval/revision-approval.component";
+import { RevisionApprovalComponent } from './revision-approval/revision-approval.component';
 
 // import { DialogComponent } from './dialog/dialog.component';
 // import { MatIconModule } from '@angular/material/icon';
@@ -71,8 +71,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        url: 'http://localhost:8080/auth',
-        // url: 'https://icg.net.in/auth/',
+        // url: 'http://localhost:8080/auth',
+        url: 'https://icg.net.in/auth/',
         realm: 'icgrms',
         clientId: 'budget',
       },
