@@ -111,6 +111,8 @@ export class InboxComponent implements OnInit {
       this.router.navigate(['/budget-approval']);
       this.sharedService.redirectedFrom = 'inbox';
       // window.location.href = '/budget-approval';
+    }else if(li.type == 'Budget Revision'){
+      this.router.navigate(['/revision-approval']);
     }
   }
 

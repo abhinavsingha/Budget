@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import {MultiCdaParking} from "../model/multi-cda-parking";
+import {Component, ViewChild} from '@angular/core';
 import * as $ from "jquery";
 import {NgxSpinnerService} from "ngx-spinner";
 import {ConstantsService} from "../services/constants/constants.service";
@@ -8,13 +7,18 @@ import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {CommonService} from "../services/common/common.service";
 import {Router} from "@angular/router";
 import {SharedService} from "../services/shared/shared.service";
-
+import Swal from "sweetalert2";
 @Component({
   selector: 'app-revision-approval',
   templateUrl: './revision-approval.component.html',
   styleUrls: ['./revision-approval.component.scss']
 })
 export class RevisionApprovalComponent {
+  @ViewChild('browseFileInput') browseFileInput: any;
+  unitData: any;
+  private userUnitId: any;
+  currentUnit: any;
+  browse: any;
   constructor(
     // private matDialog: MatDialog,
     private SpinnerService: NgxSpinnerService,
@@ -28,7 +32,7 @@ export class RevisionApprovalComponent {
   isInboxAndOutbox: any;
   type:any;
   userRole:any;
-  budgetDataList:any;
+  budgetDataLists:any;
   formdata = new FormGroup({
     finYear:new FormControl(),
     subHead:new FormControl(),
@@ -47,7 +51,7 @@ export class RevisionApprovalComponent {
   majorHead: any;
   minorHead: any;
   allocationType: any;
-
+  status:boolean=false;
   ngOnInit(): void {
     if (
       localStorage.getItem('isInboxOrOutbox') != null ||
@@ -72,19 +76,20 @@ export class RevisionApprovalComponent {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
           debugger;
-          this.budgetDataList = result['response'].budgetResponseist;
-          this.finYear=this.budgetDataList[0].finYear;
-          this.formdata.get('finYear')?.setValue(this.budgetDataList[0].finYear);
-          this.subHead=this.budgetDataList[0].subHead;
-          this.formdata.get('subHead')?.setValue(this.budgetDataList[0].subHead);
-          this.majorHead=this.budgetDataList[0].subHead;
-          this.minorHead=this.budgetDataList[0].subHead;
-
-          this.formdata.get('majorHead')?.setValue(this.budgetDataList[0].subHead);
-          this.formdata.get('minorHead')?.setValue(this.budgetDataList[0].subHead);
-          this.allocationType=this.budgetDataList[0].allocTypeId;
-          this.formdata.get('allocationType')?.setValue(this.budgetDataList[0].allocTypeId);
-          this.formdata.get('remarks')?.setValue(this.budgetDataList[0].remarks);
+          this.budgetDataLists = result['response'].budgetResponseist;
+          this.finYear=this.budgetDataLists[0].finYear;
+          this.formdata.get('finYear')?.setValue(this.budgetDataLists[0].finYear);
+          this.subHead=this.budgetDataLists[0].subHead;
+          this.formdata.get('subHead')?.setValue(this.budgetDataLists[0].subHead);
+          this.majorHead=this.budgetDataLists[0].subHead;
+          this.minorHead=this.budgetDataLists[0].subHead;
+          if(this.budgetDataLists[0].status=='Approved')
+            this.status=true;
+          this.formdata.get('majorHead')?.setValue(this.budgetDataLists[0].subHead);
+          this.formdata.get('minorHead')?.setValue(this.budgetDataLists[0].subHead);
+          this.allocationType=this.budgetDataLists[0].allocTypeId;
+          this.formdata.get('allocationType')?.setValue(this.budgetDataLists[0].allocTypeId);
+          this.formdata.get('remarks')?.setValue(this.budgetDataLists[0].remarks);
 
 
 
@@ -105,7 +110,115 @@ export class RevisionApprovalComponent {
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
             this.userRole = result['response'].userDetails.role[0].roleName;
+            this.userUnitId=result['response'].userDetails.unitId;
+            this.sharedService.inbox = result['response'].inbox;
+            this.sharedService.outbox = result['response'].outBox;
+            this.getCgUnitData();
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
+  }
+  approveForm(formDataValue: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Approve it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.approveFormFinally(formDataValue);
+      }
+    });
+  }
+  approveFormFinally(formDataValue: any) {
+    this.SpinnerService.show();
+    let submitJson = {
+      authGroupId: this.budgetDataLists[0].authGroupId,
+      status: 'Approved',
+      remarks: formDataValue.remarks,
+    };
+    this.apiService
+      .postApi(this.cons.api.approveBudgetOrReject, submitJson)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            this.common.successAlert(
+              'Success',
+              result['response']['msg'],
+              'success'
+            );
+            this.formdata.reset();
+            this.updateInbox();
+            this.router.navigateByUrl('/inbox');
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
 
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
+  }
+
+  returnFormFinally(formDataValue: any) {
+    this.SpinnerService.show();
+    let submitJson = {
+      authGroupId: this.budgetDataLists[0].authGroupId,
+      status: 'Rejected',
+      remarks: formDataValue.remarks,
+    };
+    this.apiService
+      .postApi(this.cons.api.approveBudgetOrReject, submitJson)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            this.common.successAlert(
+              'Success',
+              result['response']['msg'],
+              'success'
+            );
+            this.updateInbox();
+            this.formdata.reset();
+            this.router.navigateByUrl('/inbox');
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
+  }
+  updateInbox(){
+    this.apiService
+      .getApi(this.cons.api.updateInboxOutBox)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
             this.sharedService.inbox = result['response'].inbox;
             this.sharedService.outbox = result['response'].outBox;
           } else {
@@ -120,6 +233,137 @@ export class RevisionApprovalComponent {
         complete: () => console.info('complete'),
       });
   }
+  getCgUnitData() {
+    this.SpinnerService.show();
+    var comboJson = null;
+    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe(
+      (res) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = res;
+        this.unitData = result['response'];
+        // if(this.userUnitId==undefined){
+        //   var newSubmitJson = null;
+        //   this.apiService
+        //     .postApi(this.cons.api.getDashBoardDta, newSubmitJson)
+        //     .subscribe({
+        //       next: (v: object) => {
+        //         this.SpinnerService.hide();
+        //         let result: { [key: string]: any } = v;
+        //         if (result['message'] == 'success') {
+        //           debugger;
+        //           this.userUnitId=result['response'].userDetails.unitId;
+        //
+        //         } else {
+        //           this.common.faliureAlert('Please try later', result['message'], '');
+        //         }
+        //       },
+        //       error: (e) => {
+        //         this.SpinnerService.hide();
+        //         console.error(e);
+        //         this.common.faliureAlert('Error', e['error']['message'], 'error');
+        //       },
+        //       complete: () => console.info('complete'),
+        //     });
+        // }
+        for(let i=0;i<this.unitData.length;i++){
+          if(this.userUnitId=='001321'){
+            if(this.unitData[i].unit=='000225')
+            {
+              this.currentUnit=this.unitData[i];
+              this.formdata.get('authUnit')?.setValue(this.currentUnit);
+            }
+          }
+          else{
+            if(this.unitData[i].unit==this.userUnitId){
+              this.currentUnit=this.unitData[i];
+              this.formdata.get('authUnit')?.setValue(this.currentUnit);
+            }
+          }
+        }
+      },
+      (error) => {
+        console.log(error);
+        this.SpinnerService.hide();
+      }
+    );
+  }
+  upload() {
+      const file: File = this.browseFileInput.nativeElement.files[0];
+      console.log(file);
+      const formData = new FormData();
+      console.log(this.formdata.get('file')?.value);
+      formData.append('file', file);
+      this.SpinnerService.show();
+      this.apiService.postApi(this.cons.api.fileUpload, formData).subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
 
+          if (result['message'] == 'success') {
+            this.common.successAlert(
+              'File Uploaded',
+              result['response']['msg'],
+              'success'
+            );
+            this.browse = result['response'].uploadDocId;
+            this.SpinnerService.hide();
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+            this.SpinnerService.hide();
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => this.SpinnerService.hide(),
+      });
 
+  }
+  viewFile(file: string) {
+    this.apiService.getApi(this.cons.api.fileDownload + file).subscribe(
+      (res) => {
+        let result: { [key: string]: any } = res;
+        this.openPdfUrlInNewTab(result['response'].pathURL);
+        console.log(result['response'].pathURL);
+      },
+      (error) => {
+        console.log(error);
+        this.SpinnerService.hide();
+      }
+    );
+  }
+  openPdfUrlInNewTab(pdfUrl: string): void {
+    window.open(pdfUrl, '_blank');
+  }
+  save(formDataValue: any) {
+    let newSubmitJson = {
+      authDate: formDataValue.authDate,
+      remark: formDataValue.returnRemark,
+      authUnitId: formDataValue.authUnit.unit,
+      authDocId: this.browse,
+      authGroupId: localStorage.getItem('group_id'),
+    };
+    this.apiService
+      .postApi(this.cons.api.saveAuthData, newSubmitJson)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            this.router.navigate(['/dashboard']);
+            this.getDashBoardDta();
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
+  }
 }

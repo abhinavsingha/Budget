@@ -81,8 +81,8 @@
                 <div class="col-md-4">
                   <div class="form-group">
                     <label>Allocation Type</label>
-                    <ng-select [readonly]="true" name="majorHead"  class="form-control select2bs4"
-                               style="width: 100%" [items]="allocationType" bindLabel="allocDesc" placeholder="Select Major Head"
+                    <ng-select [readonly]="true"  class="form-control select2bs4"
+                               style="width: 100%" [items]="allocationType" bindLabel="allocDesc" placeholder="Select Allocation Type"
                                formControlName="allocationType">
                     </ng-select>
                   </div>
@@ -108,7 +108,7 @@
                         <table class="table table-hover text-nowrap">
                           <thead>
                             <tr>
-                              <th><input type="checkbox"> All</th>
+<!--                              <th><input type="checkbox"> All</th>-->
                               <th>F.Y.</th>
                               <th>Unit</th>
                               <th>Sub Head</th>
@@ -120,34 +120,12 @@
                             </tr>
                           </thead>
                           <tbody>
-                                 <tr>
-                                  <td><input type="checkbox"></td>
-                                  <td>2022-23</td>
-                                  <td>RHQ(W)</td>
-                                  <td>Office Expenses</td>
-                                  <td>BE</td>
-                                  <td>1.00</td>
-                                  <td>1.00</td>
-                                  <td>1.00</td>
-                                  <td>CGHQ to RHQ</td>
-                                </tr>
-                                <tr>
-                                  <td><input type="checkbox"></td>
-                                  <td>2022-23</td>
-                                  <td>RHQ(W)</td>
-                                  <td>Office Expenses</td>
-                                  <td>BE</td>
-                                  <td>1.00</td>
-                                  <td>1.00</td>
-                                  <td>1.00</td>
-                                  <td>CGHQ to RHQ</td>
-                                </tr>
-                                <tr>
-                                  <td><input type="checkbox"></td>
-                                  <td>2022-23</td>
-                                  <td>RHQ(W)</td>
-                                  <td>Office Expenses</td>
-                                  <td>BE</td>
+                          <tr *ngFor="let tbleDta of budgetDataLists; let i = index">
+<!--                                  <td><input type="checkbox"></td>-->
+                                  <td>{{tbleDta.finYear.finYear}}</td>
+                                  <td>{{tbleDta.toUnit.descr}}</td>
+                                  <td>{{tbleDta.subHead.subHeadDescr}}</td>
+                                  <td>{{tbleDta.allocTypeId.allocDesc}}</td>
                                   <td>1.00</td>
                                   <td>1.00</td>
                                   <td>1.00</td>
@@ -266,36 +244,37 @@
                     </div>
                   </div>
               <!-- /.row -->
-              <div class="row">
+              <div *ngIf="status && userRole=='Budget Manager';" class="row">
               <div class="col-md-4">
                   <div class="form-group">
                     <label>Authority Unit</label>
-                    <select disabled class="form-control select2bs4" style="width: 100%">
-                      <option selected="selected">CGHQ</option>
-                      <option>RHQ(W)</option>
-                      <option>RHQ(S)</option>
-                    </select>
+                    <ng-select [readonly]="true"  class="form-control select2bs4"
+                               style="width: 100%" [items]="unitData" bindLabel="descr" [(ngModel)]="currentUnit" placeholder="Select Allocation Type"
+                               formControlName="authUnit" [readonly]="true">
+                    </ng-select>
                   </div>
                 </div>
               <div class="col-md-4">
                   <div class="form-group">
                     <label>Authority</label>
-                    <input disabled
+                    <input
                       type="text"
                       class="form-control"
                       id="BalanceFund"
                       placeholder="BE/15/CGHQ"
+                      formControlName="auth"
                     />
                   </div>
                 </div>
               <div class="col-md-4">
                   <div class="form-group">
                     <label>Date</label>
-                    <input disabled
+                    <input
                       type="date"
                       class="form-control"
                       id="Date"
                       placeholder="23/02/23"
+                      formControlName="authDate"
                     />
                   </div>
                 </div>
@@ -304,34 +283,42 @@
                     <label for="exampleInputFile">View Document</label>
                     <div class="input-group">
                     <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="exampleInputFile" disabled>
-                    <label class="custom-file-label" for="exampleInputFile">Doc.pdf</label>
+                    <input #browseFileInput type="file" class="custom-file-input" id="exampleInputFile" >
+                    <label class="custom-file-label" for="exampleInputFile">File.pdf</label>
                     </div>
-                    <div class="input-group-append">
-                    <span class="input-group-text docBtn" >View</span>
-                    </div>
+                      <div class="input-group-append">
+
+                        <span (click)="upload()" class="input-group-text" style="cursor: pointer">Upload</span>
+                      </div>
+                      <div class="input-group-append" *ngIf="browse!=undefined">
+                        <span class="input-group-text" (click)="viewFile(browse)">View</span>
+                      </div>
                     </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
                     <label>Return Remarks</label>
-                    <input disabled
+                    <input
                       type="text"
                       class="form-control"
                       id="PrevAllocation"
-                      placeholder="CGHQ to RHQ"
+                      placeholder="Return Remarks"
+                      formControlName="returnRemark"
                     />
                   </div>
+                </div>
+                <div class="row">
+                  <button class="btn btn-primary mr-2" type="button" (click)="save(formdata.value)">Submit</button>
                 </div>
               </div>
             </form>
           </div>
           <!-- /.card-body -->
           <div class="card-footer">
-            <div class="row">
-              <button type="submit" class="btn btn-primary mr-2">Approve</button>
-              <button type="submit" class="btn btn-danger">Return</button>
+            <div class="row" *ngIf="!status && userRole=='Budget Approver';">
+              <button type="submit" class="btn btn-primary mr-2 "  (click)="approveForm(formdata.value)">Approve</button>
+              <button type="submit" class="btn btn-danger"  (click)="returnFormFinally(formdata.value)">Return</button>
             </div>
           </div>
         </div>
