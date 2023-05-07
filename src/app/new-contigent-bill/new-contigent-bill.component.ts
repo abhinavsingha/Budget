@@ -168,7 +168,7 @@ export class NewContigentBillComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    $.getScript('../../assets/js/adminlte.js');
+    $.getScript('assets/js/adminlte.js');
     this.getMajorHead();
     this.getFinancialYear();
     this.getCgUnitData();
@@ -1016,7 +1016,7 @@ export class NewContigentBillComponent implements OnInit {
       }
     );
   }
-
+  docId:any;
   uploadBill(cb: any) {
     const file: File = this.uploadFileInput.nativeElement.files[0];
     console.log(file);
@@ -1035,6 +1035,7 @@ export class NewContigentBillComponent implements OnInit {
             result['response']['msg'],
             'success'
           );
+          this.docId=result['response'].uploadDocId;
           let json = {
             docId: result['response'].uploadDocId,
             groupId: cb.authGroupId,

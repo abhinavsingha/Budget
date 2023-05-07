@@ -307,6 +307,9 @@
                               <span (click)="uploadBill(cb)" class="input-group-text"
                                     style="cursor: pointer">Upload</span>
                           </div>
+                          <div class="input-group-append" *ngIf="docId!=undefined">
+                            <span class="input-group-text" (click)="viewFile(docId)">View</span>
+                          </div>
                         </div>
                         </div>
                         </form>
