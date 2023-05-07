@@ -512,7 +512,7 @@ export class RevisionComponent {
         subHeadId: this.tabledata[i].subHead.budgetCodeId,
         amount: this.tabledata[i].amount,
         revisedAmount: this.tabledata[i].revisedAmount,
-        allocationTypeId: this.tabledata[i].allocationType.allocationTypeId,
+        allocationTypeId: this.formdata.get('allocationType')?.value.allocTypeId,
         amountTypeId:this.formdata.get('amountType')?.value.amountTypeId,
         remark: this.formdata.get('remarks')?.value,
       };
