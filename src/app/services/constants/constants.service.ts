@@ -134,6 +134,8 @@ export class ConstantsService {
 
     budgetRecipetSave: this.serviceUrl + 'budgetRecipet/budgetRecipetSave',
 
+    updateRecipetSave: this.serviceUrl + 'budgetRecipet/updateRecipetSave',
+
     getBudgetRecipt: this.serviceUrl + 'budgetRecipet/getBudgetRecipt',
 
     getCdaUnitList: this.serviceUrl + 'cdaParkingController/getCdaUnitList',
@@ -176,8 +178,9 @@ export class ConstantsService {
 
     getModData: this.serviceUrl + 'budgetRecipet/getModData',
 
-    getCdaDataList: this.serviceUrl + 'cdaParkingController/getCdaDataList', getContingentBillReport: this.serviceUrl+'reportController/getContingentBillReport',
-    updateInboxOutBox: this.serviceUrl+'dashBoard/updateInboxOutBox'
-
+    getCdaDataList: this.serviceUrl + 'cdaParkingController/getCdaDataList',
+    getContingentBillReport:
+      this.serviceUrl + 'reportController/getContingentBillReport',
+    updateInboxOutBox: this.serviceUrl + 'dashBoard/updateInboxOutBox',
   };
 }

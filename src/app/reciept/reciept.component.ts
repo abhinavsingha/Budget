@@ -233,7 +233,6 @@ export class RecieptComponent {
         let result: { [key: string]: any } = v;
 
         if (result['message'] == 'success') {
-
           // this.newSubcList = [];
           this.uploadFileResponse = '';
           // this.newSubcArr = [];
@@ -665,6 +664,43 @@ export class RecieptComponent {
       element.isEdit = false;
     });
     data.isEdit = true;
+  }
+
+  cancelUpdate(data: any) {
+    data.isEdit = false;
+    this.getBudgetRecipt();
+  }
+
+  updateRecipetSave(data: any) {
     debugger;
+    this.SpinnerService.show();
+    let submitJson = {
+      budgetFinancialYearId: data.finYear.serialNo,
+      allocationTypeId: data.allocTypeId.allocTypeId,
+      amountTypeId: data.amountUnit.amountTypeId,
+      budgetHeadId: data.subHead.budgetCodeId,
+      allocationAmount: data.allocationAmount,
+    };
+
+    this.apiService
+      .postApi(this.cons.api.updateRecipetSave, submitJson)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            this.getBudgetRecipt();
+            this.common.successAlert('Success', 'Successfully Updated', '');
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
   }
 }
