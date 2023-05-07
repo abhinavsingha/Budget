@@ -184,6 +184,22 @@ export class ApprovedBudgetComponent implements OnInit {
       }
     );
   }
+  viewFile(file: string) {
+    this.apiService.getApi(this.cons.api.fileDownload + file).subscribe(
+      (res) => {
+        let result: { [key: string]: any } = res;
+        this.openPdfUrlInNewTab(result['response'].pathURL);
+        console.log(result['response'].pathURL);
+      },
+      (error) => {
+        console.log(error);
+        this.SpinnerService.hide();
+      }
+    );
+  }
+  openPdfUrlInNewTab(pdfUrl: string): void {
+    window.open(pdfUrl, '_blank');
+  }
   upload() {
     const file: File = this.invoiceFileInput.nativeElement.files[0];
     console.log(file);

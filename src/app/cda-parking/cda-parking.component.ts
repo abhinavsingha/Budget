@@ -77,7 +77,7 @@ export class CdaParkingComponent implements OnInit {
   authorityFile: any;
   authorityDate: any;
   @ViewChild('authFileInput') authFileInput: any;
-  private authFile: any;
+  authFile: any;
   constructor(
     private apiService: ApiCallingServiceService,
     private cons: ConstantsService,
@@ -225,6 +225,23 @@ export class CdaParkingComponent implements OnInit {
       },
     });
   }
+  viewFile(file: string) {
+    this.apiService.getApi(this.cons.api.fileDownload + file).subscribe(
+      (res) => {
+        let result: { [key: string]: any } = res;
+        this.openPdfUrlInNewTab(result['response'].pathURL);
+        console.log(result['response'].pathURL);
+      },
+      (error) => {
+        console.log(error);
+        this.SpinnerService.hide();
+      }
+    );
+  }
+  openPdfUrlInNewTab(pdfUrl: string): void {
+    window.open(pdfUrl, '_blank');
+  }
+
   getCdaData() {
     this.SpinnerService.show();
     // let url=this.cons.api.getCdaData+'/'+this.formdata.get('unit')?.value.unit;

@@ -195,6 +195,22 @@ export class UnitRebaseComponent {
       this.file = event.target.files[0];
     }
   }
+  viewFile(file: string) {
+    this.apiService.getApi(this.cons.api.fileDownload + file).subscribe(
+      (res) => {
+        let result: { [key: string]: any } = res;
+        this.openPdfUrlInNewTab(result['response'].pathURL);
+        console.log(result['response'].pathURL);
+      },
+      (error) => {
+        console.log(error);
+        this.SpinnerService.hide();
+      }
+    );
+  }
+  openPdfUrlInNewTab(pdfUrl: string): void {
+    window.open(pdfUrl, '_blank');
+  }
 
   uploadFile() {
     const formData = new FormData();

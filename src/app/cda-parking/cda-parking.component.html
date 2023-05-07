@@ -249,6 +249,9 @@
                     <span class="input-group-text" style="cursor: pointer" (click)="invoiceUpload()">Upload</span>
                     <!--                        <span class="input-group-text" (click)="invoiceUpload()">Upload</span>-->
                   </div>
+                  <div class="input-group-append" *ngIf="authFile!=undefined">
+                    <span class="input-group-text" (click)="viewFile(authFile)">View</span>
+                  </div>
                 </div>
               </div>
             </div>

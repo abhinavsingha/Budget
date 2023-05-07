@@ -231,6 +231,7 @@ export class RecieptComponent {
         let result: { [key: string]: any } = v;
 
         if (result['message'] == 'success') {
+
           // this.newSubcList = [];
           this.uploadFileResponse = '';
           // this.newSubcArr = [];
@@ -256,7 +257,22 @@ export class RecieptComponent {
       complete: () => console.info('complete'),
     });
   }
-
+  viewFile(file: string) {
+    this.apiService.getApi(this.cons.api.fileDownload + file).subscribe(
+      (res) => {
+        let result: { [key: string]: any } = res;
+        this.openPdfUrlInNewTab(result['response'].pathURL);
+        console.log(result['response'].pathURL);
+      },
+      (error) => {
+        console.log(error);
+        this.SpinnerService.hide();
+      }
+    );
+  }
+  openPdfUrlInNewTab(pdfUrl: string): void {
+    window.open(pdfUrl, '_blank');
+  }
   deleteFieldValue(index: any) {
     this.uploadDocuments.splice(index, 1);
   }

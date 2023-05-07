@@ -316,48 +316,48 @@ export class BudgetAllocationSubheadwiseComponent {
     });
   }
 
-  uploadFile(index: any) {
-    const formData = new FormData();
-    formData.append('file', this.file);
-
-    this.SpinnerService.show();
-
-    this.apiService.postApi(this.cons.api.fileUpload, formData).subscribe({
-      next: (v: object) => {
-        this.SpinnerService.hide();
-        let result: { [key: string]: any } = v;
-
-        if (result['message'] == 'success') {
-          // this.newSubcList = [];
-          this.uploadFileResponse = '';
-          // this.newSubcArr = [];
-          this.uploadFileResponse = result['response'];
-          console.log(
-            'upload file data ======= ' +
-              JSON.stringify(this.uploadFileResponse) +
-              ' =submitJson'
-          );
-
-          this.uploadDocuments[index].uploadDocId =
-            this.uploadFileResponse.uploadDocId;
-
-          this.common.successAlert(
-            'Success',
-            result['response']['msg'],
-            'success'
-          );
-        } else {
-          this.common.faliureAlert('Please try later', result['message'], '');
-        }
-      },
-      error: (e) => {
-        this.SpinnerService.hide();
-        console.error(e);
-        this.common.faliureAlert('Error', e['error']['message'], 'error');
-      },
-      complete: () => console.info('complete'),
-    });
-  }
+  // uploadFile(index: any) {
+  //   const formData = new FormData();
+  //   formData.append('file', this.file);
+  //
+  //   this.SpinnerService.show();
+  //
+  //   this.apiService.postApi(this.cons.api.fileUpload, formData).subscribe({
+  //     next: (v: object) => {
+  //       this.SpinnerService.hide();
+  //       let result: { [key: string]: any } = v;
+  //
+  //       if (result['message'] == 'success') {
+  //         // this.newSubcList = [];
+  //         this.uploadFileResponse = '';
+  //         // this.newSubcArr = [];
+  //         this.uploadFileResponse = result['response'];
+  //         console.log(
+  //           'upload file data ======= ' +
+  //             JSON.stringify(this.uploadFileResponse) +
+  //             ' =submitJson'
+  //         );
+  //
+  //         this.uploadDocuments[index].uploadDocId =
+  //           this.uploadFileResponse.uploadDocId;
+  //
+  //         this.common.successAlert(
+  //           'Success',
+  //           result['response']['msg'],
+  //           'success'
+  //         );
+  //       } else {
+  //         this.common.faliureAlert('Please try later', result['message'], '');
+  //       }
+  //     },
+  //     error: (e) => {
+  //       this.SpinnerService.hide();
+  //       console.error(e);
+  //       this.common.faliureAlert('Error', e['error']['message'], 'error');
+  //     },
+  //     complete: () => console.info('complete'),
+  //   });
+  // }
 
   deleteFieldValue(index: any) {
     this.uploadDocuments.splice(index, 1);
