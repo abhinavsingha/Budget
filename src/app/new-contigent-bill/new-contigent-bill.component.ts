@@ -14,8 +14,8 @@ import * as $ from 'jquery';
 // import { UploadDocuments } from '../model/upload-documents';
 
 class newCb {
-  isFlag:any;
-  cbId:any;
+  isFlag: any;
+  cbId: any;
   onAccOf: any;
   authDetail: any;
   contingentBilId: any;
@@ -54,7 +54,7 @@ class newCb {
 }
 
 class submitCb {
-  allocationTypeId:any;
+  allocationTypeId: any;
   invoiceDocId: any;
   authorityDetails: any;
   onAccountOf: any;
@@ -117,7 +117,7 @@ export class NewContigentBillComponent implements OnInit {
     authDetail: new FormControl(
       'S1.10.1 of Shedule-10 of DFPCG-2017 vide Govt. of India, Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017'
     ),
-    subHeadType:new FormControl(),
+    subHeadType: new FormControl(),
     amount: new FormControl(),
     progressive: new FormControl(),
     balance: new FormControl(),
@@ -155,7 +155,7 @@ export class NewContigentBillComponent implements OnInit {
   dasboardData: any;
   allocation: any;
   private FundAllotted: any;
-  label: string='Choose File';
+  label: string = 'Choose File';
 
   constructor(
     public sharedService: SharedService,
@@ -174,7 +174,7 @@ export class NewContigentBillComponent implements OnInit {
     this.getFinancialYear();
     this.getCgUnitData();
     this.getCBData();
-    this.getDashBoardDta()
+    this.getDashBoardDta();
     this.getSubHeadType();
   }
 
@@ -199,8 +199,8 @@ export class NewContigentBillComponent implements OnInit {
     }
     if (undefinedValues.length == 0) {
       const cb: newCb = {
-        isFlag:undefined,
-        cbId:undefined,
+        isFlag: undefined,
+        cbId: undefined,
         onAccOf: this.formdata.get('onAccOf')?.value,
         authDetail: this.formdata.get('authDetail')?.value,
         authUnitId: this.unitId,
@@ -259,63 +259,68 @@ export class NewContigentBillComponent implements OnInit {
     }
   }
 
-  getSubHeadType(){
-    this.apiService
-      .getApi(this.cons.api.getSubHeadType)
-      .subscribe({
-        next: (v: object) => {
-          this.SpinnerService.hide();
-          let result: { [key: string]: any } = v;
+  getSubHeadType() {
+    this.apiService.getApi(this.cons.api.getSubHeadType).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
 
-          if (result['message'] == 'success') {
-            this.subHeadType = result['response'];
-          } else {
-            this.common.faliureAlert('Please try later', result['message'], '');
-          }
-        },
-        error: (e) => {
-          this.SpinnerService.hide();
-          console.error(e);
-          this.common.faliureAlert('Error', e['error']['message'], 'error');
-        },
-        complete: () => console.info('complete'),
-      });
+        if (result['message'] == 'success') {
+          this.subHeadType = result['response'];
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
   }
 
   getAvailableFundData() {
     this.SpinnerService.show();
-    let json={
-      budgetHeadId:this.formdata.get('subHead')?.value.budgetCodeId
-    }
-    this.apiService
-      .postApi(
-        this.cons.api.getAvailableFund,json)
-      .subscribe({
-        next: (v: object) => {
-          this.SpinnerService.hide();
-          let result: { [key: string]: any } = v;
-          if (result['message'] == 'success') {
-            this.FundAllotted=result['response'];
-            this.expenditure = this.FundAllotted.expenditure;
-            this.formdata.get('progressive')?.setValue(this.expenditure);
-            if(result['response'].fundAvailable==0){
-              this.budgetAllotted=0;
-              this.formdata.get('budgetAllocated')?.setValue(0);
-            }else{
-              this.budgetAllotted=(parseFloat(result['response'].fundAvailable)*parseFloat(result['response'].amountUnit.amount) ).toFixed(4);
-              this.formdata.get('budgetAllocated')?.setValue((parseFloat(result['response'].fundAvailable)*parseFloat(result['response'].amountUnit.amount) ).toFixed(4));
-            }
+    let json = {
+      budgetHeadId: this.formdata.get('subHead')?.value.budgetCodeId,
+    };
+    this.apiService.postApi(this.cons.api.getAvailableFund, json).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.FundAllotted = result['response'];
+          this.expenditure = this.FundAllotted.expenditure;
+          this.formdata.get('progressive')?.setValue(this.expenditure);
+          if (result['response'].fundAvailable == 0) {
+            this.budgetAllotted = 0;
+            this.formdata.get('budgetAllocated')?.setValue(0);
           } else {
-            this.common.faliureAlert('Please try later', result['message'], '');
+            this.budgetAllotted = (
+              parseFloat(result['response'].fundAvailable) *
+              parseFloat(result['response'].amountUnit.amount)
+            ).toFixed(4);
+            this.formdata
+              .get('budgetAllocated')
+              ?.setValue(
+                (
+                  parseFloat(result['response'].fundAvailable) *
+                  parseFloat(result['response'].amountUnit.amount)
+                ).toFixed(4)
+              );
           }
-        },
-        error: (e) => {
-          this.SpinnerService.hide();
-          console.error(e);
-          this.common.faliureAlert('Error', e['error']['message'], 'error');
-        },
-        complete: () => console.info('complete'),
-      });
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
   }
 
   getCheckedRows(cbNo: any) {
@@ -407,16 +412,12 @@ export class NewContigentBillComponent implements OnInit {
   unitId: any;
   unitName: any;
   private getDashboardData() {
-    // this.SpinnerService.show();
     this.apiService.postApi(this.cons.api.getDashboardData, null).subscribe(
       (results) => {
         this.SpinnerService.hide();
-        $.getScript('assets/js/adminlte.js');
-
-        // this.dummydata();
+        // $.getScript('assets/js/adminlte.js');
         let result: { [key: string]: any } = results;
         if (result['message'] == 'success') {
-          // this.userRole = result['response'].userDetails.role[0].roleName;
           this.sharedService.inbox = result['response'].inbox;
           this.sharedService.outbox = result['response'].outBox;
           this.unitId = result['response'].userDetails.unitId;
@@ -440,7 +441,6 @@ export class NewContigentBillComponent implements OnInit {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
         if (result['message'] == 'success') {
-
           this.dasboardData = result['response'];
           this.sharedService.inbox = result['response'].inbox;
           this.sharedService.outbox = result['response'].outBox;
@@ -448,7 +448,7 @@ export class NewContigentBillComponent implements OnInit {
           this.unitName = result['response'].userDetails.unit;
           this.formdata.get('unit')?.setValue(this.unitName);
           this.formdata.get('authorityUnit')?.setValue(this.unitName);
-          this.allocation=this.dasboardData.allocationType;
+          this.allocation = this.dasboardData.allocationType;
           console.log('DATA>>>>>>>' + this.dasboardData);
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
@@ -472,20 +472,19 @@ export class NewContigentBillComponent implements OnInit {
         let getCbList = result['response'];
 
         for (let i = 0; i < getCbList.length; i++) {
-          let url =
-            this.cons.api.getAvailableFund;
+          let url = this.cons.api.getAvailableFund;
           console.log(url);
-          let json={
-            budgetHeadId:getCbList[i].budgetHeadID.budgetCodeId
-          }
+          let json = {
+            budgetHeadId: getCbList[i].budgetHeadID.budgetCodeId,
+          };
           this.SpinnerService.show();
-          this.apiService.postApi(url,json).subscribe(
+          this.apiService.postApi(url, json).subscribe(
             (res) => {
               let result: { [key: string]: any } = res;
               this.budgetAllotted = result['response'].fundAvailable;
               const entry: newCb = {
-                isFlag:getCbList[i].isFlag,
-                cbId:getCbList[i].cbId,
+                isFlag: getCbList[i].isFlag,
+                cbId: getCbList[i].cbId,
                 authUnitId: getCbList[i].authoritiesList[0].authUnit,
                 unitId: getCbList[i].cbUnitId.unit,
                 uploadFileDate: getCbList[i].fileDate,
@@ -528,8 +527,7 @@ export class NewContigentBillComponent implements OnInit {
                 invoicePath: getCbList[i].invoiceUploadId.pathURL,
                 authGroupId: getCbList[i].authoritiesList[0].authGroupId,
               };
-              if (entry.status == 'Approved')
-                this.approvedPresent = true;
+              if (entry.status == 'Approved') this.approvedPresent = true;
               this.cbList.push(entry);
               this.SpinnerService.hide();
             },
@@ -552,26 +550,33 @@ export class NewContigentBillComponent implements OnInit {
     this.SpinnerService.show();
     this.formdata.get('minorHead')?.setValue(this.majorHead);
     this.SpinnerService.show();
-    let json={
-      budgetHeadType:this.formdata.get('subHeadType')?.value.subHeadTypeId,
-      majorHead:this.formdata.get('majorHead')?.value.majorHead
-    }
-    this.apiService.postApi(this.cons.api.getAllSubHeadByMajorHead,json).subscribe((res) => {
-        let result: { [key: string]: any } = res;
-        this.subHeadData = result['response'];
-        this.SpinnerService.hide();
-      },
-      (error) => {
-        console.log(error);
-        this.SpinnerService.hide();
-      }
-    );
+    let json = {
+      budgetHeadType: this.formdata.get('subHeadType')?.value.subHeadTypeId,
+      majorHead: this.formdata.get('majorHead')?.value.majorHead,
+    };
+    this.apiService
+      .postApi(this.cons.api.getAllSubHeadByMajorHead, json)
+      .subscribe(
+        (res) => {
+          let result: { [key: string]: any } = res;
+          this.subHeadData = result['response'];
+          this.SpinnerService.hide();
+        },
+        (error) => {
+          console.log(error);
+          this.SpinnerService.hide();
+        }
+      );
   }
 
   updateExpenditure() {
-    if(this.formdata.get('amount')?.value>this.budgetAllotted){
+    if (this.formdata.get('amount')?.value > this.budgetAllotted) {
       this.formdata.get('amount')?.reset();
-      this.common.warningAlert('CB Amount Exceed Limit', "CB amount cannot be greater than Budget Alloted", '');
+      this.common.warningAlert(
+        'CB Amount Exceed Limit',
+        'CB amount cannot be greater than Budget Alloted',
+        ''
+      );
       // Swal.fire("CB amount cannot be greater than Budget Alloted")
       return;
     }
@@ -672,7 +677,6 @@ export class NewContigentBillComponent implements OnInit {
   }
 
   updateFormdata(cbEntry: newCb) {
-
     console.log('cbentry' + cbEntry);
     for (let i = 0; i < this.majorHeadData.length; i++) {
       let major = this.majorHeadData[i];
@@ -680,37 +684,43 @@ export class NewContigentBillComponent implements OnInit {
         this.formdata.get('majorHead')?.setValue(cbEntry.majorHead);
         this.majorHead = major;
         if (this.subHeadData == undefined) {
-          for(let i=0;i< this.subHeadType.length;i++){
-            if(this.subHeadType[i].subHeadTypeId==cbEntry.budgetHeadID.subHeadTypeId){
+          for (let i = 0; i < this.subHeadType.length; i++) {
+            if (
+              this.subHeadType[i].subHeadTypeId ==
+              cbEntry.budgetHeadID.subHeadTypeId
+            ) {
               this.formdata.get('subHeadType')?.setValue(this.subHeadType[i]);
               this.SpinnerService.show();
               this.formdata.get('minorHead')?.setValue(this.majorHead);
               this.SpinnerService.show();
-              let json={
-                budgetHeadType:this.formdata.get('subHeadType')?.value.subHeadTypeId,
-                majorHead:cbEntry.majorHead
-              }
-              this.apiService.postApi(this.cons.api.getAllSubHeadByMajorHead,json).subscribe((res) => {
-                  let result: { [key: string]: any } = res;
-                  this.subHeadData = result['response'];
-                  for (let i = 0; i < this.subHeadData.length; i++) {
-                    let sub = this.subHeadData[i];
-                    if (sub.subHeadDescr == cbEntry.subHead) {
-                      this.formdata.get('subHead')?.setValue(sub);
-                      this.getAvailableFundData();
+              let json = {
+                budgetHeadType:
+                  this.formdata.get('subHeadType')?.value.subHeadTypeId,
+                majorHead: cbEntry.majorHead,
+              };
+              this.apiService
+                .postApi(this.cons.api.getAllSubHeadByMajorHead, json)
+                .subscribe(
+                  (res) => {
+                    let result: { [key: string]: any } = res;
+                    this.subHeadData = result['response'];
+                    for (let i = 0; i < this.subHeadData.length; i++) {
+                      let sub = this.subHeadData[i];
+                      if (sub.subHeadDescr == cbEntry.subHead) {
+                        this.formdata.get('subHead')?.setValue(sub);
+                        this.getAvailableFundData();
+                      }
                     }
+                    this.SpinnerService.hide();
+                  },
+                  (error) => {
+                    console.log(error);
+                    this.SpinnerService.hide();
                   }
-                  this.SpinnerService.hide();
-                },
-                (error) => {
-                  console.log(error);
-                  this.SpinnerService.hide();
-                }
-              );
+                );
             }
           }
-        }
-        else {
+        } else {
           for (let i = 0; i < this.subHeadData.length; i++) {
             let sub = this.subHeadData[i];
             if (sub.subHeadDescr == cbEntry.subHead) {
@@ -800,7 +810,7 @@ export class NewContigentBillComponent implements OnInit {
             if (this.majorHeadData[j].majorHead == this.cbList[i].majorHead)
               budgetId = this.majorHeadData[j].budgetCodeId;
             const updateCb: submitCb = {
-              allocationTypeId:this.allocation.allocTypeId,
+              allocationTypeId: this.allocation.allocTypeId,
               onAccountOf: 'onAccountOf',
               authorityDetails:
                 'Sl. 10.1 of Schedule -10 of DFPCG-2017 vide Govt. of India , Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017',
@@ -851,8 +861,8 @@ export class NewContigentBillComponent implements OnInit {
           }
         } else if (this.cbList[i].status == 'Pending for Submission') {
           let entry: newCb = {
-            isFlag:undefined,
-            cbId:undefined,
+            isFlag: undefined,
+            cbId: undefined,
             authUnitId: this.unitId,
             unitId: this.unitId,
             finSerialNo: this.formdata.get('finYearName')?.value.serialNo,
@@ -935,7 +945,7 @@ export class NewContigentBillComponent implements OnInit {
           invoiceDocId: this.cbList[i].invoiceFile,
           authList: authList,
           contingentBilId: undefined,
-          allocationTypeId:this.allocation.allocTypeId
+          allocationTypeId: this.allocation.allocTypeId,
         };
         if (this.cbList[i].status == 'Pending for Submission')
           submitList.push(cb);
@@ -951,15 +961,13 @@ export class NewContigentBillComponent implements OnInit {
           next: (v: object) => {
             let result: { [key: string]: any } = v;
             if (result['message'] == 'success') {
+              this.SpinnerService.hide();
               this.common.successAlert(
                 'Success',
                 result['response']['msg'],
                 'success'
               );
               this.getDashboardData();
-              // this.reloadModule1();
-              console.log(result['response']);
-
               for (let i = 0; i < submitList.length; i++) {
                 for (let j = 0; j < this.cbList.length; j++) {
                   if (submitList[i].cbNumber == this.cbList[j].cbNo) {
@@ -967,7 +975,6 @@ export class NewContigentBillComponent implements OnInit {
                   }
                 }
               }
-              this.SpinnerService.hide();
             } else {
               this.common.faliureAlert(
                 'Please try later',
@@ -1006,18 +1013,20 @@ export class NewContigentBillComponent implements OnInit {
       cbId: cb.cbId,
     };
     this.SpinnerService.show();
-    this.apiService.postApi(this.cons.api.getContingentBillReport, json).subscribe(
-      (results) => {
-        let result: { [key: string]: any } = results;
-        this.downloadPdf(result['response'][0].path);
-      },
-      (error) => {
-        console.log(error);
-        this.SpinnerService.hide();
-      }
-    );
+    this.apiService
+      .postApi(this.cons.api.getContingentBillReport, json)
+      .subscribe(
+        (results) => {
+          let result: { [key: string]: any } = results;
+          this.downloadPdf(result['response'][0].path);
+        },
+        (error) => {
+          console.log(error);
+          this.SpinnerService.hide();
+        }
+      );
   }
-  docId:any;
+  docId: any;
   uploadBill(cb: any) {
     const file: File = this.uploadFileInput.nativeElement.files[0];
     console.log(file);
@@ -1036,7 +1045,7 @@ export class NewContigentBillComponent implements OnInit {
             result['response']['msg'],
             'success'
           );
-          this.docId=result['response'].uploadDocId;
+          this.docId = result['response'].uploadDocId;
           let json = {
             docId: result['response'].uploadDocId,
             groupId: cb.authGroupId,
@@ -1140,38 +1149,32 @@ export class NewContigentBillComponent implements OnInit {
   }
 
   cleardata(key: number) {
-    if(key<=0)
-      this.formdata.get('majorHead')?.reset();
-    if(key<=1)
-      this.formdata.get('subHeadType')?.reset();
-    if(key<=2)
-      this.formdata.get('subHead')?.reset();
-    if(key<=3)
-      this.formdata.get('minorHead')?.reset();
-    if(key<=4)
-      this.formdata.get('amount')?.reset();
-    if(key<=5)
-      this.formdata.get('cbNo')?.reset();
-    if(key<=6)
-      this.formdata.get('cbDate')?.reset();
-    if(key<=8)
-      this.formdata.get('authority')?.reset();
-    if(key<=9)
-      this.formdata.get('date')?.reset();
-    if(key<=10)
-      this.formdata.get('firmName')?.reset();
-    if(key<=11)
-      this.formdata.get('invoiceNo')?.reset();
-    if(key<=12)
-      this.formdata.get('invoiceDate')?.reset();
-    if(key<=13)
-      this.formdata.get('fileNo')?.reset();
-    if(key<=14)
-      this.formdata.get('fileDate')?.reset();
-    if(key<=15)
-      this.formdata.get('onAccOf')?.setValue('Quarterly payment(3rd Qtr) towars hiring of Designer/Developer IT Manpower(Project SDOT)');
-    if(key<=16)
-      this.formdata.get('authDetail')?.setValue('S1.10.1 of Shedule-10 of DFPCG-2017 vide Govt. of India, Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017');
+    if (key <= 0) this.formdata.get('majorHead')?.reset();
+    if (key <= 1) this.formdata.get('subHeadType')?.reset();
+    if (key <= 2) this.formdata.get('subHead')?.reset();
+    if (key <= 3) this.formdata.get('minorHead')?.reset();
+    if (key <= 4) this.formdata.get('amount')?.reset();
+    if (key <= 5) this.formdata.get('cbNo')?.reset();
+    if (key <= 6) this.formdata.get('cbDate')?.reset();
+    if (key <= 8) this.formdata.get('authority')?.reset();
+    if (key <= 9) this.formdata.get('date')?.reset();
+    if (key <= 10) this.formdata.get('firmName')?.reset();
+    if (key <= 11) this.formdata.get('invoiceNo')?.reset();
+    if (key <= 12) this.formdata.get('invoiceDate')?.reset();
+    if (key <= 13) this.formdata.get('fileNo')?.reset();
+    if (key <= 14) this.formdata.get('fileDate')?.reset();
+    if (key <= 15)
+      this.formdata
+        .get('onAccOf')
+        ?.setValue(
+          'Quarterly payment(3rd Qtr) towars hiring of Designer/Developer IT Manpower(Project SDOT)'
+        );
+    if (key <= 16)
+      this.formdata
+        .get('authDetail')
+        ?.setValue(
+          'S1.10.1 of Shedule-10 of DFPCG-2017 vide Govt. of India, Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017'
+        );
   }
 
   selectAll() {
@@ -1182,36 +1185,41 @@ export class NewContigentBillComponent implements OnInit {
     console.log(this.masterChecked);
   }
 
-  getCbNo(formdata:any){
-    const cbCount=this.cbList.length+1;
-    const cbNo=this.dasboardData.userDetails.unitId+"/"+formdata.subHead.budgetCodeId+"/"+cbCount+"/"+formdata.finYearName.finYear;
+  getCbNo(formdata: any) {
+    const cbCount = this.cbList.length + 1;
+    const cbNo =
+      this.dasboardData.userDetails.unitId +
+      '/' +
+      formdata.subHead.budgetCodeId +
+      '/' +
+      cbCount +
+      '/' +
+      formdata.finYearName.finYear;
     this.formdata.get('cbNo')?.setValue(cbNo);
   }
 
-  updateInbox(){
-    this.apiService
-      .getApi(this.cons.api.updateInboxOutBox)
-      .subscribe({
-        next: (v: object) => {
-          this.SpinnerService.hide();
-          let result: { [key: string]: any } = v;
-          if (result['message'] == 'success') {
-            this.sharedService.inbox = result['response'].inbox;
-            this.sharedService.outbox = result['response'].outBox;
-          } else {
-            this.common.faliureAlert('Please try later', result['message'], '');
-          }
-        },
-        error: (e) => {
-          this.SpinnerService.hide();
-          console.error(e);
-          this.common.faliureAlert('Error', e['error']['message'], 'error');
-        },
-        complete: () => console.info('complete'),
-      });
+  updateInbox() {
+    this.apiService.getApi(this.cons.api.updateInboxOutBox).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.sharedService.inbox = result['response'].inbox;
+          this.sharedService.outbox = result['response'].outBox;
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
   }
 
-  setLabel(formValue:any) {
-    this.label=formValue.uploadFile.name;
+  setLabel(formValue: any) {
+    this.label = formValue.uploadFile.name;
   }
 }

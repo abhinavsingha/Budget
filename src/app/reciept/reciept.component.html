@@ -188,8 +188,10 @@
                           <input type="file" class="custom-file-input" id="exampleInputFile"
                             (change)="onChangeFile($event)">
 
-                          <label *ngIf="file!=undefined" class="custom-file-label" for="exampleInputFile">{{file.name}}</label>
-                          <label *ngIf="file==undefined" class="custom-file-label" for="exampleInputFile">Choose File</label>
+                          <label *ngIf="file!=undefined" class="custom-file-label"
+                            for="exampleInputFile">{{file.name}}</label>
+                          <label *ngIf="file==undefined" class="custom-file-label" for="exampleInputFile">Choose
+                            File</label>
                         </div>
                         <div class="input-group-append">
                           <span class="input-group-text" (click)="uploadFile(i)">Upload</span>
@@ -259,7 +261,6 @@
                   <th>Type</th>
                   <th>Amount(in {{defaultAmountType2.amountType}})</th>
                   <th>Remarks</th>
-                  <!-- <th class="thhead">Document</th> -->
                   <th>Action</th>
                 </tr>
               </thead>
@@ -280,18 +281,13 @@
                     </div>
                   </td>
                   <td>{{tableData.remarks}}</td>
-                  <!-- <td>{{tableData.authList[0].docId.pathURL}}</td> -->
                   <td>
-
                     <div *ngIf="!tableData.isEdit">
                       <button type="submit" class="btn btn-primary mr-2" (click)="previewURL(tableData)"><i
                           class="fas fa-eye"></i> View</button>
-
                       <button *ngIf="tableData.isCdaParked != '1'" type="submit" class="btn btn-warning mr-2"
                         (click)="updateRecieptByInlineEditing(tableData, i)"><i class="fas fa-edit"></i> Edit</button>
-
                     </div>
-
                     <div *ngIf="tableData.isEdit">
                       <button type="submit" class="btn btn-secondary mr-2" (click)="updateRecipetSave(tableData)">
                         Update</button>

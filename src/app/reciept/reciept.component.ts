@@ -61,8 +61,6 @@ export class RecieptComponent {
     this.getBudgetRecipt();
     this.getSubHeadType();
     this.getModData();
-
-
   }
 
   constructor(
@@ -146,7 +144,6 @@ export class RecieptComponent {
             this.finalTableData[i].isEdit = false;
           }
         }
-
         this.SpinnerService.hide();
       } else {
         this.common.faliureAlert('Please try later', result['message'], '');
@@ -219,10 +216,9 @@ export class RecieptComponent {
 
   onChangeFile(event: any) {
     if (event.target.files.length > 0) {
-       this.file = event.target.files[0];
-        debugger;
-       $.getScript('assets/js/adminlte.js');
-
+      this.file = event.target.files[0];
+      debugger;
+      $.getScript('assets/js/adminlte.js');
     }
   }
   uploadFileResponse: any;
