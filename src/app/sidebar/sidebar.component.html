@@ -107,14 +107,16 @@
             <p>New Contingent Bill</p>
           </a>
         </li>
-<!--        <li class="nav-item" *ngIf=" userRole=='CB Creator'">-->
-<!--          <a href="#" class="nav-link" [routerLink]="['/cb-verification']" [routerLinkActive]="['active']">-->
-<!--            <i class="fas fa-file-alt nav-icon"></i>-->
-<!--            <p>CB Verification</p>-->
-<!--          </a>-->
-<!--        </li>-->
-        <li class="nav-item"
-          *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'|| userRole=='CB Creator'|| userRole=='CB Approver' || userRole=='Viewer'">
+        <!--        <li class="nav-item" *ngIf=" userRole=='CB Creator'">-->
+        <!--          <a href="#" class="nav-link" [routerLink]="['/cb-verification']" [routerLinkActive]="['active']">-->
+        <!--            <i class="fas fa-file-alt nav-icon"></i>-->
+        <!--            <p>CB Verification</p>-->
+        <!--          </a>-->
+        <!--        </li>-->
+
+        <!-- <li class="nav-item"
+          *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'|| userRole=='CB Creator'|| userRole=='CB Approver' || userRole=='Viewer'"> -->
+        <li class="nav-item" *ngIf=" userRole=='Budget Approver'">
           <a href="#" class="nav-link" [routerLink]="['/budget-allocation-report']" [routerLinkActive]="['active']">
             <i class="fas fa-file-download nav-icon"></i>
             <p>Budget Allocation Report</p>
@@ -126,8 +128,7 @@
             <p>CDA Parking</p>
           </a>
         </li> -->
-        <li class="nav-item"
-          *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'|| userRole=='CB Creator'|| userRole=='CB Approver' || userRole=='Viewer'">
+        <li class="nav-item" *ngIf=" userRole=='Budget Approver'">
           <a href="#" class="nav-link" [routerLink]="['/cda-parking-report']" [routerLinkActive]="['active']">
             <i class="fas fa-file-invoice nav-icon"></i>
             <p>CDA Parking Report</p>

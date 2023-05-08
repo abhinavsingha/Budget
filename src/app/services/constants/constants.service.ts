@@ -172,6 +172,9 @@ export class ConstantsService {
     getREAllocationReport:
       this.serviceUrl + 'reportController/getREAllocationReport',
 
+    getBEREAllocationReport:
+      this.serviceUrl + 'reportController/getBEREAllocationReport',
+
     showAllAmountUnit: this.serviceUrl + 'dashBoard/showAllAmountUnit',
 
     getSubHeadType: this.serviceUrl + 'budgetAllocation/getSubHeadType',

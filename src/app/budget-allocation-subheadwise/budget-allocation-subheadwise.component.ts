@@ -102,60 +102,91 @@ export class BudgetAllocationSubheadwiseComponent {
 
   getBudgetFinYear() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getBudgetFinYear).subscribe((res) => {
-      let result: { [key: string]: any } = res;
-      if (result['message'] == 'success') {
-        this.budgetFinYears = result['response'];
-        this.formdata.patchValue({
-          finYear: this.budgetFinYears[0],
-        });
+    this.apiService.getApi(this.cons.api.getBudgetFinYear).subscribe({
+      next: (v: object) => {
         this.SpinnerService.hide();
-      } else {
-        this.common.faliureAlert('Please try later', result['message'], '');
-      }
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.budgetFinYears = result['response'];
+          this.formdata.patchValue({
+            finYear: this.budgetFinYears[0],
+          });
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
     });
   }
 
   getSubHeadsData() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getSubHeadsData).subscribe((res) => {
-      let result: { [key: string]: any } = res;
-      if (result['message'] == 'success') {
-        this.subHeads = result['response'];
+    this.apiService.getApi(this.cons.api.getSubHeadsData).subscribe({
+      next: (v: object) => {
         this.SpinnerService.hide();
-      } else {
-        this.common.faliureAlert('Please try later', result['message'], '');
-      }
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.subHeads = result['response'];
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
     });
   }
 
   getCgUnitData() {
     this.SpinnerService.show();
-
-    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
-      let result: { [key: string]: any } = res;
-      if (result['message'] == 'success') {
-        this.allunits = result['response'];
+    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe({
+      next: (v: object) => {
         this.SpinnerService.hide();
-      } else {
-        this.common.faliureAlert('Please try later', result['message'], '');
-      }
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.allunits = result['response'];
+          this.SpinnerService.hide();
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
     });
   }
 
   getAllocationTypeData() {
     this.SpinnerService.show();
-    this.apiService
-      .getApi(this.cons.api.getAllocationTypeData)
-      .subscribe((res) => {
-        let result: { [key: string]: any } = res;
+    this.apiService.getApi(this.cons.api.getAllocationTypeData).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
         if (result['message'] == 'success') {
           this.allocationType = result['response'];
           this.SpinnerService.hide();
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
-      });
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
   }
 
   getAvailableFund(event: any) {
@@ -480,8 +511,6 @@ export class BudgetAllocationSubheadwiseComponent {
     this.apiService.postApi(this.cons.api.getDashboardData, null).subscribe(
       (results) => {
         this.SpinnerService.hide();
-        $.getScript('assets/js/adminlte.js');
-
         // this.dummydata();
         let result: { [key: string]: any } = results;
         if (result['message'] == 'success') {
@@ -562,16 +591,16 @@ export class BudgetAllocationSubheadwiseComponent {
   allocatedTotalAmount: number = 0;
 
   allocatedAmount(index: any) {
-    if(this.formdata.get('amountType')?.value==undefined){
+    if (this.formdata.get('amountType')?.value == undefined) {
       Swal.fire('Please fill Rupees in');
-      this.subHeadWiseUnitList[index].amount=undefined;
+      this.subHeadWiseUnitList[index].amount = undefined;
       return;
-
     }
     this.subHeadWiseUnitList[index].amount = Number(
       this.subHeadWiseUnitList[index].amount
     ).toFixed(4);
-    this.subHeadWiseUnitList[index].amountUnit=this.formdata.get('amountType')?.value;
+    this.subHeadWiseUnitList[index].amountUnit =
+      this.formdata.get('amountType')?.value;
     // this.subHeadWiseUnitList;
     // let amount = 0;
     // for (var i = 0; i < this.subHeadWiseUnitList.length; i++) {
@@ -585,41 +614,48 @@ export class BudgetAllocationSubheadwiseComponent {
   amountUnit: any;
   setAmountUnit() {
     this.amountUnit = this.formdata.get('amountType')?.value;
-    for(let i=0;i<this.subHeadWiseUnitList.length;i++){
-      if(this.subHeadWiseUnitList[i].amount!=undefined){
-        this.subHeadWiseUnitList[i].amount=(this.subHeadWiseUnitList[i].amount*this.subHeadWiseUnitList[i].amountUnit.amount/this.formdata.get('amountType')?.value.amount).toFixed(4);
-        this.subHeadWiseUnitList[i].amountUnit=this.amountUnit = this.formdata.get('amountType')?.value;
+    for (let i = 0; i < this.subHeadWiseUnitList.length; i++) {
+      if (this.subHeadWiseUnitList[i].amount != undefined) {
+        this.subHeadWiseUnitList[i].amount = (
+          (this.subHeadWiseUnitList[i].amount *
+            this.subHeadWiseUnitList[i].amountUnit.amount) /
+          this.formdata.get('amountType')?.value.amount
+        ).toFixed(4);
+        this.subHeadWiseUnitList[i].amountUnit = this.amountUnit =
+          this.formdata.get('amountType')?.value;
       }
-      this.budgetAllocationArray
+      this.budgetAllocationArray;
     }
-    for(let i=0;i<this.budgetAllocationArray.length;i++) {
+    for (let i = 0; i < this.budgetAllocationArray.length; i++) {
       // if (this.subHeadWiseUnitList[i].amount != undefined) {
-      this.budgetAllocationArray[i].amount = (this.budgetAllocationArray[i].amount * this.budgetAllocationArray[i].amountType.amount / this.formdata.get('amountType')?.value.amount).toFixed(4);
-      this.budgetAllocationArray[i].amountType = this.amountUnit = this.formdata.get('amountType')?.value;
+      this.budgetAllocationArray[i].amount = (
+        (this.budgetAllocationArray[i].amount *
+          this.budgetAllocationArray[i].amountType.amount) /
+        this.formdata.get('amountType')?.value.amount
+      ).toFixed(4);
+      this.budgetAllocationArray[i].amountType = this.amountUnit =
+        this.formdata.get('amountType')?.value;
       // }
     }
-
   }
-  updateInbox(){
-    this.apiService
-      .getApi(this.cons.api.updateInboxOutBox)
-      .subscribe({
-        next: (v: object) => {
-          this.SpinnerService.hide();
-          let result: { [key: string]: any } = v;
-          if (result['message'] == 'success') {
-            this.sharedService.inbox = result['response'].inbox;
-            this.sharedService.outbox = result['response'].outBox;
-          } else {
-            this.common.faliureAlert('Please try later', result['message'], '');
-          }
-        },
-        error: (e) => {
-          this.SpinnerService.hide();
-          console.error(e);
-          this.common.faliureAlert('Error', e['error']['message'], 'error');
-        },
-        complete: () => console.info('complete'),
-      });
+  updateInbox() {
+    this.apiService.getApi(this.cons.api.updateInboxOutBox).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.sharedService.inbox = result['response'].inbox;
+          this.sharedService.outbox = result['response'].outBox;
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
   }
 }

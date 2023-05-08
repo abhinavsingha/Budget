@@ -73,57 +73,90 @@ export class RecieptComponent {
 
   getBudgetFinYear() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getBudgetFinYear).subscribe((res) => {
-      let result: { [key: string]: any } = res;
-      if (result['message'] == 'success') {
-        this.finYearList = result['response'];
-        this.formdata.patchValue({
-          finYear: this.finYearList[0],
-        });
+    this.apiService.getApi(this.cons.api.getBudgetFinYear).subscribe({
+      next: (v: object) => {
         this.SpinnerService.hide();
-      } else {
-        this.common.faliureAlert('Please try later', result['message'], '');
-      }
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.finYearList = result['response'];
+          this.formdata.patchValue({
+            finYear: this.finYearList[0],
+          });
+          this.SpinnerService.hide();
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
     });
   }
 
   subHeadType: any[] = [];
   getSubHeadType() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getSubHeadType).subscribe((res) => {
-      let result: { [key: string]: any } = res;
-      if (result['message'] == 'success') {
+    this.apiService.getApi(this.cons.api.getSubHeadType).subscribe({
+      next: (v: object) => {
         this.SpinnerService.hide();
-        this.subHeadType = result['response'];
-      } else {
-        this.common.faliureAlert('Please try later', result['message'], '');
-      }
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.subHeadType = result['response'];
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
     });
   }
 
   majorDataNew() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getMajorData).subscribe((res) => {
-      let result: { [key: string]: any } = res;
-      if (result['message'] == 'success') {
-        this.majorHeadList = result['response'].subHead;
+    this.apiService.getApi(this.cons.api.getMajorData).subscribe({
+      next: (v: object) => {
         this.SpinnerService.hide();
-      } else {
-        this.common.faliureAlert('Please try later', result['message'], '');
-      }
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.majorHeadList = result['response'].subHead;
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
     });
   }
 
   getUnitDatas() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
-      let result: { [key: string]: any } = res;
-      if (result['message'] == 'success') {
-        this.unitForDocuments = result['response'];
+    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe({
+      next: (v: object) => {
         this.SpinnerService.hide();
-      } else {
-        this.common.faliureAlert('Please try later', result['message'], '');
-      }
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.unitForDocuments = result['response'];
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
     });
   }
 
@@ -153,17 +186,23 @@ export class RecieptComponent {
 
   getAllocationTypeData() {
     this.SpinnerService.show();
-    this.apiService
-      .getApi(this.cons.api.getAllocationTypeData)
-      .subscribe((res) => {
-        let result: { [key: string]: any } = res;
+    this.apiService.getApi(this.cons.api.getAllocationTypeData).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
         if (result['message'] == 'success') {
           this.allocationTypeList = result['response'];
-          this.SpinnerService.hide();
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
-      });
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
   }
   setminorhead(selectedMajorHead: any) {
     this.formdata.patchValue({
@@ -461,7 +500,6 @@ export class RecieptComponent {
           let result: { [key: string]: any } = v;
 
           if (result['message'] == 'success') {
-            this.getBudgetRecipt();
             this.isSelectedRE = false;
             this.isSelectedMA = false;
             this.isSectedSG = false;
@@ -473,6 +511,7 @@ export class RecieptComponent {
             this.uploadDocuments.push(new UploadDocuments());
             this.formdata.reset();
             this.common.successAlert('Success', 'Finally submitted', 'success');
+            this.getBudgetRecipt();
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
@@ -622,16 +661,24 @@ export class RecieptComponent {
 
   getModData() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getModData).subscribe((res) => {
-      let result: { [key: string]: any } = res;
-      if (result['message'] == 'success') {
-        let newUploadDocuments = new UploadDocuments();
-        newUploadDocuments.authUnit = result['response'];
-        this.uploadDocuments.push(newUploadDocuments);
+    this.apiService.getApi(this.cons.api.getModData).subscribe({
+      next: (v: object) => {
         this.SpinnerService.hide();
-      } else {
-        this.common.faliureAlert('Please try later', result['message'], '');
-      }
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          let newUploadDocuments = new UploadDocuments();
+          newUploadDocuments.authUnit = result['response'];
+          this.uploadDocuments.push(newUploadDocuments);
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
     });
   }
 

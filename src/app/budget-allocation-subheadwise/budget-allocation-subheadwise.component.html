@@ -56,11 +56,11 @@
                       <label>Sub Head</label>
                       <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeads"
                         bindLabel="subHeadDescr" placeholder="Select Sub Head" formControlName="subHead"
-                        (change)="getAvailableFund($event)">
+                        (change)="getFundAvailableBuFinYearAndSubHeadAndAllocationType(formdata.value)">
                       </ng-select>
                     </div>
                   </div>
-                  <div class="col-md-6">
+                  <div class=" col-md-6">
                     <div class="form-group">
                       <label>Major Head</label>
                       <input type="number" class="form-control" id="majorHead" placeholder="Major Head"
@@ -118,7 +118,7 @@
                     <div class="form-group">
                       <label>Remarks</label>
                       <input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Remarks"
-                        formControlName="remarks"/>
+                        formControlName="remarks" />
                     </div>
                   </div>
                   <div class="col-md-6">
