@@ -39,9 +39,9 @@
         <div class="card-body">
           <form [formGroup]="formdata" (ngSubmit)="showList(formdata.value)">
             <div class="row">
-              <div class="col-md-4">
+              <div class="col-md-5">
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label>Financial Year</label>
                       <ng-select class="form-control select2bs4" style="width: 100%" [items]="budgetFinYearsNew"
@@ -50,7 +50,7 @@
                       </ng-select>
                     </div>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-8">
                     <div class="form-group">
                       <label>To Unit</label>
                       <ng-select class="form-control select2bs4" style="width: 100%" [items]="allunitsNew"
@@ -59,7 +59,7 @@
                       </ng-select>
                     </div>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label>Allocation Type</label>
                       <ng-select class="form-control select2bs4" style="width: 100%" [items]="allocationType"
@@ -67,7 +67,7 @@
                       </ng-select>
                     </div>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-8">
                     <div class="form-group">
                       <label>Subhead Type</label>
                       <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeadType"
@@ -75,16 +75,16 @@
                       </ng-select>
                     </div>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label>Major Head</label>
                       <ng-select class="form-control select2bs4" style="width: 100%" [items]="majorDataNew"
-                        bindLabel="majorHead" placeholder="Select Major Head" formControlName="majorHeadId"
+                        bindLabel="majorHead" placeholder="Major Head" formControlName="majorHeadId"
                         (change)="getAllSubHeadByFinYearMajorHeadAndUnit(formdata.value)">
                       </ng-select>
                     </div>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-8">
                     <div class="form-group">
                       <label>Minor Head</label>
                       <!-- <ng-select class="form-control select2bs4" style="width: 100%" [items]="minorHead"
@@ -95,15 +95,15 @@
                     </div>
                   </div>
 
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label>Rupees in<span class="text-danger"></span></label>
-                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="amountType"  [(ngModel)]="amountUnits"
-                                 (change)="setAmountType()" bindLabel="amountType" placeholder="Select Amount Unit"
-                        formControlName="amountType"></ng-select>
+                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="amountType"
+                        [(ngModel)]="amountUnits" (change)="setAmountType()" bindLabel="amountType"
+                        placeholder="Select Amount Unit" formControlName="amountType"></ng-select>
                     </div>
                   </div>
-                  <div class=" col-md-6">
+                  <div class="col-md-8">
                     <div class="form-group">
                       <label>Remarks</label>
                       <input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Remarks"
@@ -113,17 +113,17 @@
                 </div>
 
               </div>
-              <div class="col-md-8">
+              <div class="col-md-7">
 
 
-                <div class="card-body table-responsive p-0" style="height:202px;">
+                <div class="card-body table-responsive p-0" style="height:250px;">
                   <table class="table table-hover text-nowrap">
                     <thead>
                       <tr>
                         <th>Sr No</th>
                         <th>Sub Head</th>
                         <th>Fund Available</th>
-                        <th style="width:10%;">Amount (in {{amountUnit}})</th>
+                        <th style="width:10%;">Amount <span style="font-size: 9px;">(in {{amountUnit}})</span></th>
                         <!--                        <th>Amount Unit</th>-->
                         <!-- <th>CDA Parking</th> -->
                         <th>Action</th>
@@ -140,8 +140,8 @@
                         </td>
                         <td>
                           <input type="number" [(ngModel)]="subHeadData.amount" [ngModelOptions]="{standalone: true}"
-                            id="subHeadDataAmount" placeholder="Please Enter Amount" (change)="allocatedAmount(i,formdata.value)"
-                            style="width:102px;" />
+                            id="subHeadDataAmount" placeholder="Please Enter Amount"
+                            (change)="allocatedAmount(i,formdata.value)" style="width:102px;" />
                         </td>
                         <td>
                           <button type=" submit" class="btn btn-primary mr-2"

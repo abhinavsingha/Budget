@@ -955,6 +955,7 @@ export class NewContigentBillComponent implements OnInit {
       Swal.fire('Add more Data');
     } else {
       this.SpinnerService.show();
+      debugger;
       this.apiService
         .postApi(this.cons.api.saveContingentBill, submitList)
         .subscribe({
@@ -987,8 +988,6 @@ export class NewContigentBillComponent implements OnInit {
         });
       this.cleardata(1);
     }
-    this.SpinnerService.hide();
-    console.log(submitList);
   }
 
   confirmModel() {
