@@ -276,7 +276,7 @@
                     </thead>
                     <tbody>
 <!--                    <tr ng-repeat="item in items">-->
-                    <tr *ngFor="let cb of cbList.reverse()  | paginate :{itemsPerPage:10,currentPage:p}; let i = index" id="htmlData" >
+                    <tr *ngFor="let cb of cbList  | paginate :{itemsPerPage:10,currentPage:p}; let i = index" id="htmlData" >
 <!--                      <td><input (change)="getCheckedRows(cb.cbNo)" type="checkbox" value="{{cb.cbNo}}"></td>-->
                       <td><input type="checkbox" [(ngModel)]="cb.checked" [ngModelOptions]="{standalone: true}"></td>
                       <td>{{cb.finYearName}}</td>
