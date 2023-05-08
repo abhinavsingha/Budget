@@ -257,6 +257,7 @@ export class UnitRebaseComponent {
       authDate: formdataForToStation.date,
       authUnitId: formdataForToStation.authUnit.unit,
       authDocId: this.uploadFileResponse.uploadDocId,
+      authorityId:'123'
     };
 
     this.confirmModel(submitJson);
