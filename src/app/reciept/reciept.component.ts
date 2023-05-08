@@ -52,6 +52,7 @@ export class RecieptComponent {
   defaultAmountType: any;
 
   ngOnInit(): void {
+    $.getScript('./assets/js/adminlte.js');
     this.getAmountType();
     this.getBudgetFinYear();
     this.majorDataNew();
@@ -61,8 +62,7 @@ export class RecieptComponent {
     this.getSubHeadType();
     this.getModData();
 
-    $.getScript('assets/js/adminlte.js');
-    $.getScript('assets/main.js');
+
   }
 
   constructor(
@@ -219,7 +219,10 @@ export class RecieptComponent {
 
   onChangeFile(event: any) {
     if (event.target.files.length > 0) {
-      this.file = event.target.files[0];
+       this.file = event.target.files[0];
+        debugger;
+       $.getScript('assets/js/adminlte.js');
+
     }
   }
   uploadFileResponse: any;

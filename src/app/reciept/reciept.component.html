@@ -187,8 +187,9 @@
                         <div class="custom-file">
                           <input type="file" class="custom-file-input" id="exampleInputFile"
                             (change)="onChangeFile($event)">
-                          <label class="custom-file-label" for="exampleInputFile">Choose
-                            file</label>
+
+                          <label *ngIf="file!=undefined" class="custom-file-label" for="exampleInputFile">{{file.name}}</label>
+                          <label *ngIf="file==undefined" class="custom-file-label" for="exampleInputFile">Choose File</label>
                         </div>
                         <div class="input-group-append">
                           <span class="input-group-text" (click)="uploadFile(i)">Upload</span>
