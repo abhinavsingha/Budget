@@ -299,9 +299,10 @@
                         <div class="form-group">
                         <div *ngIf="cb.status === 'Approved' && cb.isFlag=='0'" class="input-group">
                           <div [formGroup]="formData" class="custom-file">
-                            <input #uploadFileInput class="custom-file-input" formControlName="uploadFile" id="uploadFile"
+                            <input #uploadFileInput class="custom-file-input" (change)="setLabel(formData.value)"  formControlName="uploadFile" id="uploadFile"
                                    type="file">
-                            <label class="custom-file-label" for="invoice">Choose file</label>
+                            <label class="custom-file-label" for="invoice" *ngIf="label!=undefined">{{label}}</label>
+                            <label class="custom-file-label" for="invoice" *ngIf="label==undefined">Choose File</label>
                           </div>
                           <div class="input-group-append">
                               <span (click)="uploadBill(cb)" class="input-group-text"

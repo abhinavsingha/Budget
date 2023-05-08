@@ -155,6 +155,7 @@ export class NewContigentBillComponent implements OnInit {
   dasboardData: any;
   allocation: any;
   private FundAllotted: any;
+  label: string='Choose File';
 
   constructor(
     public sharedService: SharedService,
@@ -1208,5 +1209,9 @@ export class NewContigentBillComponent implements OnInit {
         },
         complete: () => console.info('complete'),
       });
+  }
+
+  setLabel(formValue:any) {
+    this.label=formValue.uploadFile.name;
   }
 }
