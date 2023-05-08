@@ -424,8 +424,79 @@ export class BudgetAllocationReportComponent implements OnInit {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
         });
+    } else if (formdata.reportType == '05') {
+      //It is for Revised BE report
+      debugger;
+      this.apiService
+        .getApi(
+          this.cons.api.getREAllocationReport +
+            '/' +
+            formdata.finYear.serialNo +
+            '/ALL_106' +
+            '/' +
+            formdata.amountType.amountTypeId
+        )
+        .subscribe((res) => {
+          let result: { [key: string]: any } = res;
+          if (result['message'] == 'success') {
+            this.downloadPdf(
+              result['response'][0].path,
+              result['response'][0].fileName
+            );
+            this.SpinnerService.hide();
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        });
+    } else if (formdata.reportType == '06') {
+      //It is for Revised RE report
+      debugger;
+      this.apiService
+        .getApi(
+          this.cons.api.getREAllocationReport +
+            '/' +
+            formdata.finYear.serialNo +
+            '/ALL_107' +
+            '/' +
+            formdata.amountType.amountTypeId
+        )
+        .subscribe((res) => {
+          let result: { [key: string]: any } = res;
+          if (result['message'] == 'success') {
+            this.downloadPdf(
+              result['response'][0].path,
+              result['response'][0].fileName
+            );
+            this.SpinnerService.hide();
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        });
+    } else if (formdata.reportType == '07') {
+      //It is for Revised BE & RE report
+      debugger;
+      this.apiService
+        .getApi(
+          this.cons.api.getBEREAllocationReport +
+            '/' +
+            formdata.finYear.serialNo +
+            '/BE' +
+            '/' +
+            formdata.amountType.amountTypeId
+        )
+        .subscribe((res) => {
+          let result: { [key: string]: any } = res;
+          if (result['message'] == 'success') {
+            this.downloadPdf(
+              result['response'][0].path,
+              result['response'][0].fileName
+            );
+            this.SpinnerService.hide();
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        });
     }
-    debugger;
   }
 
   downloadPdf(pdfUrl: string, fileName: any): void {
