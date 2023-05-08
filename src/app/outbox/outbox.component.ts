@@ -91,6 +91,8 @@ export class OutboxComponent implements OnInit {
         this.router.navigate(['/cb-verification']);
       } else if (li.status == 'Verified') {
         this.router.navigate(['/contingent-bill-aprover']);
+      } else if (li.status == 'Fully Approved'||'Approved') {
+        this.router.navigate(['/contingent-bill-aprover']);
       }
 
       // window.location.href =;
