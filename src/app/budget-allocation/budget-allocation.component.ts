@@ -23,8 +23,226 @@ import { SharedService } from '../services/shared/shared.service';
   styleUrls: ['./budget-allocation.component.scss'],
 })
 export class BudgetAllocationComponent implements OnInit {
-  uploadDocuments: any[] = [];
+  budgetFinYearsNew: any[] = [];
+  getBudgetFinYear() {
+    this.SpinnerService.show();
+    this.apiService.getApi(this.cons.api.getBudgetFinYear).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.budgetFinYearsNew = result['response'];
+          this.formdata.patchValue({
+            finYearId: this.budgetFinYearsNew[0],
+          });
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
+  }
+
+  allunitsNew: any[] = [];
+  getCgUnitDataNew() {
+    this.SpinnerService.show();
+    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.allunitsNew = result['response'];
+          this.SpinnerService.hide();
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
+  }
+
   allocationType: any[] = [];
+  getAllocationTypeData() {
+    this.SpinnerService.show();
+    this.apiService.getApi(this.cons.api.getAllocationTypeData).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.allocationType = result['response'];
+          this.SpinnerService.hide();
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
+  }
+
+  subHeadType: any[] = [];
+  amountUnits: any;
+  getSubHeadType() {
+    this.SpinnerService.show();
+    this.apiService.getApi(this.cons.api.getSubHeadType).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.SpinnerService.hide();
+          this.subHeadType = result['response'];
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
+  }
+
+  majorDataNew: any[] = [];
+  getMajorDataNew() {
+    this.SpinnerService.show();
+    this.apiService.getApi(this.cons.api.getMajorData).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.majorDataNew = result['response'].subHead;
+          this.SpinnerService.hide();
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
+  }
+
+  unitForDocuments: any[] = [];
+  getUnitDatas() {
+    this.SpinnerService.show();
+    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.unitForDocuments = result['response'];
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
+  }
+
+  deleteDataByPid() {
+    this.SpinnerService.show();
+    this.apiService.getApi(this.cons.api.deleteDataByPid).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.SpinnerService.hide();
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
+  }
+
+  amountType: any;
+  getAmountType() {
+    this.SpinnerService.show();
+    this.apiService.getApi(this.cons.api.showAllAmountUnit).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.amountType = result['response'];
+          this.amountUnits = this.amountType[0];
+          this.amountUnit = this.amountUnits.amountType;
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
+  }
+
+  getDashboardData() {
+    this.SpinnerService.show();
+    this.apiService.postApi(this.cons.api.getDashboardData, null).subscribe(
+      (results) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = results;
+        if (result['message'] == 'success') {
+          this.formdata.patchValue({
+            allocationType: result['response'].allocationType,
+          });
+          this.sharedService.inbox = result['response'].inbox;
+          this.sharedService.outbox = result['response'].outBox;
+        }
+      },
+      (error) => {
+        console.log(error);
+        this.SpinnerService.hide();
+      }
+    );
+  }
+
+  ngOnInit(): void {
+    this.getBudgetFinYear();
+    this.getCgUnitDataNew();
+    this.getMajorDataNew();
+    this.getUnitDatas();
+    this.getAllocationTypeData();
+    this.deleteDataByPid();
+    this.getAmountType();
+    this.getDashboardData();
+    this.getSubHeadType();
+
+    $.getScript('assets/js/adminlte.js');
+    $.getScript('assets/main.js');
+  }
 
   budgetFinYears: any[] = [];
   subHeads: any[] = [];
@@ -110,58 +328,7 @@ export class BudgetAllocationComponent implements OnInit {
   ) {}
 
   token: any;
-  ngOnInit(): void {
-    this.getBudgetFinYear();
-    this.getCgUnitDataNew();
-    this.getMajorDataNew();
-    this.getUnitDatas();
-    this.getAllocationTypeData();
-    this.deleteDataByPid();
-    this.getAmountType();
-    this.getDashboardData();
-    this.uploadDocuments.push(new UploadDocuments());
 
-    this.getSubHeadType();
-
-    $.getScript('assets/js/adminlte.js');
-    $.getScript('assets/main.js');
-  }
-  getAllocationTypeData() {
-    this.SpinnerService.show();
-    this.apiService
-      .getApi(this.cons.api.getAllocationTypeData)
-      .subscribe((res) => {
-        let result: { [key: string]: any } = res;
-        if (result['message'] == 'success') {
-          this.allocationType = result['response'];
-          this.SpinnerService.hide();
-        } else {
-          this.common.faliureAlert('Please try later', result['message'], '');
-        }
-      });
-  }
-  amountType: any;
-  getAmountType() {
-    this.apiService.getApi(this.cons.api.showAllAmountUnit).subscribe({
-      next: (v: object) => {
-        this.SpinnerService.hide();
-        let result: { [key: string]: any } = v;
-        if (result['message'] == 'success') {
-          this.amountType = result['response'];
-          this.amountUnits=this.amountType[0];
-          this.amountUnit=this.amountUnits.amountType;
-        } else {
-          this.common.faliureAlert('Please try later', result['message'], '');
-        }
-      },
-      error: (e) => {
-        this.SpinnerService.hide();
-        console.error(e);
-        this.common.faliureAlert('Error', e['error']['message'], 'error');
-      },
-      complete: () => console.info('complete'),
-    });
-  }
   arrayWithUnitMajorHeadAndSubHead: any[] = [];
   putInNewList() {
     const unitDatas = this.cgUnits;
@@ -245,158 +412,6 @@ export class BudgetAllocationComponent implements OnInit {
     });
   }
 
-  getCgUnitData() {
-    const tokenValueHeader = localStorage.getItem('newToken');
-    this.SpinnerService.show();
-    var comboJson = null;
-    console.log(JSON.stringify(comboJson) + ' ======');
-    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
-      this.SpinnerService.hide();
-
-      let result: { [key: string]: any } = res;
-      this.cgUnits = result['response'];
-    });
-  }
-
-  getAllSubHeadByMajorHeads(data: any, formDataValue: any) {
-    //step1:- Must select the Unit before selecting the Major Head
-    if (formDataValue.unit == null) {
-      this.subHeads = [];
-      this.formdata.reset();
-      this.common.warningAlert(
-        'Messege',
-        'Please Select the Unit before selecting the Major Head.',
-        ''
-      );
-      return;
-    }
-
-    //step2:- Check if the subhead is froweded to the next grid wrt unit
-    if (formDataValue.unit != null) {
-      if (this.subHeadArrayWithoutUnit.length > 0) {
-        const found = this.subHeadArrayWithoutUnit.find((obj) => {
-          return obj.unit.unit === formDataValue.unit.unit;
-        });
-
-        if (found != undefined) {
-          this.subHeads = [];
-          this.getAllSubHeadData(data);
-          for (var i = 0; i < this.subHeadArrayWithoutUnit.length; i++) {
-            var subHeadIndex = this.subHeads.findIndex(
-              (a: { budgetCodeId: any }) =>
-                a.budgetCodeId == this.subHeadArrayWithoutUnit[i].budgetCodeId
-            );
-            if (subHeadIndex > -1) {
-              this.subHeads.splice(subHeadIndex, 1);
-            }
-            // this.subHeadArrayWithoutUnit[i].selectedSubHead.budgetCodeId;
-          }
-        }
-      } else {
-        this.getAllSubHeadData(data);
-      }
-    }
-  }
-
-  getAllSubHeadDataFirst() {
-    this.SpinnerService.show();
-    var comboJson = null;
-    console.log(JSON.stringify(comboJson) + ' ======');
-    this.apiService
-      .getApi(this.cons.api.getAllSubHeadByMajorHead + '/4047')
-      .subscribe((res) => {
-        this.SpinnerService.hide();
-
-        let result: { [key: string]: any } = res;
-
-        this.subHeadFirst = result['response'];
-
-        // result['response'].forEach((item : any, index: any) =>   {
-        //   var obj;
-        //   obj = {
-        //     budgetCodeId: item.budgetCodeId,
-        //     codeSubHeadId: item.codeSubHeadId,
-        //     majorHead: item.majorHead,
-        //     minorHead: item.minorHead,
-        //     subHeadDescr: item.subHeadDescr,
-        //     subheadShort: item.subheadShort,
-        //     isActive: item.isActive,
-        //     remark: item.budgetCodeId,
-        //   }
-        // });
-      });
-  }
-
-  getAllSubHeadDataSecond() {
-    this.SpinnerService.show();
-    var comboJson = null;
-    console.log(JSON.stringify(comboJson) + ' ======');
-    this.apiService
-      .getApi(this.cons.api.getAllSubHeadByMajorHead + '/2037')
-      .subscribe((res) => {
-        this.SpinnerService.hide();
-
-        let result: { [key: string]: any } = res;
-
-        this.subHeadSecond = result['response'];
-      });
-  }
-
-  getAllSubHeadData(data: any) {
-    this.SpinnerService.show();
-    var comboJson = null;
-    console.log(JSON.stringify(comboJson) + ' ======');
-    this.apiService
-      .getApi(this.cons.api.getAllSubHeadByMajorHead + '/' + data)
-      .subscribe((res) => {
-        this.SpinnerService.hide();
-
-        let result: { [key: string]: any } = res;
-
-        this.subHeads = result['response'];
-      });
-  }
-
-  createContact(contact: any, fb: FormBuilder) {
-    return fb.group({
-      name: [contact.name],
-      age: [contact.age],
-    });
-  }
-
-  getDataBudgetAllocation() {
-    this.SpinnerService.show();
-    var comboJson = null;
-    console.log(JSON.stringify(comboJson) + ' ======');
-    this.apiService
-      .getApi(this.cons.api.getDataBudgetAllocation)
-      .subscribe((res) => {
-        this.SpinnerService.hide();
-
-        let result: { [key: string]: any } = res;
-        this.budgetFinYears = result['response'].budgetFinYearData;
-        this.subHeads = result['response'].subHeadsData;
-        this.cgUnits = result['response'].cgUnitData;
-        this.budgetTypes = result['response'].budgetTypeData;
-        this.allocationTypes = result['response'].allocationTypeData;
-
-        this.allocationAuthorityUnits =
-          result['response'].allocationAuthorityUnits;
-        this.authorityTypes = result['response'].authorityTypes;
-
-        console.log('data === ' + this.cgUnits[0].unit);
-      });
-  }
-
-  subHeadSelected(subHead: any) {
-    // this.majorHead = this.subHeads.filter(function (ele) {
-    //   return (ele.id = a);
-    // });
-    console.log('majorHead ============== ' + subHead.majorHead);
-    this.majorHead = subHead.majorHead;
-    this.minorHead = subHead.minorHead;
-  }
-
   getAvailableFund(cgUnit: any) {
     // Only for demo
 
@@ -413,18 +428,6 @@ export class BudgetAllocationComponent implements OnInit {
         this.fundAvailable = result['response'].fundAvailable;
         this.previousAllocation = result['response'].previousAllocation;
       });
-  }
-
-  addData(data: any) {
-    this.newBudgetAllocationList.push(data);
-    this.showList('');
-  }
-
-  addDataFurtherTable(data: any) {
-    console.log('Value data for subHead ==== ' + data);
-
-    // this.newBudgetAllocationList.push(data);
-    // this.showList();
   }
 
   newSubHeadsArray: any[] = [];
@@ -468,14 +471,6 @@ export class BudgetAllocationComponent implements OnInit {
     }
   }
 
-  onSearchChange(searchValue: string): void {
-    if (Number(searchValue) > this.fundAvailable) {
-      console.log('Value cannot be greter than fund available');
-    } else {
-      this.balanceFund = Number(this.fundAvailable) - Number(searchValue);
-    }
-  }
-
   file: any;
 
   onChangeFile(event: any) {
@@ -484,61 +479,9 @@ export class BudgetAllocationComponent implements OnInit {
     }
   }
 
-  // uploadFile(index: any) {
-  //   const formData = new FormData();
-  //   formData.append('file', this.file);
-  //
-  //   this.SpinnerService.show();
-  //
-  //   this.apiService.postApi(this.cons.api.fileUpload, formData).subscribe({
-  //     next: (v: object) => {
-  //       this.SpinnerService.hide();
-  //       let result: { [key: string]: any } = v;
-  //
-  //       if (result['message'] == 'success') {
-  //         // this.newSubcList = [];
-  //         this.uploadFileResponse = '';
-  //         // this.newSubcArr = [];
-  //         this.uploadFileResponse = result['response'];
-  //         console.log(
-  //           'upload file data ======= ' +
-  //             JSON.stringify(this.uploadFileResponse) +
-  //             ' =submitJson'
-  //         );
-  //
-  //         this.uploadDocuments[index].uploadDocId =
-  //           this.uploadFileResponse.uploadDocId;
-  //
-  //         this.common.successAlert(
-  //           'Success',
-  //           result['response']['msg'],
-  //           'success'
-  //         );
-  //       } else {
-  //         this.common.faliureAlert('Please try later', result['message'], '');
-  //       }
-  //     },
-  //     error: (e) => {
-  //       this.SpinnerService.hide();
-  //       console.error(e);
-  //       this.common.faliureAlert('Error', e['error']['message'], 'error');
-  //     },
-  //     complete: () => console.info('complete'),
-  //   });
-  // }
-
   saveBudgetDataFn(data: any) {
-    // saveBudgetDataList: any[] = [];
-    // newBudgetDataSaveList: any[] = [];
-
     this.tableData;
-    this.uploadDocuments;
-
     this.saveBudgetDataList.push(data);
-
-    var newBudgetAllocationListSubArray = [];
-
-    // let authRequestsList: any[] = [];
     let budgetRequest: any[] = [];
     for (var i = 0; i < this.tableData.length; i++) {
       budgetRequest.push({
@@ -551,22 +494,9 @@ export class BudgetAllocationComponent implements OnInit {
         amountTypeId: this.formdata.get('amountType')?.value.amountTypeId,
       });
     }
-
-    // for (var i = 0; i < this.uploadDocuments.length; i++) {
-    //   authRequestsList.push({
-    //     authUnitId: this.uploadDocuments[i].authUnit.unit,
-    //     authority: this.uploadDocuments[i].authority,
-    //     authDate: this.uploadDocuments[i].authorityData,
-    //     remark: this.uploadDocuments[i].remarks,
-    //     authDocId: this.uploadDocuments[i].uploadDocId,
-    //   });
-    // }
-
     this.submitJson = {
-      // authRequests: authRequestsList,
       budgetRequest: budgetRequest,
     };
-
     this.confirmModel(this.submitJson);
   }
 
@@ -588,30 +518,21 @@ export class BudgetAllocationComponent implements OnInit {
 
   finallySubmit(data: any) {
     this.SpinnerService.show();
-    // var newSubmitJson = this.submitJson;
     var newSubmitJson = data;
     console.log(JSON.stringify(newSubmitJson) + ' =submitJson for save budget');
-
     this.apiService
       .postApi(this.cons.api.saveBudgetAllocationUnitWise, newSubmitJson)
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
-
-          // console.log(JSON.stringify(result) + " =submitJson");
-
           if (result['message'] == 'success') {
-            // this.newSubcList = [];
-            // this.newSubcArr = [];
-            this.uploadDocuments = [];
             this.majorHeadBySelectingUnit = [];
             this.arrayWithUnitMajorHeadAndSubHead = [];
             this.minorHead = [];
             this.subHeadBySelectingMajorHead = [];
             this.formdata.reset();
             this.tableData = [];
-            this.uploadDocuments.push(new UploadDocuments());
             this.deleteDataByPid();
             this.subHeadFilterDatas = [];
             this.common.successAlert(
@@ -631,8 +552,6 @@ export class BudgetAllocationComponent implements OnInit {
         },
         complete: () => console.info('complete'),
       });
-
-    // this.common.successAlert('Success', 'Finally submitted', 'success');
   }
 
   subHeadDataFormObject = {
@@ -780,9 +699,14 @@ export class BudgetAllocationComponent implements OnInit {
 
             if (this.subHeadFilterDatas != undefined) {
               for (let i = 0; i < this.subHeadFilterDatas.length; i++) {
-                if(this.subHeadFilterDatas[i].amountUnit!=null){
-                  this.subHeadFilterDatas[i].totalAmount=(this.subHeadFilterDatas[i].totalAmount*this.subHeadFilterDatas[i].amountUnit.amount/formDataValue.amountType.amount).toFixed(4);
-                  this.subHeadFilterDatas[i].amountUnit=formDataValue.amountType;
+                if (this.subHeadFilterDatas[i].amountUnit != null) {
+                  this.subHeadFilterDatas[i].totalAmount = (
+                    (this.subHeadFilterDatas[i].totalAmount *
+                      this.subHeadFilterDatas[i].amountUnit.amount) /
+                    formDataValue.amountType.amount
+                  ).toFixed(4);
+                  this.subHeadFilterDatas[i].amountUnit =
+                    formDataValue.amountType;
                 }
 
                 this.subHeadFilterDatas[i].amount = undefined;
@@ -800,50 +724,6 @@ export class BudgetAllocationComponent implements OnInit {
         },
         complete: () => console.info('complete'),
       });
-
-    // this.formdata.controls['amount'].setValue(null);
-    // const newarrayWithUnitMajorHeadAndSubHead =
-    //   this.arrayWithUnitMajorHeadAndSubHead;
-    // const majorHead = data.majorHead;
-    // const subHead = data.budgetCodeId;
-    // const unit = formDataValue.unit;
-
-    // let unitIndex = 0;
-
-    // for (var i = 0; i < this.arrayWithUnitMajorHeadAndSubHead.length; i++) {
-    //   if (this.arrayWithUnitMajorHeadAndSubHead[i].units.unit == unit) {
-    //     const newObj = structuredClone(
-    //       this.arrayWithUnitMajorHeadAndSubHead[i]
-    //     );
-    //     unitIndex = i;
-    //     if (majorHead == '2037') {
-    //       newObj.majorHeads[0].subHeads.splice(subHeadIndex, 1);
-    //       this.arrayWithUnitMajorHeadAndSubHead[i] = newObj;
-    //       this.subHeadBySelectingMajorHead =
-    //         this.arrayWithUnitMajorHeadAndSubHead[i].majorHeads[0].subHeads;
-    //       this.showSubHeadDataIntoNextGrid(
-    //         formDataValue.finYearName,
-    //         this.arrayWithUnitMajorHeadAndSubHead[i].units,
-    //         data,
-    //         formDataValue.amount,
-    //         formDataValue.remarks
-    //       );
-    //     } else if (majorHead == '4047') {
-    //       newObj.majorHeads[1].subHeads.splice(subHeadIndex, 1);
-    //       this.arrayWithUnitMajorHeadAndSubHead[i] = newObj;
-    //       this.subHeadBySelectingMajorHead =
-    //         this.arrayWithUnitMajorHeadAndSubHead[i].majorHeads[1].subHeads;
-    //       this.showSubHeadDataIntoNextGrid(
-    //         formDataValue.finYearName,
-    //         this.arrayWithUnitMajorHeadAndSubHead[i].units,
-    //         data,
-    //         formDataValue.amount,
-    //         formDataValue.remarks
-    //       );
-    //     }
-    //     break;
-    //   }
-    // }
   }
 
   showSubHeadDataIntoNextGrid(
@@ -912,71 +792,7 @@ export class BudgetAllocationComponent implements OnInit {
     }
   }
 
-  unitForDocuments: any[] = [];
-  getUnitDatas() {
-    this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
-      this.SpinnerService.hide();
-      let result: { [key: string]: any } = res;
-      this.unitForDocuments = result['response'];
-    });
-  }
-
-  addFieldValue() {
-    this.uploadDocuments.push(new UploadDocuments());
-  }
-
-  deleteFieldValue(index: any) {
-    this.uploadDocuments.splice(index, 1);
-  }
-
   rowUploadData(data: any) {}
-
-  budgetFinYearsNew: any[] = [];
-  getBudgetFinYear() {
-    this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getBudgetFinYear).subscribe((res) => {
-      let result: { [key: string]: any } = res;
-      if (result['message'] == 'success') {
-        this.budgetFinYearsNew = result['response'];
-        this.formdata.patchValue({
-          finYearId: this.budgetFinYearsNew[0],
-        });
-        this.SpinnerService.hide();
-      } else {
-        this.common.faliureAlert('Please try later', result['message'], '');
-      }
-    });
-  }
-
-  allunitsNew: any[] = [];
-  getCgUnitDataNew() {
-    this.SpinnerService.show();
-
-    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
-      let result: { [key: string]: any } = res;
-      if (result['message'] == 'success') {
-        this.allunitsNew = result['response'];
-        this.SpinnerService.hide();
-      } else {
-        this.common.faliureAlert('Please try later', result['message'], '');
-      }
-    });
-  }
-
-  majorDataNew: any[] = [];
-  getMajorDataNew() {
-    this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getMajorData).subscribe((res) => {
-      let result: { [key: string]: any } = res;
-      if (result['message'] == 'success') {
-        this.majorDataNew = result['response'].subHead;
-        this.SpinnerService.hide();
-      } else {
-        this.common.faliureAlert('Please try later', result['message'], '');
-      }
-    });
-  }
 
   subHeadFilterDatas: any[] = [];
 
@@ -1003,7 +819,8 @@ export class BudgetAllocationComponent implements OnInit {
       formdataValue.unitId.length == 0 ||
       formdataValue.finYearId.length == 0 ||
       formdataValue.allocationType == null ||
-      formdataValue.allocationType.length == 0||formdataValue.subHeadType==undefined
+      formdataValue.allocationType.length == 0 ||
+      formdataValue.subHeadType == undefined
     ) {
       this.formdata.patchValue({
         majorHeadId: [],
@@ -1045,9 +862,14 @@ export class BudgetAllocationComponent implements OnInit {
           // debugger;
           if (this.subHeadFilterDatas != undefined) {
             for (let i = 0; i < this.subHeadFilterDatas.length; i++) {
-              if(this.subHeadFilterDatas[i].amountUnit!=null){
-                this.subHeadFilterDatas[i].totalAmount=(this.subHeadFilterDatas[i].totalAmount*this.subHeadFilterDatas[i].amountUnit.amount/formdataValue.amountType.amount).toFixed(4);
-                this.subHeadFilterDatas[i].amountUnit=formdataValue.amountType;
+              if (this.subHeadFilterDatas[i].amountUnit != null) {
+                this.subHeadFilterDatas[i].totalAmount = (
+                  (this.subHeadFilterDatas[i].totalAmount *
+                    this.subHeadFilterDatas[i].amountUnit.amount) /
+                  formdataValue.amountType.amount
+                ).toFixed(4);
+                this.subHeadFilterDatas[i].amountUnit =
+                  formdataValue.amountType;
               }
 
               this.subHeadFilterDatas[i].amount = undefined;
@@ -1093,18 +915,6 @@ export class BudgetAllocationComponent implements OnInit {
     this.subHeadFilterDatas = [];
   }
 
-  deleteDataByPid() {
-    this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.deleteDataByPid).subscribe((res) => {
-      let result: { [key: string]: any } = res;
-      if (result['message'] == 'success') {
-        this.SpinnerService.hide();
-      } else {
-        this.common.faliureAlert('Please try later', result['message'], '');
-      }
-    });
-  }
-
   deleteRowFromTableData(tableSingleData: any, indexValue: any) {
     this.SpinnerService.show();
     let submitJson = {
@@ -1144,101 +954,77 @@ export class BudgetAllocationComponent implements OnInit {
     });
   }
 
-  private getDashboardData() {
-    // this.SpinnerService.show();
-    this.apiService.postApi(this.cons.api.getDashboardData, null).subscribe(
-      (results) => {
-        // debugger;
-        this.SpinnerService.hide();
-        $.getScript('assets/js/adminlte.js');
-
-        // this.dummydata();
-        let result: { [key: string]: any } = results;
-        if (result['message'] == 'success') {
-          // this.userRole = result['response'].userDetails.role[0].roleName;
-          this.formdata.patchValue({
-            allocationType: result['response'].allocationType,
-          });
-
-          this.sharedService.inbox = result['response'].inbox;
-          this.sharedService.outbox = result['response'].outBox;
-        }
-      },
-      (error) => {
-        console.log(error);
-        this.SpinnerService.hide();
-      }
-    );
-  }
-  allocatedAmount(index: any,formdata
-  :any) {
-    if(formdata.amountType==undefined){
-      Swal.fire("Please Select Rupees in");
-      this.subHeadFilterDatas[index].amount=undefined;
+  allocatedAmount(index: any, formdata: any) {
+    if (formdata.amountType == undefined) {
+      Swal.fire('Please Select Rupees in');
+      this.subHeadFilterDatas[index].amount = undefined;
       return;
     }
     this.subHeadFilterDatas[index].amount = Number(
       this.subHeadFilterDatas[index].amount
     ).toFixed(4);
-    this.subHeadFilterDatas[index].amountUnit2=formdata.amountType
+    this.subHeadFilterDatas[index].amountUnit2 = formdata.amountType;
   }
 
   setAmountType() {
     this.amountUnit = this.formdata.get('amountType')?.value.amountType;
-    for(let i=0;i<this.subHeadFilterDatas.length;i++){
-      if(this.subHeadFilterDatas[i].amountUnit!=null){
-        this.subHeadFilterDatas[i].totalAmount=(this.subHeadFilterDatas[i].totalAmount*this.subHeadFilterDatas[i].amountUnit.amount/this.formdata.get('amountType')?.value.amount).toFixed(4);
-        this.subHeadFilterDatas[i].amountUnit=this.formdata.get('amountType')?.value;
-
+    for (let i = 0; i < this.subHeadFilterDatas.length; i++) {
+      if (this.subHeadFilterDatas[i].amountUnit != null) {
+        this.subHeadFilterDatas[i].totalAmount = (
+          (this.subHeadFilterDatas[i].totalAmount *
+            this.subHeadFilterDatas[i].amountUnit.amount) /
+          this.formdata.get('amountType')?.value.amount
+        ).toFixed(4);
+        this.subHeadFilterDatas[i].amountUnit =
+          this.formdata.get('amountType')?.value;
       }
-      if(this.subHeadFilterDatas[i].amount!=undefined){
-        this.subHeadFilterDatas[i].amount=(this.subHeadFilterDatas[i].amount*this.subHeadFilterDatas[i].amountUnit2.amount/ this.formdata.get('amountType')?.value.amount).toFixed(4);
-        this.subHeadFilterDatas[i].amountUnit2= this.formdata.get('amountType')?.value;
+      if (this.subHeadFilterDatas[i].amount != undefined) {
+        this.subHeadFilterDatas[i].amount = (
+          (this.subHeadFilterDatas[i].amount *
+            this.subHeadFilterDatas[i].amountUnit2.amount) /
+          this.formdata.get('amountType')?.value.amount
+        ).toFixed(4);
+        this.subHeadFilterDatas[i].amountUnit2 =
+          this.formdata.get('amountType')?.value;
       }
     }
-    for(let i=0;i<this.tableData.length;i++){
+    for (let i = 0; i < this.tableData.length; i++) {
       debugger;
-      this.tableData[i].selectedSubHead.amount=(this.tableData[i].selectedSubHead.amount*this.tableData[i].selectedSubHead.amountUnit2.amount/this.formdata.get('amountType')?.value.amount).toFixed(4);
-      this.tableData[i].selectedSubHead.amountUnit2=this.formdata.get('amountType')?.value;
-      this.tableData[i].selectedSubHead.totalAmount=(this.tableData[i].selectedSubHead.totalAmount*this.tableData[i].selectedSubHead.amountUnit.amount/this.formdata.get('amountType')?.value.amount).toFixed(4);
-      this.tableData[i].selectedSubHead.amountUnit=this.formdata.get('amountType')?.value;
+      this.tableData[i].selectedSubHead.amount = (
+        (this.tableData[i].selectedSubHead.amount *
+          this.tableData[i].selectedSubHead.amountUnit2.amount) /
+        this.formdata.get('amountType')?.value.amount
+      ).toFixed(4);
+      this.tableData[i].selectedSubHead.amountUnit2 =
+        this.formdata.get('amountType')?.value;
+      this.tableData[i].selectedSubHead.totalAmount = (
+        (this.tableData[i].selectedSubHead.totalAmount *
+          this.tableData[i].selectedSubHead.amountUnit.amount) /
+        this.formdata.get('amountType')?.value.amount
+      ).toFixed(4);
+      this.tableData[i].selectedSubHead.amountUnit =
+        this.formdata.get('amountType')?.value;
     }
   }
 
-  subHeadType: any[] = [];
-  amountUnits: any;
-  getSubHeadType() {
-    this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getSubHeadType).subscribe((res) => {
-      let result: { [key: string]: any } = res;
-      if (result['message'] == 'success') {
+  updateInbox() {
+    this.apiService.getApi(this.cons.api.updateInboxOutBox).subscribe({
+      next: (v: object) => {
         this.SpinnerService.hide();
-        this.subHeadType = result['response'];
-      } else {
-        this.common.faliureAlert('Please try later', result['message'], '');
-      }
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.sharedService.inbox = result['response'].inbox;
+          this.sharedService.outbox = result['response'].outBox;
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
     });
-  }
-  updateInbox(){
-    this.apiService
-      .getApi(this.cons.api.updateInboxOutBox)
-      .subscribe({
-        next: (v: object) => {
-          this.SpinnerService.hide();
-          let result: { [key: string]: any } = v;
-          if (result['message'] == 'success') {
-            this.sharedService.inbox = result['response'].inbox;
-            this.sharedService.outbox = result['response'].outBox;
-          } else {
-            this.common.faliureAlert('Please try later', result['message'], '');
-          }
-        },
-        error: (e) => {
-          this.SpinnerService.hide();
-          console.error(e);
-          this.common.faliureAlert('Error', e['error']['message'], 'error');
-        },
-        complete: () => console.info('complete'),
-      });
   }
 }
