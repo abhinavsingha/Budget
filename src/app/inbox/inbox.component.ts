@@ -128,7 +128,7 @@ export class InboxComponent implements OnInit {
           let type='';
           for (let i = 0; i < list.length; i++) {
             if(list[i].isBgOrCg=="BG"){
-              if(list[i].remarks=="Budget Allocation Revision")
+              if(list[i].remarks=="Budget Revision")
                 type='Budget Revision';
               else
                 type='Budget Allocation';

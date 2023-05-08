@@ -281,7 +281,7 @@
                       <tr *ngFor="let cb of cbList  | paginate :{itemsPerPage:10,currentPage:p}; let i = index"
                         id="htmlData">
                         <!--                      <td><input (change)="getCheckedRows(cb.cbNo)" type="checkbox" value="{{cb.cbNo}}"></td>-->
-                        <td><input type="checkbox" [(ngModel)]="cb.checked" [ngModelOptions]="{standalone: true}"></td>
+                        <td><input *ngIf="cb.status=='Pending for Submission'" type="checkbox" [(ngModel)]="cb.checked" [ngModelOptions]="{standalone: true}"></td>
                         <td>{{cb.finYearName}}</td>
                         <td>{{cb.unit}}</td>
                         <td>{{cb.subHead}}</td>

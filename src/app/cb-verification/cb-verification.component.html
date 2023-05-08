@@ -118,7 +118,7 @@
                 <div class="form-group">
                   <label>CB Unit</label>
                   <input type="text" class="form-control" id="unit" placeholder="Enter Unit"
-                         formControlName="unit" (change)="updateExpenditure()" readonly/>
+                         formControlName="unit" readonly/>
 <!--                  <ng-select [readonly]="true" class="form-control select2bs4" style="width: 100%" [items]="unitData"-->
 <!--                             bindLabel="descr" placeholder="Select Unit" formControlName="unit" (change)="getBudgetAllotted()">-->
 <!--                  </ng-select>-->
@@ -144,13 +144,13 @@
                 <div class="form-group">
                   <label>CB Amount</label>
                   <input type="number" class="form-control" id="Amount" placeholder="Enter Amount"
-                         formControlName="amount" (change)="updateExpenditure()" />
+                         formControlName="amount"   />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Proggressive Expenditure Including This Bill</label>
-                  <input type="number" class="form-control" id="Proggressive" readonly />
+                  <input type="number" class="form-control" id="Proggressive" formControlName="prograssive" readonly />
                 </div>
               </div>
               <div class="col-md-4">
@@ -184,7 +184,7 @@
                 <div class="form-group">
                   <label>Authority Unit</label>
                   <input type="text" class="form-control" id="authunit" placeholder="Enter Authority Unit"
-                         formControlName="authorityUnit" (change)="updateExpenditure()" readonly/>
+                         formControlName="authorityUnit"   readonly/>
                 </div>
               </div>
               <div class="col-md-4">

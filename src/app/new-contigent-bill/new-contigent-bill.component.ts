@@ -144,7 +144,7 @@ export class NewContigentBillComponent implements OnInit {
   });
   budgetAllotted: any;
   billAmount: number = 0;
-  expenditure: any;
+  expenditure: number=0;
   selectedFile: File | any = null;
   fileName = '';
   invoice: any;
@@ -291,7 +291,7 @@ export class NewContigentBillComponent implements OnInit {
         let result: { [key: string]: any } = v;
         if (result['message'] == 'success') {
           this.FundAllotted = result['response'];
-          this.expenditure = this.FundAllotted.expenditure;
+          this.expenditure = parseFloat(this.FundAllotted.expenditure);
           this.formdata.get('progressive')?.setValue(this.expenditure);
           if (result['response'].fundAvailable == 0) {
             this.budgetAllotted = 0;
@@ -403,12 +403,6 @@ export class NewContigentBillComponent implements OnInit {
       complete: () => console.info('complete'),
     });
   }
-
-  // getExpenditure() {
-  //   this.expenditure = this.FundAllotted.expenditure;
-  //   this.formdata.get('progressive')?.setValue(this.expenditure);
-  //   // this.updateExpenditure();
-  // }
   unitId: any;
   unitName: any;
   private getDashboardData() {
@@ -424,7 +418,6 @@ export class NewContigentBillComponent implements OnInit {
           this.unitName = result['response'].userDetails.unit;
           this.formdata.get('unit')?.setValue(this.unitName);
           this.formdata.get('authorityUnit')?.setValue(this.unitName);
-          this.getAvailableFundData();
         }
       },
       (error) => {
@@ -472,16 +465,16 @@ export class NewContigentBillComponent implements OnInit {
         let getCbList = result['response'];
 
         for (let i = 0; i < getCbList.length; i++) {
-          let url = this.cons.api.getAvailableFund;
-          console.log(url);
-          let json = {
-            budgetHeadId: getCbList[i].budgetHeadID.budgetCodeId,
-          };
-          this.SpinnerService.show();
-          this.apiService.postApi(url, json).subscribe(
-            (res) => {
-              let result: { [key: string]: any } = res;
-              this.budgetAllotted = result['response'].fundAvailable;
+          // let url = this.cons.api.getAvailableFund;
+          // console.log(url);
+          // let json = {
+          //   budgetHeadId: getCbList[i].budgetHeadID.budgetCodeId,
+          // };
+          // this.SpinnerService.show();
+          // this.apiService.postApi(url, json).subscribe(
+          //   (res) => {
+          //     let result: { [key: string]: any } = res;
+          //     this.budgetAllotted = result['response'].fundAvailable;
               const entry: newCb = {
                 isFlag: getCbList[i].isFlag,
                 cbId: getCbList[i].cbId,
@@ -489,7 +482,7 @@ export class NewContigentBillComponent implements OnInit {
                 unitId: getCbList[i].cbUnitId.unit,
                 uploadFileDate: getCbList[i].fileDate,
                 finSerialNo: getCbList[i].finYear.serialNo,
-                progressiveAmount: getCbList[i].progressiveAmount,
+                progressiveAmount: undefined,
                 fileDate: getCbList[i].fileDate,
                 minorHead: getCbList[i].budgetHeadID.minorHead,
                 unit: getCbList[i].cbUnitId.cgUnitShort,
@@ -515,7 +508,7 @@ export class NewContigentBillComponent implements OnInit {
                 invoiceFile: getCbList[i].fileID,
                 returnRemarks: getCbList[i].authoritiesList[0].remarks,
                 status: getCbList[i].status,
-                budgetAllocated: this.budgetAllotted,
+                budgetAllocated: undefined,
                 checked: false,
                 fileNo: getCbList[i].fileID,
                 file: getCbList[i].authoritiesList[0].docId,
@@ -529,15 +522,14 @@ export class NewContigentBillComponent implements OnInit {
               };
               if (entry.status == 'Approved') this.approvedPresent = true;
               this.cbList.push(entry);
-              this.SpinnerService.hide();
-            },
-            (error) => {
-              console.log(error);
-              this.SpinnerService.hide();
-              //remove after test
-              this.budgetAllotted = 0;
-            }
-          );
+          //     this.SpinnerService.hide();
+          //   },
+          //   (error) => {
+          //     console.log(error);
+          //     this.SpinnerService.hide();
+          //     //remove after test
+          //   }
+          // );
         }
       },
       (error) => {
@@ -591,14 +583,13 @@ export class NewContigentBillComponent implements OnInit {
       this.formdata
         .get('progressive')
         ?.setValue(
-          parseFloat(this.expenditure) + this.formdata.get('amount')?.value
-        );
+          this.expenditure + parseFloat(this.formdata.get('amount')?.value
+          ));
       this.formdata
         .get('balance')
         ?.setValue(
           parseFloat(this.formdata.get('budgetAllocated')?.value) -
-            (parseFloat(this.expenditure) + this.formdata.get('amount')?.value)
-        );
+          this.expenditure + parseFloat(this.formdata.get('amount')?.value));
     }
   }
 
@@ -695,7 +686,7 @@ export class NewContigentBillComponent implements OnInit {
               this.SpinnerService.show();
               let json = {
                 budgetHeadType:
-                  this.formdata.get('subHeadType')?.value.subHeadTypeId,
+                this.formdata.get('subHeadType')?.value.subHeadTypeId,
                 majorHead: cbEntry.majorHead,
               };
               this.apiService
@@ -708,7 +699,36 @@ export class NewContigentBillComponent implements OnInit {
                       let sub = this.subHeadData[i];
                       if (sub.subHeadDescr == cbEntry.subHead) {
                         this.formdata.get('subHead')?.setValue(sub);
-                        this.getAvailableFundData();
+                        this.SpinnerService.show();
+                        let json = {
+                          budgetHeadId: this.formdata.get('subHead')?.value.budgetCodeId,
+                        };
+                        this.apiService.postApi(this.cons.api.getAvailableFund, json).subscribe({
+                          next: (v: object) => {
+                            this.SpinnerService.hide();
+                            let result: { [key: string]: any } = v;
+                            if (result['message'] == 'success') {
+                              this.FundAllotted = result['response'];
+                              this.expenditure = parseFloat(this.FundAllotted.expenditure);
+                              this.formdata.get('progressive')?.setValue(this.expenditure);
+                              this.formdata.get('budgetAllocated')?.setValue(parseFloat(this.FundAllotted.fundAvailable)*this.FundAllotted.amountUnit.amount);
+                              this.budgetAllotted = cbEntry.budgetAllocated;
+                              this.formdata.get('progressive')?.setValue(parseFloat(this.FundAllotted.expenditure));
+                              this.formdata
+                                .get('balance')
+                                ?.setValue(parseFloat(this.FundAllotted.fundAvailable)*this.FundAllotted.amountUnit.amount - parseFloat(this.FundAllotted.expenditure));
+
+                            } else {
+                              this.common.faliureAlert('Please try later', result['message'], '');
+                            }
+                          },
+                          error: (e) => {
+                            this.SpinnerService.hide();
+                            console.error(e);
+                            this.common.faliureAlert('Error', e['error']['message'], 'error');
+                          },
+                          complete: () => console.info('complete'),
+                        });
                       }
                     }
                     this.SpinnerService.hide();
@@ -725,7 +745,35 @@ export class NewContigentBillComponent implements OnInit {
             let sub = this.subHeadData[i];
             if (sub.subHeadDescr == cbEntry.subHead) {
               this.formdata.get('subHead')?.setValue(sub);
-              this.getAvailableFundData();
+              let json = {
+                budgetHeadId: this.formdata.get('subHead')?.value.budgetCodeId,
+              };
+              this.apiService.postApi(this.cons.api.getAvailableFund, json).subscribe({
+                next: (v: object) => {
+                  this.SpinnerService.hide();
+                  let result: { [key: string]: any } = v;
+                  if (result['message'] == 'success') {
+                    this.FundAllotted = result['response'];
+                    this.expenditure = parseFloat(this.FundAllotted.expenditure);
+                    this.formdata.get('progressive')?.setValue(this.expenditure);
+                    this.formdata.get('budgetAllocated')?.setValue(parseFloat(this.FundAllotted.fundAvailable)*this.FundAllotted.amountUnit.amount);
+                    this.budgetAllotted = cbEntry.budgetAllocated;
+                    this.formdata.get('progressive')?.setValue(parseFloat(this.FundAllotted.expenditure));
+                    this.formdata
+                      .get('balance')
+                      ?.setValue(parseFloat(this.FundAllotted.fundAvailable)*this.FundAllotted.amountUnit.amount - parseFloat(this.FundAllotted.expenditure));
+
+                  } else {
+                    this.common.faliureAlert('Please try later', result['message'], '');
+                  }
+                },
+                error: (e) => {
+                  this.SpinnerService.hide();
+                  console.error(e);
+                  this.common.faliureAlert('Error', e['error']['message'], 'error');
+                },
+                complete: () => console.info('complete'),
+              });
             }
           }
         }
@@ -735,12 +783,6 @@ export class NewContigentBillComponent implements OnInit {
     this.formdata.get('amount')?.setValue(cbEntry.amount);
     this.formdata.get('unit')?.setValue(this.unitName);
     this.formdata.get('authorityUnit')?.setValue(this.unitName);
-    this.formdata.get('budgetAllocated')?.setValue(cbEntry.budgetAllocated);
-    this.budgetAllotted = cbEntry.budgetAllocated;
-    this.formdata.get('progressive')?.setValue(cbEntry.progressiveAmount);
-    this.formdata
-      .get('balance')
-      ?.setValue(cbEntry.budgetAllocated - cbEntry.progressiveAmount);
     // this.formdata.get('file')?.setValue(cbEntry.file);
     this.formdata.get('cbNo')?.setValue(cbEntry.cbNo);
     this.formdata.get('cbDate')?.setValue(cbEntry.cbDate);
@@ -909,7 +951,7 @@ export class NewContigentBillComponent implements OnInit {
   submitList() {
     const submitList: submitCb[] = [];
     for (let i = 0; i < this.cbList.length; i++) {
-      if (this.cbList[i].checked) {
+      if (this.cbList[i].checked && this.cbList[i].status=='Pending for Submission') {
         let budgetId: string = '';
         for (let j = 0; j < this.subHeadData.length; j++) {
           if (this.subHeadData[j].subHeadDescr == this.cbList[i].subHead)
@@ -955,7 +997,6 @@ export class NewContigentBillComponent implements OnInit {
       Swal.fire('Add more Data');
     } else {
       this.SpinnerService.show();
-      debugger;
       this.apiService
         .postApi(this.cons.api.saveContingentBill, submitList)
         .subscribe({

@@ -67,6 +67,7 @@ export class CbVerificationComponent {
   budgetAllotted: any;
   expenditure: any;
   private dasboardData: any;
+  FundAllotted: any;
   constructor(
     private apiService: ApiCallingServiceService,
     private cons: ConstantsService,
@@ -79,6 +80,7 @@ export class CbVerificationComponent {
   cbList: cb[] = [];
   disabled: boolean = true;
   formdata = new FormGroup({
+    progressive:new FormControl(),
     budgetAllocated: new FormControl(),
     minorHead: new FormControl(), //
     unit: new FormControl(), //
@@ -304,6 +306,7 @@ export class CbVerificationComponent {
                     let sub = this.subHeadData[i];
                     if (sub.subHeadDescr == cbEntry.subHead) {
                       this.formdata.get('subHead')?.setValue(sub);
+                      this.getAvailableFundData()
                     }
                   }
                   this.SpinnerService.hide();
@@ -325,12 +328,8 @@ export class CbVerificationComponent {
         }
       }
     }
-
     this.formdata.get('budgetAllocated')?.setValue(cbEntry.budgetAllocated);
-
     this.formdata.get('amount')?.setValue(cbEntry.amount);
-    this.getBudgetAllotted();
-
     this.formdata.get('cbNo')?.setValue(cbEntry.cbNo);
     this.formdata.get('cbDate')?.setValue(cbEntry.cbDate);
     this.formdata.get('remarks')?.setValue(cbEntry.remarks);
@@ -353,7 +352,7 @@ export class CbVerificationComponent {
         this.formdata.get('finYearName')?.setValue(this.finYearData[i]);
     }
     this.formdata.get('file')?.setValue(cbEntry.file);
-
+    this.updateExpenditure();
   }
   subHeadType:any;
   // updateFormdata(cbEntry: cb) {
@@ -441,11 +440,6 @@ export class CbVerificationComponent {
   //   this.formdata.get('onAccOf')?.setValue(cbEntry.onAccOf);
   //   this.formdata.get('authDetail')?.setValue(cbEntry.authDetail);
   // }
-  getBudgetAllotted() {
-    this.budgetAllotted = 0;
-    this.formdata.get('budgetAllocated')?.setValue(this.budgetAllotted);
-    this.getExpenditure();
-  }
   private getExpenditure() {
     this.expenditure = 0;
     const proggressive = document.getElementById(
@@ -466,7 +460,6 @@ export class CbVerificationComponent {
       (this.budgetAllotted - this.expenditure).toString()
     );
   }
-
   confirmModel() {
     Swal.fire({
       title: 'Are you sure you want to Approve this Batch?',
@@ -520,7 +513,6 @@ export class CbVerificationComponent {
     // }
     console.log(this.cbList);
   }
-
   confirmRejectModel() {
     Swal.fire({
       title: 'Are you sure you want to Reject this Batch?',
@@ -609,5 +601,47 @@ export class CbVerificationComponent {
         },
         complete: () => console.info('complete'),
       });
+  }
+  getAvailableFundData() {
+    this.SpinnerService.show();
+    let json = {
+      budgetHeadId: this.formdata.get('subHead')?.value.budgetCodeId,
+    };
+    this.apiService.postApi(this.cons.api.getAvailableFund, json).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.FundAllotted = result['response'];
+          this.expenditure = this.FundAllotted.expenditure;
+          this.formdata.get('progressive')?.setValue(this.expenditure);
+          if (result['response'].fundAvailable == 0) {
+            this.budgetAllotted = 0;
+            this.formdata.get('budgetAllocated')?.setValue(0);
+          } else {
+            this.budgetAllotted = (
+              parseFloat(result['response'].fundAvailable) *
+              parseFloat(result['response'].amountUnit.amount)
+            ).toFixed(4);
+            this.formdata
+              .get('budgetAllocated')
+              ?.setValue(
+                (
+                  parseFloat(result['response'].fundAvailable) *
+                  parseFloat(result['response'].amountUnit.amount)
+                ).toFixed(4)
+              );
+          }
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
   }
 }

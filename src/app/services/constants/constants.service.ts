@@ -181,6 +181,8 @@ export class ConstantsService {
     getCdaDataList: this.serviceUrl + 'cdaParkingController/getCdaDataList',
     getContingentBillReport:
       this.serviceUrl + 'reportController/getContingentBillReport',
-    updateInboxOutBox: this.serviceUrl + 'dashBoard/updateInboxOutBox',
+    updateInboxOutBox: this.serviceUrl + 'dashBoard/updateInboxOutBox', approveRevisionBudgetOrReject: this.serviceUrl + 'budgetAllocation/approveRevisionBudgetOrReject',
+    getAllRevisionGroupId: this.serviceUrl + 'budgetAllocation/getAllRevisionGroupId'
+
   };
 }
