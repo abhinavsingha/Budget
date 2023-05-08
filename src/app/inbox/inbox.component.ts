@@ -62,6 +62,7 @@ export class InboxComponent implements OnInit {
     $('.modal').on('hidden.bs.modal', function () {
       $('#cdaParking').hide();
     });
+    this.sharedService.status=false;
   }
 
   constructor(
@@ -112,6 +113,8 @@ export class InboxComponent implements OnInit {
       this.sharedService.redirectedFrom = 'inbox';
       // window.location.href = '/budget-approval';
     }else if(li.type == 'Budget Revision'){
+      if(li.status=='Fully Approved')
+        this.sharedService.status=true;
       this.router.navigate(['/revision-approval']);
     }
   }

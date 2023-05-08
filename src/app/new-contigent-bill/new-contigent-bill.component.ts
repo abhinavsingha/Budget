@@ -249,6 +249,11 @@ export class NewContigentBillComponent implements OnInit {
         this.cleardata(0);
         this.getFinancialYear();
         this.updateInbox();
+        this.common.successAlert(
+          'Success',
+          'Data Added Successfully',
+          'success'
+        );
       } else {
         Swal.fire(
           'Duplicate Entry. Select Update to update previously entered CB'

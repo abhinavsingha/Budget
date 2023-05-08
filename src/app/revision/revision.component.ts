@@ -353,6 +353,11 @@ export class RevisionComponent {
   }
 
   revisionAmount(index: any) {
+    if(parseFloat(this.budgetRevisionUnitList2[index].existingAmount)+parseFloat(this.budgetRevisionUnitList2[index].revisionAmount)<0){
+      Swal.fire('Cannot withdraw more than existing amount');
+      this.budgetRevisionUnitList2[index].revisionAmount=undefined;
+      return;
+    }
     if(this.formdata.get('amountType')?.value==null||this.formdata.get('amountType')?.value==undefined){
       Swal.fire('Select Rupee in');
       this.budgetRevisionUnitList2[index].revisionAmount=undefined;

@@ -72,7 +72,7 @@ export class RevisionApprovalComponent {
   getAlGroupId(groupId: any) {
     this.SpinnerService.show();
     this.apiService
-      .getApi(this.cons.api.getAlGroupId + '/' + groupId)
+      .getApi(this.cons.api.getAllRevisionGroupId + '/' + groupId)
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
@@ -150,7 +150,7 @@ export class RevisionApprovalComponent {
       remarks: formDataValue.remarks,
     };
     this.apiService
-      .postApi(this.cons.api.approveBudgetOrReject, submitJson)
+      .postApi(this.cons.api.approveRevisionBudgetOrReject, submitJson)
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -186,7 +186,7 @@ export class RevisionApprovalComponent {
       remarks: formDataValue.remarks,
     };
     this.apiService
-      .postApi(this.cons.api.approveBudgetOrReject, submitJson)
+      .postApi(this.cons.api.approveRevisionBudgetOrReject, submitJson)
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();

@@ -118,7 +118,7 @@
                 <div class="form-group">
                   <label>CB Unit</label>
                   <input type="text" class="form-control" id="unit" placeholder="Enter Unit"
-                         formControlName="unit" (change)="updateExpenditure()" readonly/>
+                         formControlName="unit" readonly/>
                 </div>
               </div>
               <div class="col-md-4">
@@ -141,19 +141,19 @@
                 <div class="form-group">
                   <label>CB Amount</label>
                   <input type="number" class="form-control" id="Amount" placeholder="Enter Amount"
-                    formControlName="amount" (change)="updateExpenditure()" />
+                    formControlName="amount"  />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Proggressive Expenditure Including This Bill</label>
-                  <input type="number" class="form-control" id="Proggressive" readonly />
+                  <input type="number" class="form-control" id="Proggressive" formControlName="progressive" readonly />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Balance Fund</label>
-                  <input type="text" class="form-control" id="BalanceFund" readonly />
+                  <input type="text" class="form-control" id="BalanceFund" formControlName="balance" readonly  />
                 </div>
               </div>
               <div class="col-md-4">

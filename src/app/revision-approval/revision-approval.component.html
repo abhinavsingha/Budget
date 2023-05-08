@@ -116,7 +116,7 @@
                               <th>Existing(Crores)</th>
                               <th>RE(Crores)</th>
                               <th>Revised(Crores)</th>
-                              <th>Remarks</th>
+<!--                              <th>Remarks</th>-->
                             </tr>
                           </thead>
                           <tbody>
@@ -126,10 +126,10 @@
                                   <td>{{tbleDta.toUnit.descr}}</td>
                                   <td>{{tbleDta.subHead.subHeadDescr}}</td>
                                   <td>{{tbleDta.allocTypeId.allocDesc}}</td>
-                                  <td>1.00</td>
-                                  <td>1.00</td>
-                                  <td>1.00</td>
-                                  <td>CGHQ to RHQ</td>
+                                  <td>{{tbleDta.allocationAmount}}</td>
+                                  <td>{{tbleDta.revisedAmount}}</td>
+                                  <td>{{tbleDta.balanceAmount}}</td>
+<!--                                  <td>{{}}</td>-->
                                 </tr>
                           </tbody>
                         </table>
@@ -247,7 +247,7 @@
                     </div>
                   </div>
               <!-- /.row -->
-              <div *ngIf="status && userRole=='Budget Manager';" class="row">
+              <div *ngIf="status && userRole=='Budget Manager' && !sharedService.status;" class="row">
 <!--              <div  class="row">-->
               <div class="col-md-4">
                   <div class="form-group">
@@ -314,7 +314,7 @@
                 </div>
 
               </div>
-              <div class="col-md-4" *ngIf="status && userRole!='Budget Approver';">
+              <div class="col-md-4" *ngIf="status && userRole!='Budget Approver' && !sharedService.status;">
                 <div class="row" [formGroup]="formdata">
                   <button class="btn btn-primary mr-2" type="button" (click)="save(formdata.value)">Submit</button>
                 </div>

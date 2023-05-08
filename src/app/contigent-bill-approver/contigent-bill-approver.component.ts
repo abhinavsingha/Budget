@@ -64,6 +64,7 @@ export class ContigentBillApproverComponent implements OnInit {
   subHeadData: any;
   budgetAllotted: any;
   expenditure: any;
+  private FundAllotted: any;
   constructor(
     private apiService: ApiCallingServiceService,
     private cons: ConstantsService,
@@ -76,6 +77,8 @@ export class ContigentBillApproverComponent implements OnInit {
   cbList: cb[] = [];
   disabled: boolean = true;
   formdata = new FormGroup({
+    balance:new FormControl(),
+    progressive:new FormControl(),
     budgetAllocated: new FormControl(),
     minorHead: new FormControl(), //
     unit: new FormControl(), //
@@ -300,6 +303,35 @@ export class ContigentBillApproverComponent implements OnInit {
                     let sub = this.subHeadData[i];
                     if (sub.subHeadDescr == cbEntry.subHead) {
                       this.formdata.get('subHead')?.setValue(sub);
+                      let json = {
+                        budgetHeadId: this.formdata.get('subHead')?.value.budgetCodeId,
+                      };
+                      this.apiService.postApi(this.cons.api.getAvailableFund, json).subscribe({
+                        next: (v: object) => {
+                          this.SpinnerService.hide();
+                          let result: { [key: string]: any } = v;
+                          if (result['message'] == 'success') {
+                            this.FundAllotted = result['response'];
+                            this.expenditure = parseFloat(this.FundAllotted.expenditure);
+                            this.formdata.get('progressive')?.setValue(this.expenditure);
+                            this.formdata.get('budgetAllocated')?.setValue(parseFloat(this.FundAllotted.fundAvailable)*this.FundAllotted.amountUnit.amount);
+                            this.budgetAllotted = cbEntry.budgetAllocated;
+                            this.formdata.get('progressive')?.setValue(parseFloat(this.FundAllotted.expenditure));
+                            this.formdata
+                              .get('balance')
+                              ?.setValue(parseFloat(this.FundAllotted.fundAvailable)*this.FundAllotted.amountUnit.amount - parseFloat(this.FundAllotted.expenditure));
+
+                          } else {
+                            this.common.faliureAlert('Please try later', result['message'], '');
+                          }
+                        },
+                        error: (e) => {
+                          this.SpinnerService.hide();
+                          console.error(e);
+                          this.common.faliureAlert('Error', e['error']['message'], 'error');
+                        },
+                        complete: () => console.info('complete'),
+                      });
                     }
                   }
                   this.SpinnerService.hide();
@@ -321,7 +353,6 @@ export class ContigentBillApproverComponent implements OnInit {
         }
       }
     }
-    this.formdata.get('budgetAllocated')?.setValue(cbEntry.budgetAllocated);
 
     this.formdata.get('amount')?.setValue(cbEntry.amount);
     this.getBudgetAllotted();

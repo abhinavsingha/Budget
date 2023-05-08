@@ -79,6 +79,11 @@ export class BudgetApproverComponent implements OnInit {
         if (result['message'] == 'success') {
           debugger;
           this.budgetDataList = result['response'].budgetResponseist;
+          for(let i=0;i<this.budgetDataList.length;i++){
+            if(this.budgetDataList[i].balanceAmount!=undefined){
+              this.budgetDataList[i].balanceAmount=parseFloat(this.budgetDataList[i].balanceAmount).toFixed(4);
+            }
+          }
           this.SpinnerService.hide();
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');

@@ -7,5 +7,6 @@ export class SharedService {
   public inbox:any;
   public outbox:any;
   public roleHeading: any;
+  public status:boolean=false;
   constructor() { }
 }
