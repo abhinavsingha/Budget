@@ -79,9 +79,11 @@ export class BudgetApproverComponent implements OnInit {
         if (result['message'] == 'success') {
           debugger;
           this.budgetDataList = result['response'].budgetResponseist;
-          for(let i=0;i<this.budgetDataList.length;i++){
-            if(this.budgetDataList[i].balanceAmount!=undefined){
-              this.budgetDataList[i].balanceAmount=parseFloat(this.budgetDataList[i].balanceAmount).toFixed(4);
+          for (let i = 0; i < this.budgetDataList.length; i++) {
+            if (this.budgetDataList[i].balanceAmount != undefined) {
+              this.budgetDataList[i].balanceAmount = parseFloat(
+                this.budgetDataList[i].balanceAmount
+              ).toFixed(4);
             }
           }
           this.SpinnerService.hide();
@@ -181,7 +183,6 @@ export class BudgetApproverComponent implements OnInit {
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
-
         },
         error: (e) => {
           this.SpinnerService.hide();
@@ -289,6 +290,7 @@ export class BudgetApproverComponent implements OnInit {
         currentParkingAmount: this.multipleCdaParking[i].cdaParkingUnit.amount,
         availableParkingAmount: this.multipleCdaParking[i].amount,
         authGroupId: this.getCurrentSubHeadData.authGroupId,
+        transactionId: this.getCurrentSubHeadData.allocationId,
       });
     }
     this.saveCDAParking(this.cdaParkingListResponseData);
@@ -504,26 +506,24 @@ export class BudgetApproverComponent implements OnInit {
         complete: () => console.info('complete'),
       });
   }
-  updateInbox(){
-    this.apiService
-      .getApi(this.cons.api.updateInboxOutBox)
-      .subscribe({
-        next: (v: object) => {
-          this.SpinnerService.hide();
-          let result: { [key: string]: any } = v;
-          if (result['message'] == 'success') {
-            this.sharedService.inbox = result['response'].inbox;
-            this.sharedService.outbox = result['response'].outBox;
-          } else {
-            this.common.faliureAlert('Please try later', result['message'], '');
-          }
-        },
-        error: (e) => {
-          this.SpinnerService.hide();
-          console.error(e);
-          this.common.faliureAlert('Error', e['error']['message'], 'error');
-        },
-        complete: () => console.info('complete'),
-      });
+  updateInbox() {
+    this.apiService.getApi(this.cons.api.updateInboxOutBox).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.sharedService.inbox = result['response'].inbox;
+          this.sharedService.outbox = result['response'].outBox;
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
   }
 }
