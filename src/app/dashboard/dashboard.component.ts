@@ -14,6 +14,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Chart, registerables, ChartConfiguration, ChartItem } from 'chart.js';
+import {SharedService} from "../services/shared/shared.service";
 class UnitWiseExpenditureList {
   unit: any;
   financialYear: any;
@@ -69,10 +70,12 @@ export class DashboardComponent implements OnInit {
     this.getSubHeadsData();
     this.getCgUnitData();
     this.getDashBoardDta();
+    this.getinbox();
 
     $.getScript('assets/main.js');
   }
   constructor(
+    public sharedService: SharedService,
     private SpinnerService: NgxSpinnerService,
     private cons: ConstantsService,
     private apiService: ApiCallingServiceService,
@@ -132,8 +135,7 @@ export class DashboardComponent implements OnInit {
         let result: { [key: string]: any } = v;
 
         if (result['message'] == 'success') {
-          this.dasboardData = result['response'];
-          // debugger;
+          this.dasboardData = result['response'];       // debugger;
           var roles = result['response'].userDetails.role[0].roleName;
           if (localStorage.getItem('user_role') != roles) {
             window.location.reload();
@@ -144,6 +146,9 @@ export class DashboardComponent implements OnInit {
             'defautAllocationType',
             this.dasboardData.allocationType.allocType
           );
+          if(this.dasboardData.unitWiseExpenditureList!=undefined){
+
+
           for (
             let i = 0;
             i < this.dasboardData.unitWiseExpenditureList.length;
@@ -177,6 +182,7 @@ export class DashboardComponent implements OnInit {
             };
             this.unitWiseExpenditureList.push(dataEntry);
           }
+          }
 
           console.log('DATA>>>>>>>' + this.dasboardData);
           this.draw();
@@ -192,7 +198,30 @@ export class DashboardComponent implements OnInit {
       complete: () => console.info('complete'),
     });
   }
+  getinbox() {
+    this.SpinnerService.show();
 
+    this.apiService.getApi(this.cons.api.updateInboxOutBox).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+
+        if (result['message'] == 'success') {
+
+          this.sharedService.inbox=result['response'].inbox;
+          this.sharedService.outbox=result['response'].outbox;
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
+  }
   searchData() {
     this.unitWiseExpenditureList = [];
     this.SpinnerService.show();
