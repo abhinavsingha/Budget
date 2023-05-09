@@ -42,7 +42,7 @@
             <div class="col-md-6">
               <form [formGroup]="formdata" (ngSubmit)="saveFirstForm(formdata.value)">
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-3">
                     <div class="form-group">
                       <label>Financial Year</label>
                       <ng-select class="form-control select2bs4" style="width: 100%" [items]="budgetFinYears"
@@ -51,23 +51,23 @@
                       </ng-select>
                     </div>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-9">
                     <div class="form-group">
                       <label>Sub Head</label>
                       <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeads"
                         bindLabel="subHeadDescr" placeholder="Select Sub Head" formControlName="subHead"
-                        (change)="getFundAvailableBuFinYearAndSubHeadAndAllocationType(formdata.value)">
+                        (change)="getFundAvailableBuFinYearAndSubHeadAndAllocationType(formdata.value, $event)">
                       </ng-select>
                     </div>
                   </div>
-                  <div class=" col-md-6">
+                  <div class=" col-md-3">
                     <div class="form-group">
                       <label>Major Head</label>
                       <input type="number" class="form-control" id="majorHead" placeholder="Major Head"
                         formControlName="majorHead" readonly />
                     </div>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-9">
                     <div class="form-group">
                       <label>Minor Head</label>
                       <input type="number" class="form-control" id="minorHead" placeholder="Minor Head"
@@ -75,24 +75,23 @@
                     </div>
                   </div>
 
-                  <div class="col-md-6">
+                  <div class="col-md-3">
                     <div class="form-group">
                       <label>Allocation Type</label>
                       <ng-select class="form-control select2bs4" style="width: 100%" [items]="allocationType"
-                        bindLabel="allocDesc" placeholder="Select Allocation Type" formControlName="allocationType"
-                        (change)="getFundAvailableBuFinYearAndSubHeadAndAllocationType(formdata.value)">
+                        bindLabel="allocDesc" placeholder="Select Allocation Type" formControlName="allocationType">
                       </ng-select>
                     </div>
                   </div>
 
-                  <div class=" col-md-6">
+                  <div class=" col-md-9">
                     <div class="form-group">
                       <label>Fund Available</label>
                       <input type="text" class="form-control" id="fundAvailable" placeholder="Enter Remarks"
                         formControlName="fundAvailable" readonly />
                     </div>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-3">
                     <div class="form-group">
                       <label>Rupees in<span class="text-danger"></span></label>
                       <ng-select class="form-control select2bs4" style="width: 100%" [items]="amountTypeas"
@@ -114,14 +113,14 @@
                         formControlName="balanceFund" readonly />
                     </div>
                   </div> -->
-                  <div class=" col-md-6">
+                  <div class="col-md-9">
                     <div class="form-group">
                       <label>Remarks</label>
                       <input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Remarks"
                         formControlName="remarks" />
                     </div>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-3">
                     <label style="opacity:0">.</label><br>
                     <button type="submit" class="btn btn-primary mr-2">Save</button>
                   </div>

@@ -530,7 +530,16 @@ export class BudgetAllocationSubheadwiseComponent {
     );
   }
 
-  getFundAvailableBuFinYearAndSubHeadAndAllocationType(data: any) {
+  getFundAvailableBuFinYearAndSubHeadAndAllocationType(
+    data: any,
+    subhead: any
+  ) {
+    debugger;
+    this.formdata.patchValue({
+      majorHead: subhead.majorHead,
+      minorHead: subhead.minorHead,
+    });
+
     if (data.allocationType == null || data.allocationType == undefined) {
       this.formdata.patchValue({
         fundAvailable: '',
