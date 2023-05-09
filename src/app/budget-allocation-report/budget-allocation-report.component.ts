@@ -388,17 +388,29 @@ export class BudgetAllocationReportComponent implements OnInit {
             '/' +
             formdata.amountType.amountTypeId
         )
-        .subscribe((res) => {
-          let result: { [key: string]: any } = res;
-          if (result['message'] == 'success') {
-            this.downloadPdf(
-              result['response'][0].path,
-              result['response'][0].fileName
-            );
+        .subscribe({
+          next: (v: object) => {
             this.SpinnerService.hide();
-          } else {
-            this.common.faliureAlert('Please try later', result['message'], '');
-          }
+            let result: { [key: string]: any } = v;
+            if (result['message'] == 'success') {
+              this.downloadPdf(
+                result['response'][0].path,
+                result['response'][0].fileName
+              );
+            } else {
+              this.common.faliureAlert(
+                'Please try later',
+                result['message'],
+                ''
+              );
+            }
+          },
+          error: (e) => {
+            this.SpinnerService.hide();
+            console.error(e);
+            this.common.faliureAlert('Error', e['error']['message'], 'error');
+          },
+          complete: () => console.info('complete'),
         });
     } else if (formdata.reportType == '02') {
       //It is for RE report
@@ -412,17 +424,29 @@ export class BudgetAllocationReportComponent implements OnInit {
             '/' +
             formdata.amountType.amountTypeId
         )
-        .subscribe((res) => {
-          let result: { [key: string]: any } = res;
-          if (result['message'] == 'success') {
-            this.downloadPdf(
-              result['response'][0].path,
-              result['response'][0].fileName
-            );
+        .subscribe({
+          next: (v: object) => {
             this.SpinnerService.hide();
-          } else {
-            this.common.faliureAlert('Please try later', result['message'], '');
-          }
+            let result: { [key: string]: any } = v;
+            if (result['message'] == 'success') {
+              this.downloadPdf(
+                result['response'][0].path,
+                result['response'][0].fileName
+              );
+            } else {
+              this.common.faliureAlert(
+                'Please try later',
+                result['message'],
+                ''
+              );
+            }
+          },
+          error: (e) => {
+            this.SpinnerService.hide();
+            console.error(e);
+            this.common.faliureAlert('Error', e['error']['message'], 'error');
+          },
+          complete: () => console.info('complete'),
         });
     } else if (formdata.reportType == '05') {
       //It is for Revised BE report
@@ -436,17 +460,29 @@ export class BudgetAllocationReportComponent implements OnInit {
             '/' +
             formdata.amountType.amountTypeId
         )
-        .subscribe((res) => {
-          let result: { [key: string]: any } = res;
-          if (result['message'] == 'success') {
-            this.downloadPdf(
-              result['response'][0].path,
-              result['response'][0].fileName
-            );
+        .subscribe({
+          next: (v: object) => {
             this.SpinnerService.hide();
-          } else {
-            this.common.faliureAlert('Please try later', result['message'], '');
-          }
+            let result: { [key: string]: any } = v;
+            if (result['message'] == 'success') {
+              this.downloadPdf(
+                result['response'][0].path,
+                result['response'][0].fileName
+              );
+            } else {
+              this.common.faliureAlert(
+                'Please try later',
+                result['message'],
+                ''
+              );
+            }
+          },
+          error: (e) => {
+            this.SpinnerService.hide();
+            console.error(e);
+            this.common.faliureAlert('Error', e['error']['message'], 'error');
+          },
+          complete: () => console.info('complete'),
         });
     } else if (formdata.reportType == '06') {
       //It is for Revised RE report
@@ -460,17 +496,29 @@ export class BudgetAllocationReportComponent implements OnInit {
             '/' +
             formdata.amountType.amountTypeId
         )
-        .subscribe((res) => {
-          let result: { [key: string]: any } = res;
-          if (result['message'] == 'success') {
-            this.downloadPdf(
-              result['response'][0].path,
-              result['response'][0].fileName
-            );
+        .subscribe({
+          next: (v: object) => {
             this.SpinnerService.hide();
-          } else {
-            this.common.faliureAlert('Please try later', result['message'], '');
-          }
+            let result: { [key: string]: any } = v;
+            if (result['message'] == 'success') {
+              this.downloadPdf(
+                result['response'][0].path,
+                result['response'][0].fileName
+              );
+            } else {
+              this.common.faliureAlert(
+                'Please try later',
+                result['message'],
+                ''
+              );
+            }
+          },
+          error: (e) => {
+            this.SpinnerService.hide();
+            console.error(e);
+            this.common.faliureAlert('Error', e['error']['message'], 'error');
+          },
+          complete: () => console.info('complete'),
         });
     } else if (formdata.reportType == '07') {
       //It is for Revised BE & RE report
@@ -484,17 +532,30 @@ export class BudgetAllocationReportComponent implements OnInit {
             '/' +
             formdata.amountType.amountTypeId
         )
-        .subscribe((res) => {
-          let result: { [key: string]: any } = res;
-          if (result['message'] == 'success') {
-            this.downloadPdf(
-              result['response'][0].path,
-              result['response'][0].fileName
-            );
+        .subscribe({
+          next: (v: object) => {
             this.SpinnerService.hide();
-          } else {
-            this.common.faliureAlert('Please try later', result['message'], '');
-          }
+            let result: { [key: string]: any } = v;
+            if (result['message'] == 'success') {
+              this.downloadPdf(
+                result['response'][0].path,
+                result['response'][0].fileName
+              );
+              this.SpinnerService.hide();
+            } else {
+              this.common.faliureAlert(
+                'Please try later',
+                result['message'],
+                ''
+              );
+            }
+          },
+          error: (e) => {
+            this.SpinnerService.hide();
+            console.error(e);
+            this.common.faliureAlert('Error', e['error']['message'], 'error');
+          },
+          complete: () => console.info('complete'),
         });
     }
   }
