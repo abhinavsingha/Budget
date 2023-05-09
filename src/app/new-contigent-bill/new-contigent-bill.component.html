@@ -300,13 +300,13 @@
                         <td>
                           <form>
                             <div class="form-group">
-                              <div *ngIf="cb.status === 'Approved' && cb.isFlag=='0'" class="input-group">
+                              <div *ngIf="cb.status === 'Approved'" class="input-group">
                                 <div [formGroup]="formData" class="custom-file">
-                                  <input #uploadFileInput class="custom-file-input" (change)="setLabel(formData.value)"
+                                  <input #uploadFileInput class="custom-file-input" (change)="setLabel(formData.value,i)"
                                     formControlName="uploadFile" id="uploadFile" type="file">
                                   <label class="custom-file-label" for="invoice"
-                                    *ngIf="label!=undefined">{{label}}</label>
-                                  <label class="custom-file-label" for="invoice" *ngIf="label==undefined">Choose
+                                    *ngIf="cb.label!=''">{{cb.label}}</label>
+                                  <label class="custom-file-label" for="invoice" *ngIf="cb.label==''">Choose
                                     File</label>
                                 </div>
                                 <div class="input-group-append">

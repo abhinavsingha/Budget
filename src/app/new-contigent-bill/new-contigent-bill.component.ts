@@ -14,6 +14,7 @@ import * as $ from 'jquery';
 // import { UploadDocuments } from '../model/upload-documents';
 
 class newCb {
+  label:string='';
   isFlag: any;
   cbId: any;
   onAccOf: any;
@@ -236,6 +237,7 @@ export class NewContigentBillComponent implements OnInit {
         contingentBilId: undefined,
         invoicePath: this.invoicePath,
         authGroupId: undefined,
+        label: ''
       };
 
       let flag = false;
@@ -524,6 +526,7 @@ export class NewContigentBillComponent implements OnInit {
                 authDetail: getCbList[i].authorityDetails,
                 invoicePath: getCbList[i].invoiceUploadId.pathURL,
                 authGroupId: getCbList[i].authoritiesList[0].authGroupId,
+                label: ''
               };
               if (entry.status == 'Approved') this.approvedPresent = true;
               this.cbList.push(entry);
@@ -593,8 +596,8 @@ export class NewContigentBillComponent implements OnInit {
       this.formdata
         .get('balance')
         ?.setValue(
-          parseFloat(this.formdata.get('budgetAllocated')?.value) -
-          this.expenditure + parseFloat(this.formdata.get('amount')?.value));
+          parseFloat(this.formdata.get('budgetAllocated')?.value) -(
+          this.expenditure + parseFloat(this.formdata.get('amount')?.value)));
     }
   }
 
@@ -944,6 +947,7 @@ export class NewContigentBillComponent implements OnInit {
             authDetail: this.formdata.get('authDetail')?.value,
             invoicePath: undefined,
             authGroupId: undefined,
+            label: ''
           };
           this.cbList[i] = entry;
         } else {
@@ -1264,7 +1268,7 @@ export class NewContigentBillComponent implements OnInit {
     });
   }
 
-  setLabel(formValue: any) {
-    this.label = formValue.uploadFile.name;
+  setLabel(formValue: any,i:any) {
+    this.cbList[i].label = formValue.uploadFile;
   }
 }

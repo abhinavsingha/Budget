@@ -163,23 +163,23 @@ export class ContigentBillApproverComponent implements OnInit {
 
         for (let i = 0; i < getCbList.length; i++) {
           console.log('interation :' + i);
-          let url =
-            this.cons.api.getAvailableFund + '/' + getCbList[i].cbUnitId.unit;
-          this.apiService.getApi(url).subscribe(
-            (res) => {
-              let result: { [key: string]: any } = res;
-              this.budgetAllotted = result['response'].fundAvailable;
-            },
-            (error) => {
-              console.log(error);
-              this.SpinnerService.hide();
-              //remove after test
-              this.budgetAllotted = 0;
-              this.formdata
-                .get('budgetAllocated')
-                ?.setValue(this.budgetAllotted);
-            }
-          );
+          // let url =
+          //   this.cons.api.getAvailableFund + '/' + getCbList[i].cbUnitId.unit;
+          // this.apiService.getApi(url).subscribe(
+          //   (res) => {
+          //     let result: { [key: string]: any } = res;
+          //     this.budgetAllotted = result['response'].fundAvailable;
+          //   },
+          //   (error) => {
+          //     console.log(error);
+          //     this.SpinnerService.hide();
+          //     //remove after test
+          //     this.budgetAllotted = 0;
+          //     this.formdata
+          //       .get('budgetAllocated')
+          //       ?.setValue(this.budgetAllotted);
+          //   }
+          // );
           const entry: cb = {
             authGroupId: getCbList[i].authoritiesList[0].authGroupId,
             onAccountOf: getCbList[i].onAccountOf,
@@ -314,12 +314,12 @@ export class ContigentBillApproverComponent implements OnInit {
                             this.FundAllotted = result['response'];
                             this.expenditure = parseFloat(this.FundAllotted.expenditure);
                             this.formdata.get('progressive')?.setValue(this.expenditure);
-                            this.formdata.get('budgetAllocated')?.setValue(parseFloat(this.FundAllotted.fundAvailable)*this.FundAllotted.amountUnit.amount);
+                            this.formdata.get('budgetAllocated')?.setValue(parseFloat(this.FundAllotted.fundallocated)*this.FundAllotted.amountUnit.amount);
                             this.budgetAllotted = cbEntry.budgetAllocated;
                             this.formdata.get('progressive')?.setValue(parseFloat(this.FundAllotted.expenditure));
                             this.formdata
                               .get('balance')
-                              ?.setValue(parseFloat(this.FundAllotted.fundAvailable)*this.FundAllotted.amountUnit.amount - parseFloat(this.FundAllotted.expenditure));
+                              ?.setValue(parseFloat(this.FundAllotted.fundallocated)*this.FundAllotted.amountUnit.amount - parseFloat(this.FundAllotted.expenditure));
 
                           } else {
                             this.common.faliureAlert('Please try later', result['message'], '');
