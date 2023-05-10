@@ -137,50 +137,54 @@ export class CbVerificationComponent {
           //       ?.setValue(this.budgetAllotted);
           //   }
           // );
-          const entry: cb = {
-            authGroupId: getCbList[i].authoritiesList[0].authGroupId,
-            onAccountOf: getCbList[i].onAccountOf,
-            authorityDetails: getCbList[i].authorityDetails,
-            authUnitId: getCbList[i].authoritiesList[0].authUnit,
-            unitId: getCbList[i].cbUnitId.unit,
-            uploadFileDate: getCbList[i].fileDate,
-            finSerialNo: getCbList[i].finYear.serialNo,
-            progressiveAmount: getCbList[i].progressiveAmount,
-            fileDate: getCbList[i].fileDate,
-            minorHead: getCbList[i].budgetHeadID.minorHead,
-            unit: getCbList[i].cbUnitId.descr,
-            finYearName: getCbList[i].finYear.finYear,
-            majorHead: getCbList[i].budgetHeadID.majorHead,
-            subHead: getCbList[i].budgetHeadID.subHeadDescr,
-            amount: getCbList[i].cbAmount,
-            cbNo: getCbList[i].cbNo,
-            cbDate: this.datePipe.transform(
-              new Date(getCbList[i].cbDate),
-              'yyyy-MM-dd'
-            ),
-            remarks: getCbList[i].remarks,
-            authority: getCbList[i].authoritiesList[0].authority,
-            authorityUnit: getCbList[i].authoritiesList[0].authUnit,
-            date: this.datePipe.transform(
-              new Date(getCbList[i].authoritiesList[0].authDate),
-              'yyyy-MM-dd'
-            ),
-            firmName: getCbList[i].vendorName,
-            invoiceNo: getCbList[i].invoiceNO,
-            invoiceDate: getCbList[i].invoiceDate,
-            invoiceFile: getCbList[i].invoiceUploadId.uploadID,
-            returnRemarks: getCbList[i].authoritiesList[0].remarks,
-            status: getCbList[i].status,
-            budgetAllocated: this.budgetAllotted,
-            checked: false,
-            fileNo: getCbList[i].fileID,
-            file: getCbList[i].authoritiesList[0].docId,
-            budgetHeadID: getCbList[i].budgetHeadID,
-            contingentBilId: getCbList[i].cbId,
-          };
-          if (entry.authGroupId == this.sharedService.sharedValue)
-            this.cbList.push(entry);
-          console.log(entry+"      ||     "+this.cbList);
+          if(getCbList[i].authoritiesList.length>0)
+          {
+            const entry: cb = {
+              authGroupId: getCbList[i].authoritiesList[0].authGroupId,
+              onAccountOf: getCbList[i].onAccountOf,
+              authorityDetails: getCbList[i].authorityDetails,
+              authUnitId: getCbList[i].authoritiesList[0].authUnit,
+              unitId: getCbList[i].cbUnitId.unit,
+              uploadFileDate: getCbList[i].fileDate,
+              finSerialNo: getCbList[i].finYear.serialNo,
+              progressiveAmount: getCbList[i].progressiveAmount,
+              fileDate: getCbList[i].fileDate,
+              minorHead: getCbList[i].budgetHeadID.minorHead,
+              unit: getCbList[i].cbUnitId.descr,
+              finYearName: getCbList[i].finYear.finYear,
+              majorHead: getCbList[i].budgetHeadID.majorHead,
+              subHead: getCbList[i].budgetHeadID.subHeadDescr,
+              amount: getCbList[i].cbAmount,
+              cbNo: getCbList[i].cbNo,
+              cbDate: this.datePipe.transform(
+                new Date(getCbList[i].cbDate),
+                'yyyy-MM-dd'
+              ),
+              remarks: getCbList[i].remarks,
+              authority: getCbList[i].authoritiesList[0].authority,
+              authorityUnit: getCbList[i].authoritiesList[0].authUnit,
+              date: this.datePipe.transform(
+                new Date(getCbList[i].authoritiesList[0].authDate),
+                'yyyy-MM-dd'
+              ),
+              firmName: getCbList[i].vendorName,
+              invoiceNo: getCbList[i].invoiceNO,
+              invoiceDate: getCbList[i].invoiceDate,
+              invoiceFile: getCbList[i].invoiceUploadId.uploadID,
+              returnRemarks: getCbList[i].authoritiesList[0].remarks,
+              status: getCbList[i].status,
+              budgetAllocated: this.budgetAllotted,
+              checked: false,
+              fileNo: getCbList[i].fileID,
+              file: getCbList[i].authoritiesList[0].docId,
+              budgetHeadID: getCbList[i].budgetHeadID,
+              contingentBilId: getCbList[i].cbId,
+            };
+            if (entry.authGroupId == this.sharedService.sharedValue)
+              this.cbList.push(entry);
+            console.log(entry+"      ||     "+this.cbList);
+          }
+
         }
       },
       (error) => {

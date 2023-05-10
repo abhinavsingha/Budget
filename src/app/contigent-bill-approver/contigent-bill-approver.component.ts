@@ -180,6 +180,7 @@ export class ContigentBillApproverComponent implements OnInit {
           //       ?.setValue(this.budgetAllotted);
           //   }
           // );
+          if(getCbList[i].authoritiesList.length>0){
           const entry: cb = {
             authGroupId: getCbList[i].authoritiesList[0].authGroupId,
             onAccountOf: getCbList[i].onAccountOf,
@@ -224,6 +225,7 @@ export class ContigentBillApproverComponent implements OnInit {
           if (entry.authGroupId == this.sharedService.sharedValue)
             this.cbList.push(entry);
           console.log(entry+"      ||     "+this.cbList);
+        }
         }
       },
       (error) => {

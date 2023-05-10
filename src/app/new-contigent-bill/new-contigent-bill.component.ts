@@ -288,6 +288,11 @@ export class NewContigentBillComponent implements OnInit {
   }
 
   getAvailableFundData() {
+    if(this.formdata.get('subHead')?.value==undefined)
+    {
+      Swal.fire('Sub Head cannot be blank.');
+      return;
+    }
     this.SpinnerService.show();
     let json = {
       budgetHeadId: this.formdata.get('subHead')?.value.budgetCodeId,
@@ -482,54 +487,56 @@ export class NewContigentBillComponent implements OnInit {
           //   (res) => {
           //     let result: { [key: string]: any } = res;
           //     this.budgetAllotted = result['response'].fundAvailable;
-          const entry: newCb = {
-            isFlag: getCbList[i].isFlag,
-            cbId: getCbList[i].cbId,
-            authUnitId: getCbList[i].authoritiesList[0].authUnit,
-            unitId: getCbList[i].cbUnitId.unit,
-            uploadFileDate: getCbList[i].fileDate,
-            finSerialNo: getCbList[i].finYear.serialNo,
-            progressiveAmount: undefined,
-            fileDate: getCbList[i].fileDate,
-            minorHead: getCbList[i].budgetHeadID.minorHead,
-            unit: getCbList[i].cbUnitId.cgUnitShort,
-            finYearName: getCbList[i].finYear.finYear,
-            majorHead: getCbList[i].budgetHeadID.majorHead,
-            subHead: getCbList[i].budgetHeadID.subHeadDescr,
-            amount: getCbList[i].cbAmount,
-            cbNo: getCbList[i].cbNo,
-            cbDate: this.datePipe.transform(
-              new Date(getCbList[i].cbDate),
-              'yyyy-MM-dd'
-            ),
-            // remarks: getCbList[i].remarks,
-            authority: getCbList[i].authoritiesList[0].authority,
-            authorityUnit: getCbList[i].authoritiesList[0].authUnit,
-            date: this.datePipe.transform(
-              new Date(getCbList[i].authoritiesList[0].authDate),
-              'yyyy-MM-dd'
-            ),
-            firmName: getCbList[i].vendorName,
-            invoiceNo: getCbList[i].invoiceNO,
-            invoiceDate: getCbList[i].invoiceDate,
-            invoiceFile: getCbList[i].fileID,
-            returnRemarks: getCbList[i].authoritiesList[0].remarks,
-            status: getCbList[i].status,
-            budgetAllocated: undefined,
-            checked: false,
-            fileNo: getCbList[i].fileID,
-            file: getCbList[i].authoritiesList[0].docId,
-            budgetHeadID: getCbList[i].budgetHeadID,
-            contingentBilId: getCbList[i].cbId,
-            authorityId: getCbList[i].authoritiesList[0].authorityId,
-            onAccOf: getCbList[i].onAccountOf,
-            authDetail: getCbList[i].authorityDetails,
-            invoicePath: getCbList[i].invoiceUploadId.pathURL,
-            authGroupId: getCbList[i].authoritiesList[0].authGroupId,
-            label: '',
-          };
-          if (entry.status == 'Approved') this.approvedPresent = true;
-          this.cbList.push(entry);
+          if(getCbList[i].authoritiesList.length>0) {
+            const entry: newCb = {
+              isFlag: getCbList[i].isFlag,
+              cbId: getCbList[i].cbId,
+              authUnitId: getCbList[i].authoritiesList[0].authUnit,
+              unitId: getCbList[i].cbUnitId.unit,
+              uploadFileDate: getCbList[i].fileDate,
+              finSerialNo: getCbList[i].finYear.serialNo,
+              progressiveAmount: undefined,
+              fileDate: getCbList[i].fileDate,
+              minorHead: getCbList[i].budgetHeadID.minorHead,
+              unit: getCbList[i].cbUnitId.cgUnitShort,
+              finYearName: getCbList[i].finYear.finYear,
+              majorHead: getCbList[i].budgetHeadID.majorHead,
+              subHead: getCbList[i].budgetHeadID.subHeadDescr,
+              amount: getCbList[i].cbAmount,
+              cbNo: getCbList[i].cbNo,
+              cbDate: this.datePipe.transform(
+                new Date(getCbList[i].cbDate),
+                'yyyy-MM-dd'
+              ),
+              // remarks: getCbList[i].remarks,
+              authority: getCbList[i].authoritiesList[0].authority,
+              authorityUnit: getCbList[i].authoritiesList[0].authUnit,
+              date: this.datePipe.transform(
+                new Date(getCbList[i].authoritiesList[0].authDate),
+                'yyyy-MM-dd'
+              ),
+              firmName: getCbList[i].vendorName,
+              invoiceNo: getCbList[i].invoiceNO,
+              invoiceDate: getCbList[i].invoiceDate,
+              invoiceFile: getCbList[i].fileID,
+              returnRemarks: getCbList[i].authoritiesList[0].remarks,
+              status: getCbList[i].status,
+              budgetAllocated: undefined,
+              checked: false,
+              fileNo: getCbList[i].fileID,
+              file: getCbList[i].authoritiesList[0].docId,
+              budgetHeadID: getCbList[i].budgetHeadID,
+              contingentBilId: getCbList[i].cbId,
+              authorityId: getCbList[i].authoritiesList[0].authorityId,
+              onAccOf: getCbList[i].onAccountOf,
+              authDetail: getCbList[i].authorityDetails,
+              invoicePath: getCbList[i].invoiceUploadId.pathURL,
+              authGroupId: getCbList[i].authoritiesList[0].authGroupId,
+              label: '',
+            };
+            if (entry.status == 'Approved') this.approvedPresent = true;
+            this.cbList.push(entry);
+          }
           //     this.SpinnerService.hide();
           //   },
           //   (error) => {
