@@ -232,8 +232,11 @@ export class BudgetApproverComponent implements OnInit {
   getCurrentSubHeadData: any;
   showSubmit: boolean = false;
   amountUnit: any;
+  showSubHeadDataInNextPage: any;
   addCDAParking(data: any) {
+    debugger;
     this.getCurrentSubHeadData = data;
+    this.showSubHeadDataInNextPage = data.subHead.subHeadDescr;
     this.amountUnit = data.amountUnit.amountType;
     this.multipleCdaParking = [];
     this.multipleCdaParking.push(new MultiCdaParking());
@@ -358,7 +361,7 @@ export class BudgetApproverComponent implements OnInit {
   viewCDAParking(budgetData: any) {
     this.showUpdate = true;
     this.showSubmit = false;
-
+    this.showSubHeadDataInNextPage = budgetData.subHead.subHeadDescr;
     this.getCurrentSubHeadData = budgetData;
     this.amountUnit = budgetData.amountUnit.amountType;
     this.multipleCdaParking = [];
