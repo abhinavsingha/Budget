@@ -128,7 +128,7 @@
             <p>CDA Parking</p>
           </a>
         </li> -->
-        <li class="nav-item" *ngIf=" userRole=='Budget Approver'">
+        <li class="nav-item" *ngIf=" userRole=='Budget Approver'|| userRole=='Budget Manager'">
           <a href="#" class="nav-link" [routerLink]="['/cda-parking-report']" [routerLinkActive]="['active']">
             <i class="fas fa-file-invoice nav-icon"></i>
             <p>CDA Parking Report</p>

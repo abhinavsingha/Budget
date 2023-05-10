@@ -14,7 +14,7 @@ import * as $ from 'jquery';
 // import { UploadDocuments } from '../model/upload-documents';
 
 class newCb {
-  label:string='';
+  label: string = '';
   isFlag: any;
   cbId: any;
   onAccOf: any;
@@ -145,7 +145,7 @@ export class NewContigentBillComponent implements OnInit {
   });
   budgetAllotted: any;
   billAmount: number = 0;
-  expenditure: number=0;
+  expenditure: number = 0;
   selectedFile: File | any = null;
   fileName = '';
   invoice: any;
@@ -237,7 +237,7 @@ export class NewContigentBillComponent implements OnInit {
         contingentBilId: undefined,
         invoicePath: this.invoicePath,
         authGroupId: undefined,
-        label: ''
+        label: '',
       };
 
       let flag = false;
@@ -482,54 +482,54 @@ export class NewContigentBillComponent implements OnInit {
           //   (res) => {
           //     let result: { [key: string]: any } = res;
           //     this.budgetAllotted = result['response'].fundAvailable;
-              const entry: newCb = {
-                isFlag: getCbList[i].isFlag,
-                cbId: getCbList[i].cbId,
-                authUnitId: getCbList[i].authoritiesList[0].authUnit,
-                unitId: getCbList[i].cbUnitId.unit,
-                uploadFileDate: getCbList[i].fileDate,
-                finSerialNo: getCbList[i].finYear.serialNo,
-                progressiveAmount: undefined,
-                fileDate: getCbList[i].fileDate,
-                minorHead: getCbList[i].budgetHeadID.minorHead,
-                unit: getCbList[i].cbUnitId.cgUnitShort,
-                finYearName: getCbList[i].finYear.finYear,
-                majorHead: getCbList[i].budgetHeadID.majorHead,
-                subHead: getCbList[i].budgetHeadID.subHeadDescr,
-                amount: getCbList[i].cbAmount,
-                cbNo: getCbList[i].cbNo,
-                cbDate: this.datePipe.transform(
-                  new Date(getCbList[i].cbDate),
-                  'yyyy-MM-dd'
-                ),
-                // remarks: getCbList[i].remarks,
-                authority: getCbList[i].authoritiesList[0].authority,
-                authorityUnit: getCbList[i].authoritiesList[0].authUnit,
-                date: this.datePipe.transform(
-                  new Date(getCbList[i].authoritiesList[0].authDate),
-                  'yyyy-MM-dd'
-                ),
-                firmName: getCbList[i].vendorName,
-                invoiceNo: getCbList[i].invoiceNO,
-                invoiceDate: getCbList[i].invoiceDate,
-                invoiceFile: getCbList[i].fileID,
-                returnRemarks: getCbList[i].authoritiesList[0].remarks,
-                status: getCbList[i].status,
-                budgetAllocated: undefined,
-                checked: false,
-                fileNo: getCbList[i].fileID,
-                file: getCbList[i].authoritiesList[0].docId,
-                budgetHeadID: getCbList[i].budgetHeadID,
-                contingentBilId: getCbList[i].cbId,
-                authorityId: getCbList[i].authoritiesList[0].authorityId,
-                onAccOf: getCbList[i].onAccountOf,
-                authDetail: getCbList[i].authorityDetails,
-                invoicePath: getCbList[i].invoiceUploadId.pathURL,
-                authGroupId: getCbList[i].authoritiesList[0].authGroupId,
-                label: ''
-              };
-              if (entry.status == 'Approved') this.approvedPresent = true;
-              this.cbList.push(entry);
+          const entry: newCb = {
+            isFlag: getCbList[i].isFlag,
+            cbId: getCbList[i].cbId,
+            authUnitId: getCbList[i].authoritiesList[0].authUnit,
+            unitId: getCbList[i].cbUnitId.unit,
+            uploadFileDate: getCbList[i].fileDate,
+            finSerialNo: getCbList[i].finYear.serialNo,
+            progressiveAmount: undefined,
+            fileDate: getCbList[i].fileDate,
+            minorHead: getCbList[i].budgetHeadID.minorHead,
+            unit: getCbList[i].cbUnitId.cgUnitShort,
+            finYearName: getCbList[i].finYear.finYear,
+            majorHead: getCbList[i].budgetHeadID.majorHead,
+            subHead: getCbList[i].budgetHeadID.subHeadDescr,
+            amount: getCbList[i].cbAmount,
+            cbNo: getCbList[i].cbNo,
+            cbDate: this.datePipe.transform(
+              new Date(getCbList[i].cbDate),
+              'yyyy-MM-dd'
+            ),
+            // remarks: getCbList[i].remarks,
+            authority: getCbList[i].authoritiesList[0].authority,
+            authorityUnit: getCbList[i].authoritiesList[0].authUnit,
+            date: this.datePipe.transform(
+              new Date(getCbList[i].authoritiesList[0].authDate),
+              'yyyy-MM-dd'
+            ),
+            firmName: getCbList[i].vendorName,
+            invoiceNo: getCbList[i].invoiceNO,
+            invoiceDate: getCbList[i].invoiceDate,
+            invoiceFile: getCbList[i].fileID,
+            returnRemarks: getCbList[i].authoritiesList[0].remarks,
+            status: getCbList[i].status,
+            budgetAllocated: undefined,
+            checked: false,
+            fileNo: getCbList[i].fileID,
+            file: getCbList[i].authoritiesList[0].docId,
+            budgetHeadID: getCbList[i].budgetHeadID,
+            contingentBilId: getCbList[i].cbId,
+            authorityId: getCbList[i].authoritiesList[0].authorityId,
+            onAccOf: getCbList[i].onAccountOf,
+            authDetail: getCbList[i].authorityDetails,
+            invoicePath: getCbList[i].invoiceUploadId.pathURL,
+            authGroupId: getCbList[i].authoritiesList[0].authGroupId,
+            label: '',
+          };
+          if (entry.status == 'Approved') this.approvedPresent = true;
+          this.cbList.push(entry);
           //     this.SpinnerService.hide();
           //   },
           //   (error) => {
@@ -571,7 +571,10 @@ export class NewContigentBillComponent implements OnInit {
 
   updateExpenditure() {
     this.formdata.get('progressive')?.setValue(this.expenditure);
-    if (this.formdata.get('amount')?.value > (this.budgetAllotted- parseFloat(this.formdata.get('progressive')?.value))) {
+    if (
+      this.formdata.get('amount')?.value >
+      this.budgetAllotted - parseFloat(this.formdata.get('progressive')?.value)
+    ) {
       this.formdata.get('amount')?.reset();
       this.common.warningAlert(
         'CB Amount Exceed Limit',
@@ -592,13 +595,14 @@ export class NewContigentBillComponent implements OnInit {
       this.formdata
         .get('progressive')
         ?.setValue(
-          this.expenditure + parseFloat(this.formdata.get('amount')?.value
-          ));
+          this.expenditure + parseFloat(this.formdata.get('amount')?.value)
+        );
       this.formdata
         .get('balance')
         ?.setValue(
-          parseFloat(this.formdata.get('budgetAllocated')?.value) -(
-          this.expenditure + parseFloat(this.formdata.get('amount')?.value)));
+          parseFloat(this.formdata.get('budgetAllocated')?.value) -
+            (this.expenditure + parseFloat(this.formdata.get('amount')?.value))
+        );
     }
   }
 
@@ -695,7 +699,7 @@ export class NewContigentBillComponent implements OnInit {
               this.SpinnerService.show();
               let json = {
                 budgetHeadType:
-                this.formdata.get('subHeadType')?.value.subHeadTypeId,
+                  this.formdata.get('subHeadType')?.value.subHeadTypeId,
                 majorHead: cbEntry.majorHead,
               };
               this.apiService
@@ -710,34 +714,64 @@ export class NewContigentBillComponent implements OnInit {
                         this.formdata.get('subHead')?.setValue(sub);
                         this.SpinnerService.show();
                         let json = {
-                          budgetHeadId: this.formdata.get('subHead')?.value.budgetCodeId,
+                          budgetHeadId:
+                            this.formdata.get('subHead')?.value.budgetCodeId,
                         };
-                        this.apiService.postApi(this.cons.api.getAvailableFund, json).subscribe({
-                          next: (v: object) => {
-                            this.SpinnerService.hide();
-                            let result: { [key: string]: any } = v;
-                            if (result['message'] == 'success') {
-                              this.FundAllotted = result['response'];
-                              this.expenditure = parseFloat(this.FundAllotted.expenditure);
-                              this.formdata.get('progressive')?.setValue(this.expenditure);
-                              this.formdata.get('budgetAllocated')?.setValue(parseFloat(this.FundAllotted.fundallocated)*this.FundAllotted.amountUnit.amount);
-                              this.budgetAllotted = cbEntry.budgetAllocated;
-                              this.formdata.get('progressive')?.setValue(parseFloat(this.FundAllotted.expenditure));
-                              this.formdata
-                                .get('balance')
-                                ?.setValue(parseFloat(this.FundAllotted.fundAvailable)*this.FundAllotted.amountUnit.amount - parseFloat(this.FundAllotted.expenditure));
-
-                            } else {
-                              this.common.faliureAlert('Please try later', result['message'], '');
-                            }
-                          },
-                          error: (e) => {
-                            this.SpinnerService.hide();
-                            console.error(e);
-                            this.common.faliureAlert('Error', e['error']['message'], 'error');
-                          },
-                          complete: () => console.info('complete'),
-                        });
+                        this.apiService
+                          .postApi(this.cons.api.getAvailableFund, json)
+                          .subscribe({
+                            next: (v: object) => {
+                              this.SpinnerService.hide();
+                              let result: { [key: string]: any } = v;
+                              if (result['message'] == 'success') {
+                                this.FundAllotted = result['response'];
+                                this.expenditure = parseFloat(
+                                  this.FundAllotted.expenditure
+                                );
+                                this.formdata
+                                  .get('progressive')
+                                  ?.setValue(this.expenditure);
+                                this.formdata
+                                  .get('budgetAllocated')
+                                  ?.setValue(
+                                    parseFloat(
+                                      this.FundAllotted.fundallocated
+                                    ) * this.FundAllotted.amountUnit.amount
+                                  );
+                                this.budgetAllotted = cbEntry.budgetAllocated;
+                                this.formdata
+                                  .get('progressive')
+                                  ?.setValue(
+                                    parseFloat(this.FundAllotted.expenditure)
+                                  );
+                                this.formdata
+                                  .get('balance')
+                                  ?.setValue(
+                                    parseFloat(
+                                      this.FundAllotted.fundAvailable
+                                    ) *
+                                      this.FundAllotted.amountUnit.amount -
+                                      parseFloat(this.FundAllotted.expenditure)
+                                  );
+                              } else {
+                                this.common.faliureAlert(
+                                  'Please try later',
+                                  result['message'],
+                                  ''
+                                );
+                              }
+                            },
+                            error: (e) => {
+                              this.SpinnerService.hide();
+                              console.error(e);
+                              this.common.faliureAlert(
+                                'Error',
+                                e['error']['message'],
+                                'error'
+                              );
+                            },
+                            complete: () => console.info('complete'),
+                          });
                       }
                     }
                     this.SpinnerService.hide();
@@ -757,32 +791,56 @@ export class NewContigentBillComponent implements OnInit {
               let json = {
                 budgetHeadId: this.formdata.get('subHead')?.value.budgetCodeId,
               };
-              this.apiService.postApi(this.cons.api.getAvailableFund, json).subscribe({
-                next: (v: object) => {
-                  this.SpinnerService.hide();
-                  let result: { [key: string]: any } = v;
-                  if (result['message'] == 'success') {
-                    this.FundAllotted = result['response'];
-                    this.expenditure = parseFloat(this.FundAllotted.expenditure);
-                    this.formdata.get('progressive')?.setValue(this.expenditure);
-                    this.formdata.get('budgetAllocated')?.setValue(parseFloat(this.FundAllotted.fundallocated)*this.FundAllotted.amountUnit.amount);
-                    this.budgetAllotted = cbEntry.budgetAllocated;
-                    this.formdata.get('progressive')?.setValue(parseFloat(this.FundAllotted.expenditure));
-                    this.formdata
-                      .get('balance')
-                      ?.setValue(parseFloat(this.FundAllotted.fundAvailable)*this.FundAllotted.amountUnit.amount - parseFloat(this.FundAllotted.expenditure));
-
-                  } else {
-                    this.common.faliureAlert('Please try later', result['message'], '');
-                  }
-                },
-                error: (e) => {
-                  this.SpinnerService.hide();
-                  console.error(e);
-                  this.common.faliureAlert('Error', e['error']['message'], 'error');
-                },
-                complete: () => console.info('complete'),
-              });
+              this.apiService
+                .postApi(this.cons.api.getAvailableFund, json)
+                .subscribe({
+                  next: (v: object) => {
+                    this.SpinnerService.hide();
+                    let result: { [key: string]: any } = v;
+                    if (result['message'] == 'success') {
+                      this.FundAllotted = result['response'];
+                      this.expenditure = parseFloat(
+                        this.FundAllotted.expenditure
+                      );
+                      this.formdata
+                        .get('progressive')
+                        ?.setValue(this.expenditure);
+                      this.formdata
+                        .get('budgetAllocated')
+                        ?.setValue(
+                          parseFloat(this.FundAllotted.fundallocated) *
+                            this.FundAllotted.amountUnit.amount
+                        );
+                      this.budgetAllotted = cbEntry.budgetAllocated;
+                      this.formdata
+                        .get('progressive')
+                        ?.setValue(parseFloat(this.FundAllotted.expenditure));
+                      this.formdata
+                        .get('balance')
+                        ?.setValue(
+                          parseFloat(this.FundAllotted.fundAvailable) *
+                            this.FundAllotted.amountUnit.amount -
+                            parseFloat(this.FundAllotted.expenditure)
+                        );
+                    } else {
+                      this.common.faliureAlert(
+                        'Please try later',
+                        result['message'],
+                        ''
+                      );
+                    }
+                  },
+                  error: (e) => {
+                    this.SpinnerService.hide();
+                    console.error(e);
+                    this.common.faliureAlert(
+                      'Error',
+                      e['error']['message'],
+                      'error'
+                    );
+                  },
+                  complete: () => console.info('complete'),
+                });
             }
           }
         }
@@ -948,7 +1006,7 @@ export class NewContigentBillComponent implements OnInit {
             authDetail: this.formdata.get('authDetail')?.value,
             invoicePath: undefined,
             authGroupId: undefined,
-            label: ''
+            label: '',
           };
           this.cbList[i] = entry;
         } else {
@@ -961,7 +1019,10 @@ export class NewContigentBillComponent implements OnInit {
   submitList() {
     const submitList: submitCb[] = [];
     for (let i = 0; i < this.cbList.length; i++) {
-      if (this.cbList[i].checked && this.cbList[i].status=='Pending for Submission') {
+      if (
+        this.cbList[i].checked &&
+        this.cbList[i].status == 'Pending for Submission'
+      ) {
         let budgetId: string = '';
         for (let j = 0; j < this.subHeadData.length; j++) {
           if (this.subHeadData[j].subHeadDescr == this.cbList[i].subHead)
@@ -1239,7 +1300,7 @@ export class NewContigentBillComponent implements OnInit {
     const cbCount = this.cbList.length + 1;
     const cbNo =
       this.dasboardData.userDetails.unit +
-      '/' +
+      '/CB/' +
       formdata.subHead.subheadShort +
       '/' +
       cbCount +
@@ -1269,7 +1330,7 @@ export class NewContigentBillComponent implements OnInit {
     });
   }
 
-  setLabel(formValue: any,i:any) {
+  setLabel(formValue: any, i: any) {
     this.cbList[i].label = formValue.uploadFile;
   }
 }
