@@ -475,10 +475,15 @@ export class ContigentBillApproverComponent implements OnInit {
     });
   }
   returnCb() {
+    if(this.formdata.get('returnRemarks')?.value==undefined){
+      Swal.fire('Return Remarks cannot be blank');
+      return;
+    }
     for (let i = 0; i < this.cbList.length; i++) {
       // if(this.cbList[i].cbNo==this.formdata.get('cbNo')?.value){
       this.cbList[i].status = 'Rejected';
     }
+
     const update: updateRequest = {
       status: this.cbList[0].status,
       groupId: this.cbList[0].authGroupId,
