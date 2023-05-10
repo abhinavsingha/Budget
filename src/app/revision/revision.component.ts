@@ -353,6 +353,8 @@ export class RevisionComponent {
   }
 
   revisionAmount(index: any) {
+    if(this.budgetRevisionUnitList2[index].revisionAmount==undefined)
+      this.budgetRevisionUnitList2[index].revisionAmount=0.0000.toFixed(4);
     if(parseFloat(this.budgetRevisionUnitList2[index].existingAmount)+parseFloat(this.budgetRevisionUnitList2[index].revisionAmount)<0){
       Swal.fire('Cannot withdraw more than existing amount');
       this.budgetRevisionUnitList2[index].revisionAmount=undefined;
@@ -374,17 +376,20 @@ export class RevisionComponent {
   totalExistingAmount: any = 0.0;
   totlaRevisionAmount: any = 0.0;
   totalRevisiedAmount: any = 0.0;
+  totalRemainingAmount: any = 0.0;
+
 
   private populateRevisionData() {
     for (let i = 0; i < this.allRevisedUnits.length; i++) {
       const entry: BudgetRevisionUnitList = {
         id: undefined,
         unit: this.allRevisedUnits[i].unit,
-        existingAmount: (parseFloat(this.allRevisedUnits[i].balAmount)*parseFloat(this.allRevisedUnits[i].amountType.amount)/this.formdata.get('amountType')?.value.amount).toFixed(4),
+        existingAmount: (parseFloat(this.allRevisedUnits[i].allocationAmount)*parseFloat(this.allRevisedUnits[i].amountType.amount)/this.formdata.get('amountType')?.value.amount).toFixed(4),
         revisionAmount: undefined,
-        revisiedAmount: (parseFloat(this.allRevisedUnits[i].balAmount)*parseFloat(this.allRevisedUnits[i].amountType.amount)/this.formdata.get('amountType')?.value.amount).toFixed(4),
+        revisiedAmount: (parseFloat(this.allRevisedUnits[i].allocationAmount)*parseFloat(this.allRevisedUnits[i].amountType.amount)/this.formdata.get('amountType')?.value.amount).toFixed(4),
         isSelected: false,
         amountType: this.allRevisedUnits[i].amountType,
+        remainingAmount:(parseFloat(this.allRevisedUnits[i].balAmount)*parseFloat(this.allRevisedUnits[i].amountType.amount)/this.formdata.get('amountType')?.value.amount).toFixed(4),
       };
       this.budgetRevisionUnitList2.push(entry);
     }
@@ -398,16 +403,17 @@ export class RevisionComponent {
       return;
     }
     const alloc = {
-      allocationType: '',
-      allocationTypeId: '',
+      allocationType: this.formdata.get('allocationType')?.value.allocDesc,
+      allocationTypeId: this.formdata.get('allocationType')?.value.allocTypeId,
     };
-    if (this.formdata.get('allocationType')?.value.allocType == 'BE') {
-      alloc.allocationType = 'Revised BE';
-      alloc.allocationTypeId = 'ALL_106';
-    } else {
-      alloc.allocationType = 'Revised RE';
-      alloc.allocationTypeId = 'ALL_107';
-    }
+    // if (this.formdata.get('allocationType')?.value.allocType == 'BE') {
+    //   alloc.allocationType = 'Revised BE';
+    //   alloc.allocationTypeId = 'ALL_106';
+    // } else {
+    //   alloc.allocationType = 'Revised RE';
+    //   alloc.allocationTypeId = 'ALL_107';
+    // }
+
     for (let i = 0; i < this.budgetRevisionUnitList2.length; i++) {
       if (
         this.budgetRevisionUnitList2[i].revisionAmount != undefined &&
@@ -497,8 +503,11 @@ export class RevisionComponent {
     this.totalExistingAmount = 0.0;
     this.totlaRevisionAmount = 0.0;
     this.totalRevisiedAmount = 0.0;
+    this.totalRemainingAmount=0.0;
     for (let i = 0; i < this.budgetRevisionUnitList2.length; i++) {
       if (!this.budgetRevisionUnitList2[i].isSelected) {
+        this.totalRemainingAmount=(parseFloat(this.totalRemainingAmount) +
+          parseFloat(this.budgetRevisionUnitList2[i].remainingAmount)).toFixed(4);
         this.totalExistingAmount =
           (parseFloat(this.totalExistingAmount) +
           parseFloat(this.budgetRevisionUnitList2[i].existingAmount)).toFixed(4);
@@ -725,6 +734,7 @@ export class RevisionComponent {
     this.totalRevisiedAmount=0.0;
     this.totalExistingAmount=0.0;
     this.totlaRevisionAmount =0.0;
+    this.totalRemainingAmount=0.0;
 
   }
 }

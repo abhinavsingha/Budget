@@ -145,6 +145,7 @@
                   <thead>
                     <tr>
                       <th>Unit</th>
+                      <th>Allocated</th>
                       <th>Existing</th>
                       <th>Additional/Withdrawal (in {{amountUnit}})</th>
                       <th>Revised (in {{amountUnit}})</th>
@@ -155,6 +156,7 @@
                   <tr *ngFor="let subHeadWiseUnit of budgetRevisionUnitList2; let i = index">
                     <td *ngIf="!subHeadWiseUnit.isSelected">{{subHeadWiseUnit.unit.descr}}</td>
                     <td *ngIf="!subHeadWiseUnit.isSelected">{{subHeadWiseUnit.existingAmount}} </td>
+                    <td *ngIf="!subHeadWiseUnit.isSelected">{{subHeadWiseUnit.remainingAmount}}</td>
                     <td *ngIf="!subHeadWiseUnit.isSelected"><input type="number" (change)="revisionAmount(i)" [(ngModel)]="subHeadWiseUnit.revisionAmount"></td>
                     <td *ngIf="!subHeadWiseUnit.isSelected">{{subHeadWiseUnit.revisiedAmount}}</td>
                   </tr>
@@ -163,6 +165,7 @@
                   <tr>
                     <td>Total (in {{amountUnit}})</td>
                     <td>{{totalExistingAmount}}</td>
+                    <td>{{totalRemainingAmount}}</td>
                     <td>{{totlaRevisionAmount}}</td>
                     <td>{{totalRevisiedAmount}}</td>
                   </tr>

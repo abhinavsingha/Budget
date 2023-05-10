@@ -196,7 +196,7 @@
                         <div class="input-group-append">
                           <span class="input-group-text" (click)="uploadFile(i)">Upload</span>
                         </div>
-                        <div class="input-group-append" *ngIf="uploadDocuments[i].uploadDocId!=undefined">
+                        <div class="input-group-append" *ngIf="uploadDocuments[i]!=undefined">
                           <span class="input-group-text" (click)="viewFile(uploadDocuments[i].uploadDocId)">View</span>
                         </div>
                       </div>
@@ -240,7 +240,7 @@
             </div>
           </div>
           <div class="card-tools mr-2" style="width:17%;">
-            <div class="form-group input-group input-group-sm row" [formGroup]="formdata">
+            <div class="form-group input-group input-group-sm row" [formGroup]="formData">
               <label class="float-left col-md-5">Rupees in: </label>
               <ng-select class="form-control select2bs4 col-md-7" style="width: 100%" [items]="amountType"
                 bindLabel="amountType" placeholder="Select Amount Unit" [(ngModel)]="defaultAmountType2"
@@ -273,7 +273,7 @@
                   <td>{{tableData.allocTypeId.allocDesc}}</td>
                   <td>
                     <div *ngIf="tableData.isEdit">
-                      <input type="text" class="form-control" id="recieptAmountUpdate"
+                      <input type="text" class="form-control" id="allocationAmount"
                         [(ngModel)]="tableData.allocationAmount" />
                     </div>
                     <div *ngIf="!tableData.isEdit">

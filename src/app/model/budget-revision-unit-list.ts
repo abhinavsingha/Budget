@@ -6,4 +6,5 @@ export class BudgetRevisionUnitList {
   revisiedAmount: any;
   isSelected: boolean = false;
   amountType:string='';
+  remainingAmount:any;
 }

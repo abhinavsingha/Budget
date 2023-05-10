@@ -34,6 +34,7 @@ export class ApprovedBudgetComponent implements OnInit {
   invoice: any;
   invoicePath: any;
   private userUnitId: any;
+  private dashboardData: any;
   constructor(
     private SpinnerService: NgxSpinnerService,
     private cons: ConstantsService,
@@ -73,6 +74,7 @@ export class ApprovedBudgetComponent implements OnInit {
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
             debugger;
+            this.dashboardData=result['response'];
             this.userRole = result['response'].userDetails.role[0].roleName;
             this.userUnitId=result['response'].userDetails.unitId;
             this.sharedService.inbox = result['response'].inbox;
@@ -162,20 +164,31 @@ export class ApprovedBudgetComponent implements OnInit {
         //       complete: () => console.info('complete'),
         //     });
         // }
+        let flag=false;
         for(let i=0;i<this.unitData.length;i++){
           if(this.userUnitId=='001321'){
             if(this.unitData[i].unit=='000225')
             {
               this.currentUnit=this.unitData[i];
               this.formdata.get('authUnit')?.setValue(this.currentUnit);
+              flag=true;
             }
           }
           else{
             if(this.unitData[i].unit==this.userUnitId){
               this.currentUnit=this.unitData[i];
               this.formdata.get('authUnit')?.setValue(this.currentUnit);
+              flag=true;
             }
           }
+        }
+        if(!flag){
+          const addedUnit={
+            unit:this.dashboardData.userDetails.unitId,
+            descr:this.dashboardData.userDetails.unit
+          }
+          this.unitData.push(addedUnit);
+          this.currentUnit=addedUnit;
         }
       },
       (error) => {

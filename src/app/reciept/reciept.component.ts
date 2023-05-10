@@ -24,8 +24,10 @@ export class RecieptComponent {
     subHeadType: new FormControl(),
     remarks: new FormControl(),
     amountType: new FormControl(),
-    amountType2: new FormControl(),
   });
+  formData=new FormGroup({
+    amountType2: new FormControl(),
+  })
 
   finYearList: any[] = [];
   majorHeadList: any[] = [];
@@ -161,18 +163,21 @@ export class RecieptComponent {
   }
 
   getBudgetRecipt() {
+    debugger;
     this.SpinnerService.show();
     this.apiService.getApi(this.cons.api.getBudgetRecipt).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.finalTableData = result['response'].budgetResponseist;
         debugger;
-        if (this.defaultAmountType != undefined) {
+        if(this.defaultAmountType==null&&this.defaultAmountType2!=null)
+         this.defaultAmountType=this.defaultAmountType2;
+        if (this.defaultAmountType2 != undefined) {
           for (let i = 0; i < this.finalTableData.length; i++) {
             this.finalTableData[i].allocationAmount = (
               (this.finalTableData[i].allocationAmount *
                 this.finalTableData[i].amountUnit.amount) /
-              this.defaultAmountType.amount
+              this.defaultAmountType2.amount
             ).toFixed(4);
             this.finalTableData[i].isEdit = false;
           }
@@ -522,6 +527,7 @@ export class RecieptComponent {
             this.uploadDocuments.push(new UploadDocuments());
             this.formdata.reset();
             this.common.successAlert('Success', 'Finally submitted', 'success');
+            // this.formData.get('amountType2')?.setValue(this.defaultAmountType2);
             this.getBudgetRecipt();
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
