@@ -116,7 +116,7 @@
 
         <!-- <li class="nav-item"
           *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'|| userRole=='CB Creator'|| userRole=='CB Approver' || userRole=='Viewer'"> -->
-        <li class="nav-item" *ngIf=" userRole=='Budget Approver'">
+        <li class="nav-item" *ngIf=" userRole=='Budget Approver' || userRole=='Budget Manager'">
           <a href="#" class="nav-link" [routerLink]="['/budget-allocation-report']" [routerLinkActive]="['active']">
             <i class="fas fa-file-download nav-icon"></i>
             <p>Budget Allocation Report</p>
