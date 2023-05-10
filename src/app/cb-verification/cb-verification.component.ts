@@ -451,6 +451,10 @@ export class CbVerificationComponent {
     });
   }
   returnCb() {
+    if(this.formdata.get('returnRemarks')?.value==undefined){
+      Swal.fire('Return Remark cannot be blank');
+      return;
+    }
     for (let i = 0; i < this.cbList.length; i++) {
       // if(this.cbList[i].cbNo==this.formdata.get('cbNo')?.value){
       this.cbList[i].status = 'Rejected';
