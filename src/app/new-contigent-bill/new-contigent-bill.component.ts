@@ -305,14 +305,14 @@ export class NewContigentBillComponent implements OnInit {
             this.formdata.get('budgetAllocated')?.setValue(0);
           } else {
             this.budgetAllotted = (
-              parseFloat(result['response'].fundAvailable) *
+              parseFloat(result['response'].fundallocated) *
               parseFloat(result['response'].amountUnit.amount)
             ).toFixed(4);
             this.formdata
               .get('budgetAllocated')
               ?.setValue(
                 (
-                  parseFloat(result['response'].fundAvailable) *
+                  parseFloat(result['response'].fundallocated) *
                   parseFloat(result['response'].amountUnit.amount)
                 ).toFixed(4)
               );
@@ -570,7 +570,8 @@ export class NewContigentBillComponent implements OnInit {
   }
 
   updateExpenditure() {
-    if (this.formdata.get('amount')?.value > this.budgetAllotted) {
+    this.formdata.get('progressive')?.setValue(this.expenditure);
+    if (this.formdata.get('amount')?.value > (this.budgetAllotted- parseFloat(this.formdata.get('progressive')?.value))) {
       this.formdata.get('amount')?.reset();
       this.common.warningAlert(
         'CB Amount Exceed Limit',
@@ -719,7 +720,7 @@ export class NewContigentBillComponent implements OnInit {
                               this.FundAllotted = result['response'];
                               this.expenditure = parseFloat(this.FundAllotted.expenditure);
                               this.formdata.get('progressive')?.setValue(this.expenditure);
-                              this.formdata.get('budgetAllocated')?.setValue(parseFloat(this.FundAllotted.fundAvailable)*this.FundAllotted.amountUnit.amount);
+                              this.formdata.get('budgetAllocated')?.setValue(parseFloat(this.FundAllotted.fundallocated)*this.FundAllotted.amountUnit.amount);
                               this.budgetAllotted = cbEntry.budgetAllocated;
                               this.formdata.get('progressive')?.setValue(parseFloat(this.FundAllotted.expenditure));
                               this.formdata
@@ -764,7 +765,7 @@ export class NewContigentBillComponent implements OnInit {
                     this.FundAllotted = result['response'];
                     this.expenditure = parseFloat(this.FundAllotted.expenditure);
                     this.formdata.get('progressive')?.setValue(this.expenditure);
-                    this.formdata.get('budgetAllocated')?.setValue(parseFloat(this.FundAllotted.fundAvailable)*this.FundAllotted.amountUnit.amount);
+                    this.formdata.get('budgetAllocated')?.setValue(parseFloat(this.FundAllotted.fundallocated)*this.FundAllotted.amountUnit.amount);
                     this.budgetAllotted = cbEntry.budgetAllocated;
                     this.formdata.get('progressive')?.setValue(parseFloat(this.FundAllotted.expenditure));
                     this.formdata
@@ -1237,9 +1238,9 @@ export class NewContigentBillComponent implements OnInit {
   getCbNo(formdata: any) {
     const cbCount = this.cbList.length + 1;
     const cbNo =
-      this.dasboardData.userDetails.unitId +
+      this.dasboardData.userDetails.unit +
       '/' +
-      formdata.subHead.budgetCodeId +
+      formdata.subHead.subheadShort +
       '/' +
       cbCount +
       '/' +
