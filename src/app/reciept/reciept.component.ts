@@ -189,9 +189,20 @@ export class RecieptComponent {
     this.apiService.getApi(this.cons.api.getAllocationTypeData).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
+
         let result: { [key: string]: any } = v;
         if (result['message'] == 'success') {
+          debugger;
           this.allocationTypeList = result['response'];
+
+          for (var i = 0; i < this.allocationTypeList.length; i++) {
+            if (
+              result['response'][i].allocTypeId == 'ALL_106' ||
+              result['response'][i].allocTypeId == 'ALL_107'
+            ) {
+              this.allocationTypeList.splice(i, 1);
+            }
+          }
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
