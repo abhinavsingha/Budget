@@ -384,7 +384,7 @@ export class BudgetAllocationReportComponent implements OnInit {
           this.cons.api.getBEAllocationReport +
             '/' +
             formdata.finYear.serialNo +
-            '/BE' +
+            '/ALL_101' +
             '/' +
             formdata.amountType.amountTypeId
         )
@@ -420,7 +420,7 @@ export class BudgetAllocationReportComponent implements OnInit {
           this.cons.api.getBEAllocationReport +
             '/' +
             formdata.finYear.serialNo +
-            '/RE' +
+            '/ALL_102' +
             '/' +
             formdata.amountType.amountTypeId
         )
@@ -528,7 +528,7 @@ export class BudgetAllocationReportComponent implements OnInit {
           this.cons.api.getBEREAllocationReport +
             '/' +
             formdata.finYear.serialNo +
-            '/BE' +
+            '/ALL_101' +
             '/' +
             formdata.amountType.amountTypeId
         )

@@ -892,6 +892,7 @@ export class NewContigentBillComponent implements OnInit {
           this.cbList[i].status == 'Pending' ||
           this.cbList[i].status == 'Rejected'
         ) {
+          this.cbList[i].progressiveAmount=this.formdata.get('progressive')?.value;
           this.cbList[i].budgetAllocated =
             this.formdata.get('budgetAllocated')?.value;
           this.cbList[i].amount = this.formdata.get('amount')?.value;
