@@ -12,7 +12,15 @@ import { CommonService } from '../services/common/common.service';
 import Swal from 'sweetalert2';
 import { SharedService } from '../services/shared/shared.service';
 import { MultiCdaParking } from '../model/multi-cda-parking';
-
+class TableData{
+  Financial_Year:any;
+  To_Unit:any;
+  From_Unit:any;
+  Subhead:any;
+  Type:any;
+  Remaining_Amount:any;
+  Allocated_Fund:any;
+}
 @Component({
   selector: 'app-budget-approver',
   templateUrl: './budget-approver.component.html',
@@ -529,4 +537,54 @@ export class BudgetApproverComponent implements OnInit {
       complete: () => console.info('complete'),
     });
   }
+  generateCsvData(tableData: any[]): string {
+    // Extract headers
+    const headers = Object.keys(tableData[0]);
+
+    // Extract data rows
+    const rows = tableData.map(row => {
+      return headers.map(header => {
+        return row[header];
+      });
+    });
+
+    // Combine headers and rows into a CSV string
+    const csvContent = headers.join(',') + '\n' +
+      rows.map(row => row.join(',')).join('\n');
+
+    return csvContent;
+  }
+
+  downloadCsv() {
+    let tableData=[];
+    for(let i=0;i<this.budgetDataList.length;i++){
+      let table:TableData= {
+        Financial_Year: this.budgetDataList[i].finYear.finYear,
+        To_Unit: this.budgetDataList[i].toUnit.descr,
+        From_Unit: this.budgetDataList[i].fromUnit.descr,
+        Subhead: this.budgetDataList[i].subHead.subHeadDescr,
+        Type: this.budgetDataList[i].allocTypeId.allocType,
+        Remaining_Amount: this.budgetDataList[i].balanceAmount,
+        Allocated_Fund: this.budgetDataList[i].allocationAmount
+      }
+      tableData.push(table);
+    }
+
+    // Generate CSV content
+    const csvContent = this.generateCsvData(tableData);
+
+    // Create Blob object from CSV content
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+
+    // Create download link and click it programmatically
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = 'table-data.csv';
+    link.click();
+
+    // Clean up
+    window.URL.revokeObjectURL(link.href);
+    document.removeChild(link);
+  }
+
 }

@@ -75,7 +75,9 @@
                     <!--                    <td>{{li.unitName}}</td>-->
                     <td>{{li.status}}</td>
                     <td><button type="submit" class="btn btn-warning mr-2" (click)="redirect(li)"> <i
-                          class="fas fa-eye"></i> View</button> </td>
+                      class="fas fa-eye"></i> View</button>
+                      <button *ngIf="li.status== 'Fully Approved'" type="button" class="btn btn-warning mr-2" (click)="getAuthDoc(li)">Auth Doc</button>
+                    </td>
                   </tr>
                 </tbody>
               </table>

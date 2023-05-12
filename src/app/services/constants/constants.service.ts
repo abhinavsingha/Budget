@@ -188,7 +188,7 @@ export class ConstantsService {
     getAllRevisionGroupId: this.serviceUrl + 'budgetAllocation/getAllRevisionGroupId',
     getAllCgUnitData: this.serviceUrl + 'budgetAllocation/getAllCgUnitData',
     getMainBEAllocationReport: this.serviceUrl + 'reportController/getMainBEAllocationReport',
-
+    getApprovedFilePath: this.serviceUrl +'fileUpload/getApprovedFilePath'
 
   };
 }
