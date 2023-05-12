@@ -189,7 +189,7 @@ export class InboxComponent implements OnInit {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.SpinnerService.hide();
-        this.authDocPath=result['response'].pathURL;
+        this.authDocPath=result['response'].uploadID;
         this.viewFile(this.authDocPath);
         console.log('success');
       } else {
@@ -201,7 +201,7 @@ export class InboxComponent implements OnInit {
   }
   viewFile(file: string) {
     this.apiService
-      .getApi(this.cons.api.fileDownload +file.substring(file.lastIndexOf('/')+1))
+      .getApi(this.cons.api.fileDownload +file)
       .subscribe(
         (res) => {
           let result: { [key: string]: any } = res;

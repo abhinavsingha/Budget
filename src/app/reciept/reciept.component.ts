@@ -10,6 +10,7 @@ import { CommonService } from '../services/common/common.service';
 import Swal from 'sweetalert2';
 import { UploadDocuments } from '../model/upload-documents';
 import { elements } from 'chart.js';
+import {SharedService} from "../services/shared/shared.service";
 
 @Component({
   selector: 'app-reciept',
@@ -66,6 +67,7 @@ export class RecieptComponent {
   }
 
   constructor(
+    private sharedService: SharedService,
     private SpinnerService: NgxSpinnerService,
     private cons: ConstantsService,
     private apiService: ApiCallingServiceService,
@@ -516,6 +518,7 @@ export class RecieptComponent {
           let result: { [key: string]: any } = v;
 
           if (result['message'] == 'success') {
+            this.updateInbox();
             this.isSelectedRE = false;
             this.isSelectedMA = false;
             this.isSectedSG = false;
@@ -755,6 +758,7 @@ export class RecieptComponent {
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
             this.getBudgetRecipt();
+            this.updateInbox();
             this.common.successAlert('Success', 'Successfully Updated', '');
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
@@ -768,4 +772,27 @@ export class RecieptComponent {
         complete: () => console.info('complete'),
       });
   }
+  updateInbox(){
+    this.apiService
+      .getApi(this.cons.api.updateInboxOutBox)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            this.sharedService.inbox = result['response'].inbox;
+            this.sharedService.outbox = result['response'].outBox;
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
+  }
+
 }

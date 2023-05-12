@@ -172,4 +172,46 @@ export class OutboxComponent implements OnInit {
 
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   }
+  authDocPath:any;
+  getAuthDoc(li: InboxList) {
+    let type;
+    if(li.type=='Budget Allocation')
+      type='BG';
+    else if(li.type=='Budget Revision')
+      type='BR'
+    else
+      type='CB'
+
+    this.apiService.getApi(this.cons.api.getApprovedFilePath+'/'+li.groupId+'/'+type).subscribe((res) => {
+      let result: { [key: string]: any } = res;
+      if (result['message'] == 'success') {
+        this.SpinnerService.hide();
+        this.authDocPath=result['response'].uploadID;
+        this.viewFile(this.authDocPath);
+        console.log('success');
+      } else {
+        this.common.faliureAlert('Please try later', result['message'], '');
+      }
+    });
+
+
+  }
+  viewFile(file: string) {
+    this.apiService
+      .getApi(this.cons.api.fileDownload +file)
+      .subscribe(
+        (res) => {
+          let result: { [key: string]: any } = res;
+          this.openPdfUrlInNewTab(result['response'].pathURL);
+          console.log(result['result'].pathURL);
+        },
+        (error) => {
+          console.log(error);
+          this.SpinnerService.hide();
+        }
+      );
+  }
+  openPdfUrlInNewTab(pdfUrl: string): void {
+    window.open(pdfUrl, '_blank');
+  }
 }
