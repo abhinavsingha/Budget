@@ -75,7 +75,7 @@ export class UnitRebaseComponent {
   getCgUnitData() {
     this.SpinnerService.show();
 
-    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
+    this.apiService.getApi(this.cons.api.getAllCgUnitData).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.allunits = result['response'];

@@ -185,7 +185,10 @@ export class ConstantsService {
     getContingentBillReport:
       this.serviceUrl + 'reportController/getContingentBillReport',
     updateInboxOutBox: this.serviceUrl + 'dashBoard/updateInboxOutBox', approveRevisionBudgetOrReject: this.serviceUrl + 'budgetAllocation/approveRevisionBudgetOrReject',
-    getAllRevisionGroupId: this.serviceUrl + 'budgetAllocation/getAllRevisionGroupId'
+    getAllRevisionGroupId: this.serviceUrl + 'budgetAllocation/getAllRevisionGroupId',
+    getAllCgUnitData: this.serviceUrl + 'budgetAllocation/getAllCgUnitData',
+    getMainBEAllocationReport: this.serviceUrl + 'reportController/getMainBEAllocationReport',
+
 
   };
 }
