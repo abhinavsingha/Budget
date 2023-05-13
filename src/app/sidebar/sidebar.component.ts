@@ -37,7 +37,6 @@ export class SidebarComponent {
     //   localStorage.removeItem('foo');
     //   localStorage.setItem('user_role', 'Admin');
     // }
-    console.log('SIDEBAR');
     this.getDashBoardDta();
   }
 
@@ -71,8 +70,8 @@ export class SidebarComponent {
             this.userRole = result['response'].userDetails.role[0].roleName;
             this.inbox = result['response'].inbox;
             this.outbox = result['response'].outBox;
-            this.sharedService.inbox = result['response'].inbox;
-            this.sharedService.outbox = result['response'].outBox;
+            // this.sharedService.inbox = result['response'].inbox;
+            // this.sharedService.outbox = result['response'].outBox;
             this.unitName = result['response'].userDetails.unit;
             this.unitId = result['response'].userDetails.unitId;
             localStorage.setItem(

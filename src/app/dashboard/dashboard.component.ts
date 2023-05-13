@@ -209,7 +209,10 @@ export class DashboardComponent implements OnInit {
         if (result['message'] == 'success') {
 
           this.sharedService.inbox=result['response'].inbox;
-          this.sharedService.outbox=result['response'].outbox;
+          this.sharedService.outbox=result['response'].outBox;
+          console.log("inbox"+this.sharedService.inbox +"outbox"+
+          this.sharedService.outbox);
+          debugger;
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
