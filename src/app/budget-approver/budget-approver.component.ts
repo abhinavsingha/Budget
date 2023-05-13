@@ -559,13 +559,13 @@ export class BudgetApproverComponent implements OnInit {
     let tableData=[];
     for(let i=0;i<this.budgetDataList.length;i++){
       let table:TableData= {
-        Financial_Year: this.budgetDataList[i].finYear.finYear,
-        To_Unit: this.budgetDataList[i].toUnit.descr,
-        From_Unit: this.budgetDataList[i].fromUnit.descr,
-        Subhead: this.budgetDataList[i].subHead.subHeadDescr,
-        Type: this.budgetDataList[i].allocTypeId.allocType,
-        Remaining_Amount: this.budgetDataList[i].balanceAmount,
-        Allocated_Fund: this.budgetDataList[i].allocationAmount
+        Financial_Year: this.budgetDataList[i].finYear.finYear.replaceAll(',',' '),
+        To_Unit: this.budgetDataList[i].toUnit.descr.replaceAll(',',' '),
+        From_Unit: this.budgetDataList[i].fromUnit.descr.replaceAll(',',' '),
+        Subhead: this.budgetDataList[i].subHead.subHeadDescr.replaceAll(',',' '),
+        Type: this.budgetDataList[i].allocTypeId.allocType.replaceAll(',',' '),
+        Remaining_Amount: this.budgetDataList[i].balanceAmount.replaceAll(',',' '),
+        Allocated_Fund: this.budgetDataList[i].allocationAmount.replaceAll(',',' ')
       }
       tableData.push(table);
     }
