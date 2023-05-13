@@ -331,7 +331,11 @@ export class NewContigentBillComponent implements OnInit {
         console.error(e);
         this.common.faliureAlert('Error', e['error']['message'], 'error');
       },
-      complete: () => console.info('complete'),
+      complete: () => {
+        debugger;
+        if(this.formdata.get('amount')?.value!=undefined){
+        this.updateExpenditure();
+      }},
     });
   }
 
@@ -886,12 +890,15 @@ export class NewContigentBillComponent implements OnInit {
   }
 
   updateList() {
+    let flag=false;
     for (let i = 0; i < this.cbList.length; i++) {
       if (this.formdata.get('cbNo')?.value == this.cbList[i].cbNo) {
+        flag=true;
         if (
           this.cbList[i].status == 'Pending' ||
           this.cbList[i].status == 'Rejected'
         ) {
+
           this.cbList[i].progressiveAmount=this.formdata.get('progressive')?.value;
           this.cbList[i].budgetAllocated =
             this.formdata.get('budgetAllocated')?.value;
@@ -973,7 +980,11 @@ export class NewContigentBillComponent implements OnInit {
                     );
                     this.SpinnerService.hide();
                   }
-                },
+                },error: (e) => {
+                  this.SpinnerService.hide();
+                  console.error(e);
+                  this.common.faliureAlert('Error', e['error']['message'], 'error');
+                }
               });
           }
         } else if (this.cbList[i].status == 'Pending for Submission') {
@@ -1022,6 +1033,12 @@ export class NewContigentBillComponent implements OnInit {
         }
       }
     }
+    if(!flag)
+      this.common.faliureAlert(
+        'CB No. not found',
+        'In case of change of Subhead or Financial Year. Update not allowed',
+        ''
+      );
   }
 
   submitList() {
@@ -1104,7 +1121,11 @@ export class NewContigentBillComponent implements OnInit {
               );
               this.SpinnerService.hide();
             }
-          },
+          },error: (e) => {
+            this.SpinnerService.hide();
+            console.error(e);
+            this.common.faliureAlert('Error', e['error']['message'], 'error');
+          }
         });
       this.cleardata(1);
     }
