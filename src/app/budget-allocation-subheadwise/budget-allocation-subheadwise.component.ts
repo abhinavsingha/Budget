@@ -334,6 +334,7 @@ export class BudgetAllocationSubheadwiseComponent {
         if (result['message'] == 'success') {
           this.amountTypeas = result['response'];
           this.amountUnit = this.amountTypeas[1];
+          this.displayUnit=this.amountUnit.amountType;
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
@@ -621,8 +622,16 @@ export class BudgetAllocationSubheadwiseComponent {
     // this.getTotalAmount();
   }
   amountUnit: any;
+  displayUnit:string|undefined;
   setAmountUnit() {
+
     this.amountUnit = this.formdata.get('amountType')?.value;
+    if(this.amountUnit!=undefined){
+      this.displayUnit=this.amountUnit.amountType;
+    }
+    else{
+      return;
+    }
     for (let i = 0; i < this.subHeadWiseUnitList.length; i++) {
       if (this.subHeadWiseUnitList[i].amount != undefined) {
         this.subHeadWiseUnitList[i].amount = (
