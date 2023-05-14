@@ -421,6 +421,7 @@ export class CbVerificationComponent {
 
           if (result['message'] == 'success') {
             this.common.successAlert('Verified', result['message'], '');
+            this.cbList = [];
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
@@ -433,8 +434,6 @@ export class CbVerificationComponent {
         },
         complete: () => this.getContingentBill(),
       });
-    this.cbList = [];
-    this.getContingentBill();
     // }
     // }
     console.log(this.cbList);
@@ -476,6 +475,7 @@ export class CbVerificationComponent {
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
             this.common.successAlert('Rejected', result['message'], '');
+            this.cbList = [];
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
@@ -490,7 +490,7 @@ export class CbVerificationComponent {
       });
     // }
     // }
-    console.log(this.cbList);
+
   }
   viewFile(file: string) {
     this.apiService
