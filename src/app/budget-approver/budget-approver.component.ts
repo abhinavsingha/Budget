@@ -557,18 +557,32 @@ export class BudgetApproverComponent implements OnInit {
 
   downloadCsv() {
     let tableData=[];
+    let totalR=0.0;
+    let totalA=0.0;
     for(let i=0;i<this.budgetDataList.length;i++){
+      totalA=totalA+(parseFloat(this.budgetDataList[i].allocationAmount)*this.budgetDataList[i].amountUnit.amount);
+      totalR=totalR+(parseFloat(this.budgetDataList[i].balanceAmount)*this.budgetDataList[i].remeningBalanceUnit.amount);
       let table:TableData= {
         Financial_Year: this.budgetDataList[i].finYear.finYear.replaceAll(',',' '),
         To_Unit: this.budgetDataList[i].toUnit.descr.replaceAll(',',' '),
         From_Unit: this.budgetDataList[i].fromUnit.descr.replaceAll(',',' '),
         Subhead: this.budgetDataList[i].subHead.subHeadDescr.replaceAll(',',' '),
         Type: this.budgetDataList[i].allocTypeId.allocType.replaceAll(',',' '),
-        Remaining_Amount: this.budgetDataList[i].balanceAmount.replaceAll(',',' '),
-        Allocated_Fund: this.budgetDataList[i].allocationAmount.replaceAll(',',' ')
+        Remaining_Amount: this.budgetDataList[i].balanceAmount.replaceAll(',',' ')+' ' +this.budgetDataList[i].remeningBalanceUnit.amountType,
+        Allocated_Fund: this.budgetDataList[i].allocationAmount.replaceAll(',',' ')+' ' +this.budgetDataList[i].amountUnit.amountType
       }
       tableData.push(table);
     }
+    let table:TableData= {
+      Financial_Year: '',
+      To_Unit: '',
+      From_Unit: '',
+      Subhead: '',
+      Type: 'TOTAL',
+      Remaining_Amount: (parseFloat(totalR.toFixed(4))/10000000).toString() + 'Crore',
+      Allocated_Fund: (parseFloat(totalA.toFixed(4))/10000000).toString() + 'Crore'
+    }
+    tableData.push(table);
 
     // Generate CSV content
     const csvContent = this.generateCsvData(tableData);
@@ -579,7 +593,8 @@ export class BudgetApproverComponent implements OnInit {
     // Create download link and click it programmatically
     const link = document.createElement('a');
     link.href = window.URL.createObjectURL(blob);
-    link.download = 'table-data.csv';
+
+    link.download = this.type+'.csv';
     link.click();
 
     // Clean up
