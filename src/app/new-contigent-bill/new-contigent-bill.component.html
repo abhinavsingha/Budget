@@ -156,7 +156,7 @@
                     <div class="custom-file">
                       <input #browseFileInput class="custom-file-input" formControlName="file" id="InputFile"
                         type="file">
-                      <label class="custom-file-label" for="InputFile">Choose file</label>
+                      <label class="custom-file-label" id="browseFile" for="InputFile">Choose file</label>
                     </div>
                     <div class="input-group-append">
 
@@ -196,7 +196,7 @@
                     <div class="custom-file">
                       <input #invoiceFileInput class="custom-file-input" formControlName="file" id="invoice"
                         type="file">
-                      <label class="custom-file-label" for="invoice">Choose file</label>
+                      <label class="custom-file-label" for="invoice" id="invoice2">Choose file</label>
                     </div>
                     <div class="input-group-append">
                       <span (click)="upload('invoice')" class="input-group-text" style="cursor: pointer">Upload</span>

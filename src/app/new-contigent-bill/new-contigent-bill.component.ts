@@ -251,11 +251,18 @@ export class NewContigentBillComponent implements OnInit {
         this.cleardata(0);
         this.getFinancialYear();
         this.updateInbox();
-        this.common.successAlert(
-          'Success',
-          'Data Added Successfully',
-          'success'
-        );
+        console.log('?????????????'+this.invoiceFileInput);
+        const label=document.getElementById("invoice2");
+        if(label!=null)
+          label.textContent='Choose File';
+        this.invoiceFileInput=undefined;
+        this.formdata.get('file')?.reset();
+        const label1=document.getElementById("browseFile");
+        if(label1!=null)
+          label1.textContent='Choose File';
+        this.browseFileInput=undefined;
+
+        this.common.successAlert('Success', 'Data Added Successfully','success');
       } else {
         Swal.fire(
           'Duplicate Entry. Select Update to update previously entered CB'
