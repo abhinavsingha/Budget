@@ -627,6 +627,7 @@ export class BudgetAllocationSubheadwiseComponent {
   }
   amountUnit: any;
   displayUnit:string|undefined;
+  isAllChecked: boolean=false;
   setAmountUnit() {
 
     this.amountUnit = this.formdata.get('amountType')?.value;
@@ -679,5 +680,12 @@ export class BudgetAllocationSubheadwiseComponent {
       },
       complete: () => console.info('complete'),
     });
+  }
+
+  tableAllCheckBoxClicked() {
+    // this.isAllChecked=!this.isAllChecked;
+    for(let i=0;i<this.budgetAllocationArray.length;i++){
+      this.budgetAllocationArray[i].isChecked=this.isAllChecked;
+    }
   }
 }
