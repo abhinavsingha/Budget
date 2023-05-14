@@ -8,5 +8,6 @@ export class SharedService {
   public outbox:any;
   public roleHeading: any;
   public status:boolean=false;
+  public finYear: any;
   constructor() { }
 }

@@ -19,6 +19,7 @@ export class RevisionApprovalComponent {
   private userUnitId: any;
   currentUnit: any;
   browse: any;
+  amountUnit: string|undefined;
   constructor(
     // private matDialog: MatDialog,
     private SpinnerService: NgxSpinnerService,
@@ -91,7 +92,7 @@ export class RevisionApprovalComponent {
           this.allocationType=this.budgetDataLists[0].allocTypeId;
           this.formdata.get('allocationType')?.setValue(this.budgetDataLists[0].allocTypeId);
           this.formdata.get('remarks')?.setValue(this.budgetDataLists[0].remarks);
-
+          this.amountUnit=this.budgetDataLists[0].amountUnit.amountType;
 
 
           this.SpinnerService.hide();

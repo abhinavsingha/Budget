@@ -450,6 +450,10 @@ export class NewContigentBillComponent implements OnInit {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
         if (result['message'] == 'success') {
+          this.sharedService.finYear=result['response'].budgetFinancialYear;
+          if(this.sharedService.finYear!=undefined)
+            this.formdata.get('finYearName')?.setValue(this.sharedService.finYear);
+
           this.dasboardData = result['response'];
           this.sharedService.inbox = result['response'].inbox;
           this.sharedService.outbox = result['response'].outBox;
@@ -1158,7 +1162,7 @@ export class NewContigentBillComponent implements OnInit {
       .subscribe(
         (results) => {
           let result: { [key: string]: any } = results;
-          this.downloadPdf(result['response'][0].path);
+          this.downloadPdf(result['response'][0].path,result['response'][0].fileName);
         },
         (error) => {
           console.log(error);
@@ -1258,12 +1262,12 @@ export class NewContigentBillComponent implements OnInit {
     window.open(pdfUrl, '_blank');
   }
 
-  downloadPdf(pdfUrl: string): void {
+  downloadPdf(pdfUrl: string,filename:string): void {
     this.http.get(pdfUrl, { responseType: 'blob' }).subscribe(
       (blob: Blob) => {
         //   this.http.get('https://icg.net.in/bmsreport/1681376372803.pdf', { responseType: 'blob' }).subscribe((blob: Blob) => {
         this.SpinnerService.hide();
-        FileSaver.saveAs(blob, 'document.pdf');
+        FileSaver.saveAs(blob, filename);
       },
       (error) => {
         this.SpinnerService.hide();

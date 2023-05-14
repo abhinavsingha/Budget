@@ -239,6 +239,8 @@ export class BudgetAllocationComponent implements OnInit {
     this.getAmountType();
     this.getDashboardData();
     this.getSubHeadType();
+    if(this.sharedService.finYear!=undefined)
+      this.formdata.get('finYearName')?.setValue(this.sharedService.finYear);
 
     $.getScript('assets/js/adminlte.js');
     $.getScript('assets/main.js');

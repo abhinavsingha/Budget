@@ -22,6 +22,7 @@ class InboxList {
   unitName: string | undefined;
   groupId: string | undefined;
   status: string | undefined;
+  isType:string | undefined;
 }
 
 import {
@@ -80,11 +81,11 @@ export class OutboxComponent implements OnInit {
       localStorage.setItem('group_id', li.groupId);
     }
 
-    if (li.type != null || li.type != undefined) {
-      localStorage.setItem('type', li.type);
+    if (li.isType != null || li.isType != undefined) {
+      localStorage.setItem('type', li.isType);
     }
 
-    if (li.type == 'Contingent Bill') {
+    if (li.isType == 'Contingent Bill') {
       this.sharedService.sharedValue = li.groupId;
       this.sharedService.redirectedFrom = 'outbox';
       if (li.status == 'Pending') {
@@ -97,7 +98,7 @@ export class OutboxComponent implements OnInit {
 
       // window.location.href =;
     }
-    else if (li.type == 'Budget Allocation') {
+    else if (li.isType == 'Budget Allocation') {
       if (li.status == 'Approved') {
         this.router.navigate(['/budget-approval']);
       } else if (li.status == 'Fully Approved') {
@@ -107,12 +108,12 @@ export class OutboxComponent implements OnInit {
       }
       // this.sharedService.redirectedFrom = 'inbox';
       // window.location.href = '/budget-approval';
-    } else if (li.type == 'Budget Allocation') {
+    } else if (li.isType == 'Budget Allocation') {
       this.router.navigate(['/budget-approval']);
       // this.sharedService.redirectedFrom = 'inbox';
       // window.location.href = '/budget-approval';
     }
-    else if(li.type == 'Budget Revision'){
+    else if(li.isType == 'Budget Revision'){
       this.router.navigate(['/revision-approval']);
     }
   }
@@ -125,23 +126,23 @@ export class OutboxComponent implements OnInit {
         this.SpinnerService.hide();
         let list: any = result['response'].outList;
         if (list != null) {
-          let type='';
+          let isType='';
           for (let i = 0; i < list.length; i++) {
             if(list[i].isBgOrCg=="BG"){
               if(list[i].remarks=="Budget Revision")
-                type='Budget Revision';
+                isType='Budget Revision';
               else
-                type='Budget Allocation';
+                isType='Budget Allocation';
             }
             else if(list[i].isBgOrCg=="BR"){
-              type='Budget Reciept';
+              isType='Budget Reciept';
             }
             else if(list[i].isBgOrCg=="CB"){
-              type='Contingent Bill';
+              isType='Contingent Bill';
             }
             const entry: InboxList = {
               serial: i + 1,
-              type: type,
+              isType: isType,
               createDate: this.convertEpochToDateTime(list[i].createdOn),
               //   this.datePipe.transform(
               //   new Date(list[i].createdOn),
@@ -151,6 +152,7 @@ export class OutboxComponent implements OnInit {
               unitName: list[i].toUnit.descr,
               groupId: list[i].groupId,
               status: list[i].status,
+              type: list[i].type
             };
             this.inboxList.push(entry);
           }
@@ -174,15 +176,15 @@ export class OutboxComponent implements OnInit {
   }
   authDocPath:any;
   getAuthDoc(li: InboxList) {
-    let type;
-    if(li.type=='Budget Allocation')
-      type='BG';
-    else if(li.type=='Budget Revision')
-      type='BR'
+    let isType;
+    if(li.isType=='Budget Allocation')
+      isType='BG';
+    else if(li.isType=='Budget Revision')
+      isType='BR'
     else
-      type='CB'
+      isType='CB'
 
-    this.apiService.getApi(this.cons.api.getApprovedFilePath+'/'+li.groupId+'/'+type).subscribe((res) => {
+    this.apiService.getApi(this.cons.api.getApprovedFilePath+'/'+li.groupId+'/'+isType).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.SpinnerService.hide();

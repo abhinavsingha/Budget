@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import * as FileSaver from 'file-saver';
 import { HttpClient } from '@angular/common/http';
+import {SharedService} from "../services/shared/shared.service";
 
 class AllocationRepoList {
   financialYear: any;
@@ -68,6 +69,7 @@ export class BudgetAllocationReportComponent implements OnInit {
   }
 
   constructor(
+    private sharedService: SharedService,
     private SpinnerService: NgxSpinnerService,
     private cons: ConstantsService,
     private apiService: ApiCallingServiceService,
@@ -83,6 +85,10 @@ export class BudgetAllocationReportComponent implements OnInit {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
         if (result['message'] == 'success') {
+          this.sharedService.finYear=result['response'].budgetFinancialYear;
+          if(this.sharedService.finYear!=undefined)
+            this.formdata.get('finYear')?.setValue(this.sharedService.finYear);
+
           this.unitId = result['response'].userDetails.unitId;
           if(this.unitId=='001321'){
             this.getAllCgUnitData();

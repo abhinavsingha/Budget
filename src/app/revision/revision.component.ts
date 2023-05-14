@@ -23,6 +23,7 @@ class tableData {
   financialYear: any;
   unit: any;
   subHead: any;
+  allocated:any;
   allocationType: any;
   amount: any;
   revisedAmount: any;
@@ -429,7 +430,8 @@ export class RevisionComponent {
           revisedAmount: undefined,
           amountType: undefined,
           bal: undefined,
-          isAllocated: undefined
+          isAllocated: undefined,
+          allocated: undefined
         }
         if(this.budgetRevisionUnitList2[i].revisionAmount<0){
           data = {
@@ -440,13 +442,10 @@ export class RevisionComponent {
             subHead: this.formdata.get('subHead')?.value,
             allocationType: {allocationTypeId:this.formdata.get('allocationType')?.value.allocTypeId,allocationType:this.formdata.get('allocationType')?.value.allocType},
             amountType: this.budgetRevisionUnitList2[i].amountType,
-            amount: parseFloat(this.budgetRevisionUnitList2[i].existingAmount).toFixed(4),
-            revisedAmount: parseFloat(
-              this.budgetRevisionUnitList2[i].revisionAmount
-            ).toFixed(4),
-            bal:parseFloat(
-              this.budgetRevisionUnitList2[i].revisiedAmount
-            ).toFixed(4)
+            amount: parseFloat(this.budgetRevisionUnitList2[i].remainingAmount).toFixed(4),
+            allocated: parseFloat(this.budgetRevisionUnitList2[i].existingAmount).toFixed(4),
+            revisedAmount: parseFloat(this.budgetRevisionUnitList2[i].revisionAmount).toFixed(4),
+            bal:parseFloat(this.budgetRevisionUnitList2[i].revisiedAmount).toFixed(4)
           };
         }
         else{
@@ -457,8 +456,9 @@ export class RevisionComponent {
             unit: this.budgetRevisionUnitList2[i].unit,
             subHead: this.formdata.get('subHead')?.value,
             allocationType: alloc,
+            allocated: parseFloat(this.budgetRevisionUnitList2[i].existingAmount).toFixed(4),
             amountType: this.budgetRevisionUnitList2[i].amountType,
-            amount: parseFloat(this.budgetRevisionUnitList2[i].existingAmount).toFixed(4),
+            amount: parseFloat(this.budgetRevisionUnitList2[i].remainingAmount).toFixed(4),
             revisedAmount: parseFloat(
               this.budgetRevisionUnitList2[i].revisionAmount
             ).toFixed(4),
@@ -635,6 +635,10 @@ export class RevisionComponent {
           this.dasboardData = result['response'];
           this.formdata.get('allocationType')?.setValue(this.dasboardData.allocationType);
           console.log('DATA>>>>>>>' + this.dasboardData);
+          this.sharedService.finYear=result['response'].budgetFinancialYear;
+          if(this.sharedService.finYear!=undefined)
+            this.formdata.get('finYear')?.setValue(this.sharedService.finYear);
+
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }

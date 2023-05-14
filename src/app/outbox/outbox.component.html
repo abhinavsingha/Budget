@@ -51,8 +51,9 @@
                   <th>Type</th>
                   <th>Created Date & Time</th>
                   <!-- <th>Created By</th> -->
-                  <th>From Unit</th>
+<!--                  <th>From Unit</th>-->
                   <!--                  <th>To Unit</th>-->
+                  <th>Unit/Type</th>
                   <th>Status</th>
                   <th>Action</th>
                 </thead>
@@ -60,11 +61,12 @@
                   <tr *ngFor="let li of inboxList| paginate :{itemsPerPage:20,currentPage:p}; let i = index"
                     id="htmlData" (click)="redirect(li)">
                     <td>{{20 *(p-1)+i+1}}</td>
-                    <td>{{li.type}}</td>
+                    <td>{{li.isType}}</td>
                     <td>{{li.createDate}}</td>
                     <!-- <td>{{li.createBy}}</td> -->
-                    <td>{{li.unitName}}</td>
+<!--                    <td>{{li.unitName}}</td>-->
                     <!--                    <td>{{li.unitName}}</td>-->
+                    <td>{{li.type}}</td>
                     <td>{{li.status}}</td>
                     <td><button type="submit" class="btn btn-warning mr-2" (click)="redirect(li)"> <i
                           class="fas fa-eye"></i> View</button>

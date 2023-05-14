@@ -188,7 +188,9 @@ export class ConstantsService {
     getAllRevisionGroupId: this.serviceUrl + 'budgetAllocation/getAllRevisionGroupId',
     getAllCgUnitData: this.serviceUrl + 'budgetAllocation/getAllCgUnitData',
     getMainBEAllocationReport: this.serviceUrl + 'reportController/getMainBEAllocationReport',
-    getApprovedFilePath: this.serviceUrl +'fileUpload/getApprovedFilePath'
+    getApprovedFilePath: this.serviceUrl +'fileUpload/getApprovedFilePath',
+    getSubHeadWiseExpenditureByUnitIdFinYearIdAllocationTypeIdSubHeadTypeId: this.serviceUrl + 'dashBoard/getSubHeadWiseExpenditureByUnitIdFinYearIdAllocationTypeIdSubHeadTypeId',
+    saveBudgetAllocationSubHeadWise: this.serviceUrl+'budgetAllocation/saveBudgetAllocationSubHeadWise'
 
   };
 }

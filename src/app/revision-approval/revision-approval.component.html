@@ -95,7 +95,7 @@
                       class="form-control"
                       id="remarks"
                       placeholder="CGHQ to RHQ"
-                           formControlName="remarks" readonly
+                           formControlName="remarks" 
                     />
                   </div>
                 </div>
@@ -113,9 +113,9 @@
                               <th>Unit</th>
                               <th>Sub Head</th>
                               <th>Type</th>
-                              <th>Existing</th>
-                              <th>Additional/Withdrawal</th>
-                              <th>Revised</th>
+                              <th>Allocated ({{this.amountUnit}})</th>
+                              <th>Additional/Withdrawal ({{this.amountUnit}})</th>
+                              <th>Revised ({{this.amountUnit}})</th>
 <!--                              <th>Remarks</th>-->
                             </tr>
                           </thead>

@@ -50,6 +50,7 @@ export class DashboardComponent implements OnInit {
     finYear: new FormControl(),
     subHead: new FormControl(),
     unit: new FormControl(),
+    subHeadType:new FormControl()
   });
 
   updateBudgetFormData = new FormGroup({
@@ -63,6 +64,9 @@ export class DashboardComponent implements OnInit {
     revisedAmount: new FormControl(),
     balanceFund: new FormControl(),
   });
+  private unitId: any;
+  subHeadType: any;
+  tableData: any;
 
   ngOnInit(): void {
     // ngOnInit(): void {
@@ -71,6 +75,7 @@ export class DashboardComponent implements OnInit {
     this.getCgUnitData();
     this.getDashBoardDta();
     this.getinbox();
+    this.getSubHeadType();
 
     $.getScript('assets/main.js');
   }
@@ -103,6 +108,18 @@ export class DashboardComponent implements OnInit {
   getCgUnitData() {
     this.SpinnerService.show();
     this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
+      let result: { [key: string]: any } = res;
+      if (result['message'] == 'success') {
+        this.allunits = result['response'];
+        this.SpinnerService.hide();
+      } else {
+        this.common.faliureAlert('Please try later', result['message'], '');
+      }
+    });
+  }
+  getAllCgUnitData() {
+    this.SpinnerService.show();
+    this.apiService.getApi(this.cons.api.getAllCgUnitData).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.allunits = result['response'];
@@ -146,6 +163,10 @@ export class DashboardComponent implements OnInit {
             'defautAllocationType',
             this.dasboardData.allocationType.allocType
           );
+          this.sharedService.finYear=result['response'].budgetFinancialYear;
+          if(this.sharedService.finYear!=undefined)
+            this.formdata.get('finYear')?.setValue(this.sharedService.finYear);
+
           if(this.dasboardData.unitWiseExpenditureList!=undefined){
 
 
@@ -186,6 +207,10 @@ export class DashboardComponent implements OnInit {
 
           console.log('DATA>>>>>>>' + this.dasboardData);
           this.draw();
+          this.unitId = result['response'].userDetails.unitId;
+          if(this.unitId=='001321'){
+            this.getAllCgUnitData();
+          }
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
@@ -212,7 +237,6 @@ export class DashboardComponent implements OnInit {
           this.sharedService.outbox=result['response'].outBox;
           console.log("inbox"+this.sharedService.inbox +"outbox"+
           this.sharedService.outbox);
-          debugger;
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
@@ -507,5 +531,51 @@ export class DashboardComponent implements OnInit {
     };
 
     this.confirmModel(submitJson);
+  }
+  getSubHeadType() {
+    this.apiService.getApi(this.cons.api.getSubHeadType).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+
+        if (result['message'] == 'success') {
+          this.subHeadType = result['response'];
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
+  }
+  getTableData(formDataValue:any) {
+
+
+    this.apiService.getApi(this.cons.api.getSubHeadWiseExpenditureByUnitIdFinYearIdAllocationTypeIdSubHeadTypeId+'/'+formDataValue.unit.unit+'/'+formDataValue.finYear.serialNo+'/'+formDataValue.subHeadType.subHeadTypeId+'/'+this.dasboardData.allocationType.allocTypeId).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+
+        if (result['message'] == 'success') {
+          this.tableData = result['response'];
+          for(let i=0;i<this.tableData.length;i++){
+            this.tableData[i].allocatedAmount=parseFloat(this.tableData[i].allocatedAmount).toFixed(4);
+            this.tableData[i].expenditureAmount=parseFloat(this.tableData[i].expenditureAmount).toFixed(4);
+          }
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
   }
 }

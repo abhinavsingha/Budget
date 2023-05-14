@@ -94,6 +94,7 @@ export class CdaParkingReportComponent implements OnInit {
     cdas: new FormControl(),
     amountType: new FormControl(),
     allocationType: new FormControl(),
+    subHeadType:new FormControl()
   });
 
   updateBudgetFormData = new FormGroup({
@@ -162,6 +163,14 @@ export class CdaParkingReportComponent implements OnInit {
           this.formdata.patchValue({
             allocationType: result['response'].allocationType,
           });
+          this.sharedService.finYear=result['response'].budgetFinancialYear;
+          if(this.sharedService.finYear!=undefined)
+            this.formdata.get('finYear')?.setValue(this.sharedService.finYear);
+
+          this.sharedService.finYear=result['response'].budgetFinancialYear;
+          if(this.sharedService.finYear!=undefined)
+            this.formdata.get('finYear')?.setValue(this.sharedService.finYear);
+
 
           this.sharedService.inbox = result['response'].inbox;
           this.sharedService.outbox = result['response'].outBox;
@@ -298,7 +307,7 @@ export class CdaParkingReportComponent implements OnInit {
     if (
       formdata.finYear == null ||
       formdata.cdas == null ||
-      formdata.majorHead == null
+      formdata.majorHead == null||formdata.subHeadType==null
     ) {
       this.common.faliureAlert(
         'Please try again.',
@@ -314,6 +323,7 @@ export class CdaParkingReportComponent implements OnInit {
       majorHead: formdata.majorHead.majorHead,
       amountType: formdata.amountType.amountTypeId,
       allocationTypeId: formdata.allocationType.allocTypeId,
+      subHeadType:formdata.subHeadType.subHeadTypeId
     };
 
     this.apiService

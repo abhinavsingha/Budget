@@ -184,7 +184,7 @@ export class InboxComponent implements OnInit {
     if(li.isType=='Budget Allocation')
       isType='BG';
     else if(li.isType=='Budget Revision')
-      isType='BE';
+      isType='BG';
     else if(li.isType=='Budget Reciept')
       isType='BR';
     else

@@ -39,6 +39,7 @@ export class UnitRebaseComponent {
     authority: new FormControl(),
     date: new FormControl(),
   });
+  private dasboardData: any;
 
   ngOnInit(): void {
     $.getScript('assets/js/adminlte.js');
@@ -55,7 +56,30 @@ export class UnitRebaseComponent {
     private formBuilder: FormBuilder,
     private common: CommonService
   ) {}
+  getDashBoardDta() {
+    this.SpinnerService.show();
 
+    this.apiService.postApi(this.cons.api.getDashBoardDta, null).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.dasboardData = result['response'];
+          console.log('DATA>>>>>>>' + this.dasboardData);
+            this.formdata.get('finYear')?.setValue(result['response'].budgetFinancialYear);
+
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
+  }
   getBudgetFinYear() {
     this.SpinnerService.show();
     this.apiService.getApi(this.cons.api.getBudgetFinYear).subscribe((res) => {

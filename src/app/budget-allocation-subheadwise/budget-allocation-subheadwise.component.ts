@@ -476,7 +476,7 @@ export class BudgetAllocationSubheadwiseComponent {
     console.log(JSON.stringify(newSubmitJson) + ' =submitJson for save budget');
 
     this.apiService
-      .postApi(this.cons.api.saveBudgetAllocationUnitWise, newSubmitJson)
+      .postApi(this.cons.api.saveBudgetAllocationSubHeadWise, newSubmitJson)
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -522,6 +522,10 @@ export class BudgetAllocationSubheadwiseComponent {
 
           this.sharedService.inbox = result['response'].inbox;
           this.sharedService.outbox = result['response'].outBox;
+          this.sharedService.finYear=result['response'].budgetFinancialYear;
+          if(this.sharedService.finYear!=undefined)
+            this.formdata.get('finYear')?.setValue(this.sharedService.finYear);
+
         }
       },
       (error) => {

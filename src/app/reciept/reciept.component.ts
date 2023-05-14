@@ -519,6 +519,7 @@ export class RecieptComponent {
 
           if (result['message'] == 'success') {
             this.updateInbox();
+            this.sharedService.finYear=this.formdata.get('finYear')?.value;
             this.isSelectedRE = false;
             this.isSelectedMA = false;
             this.isSectedSG = false;
