@@ -46,6 +46,7 @@ export class UnitRebaseComponent {
     this.getBudgetFinYear();
     this.getCgUnitData();
     this.getAllStation();
+    this.getDashBoardDta()
     $.getScript('assets/main.js');
   }
 
