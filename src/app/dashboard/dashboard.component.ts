@@ -14,7 +14,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Chart, registerables, ChartConfiguration, ChartItem } from 'chart.js';
-import {SharedService} from "../services/shared/shared.service";
+import { SharedService } from '../services/shared/shared.service';
 class UnitWiseExpenditureList {
   unit: any;
   financialYear: any;
@@ -50,7 +50,8 @@ export class DashboardComponent implements OnInit {
     finYear: new FormControl(),
     subHead: new FormControl(),
     unit: new FormControl(),
-    subHeadType:new FormControl()
+    subHeadType: new FormControl(),
+    allocationType: new FormControl(),
   });
 
   updateBudgetFormData = new FormGroup({
@@ -76,7 +77,7 @@ export class DashboardComponent implements OnInit {
     this.getDashBoardDta();
     this.getinbox();
     this.getSubHeadType();
-
+    this.getAllocationTypeData();
     $.getScript('assets/main.js');
   }
   constructor(
@@ -152,7 +153,7 @@ export class DashboardComponent implements OnInit {
         let result: { [key: string]: any } = v;
 
         if (result['message'] == 'success') {
-          this.dasboardData = result['response'];       // debugger;
+          this.dasboardData = result['response']; // debugger;
           var roles = result['response'].userDetails.role[0].roleName;
           if (localStorage.getItem('user_role') != roles) {
             window.location.reload();
@@ -163,52 +164,50 @@ export class DashboardComponent implements OnInit {
             'defautAllocationType',
             this.dasboardData.allocationType.allocType
           );
-          this.sharedService.finYear=result['response'].budgetFinancialYear;
-          if(this.sharedService.finYear!=undefined)
+          this.sharedService.finYear = result['response'].budgetFinancialYear;
+          if (this.sharedService.finYear != undefined)
             this.formdata.get('finYear')?.setValue(this.sharedService.finYear);
 
-          if(this.dasboardData.unitWiseExpenditureList!=undefined){
-
-
-          for (
-            let i = 0;
-            i < this.dasboardData.unitWiseExpenditureList.length;
-            i++
-          ) {
-            // let unit='';
-            // let finyear='';
-            // for(let j=0;j<this.allunits.length;j++){
-            //   if(this.dasboardData.unitWiseExpenditureList[i].unit==this.allunits[j].unit){
-            //     unit=this.allunits[j].descr;
-            //   }
-            // }
-            // for(let j=0;j<this.budgetFinYears.length;j++){
-            //   if(this.dasboardData.unitWiseExpenditureList[i].financialYearId==this.budgetFinYears[j].serialNo){
-            //     finyear=this.budgetFinYears[j].finYear;
-            //   }
-            // }
-            const dataEntry: UnitWiseExpenditureList = {
-              unit: this.dasboardData.unitWiseExpenditureList[i].unit.descr,
-              financialYear:
-                this.dasboardData.unitWiseExpenditureList[i].financialYearId
-                  .finYear,
-              subhead:
-                this.dasboardData.unitWiseExpenditureList[i].subHead
-                  .subHeadDescr,
-              allocated:
-                this.dasboardData.unitWiseExpenditureList[i].allocatedAmount,
-              expenditure: 0,
-              lastCbDate:
-                this.dasboardData.unitWiseExpenditureList[i].lastCBDate,
-            };
-            this.unitWiseExpenditureList.push(dataEntry);
-          }
+          if (this.dasboardData.unitWiseExpenditureList != undefined) {
+            for (
+              let i = 0;
+              i < this.dasboardData.unitWiseExpenditureList.length;
+              i++
+            ) {
+              // let unit='';
+              // let finyear='';
+              // for(let j=0;j<this.allunits.length;j++){
+              //   if(this.dasboardData.unitWiseExpenditureList[i].unit==this.allunits[j].unit){
+              //     unit=this.allunits[j].descr;
+              //   }
+              // }
+              // for(let j=0;j<this.budgetFinYears.length;j++){
+              //   if(this.dasboardData.unitWiseExpenditureList[i].financialYearId==this.budgetFinYears[j].serialNo){
+              //     finyear=this.budgetFinYears[j].finYear;
+              //   }
+              // }
+              const dataEntry: UnitWiseExpenditureList = {
+                unit: this.dasboardData.unitWiseExpenditureList[i].unit.descr,
+                financialYear:
+                  this.dasboardData.unitWiseExpenditureList[i].financialYearId
+                    .finYear,
+                subhead:
+                  this.dasboardData.unitWiseExpenditureList[i].subHead
+                    .subHeadDescr,
+                allocated:
+                  this.dasboardData.unitWiseExpenditureList[i].allocatedAmount,
+                expenditure: 0,
+                lastCbDate:
+                  this.dasboardData.unitWiseExpenditureList[i].lastCBDate,
+              };
+              this.unitWiseExpenditureList.push(dataEntry);
+            }
           }
 
           console.log('DATA>>>>>>>' + this.dasboardData);
           this.draw();
           this.unitId = result['response'].userDetails.unitId;
-          if(this.unitId=='001321'){
+          if (this.unitId == '001321') {
             this.getAllCgUnitData();
           }
         } else {
@@ -232,11 +231,14 @@ export class DashboardComponent implements OnInit {
         let result: { [key: string]: any } = v;
 
         if (result['message'] == 'success') {
-
-          this.sharedService.inbox=result['response'].inbox;
-          this.sharedService.outbox=result['response'].outBox;
-          console.log("inbox"+this.sharedService.inbox +"outbox"+
-          this.sharedService.outbox);
+          this.sharedService.inbox = result['response'].inbox;
+          this.sharedService.outbox = result['response'].outBox;
+          console.log(
+            'inbox' +
+              this.sharedService.inbox +
+              'outbox' +
+              this.sharedService.outbox
+          );
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
@@ -552,20 +554,60 @@ export class DashboardComponent implements OnInit {
       complete: () => console.info('complete'),
     });
   }
-  getTableData(formDataValue:any) {
+  getTableData(formDataValue: any) {
+    this.SpinnerService.show();
+    debugger;
+    this.apiService
+      .getApi(
+        this.cons.api
+          .getSubHeadWiseExpenditureByUnitIdFinYearIdAllocationTypeIdSubHeadTypeId +
+          '/' +
+          formDataValue.unit.unit +
+          '/' +
+          formDataValue.finYear.serialNo +
+          '/' +
+          formDataValue.subHeadType.subHeadTypeId +
+          '/' +
+          formDataValue.allocationType.allocTypeId
+      )
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
 
+          if (result['message'] == 'success') {
+            this.tableData = result['response'];
+            for (let i = 0; i < this.tableData.length; i++) {
+              this.tableData[i].allocatedAmount = parseFloat(
+                this.tableData[i].allocatedAmount
+              ).toFixed(4);
+              this.tableData[i].expenditureAmount = parseFloat(
+                this.tableData[i].expenditureAmount
+              ).toFixed(4);
+            }
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
+  }
 
-    this.apiService.getApi(this.cons.api.getSubHeadWiseExpenditureByUnitIdFinYearIdAllocationTypeIdSubHeadTypeId+'/'+formDataValue.unit.unit+'/'+formDataValue.finYear.serialNo+'/'+formDataValue.subHeadType.subHeadTypeId+'/'+this.dasboardData.allocationType.allocTypeId).subscribe({
+  allocationType: any[] = [];
+  getAllocationTypeData() {
+    this.SpinnerService.show();
+    this.apiService.getApi(this.cons.api.getAllocationTypeData).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
-
         if (result['message'] == 'success') {
-          this.tableData = result['response'];
-          for(let i=0;i<this.tableData.length;i++){
-            this.tableData[i].allocatedAmount=parseFloat(this.tableData[i].allocatedAmount).toFixed(4);
-            this.tableData[i].expenditureAmount=parseFloat(this.tableData[i].expenditureAmount).toFixed(4);
-          }
+          this.allocationType = result['response'];
+          this.SpinnerService.hide();
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
