@@ -83,9 +83,9 @@ export class RecieptComponent {
         let result: { [key: string]: any } = v;
         if (result['message'] == 'success') {
           this.finYearList = result['response'];
-          this.formdata.patchValue({
-            finYear: this.finYearList[0],
-          });
+          // this.formdata.patchValue({
+          //   finYear: this.finYearList[0],
+          // });
           this.SpinnerService.hide();
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');

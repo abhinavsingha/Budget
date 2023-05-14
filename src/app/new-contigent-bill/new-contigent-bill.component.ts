@@ -388,7 +388,7 @@ export class NewContigentBillComponent implements OnInit {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = results;
         this.finYearData = result['response'];
-        this.formdata.get('finYearName')?.setValue(this.finYearData[0]);
+        // this.formdata.get('finYearName')?.setValue(this.finYearData[0]);
       },
       (error) => {
         console.log(error);

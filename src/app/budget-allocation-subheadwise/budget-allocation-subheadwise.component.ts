@@ -108,9 +108,9 @@ export class BudgetAllocationSubheadwiseComponent {
         let result: { [key: string]: any } = v;
         if (result['message'] == 'success') {
           this.budgetFinYears = result['response'];
-          this.formdata.patchValue({
-            finYear: this.budgetFinYears[0],
-          });
+          // this.formdata.patchValue({
+          //   finYear: this.budgetFinYears[0],
+          // });
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }

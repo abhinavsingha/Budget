@@ -33,7 +33,7 @@ export class BudgetAllocationComponent implements OnInit {
         if (result['message'] == 'success') {
           this.budgetFinYearsNew = result['response'];
           this.formdata.patchValue({
-            finYearId: this.budgetFinYearsNew[0],
+            // finYearId: this.budgetFinYearsNew[0],
           });
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
@@ -218,6 +218,10 @@ export class BudgetAllocationComponent implements OnInit {
           this.formdata.patchValue({
             allocationType: result['response'].allocationType,
           });
+          this.sharedService.finYear=result['response'].budgetFinancialYear;
+          if(this.sharedService.finYear!=undefined)
+            this.formdata.get('finYearId')?.setValue(this.sharedService.finYear);
+
           this.sharedService.inbox = result['response'].inbox;
           this.sharedService.outbox = result['response'].outBox;
         }
@@ -239,8 +243,6 @@ export class BudgetAllocationComponent implements OnInit {
     this.getAmountType();
     this.getDashboardData();
     this.getSubHeadType();
-    if(this.sharedService.finYear!=undefined)
-      this.formdata.get('finYearName')?.setValue(this.sharedService.finYear);
 
     $.getScript('assets/js/adminlte.js');
     $.getScript('assets/main.js');
