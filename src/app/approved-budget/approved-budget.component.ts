@@ -277,7 +277,6 @@ export class ApprovedBudgetComponent implements OnInit {
         complete: () => console.info('complete'),
       });
   }
-  downloadReport() {}
   previewURL() {
     window.open(this.invoicePath, '_blank');
   }

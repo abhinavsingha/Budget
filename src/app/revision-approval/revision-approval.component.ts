@@ -368,4 +368,74 @@ export class RevisionApprovalComponent {
         complete: () => console.info('complete'),
       });
   }
+
+  generateCsvData(tableData: any[]): string {
+    // Extract headers
+    const headers = Object.keys(tableData[0]);
+
+    // Extract data rows
+    const rows = tableData.map(row => {
+      return headers.map(header => {
+        return row[header];
+      });
+    });
+
+    // Combine headers and rows into a CSV string
+    const csvContent = headers.join(',') + '\n' +
+      rows.map(row => row.join(',')).join('\n');
+
+    return csvContent;
+  }
+
+  downloadCsv() {
+    let tableData=[];
+    let totalR=0.0;
+    let totalA=0.0;
+    for(let i=0;i<this.budgetDataLists.length;i++){
+      // totalA=totalA+(parseFloat(this.budgetDataList[i].allocationAmount)*this.budgetDataList[i].amountUnit.amount);
+      // totalR=totalR+(parseFloat(this.budgetDataList[i].balanceAmount)*this.budgetDataList[i].remeningBalanceUnit.amount);
+      /*<th>F.Y.</th>
+      <th>Unit</th>
+      <th>Sub Head</th>
+      <th>Type</th>
+      <th>Allocated ({{this.amountUnit}})</th>
+      <th>Additional/Withdrawal ({{this.amountUnit}})</th>
+      <th>Revised ({{this.amountUnit}})</th>*/
+      let table:any= {
+        Financial_Year: this.budgetDataLists[i].finYear.finYear.replaceAll(',',' '),
+        Unit: this.budgetDataLists[i].toUnit.descr.replaceAll(',',' '),
+        Subhead: this.budgetDataLists[i].subHead.subHeadDescr.replaceAll(',',' '),
+        Type: this.budgetDataLists[i].allocTypeId.allocType.replaceAll(',',' '),
+        Allocated_Fund: this.budgetDataLists[i].allocationAmount.replaceAll(',',' ')+' ' +this.budgetDataLists[i].amountUnit.amountType,
+        AdditionalOrWithdrawal: this.budgetDataLists[i].revisedAmount.replaceAll(',',' ')+' ' +this.budgetDataLists[i].remeningBalanceUnit.amountType,
+        Revised:this.budgetDataLists[i].balanceAmount.replaceAll(',',' ')+' ' +this.budgetDataLists[i].remeningBalanceUnit.amountType
+      }
+      tableData.push(table);
+    }
+    // let table:any= {
+    //   Financial_Year: '',
+    //   To_Unit: '',
+    //   From_Unit: '',
+    //   Subhead: '',
+    //   Type: 'TOTAL',
+    //   Remaining_Amount: (parseFloat(totalR.toFixed(4))/10000000).toString() + 'Crore',
+    //   Allocated_Fund: (parseFloat(totalA.toFixed(4))/10000000).toString() + 'Crore'
+    // }
+    // tableData.push(table);
+    // Generate CSV content
+    const csvContent = this.generateCsvData(tableData);
+    // Create Blob object from CSV content
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    // Create download link and click it programmatically
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = 'BudgetRevision.csv';
+    link.click();
+    // Clean up
+    window.URL.revokeObjectURL(link.href);
+    document.removeChild(link);
+  }
+
+
+
 }
