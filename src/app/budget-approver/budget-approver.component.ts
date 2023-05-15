@@ -579,8 +579,8 @@ export class BudgetApproverComponent implements OnInit {
       From_Unit: '',
       Subhead: '',
       Type: 'TOTAL',
-      Remaining_Amount: (parseFloat(totalR.toFixed(4))/10000000).toString() + 'Crore',
-      Allocated_Fund: (parseFloat(totalA.toFixed(4))/10000000).toString() + 'Crore'
+      Remaining_Amount: (parseFloat(totalR.toFixed(4))/parseFloat(this.budgetDataList[0].amountUnit.amount)).toString()+' ' + this.budgetDataList[0].amountUnit.amountType,
+      Allocated_Fund: (parseFloat(totalA.toFixed(4))/parseFloat(this.budgetDataList[0].amountUnit.amount)).toString() +' '+ this.budgetDataList[0].amountUnit.amountType
     }
     tableData.push(table);
 
