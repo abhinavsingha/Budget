@@ -12,6 +12,7 @@ import { CommonService } from '../services/common/common.service';
 import Swal from 'sweetalert2';
 import { SharedService } from '../services/shared/shared.service';
 import { MultiCdaParking } from '../model/multi-cda-parking';
+import * as Papa from 'papaparse';
 class TableData{
   Financial_Year:any;
   To_Unit:any;
@@ -537,69 +538,151 @@ export class BudgetApproverComponent implements OnInit {
       complete: () => console.info('complete'),
     });
   }
-  generateCsvData(tableData: any[]): string {
-    // Extract headers
-    const headers = Object.keys(tableData[0]);
+  // generateCsvData(tableData: any[]): string {
+  //   // Extract headers
+  //   const headers = Object.keys(tableData[0]);
+  //
+  //   // Extract data rows
+  //   const rows = tableData.map(row => {
+  //     return headers.map(header => {
+  //       return row[header];
+  //     });
+  //   });
+  //
+  //   // Combine headers and rows into a CSV string
+  //   const csvContent = headers.join(',') + '\n' +
+  //     rows.map(row => row.join(',')).join('\n');
+  //
+  //   return csvContent;
+  // }
+  //
+  // downloadCsv() {
+  //   let tableData=[];
+  //   let totalR=0.0;
+  //   let totalA=0.0;
+  //   for(let i=0;i<this.budgetDataList.length;i++){
+  //     totalA=totalA+(parseFloat(this.budgetDataList[i].allocationAmount)*this.budgetDataList[i].amountUnit.amount);
+  //     totalR=totalR+(parseFloat(this.budgetDataList[i].balanceAmount)*this.budgetDataList[i].remeningBalanceUnit.amount);
+  //     let table:TableData= {
+  //       Financial_Year: this.budgetDataList[i].finYear.finYear.replaceAll(',',' '),
+  //       To_Unit: this.budgetDataList[i].toUnit.descr.replaceAll(',',' '),
+  //       From_Unit: this.budgetDataList[i].fromUnit.descr.replaceAll(',',' '),
+  //       Subhead: this.budgetDataList[i].subHead.subHeadDescr.replaceAll(',',' '),
+  //       Type: this.budgetDataList[i].allocTypeId.allocType.replaceAll(',',' '),
+  //       Remaining_Amount: this.budgetDataList[i].balanceAmount.replaceAll(',',' ')+' ' +this.budgetDataList[i].remeningBalanceUnit.amountType,
+  //       Allocated_Fund: this.budgetDataList[i].allocationAmount.replaceAll(',',' ')+' ' +this.budgetDataList[i].amountUnit.amountType
+  //     }
+  //     tableData.push(table);
+  //   }
+  //   let table:TableData= {
+  //     Financial_Year: '',
+  //     To_Unit: '',
+  //     From_Unit: '',
+  //     Subhead: '',
+  //     Type: 'TOTAL',
+  //     Remaining_Amount: (parseFloat(totalR.toFixed(4))/parseFloat(this.budgetDataList[0].amountUnit.amount)).toString()+' ' + this.budgetDataList[0].amountUnit.amountType,
+  //     Allocated_Fund: (parseFloat(totalA.toFixed(4))/parseFloat(this.budgetDataList[0].amountUnit.amount)).toString() +' '+ this.budgetDataList[0].amountUnit.amountType
+  //   }
+  //   tableData.push(table);
+  //
+  //   // Generate CSV content
+  //   const csvContent = this.generateCsvData(tableData);
+  //
+  //   // Create Blob object from CSV content
+  //   const blob = new Blob([csvContent], { type: 'text/csv' });
+  //
+  //   // Create download link and click it programmatically
+  //   const link = document.createElement('a');
+  //   link.href = window.URL.createObjectURL(blob);
+  //
+  //   link.download = this.type+'.csv';
+  //   link.click();
+  //
+  //   // Clean up
+  //   window.URL.revokeObjectURL(link.href);
+  //   document.removeChild(link);
+  // }
 
-    // Extract data rows
-    const rows = tableData.map(row => {
-      return headers.map(header => {
-        return row[header];
+
+
+  generateCSV(data: any[], columns: string[], filename: string,column: string[]) {
+    const csvData: any[][] = [];
+
+    // Add column names as the first row
+    csvData.push(columns);
+
+    // Add data rows
+    data.forEach((item) => {
+      const row: string[] = [];
+      column.forEach((colmn) => {
+        row.push(item[colmn]);
       });
+      csvData.push(row);
     });
 
-    // Combine headers and rows into a CSV string
-    const csvContent = headers.join(',') + '\n' +
-      rows.map(row => row.join(',')).join('\n');
+    // Convert the array to CSV using PapaParse
+    const csv = Papa.unparse(csvData);
 
-    return csvContent;
+    // Create a CSV file download
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+
+      const link = document.createElement('a');
+      if (link.download !== undefined) {
+        // Browsers that support HTML5 download attribute
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', filename);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } else {
+        // Fallback for unsupported browsers
+        alert('CSV download is not supported in this browser.');
+      }
+
   }
+
 
   downloadCsv() {
-    let tableData=[];
-    let totalR=0.0;
-    let totalA=0.0;
-    for(let i=0;i<this.budgetDataList.length;i++){
-      totalA=totalA+(parseFloat(this.budgetDataList[i].allocationAmount)*this.budgetDataList[i].amountUnit.amount);
-      totalR=totalR+(parseFloat(this.budgetDataList[i].balanceAmount)*this.budgetDataList[i].remeningBalanceUnit.amount);
+    // Example data and column names
+      let tableData=[];
+      let totalR=0.0;
+      let totalA=0.0;
+      for(let i=0;i<this.budgetDataList.length;i++){
+        totalA=totalA+(parseFloat(this.budgetDataList[i].allocationAmount)*this.budgetDataList[i].amountUnit.amount);
+        totalR=totalR+(parseFloat(this.budgetDataList[i].balanceAmount)*this.budgetDataList[i].remeningBalanceUnit.amount);
+        let table:any= {
+          Financial_Year: this.budgetDataList[i].finYear.finYear.replaceAll(',',' '),
+          To_Unit: this.budgetDataList[i].toUnit.descr.replaceAll(',',' '),
+          From_Unit: this.budgetDataList[i].fromUnit.descr.replaceAll(',',' '),
+          Subhead: this.budgetDataList[i].subHead.subHeadDescr.replaceAll(',',' '),
+          Type: this.budgetDataList[i].allocTypeId.allocType.replaceAll(',',' '),
+          Remaining_Amount: (parseFloat(this.budgetDataList[i].balanceAmount)*this.budgetDataList[i].remeningBalanceUnit.amount/this.budgetDataList[i].amountUnit.amount).toString(),
+          Allocated_Fund: (this.budgetDataList[i].allocationAmount.replaceAll(',',' ')).toString()
+        }
+        tableData.push(table);
+      }
       let table:TableData= {
-        Financial_Year: this.budgetDataList[i].finYear.finYear.replaceAll(',',' '),
-        To_Unit: this.budgetDataList[i].toUnit.descr.replaceAll(',',' '),
-        From_Unit: this.budgetDataList[i].fromUnit.descr.replaceAll(',',' '),
-        Subhead: this.budgetDataList[i].subHead.subHeadDescr.replaceAll(',',' '),
-        Type: this.budgetDataList[i].allocTypeId.allocType.replaceAll(',',' '),
-        Remaining_Amount: this.budgetDataList[i].balanceAmount.replaceAll(',',' ')+' ' +this.budgetDataList[i].remeningBalanceUnit.amountType,
-        Allocated_Fund: this.budgetDataList[i].allocationAmount.replaceAll(',',' ')+' ' +this.budgetDataList[i].amountUnit.amountType
+        Financial_Year: '',
+        To_Unit: '',
+        From_Unit: '',
+        Subhead: '',
+        Type: 'TOTAL',
+        Remaining_Amount: (parseFloat(totalR.toFixed(4))/parseFloat(this.budgetDataList[0].amountUnit.amount)).toString(),
+        Allocated_Fund: (parseFloat(totalA.toFixed(4))/parseFloat(this.budgetDataList[0].amountUnit.amount)).toString()
       }
       tableData.push(table);
-    }
-    let table:TableData= {
-      Financial_Year: '',
-      To_Unit: '',
-      From_Unit: '',
-      Subhead: '',
-      Type: 'TOTAL',
-      Remaining_Amount: (parseFloat(totalR.toFixed(4))/parseFloat(this.budgetDataList[0].amountUnit.amount)).toString()+' ' + this.budgetDataList[0].amountUnit.amountType,
-      Allocated_Fund: (parseFloat(totalA.toFixed(4))/parseFloat(this.budgetDataList[0].amountUnit.amount)).toString() +' '+ this.budgetDataList[0].amountUnit.amountType
-    }
-    tableData.push(table);
+    // const data = [
+    //   { name: 'John', age: 30, city: 'New York' },
+    //   { name: 'Jane', age: 25, city: 'San Francisco' },
+    //   { name: 'Bob', age: 35, city: 'Chicago' },
+    // ];
+    const columns = ['Financial_Year', 'To_Unit', 'From_Unit','Subhead','Type','Remaining_Amount'+' in '+this.budgetDataList[0].amountUnit.amountType,'Allocated_Fund'+' in '+this.budgetDataList[0].amountUnit.amountType];
+    const column = ['Financial_Year', 'To_Unit', 'From_Unit','Subhead','Type','Remaining_Amount','Allocated_Fund'];
+    const filename = this.type+'.csv';
 
-    // Generate CSV content
-    const csvContent = this.generateCsvData(tableData);
-
-    // Create Blob object from CSV content
-    const blob = new Blob([csvContent], { type: 'text/csv' });
-
-    // Create download link and click it programmatically
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-
-    link.download = this.type+'.csv';
-    link.click();
-
-    // Clean up
-    window.URL.revokeObjectURL(link.href);
-    document.removeChild(link);
+    // Generate and download the CSV file
+    this.generateCSV(tableData, columns, filename, column);
   }
-
 }

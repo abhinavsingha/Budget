@@ -468,7 +468,7 @@ export class CbVerificationComponent {
       remarks: this.formdata.get('returnRemarks')?.value,
     };
     this.apiService
-      .postApi(this.cons.api.approveContingentBill, update)
+      .postApi(this.cons.api.verifyContingentBill, update)
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();

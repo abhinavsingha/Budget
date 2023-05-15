@@ -195,11 +195,17 @@ export class UnitRebaseComponent {
         if (result['message'] == 'success') {
           this.getCgUnitData();
           this.getAllStation();
-          this.common.successAlert(
-            'Success',
-            result['response']['msg'],
-            'success'
-          );
+          Swal.fire({
+            title: 'Success',
+            text: result['response']['msg'],
+            icon: 'success',
+            showCancelButton: false,
+            confirmButtonText: 'OK'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              location.reload();
+            }
+          });
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
@@ -319,6 +325,7 @@ export class UnitRebaseComponent {
           this.SpinnerService.hide();
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
+          this.SpinnerService.hide();
         }
       });
   }
