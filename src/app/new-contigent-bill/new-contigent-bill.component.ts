@@ -492,16 +492,6 @@ export class NewContigentBillComponent implements OnInit {
         let getCbList = result['response'];
 
         for (let i = 0; i < getCbList.length; i++) {
-          // let url = this.cons.api.getAvailableFund;
-          // console.log(url);
-          // let json = {
-          //   budgetHeadId: getCbList[i].budgetHeadID.budgetCodeId,
-          // };
-          // this.SpinnerService.show();
-          // this.apiService.postApi(url, json).subscribe(
-          //   (res) => {
-          //     let result: { [key: string]: any } = res;
-          //     this.budgetAllotted = result['response'].fundAvailable;
           if(getCbList[i].authoritiesList.length>0) {
             const entry: newCb = {
               isFlag: getCbList[i].isFlag,
@@ -534,7 +524,7 @@ export class NewContigentBillComponent implements OnInit {
               invoiceNo: getCbList[i].invoiceNO,
               invoiceDate: getCbList[i].invoiceDate,
               invoiceFile: getCbList[i].fileID,
-              returnRemarks: getCbList[i].authoritiesList[0].remarks,
+              returnRemarks: getCbList[i].remarks,
               status: getCbList[i].status,
               budgetAllocated: undefined,
               checked: false,
