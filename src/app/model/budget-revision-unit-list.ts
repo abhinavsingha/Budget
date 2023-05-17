@@ -7,4 +7,6 @@ export class BudgetRevisionUnitList {
   isSelected: boolean = false;
   amountType:string='';
   remainingAmount:any;
+  manipulate:any;
+  manipulate2:any;
 }

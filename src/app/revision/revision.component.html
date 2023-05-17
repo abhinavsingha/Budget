@@ -146,7 +146,7 @@
                     <tr>
                       <th>Unit</th>
                       <th>Allocated</th>
-                      <th>Existing</th>
+<!--                      <th>Existing</th>-->
                       <th>Additional/Withdrawal (in {{amountUnit}})</th>
                       <th>Revised (in {{amountUnit}})</th>
 <!--                      <th>Action</th>-->
@@ -155,19 +155,19 @@
                   <tbody>
                   <tr *ngFor="let subHeadWiseUnit of budgetRevisionUnitList2; let i = index">
                     <td *ngIf="!subHeadWiseUnit.isSelected">{{subHeadWiseUnit.unit.descr}}</td>
-                    <td *ngIf="!subHeadWiseUnit.isSelected">{{subHeadWiseUnit.existingAmount}} </td>
-                    <td *ngIf="!subHeadWiseUnit.isSelected">{{subHeadWiseUnit.remainingAmount}}</td>
+                    <td *ngIf="!subHeadWiseUnit.isSelected">{{subHeadWiseUnit.manipulate}} </td>
+<!--                    <td *ngIf="!subHeadWiseUnit.isSelected">{{subHeadWiseUnit.remainingAmount}}</td>-->
                     <td *ngIf="!subHeadWiseUnit.isSelected"><input type="number" (change)="revisionAmount(i)" [(ngModel)]="subHeadWiseUnit.revisionAmount"></td>
-                    <td *ngIf="!subHeadWiseUnit.isSelected">{{subHeadWiseUnit.revisiedAmount}}</td>
+                    <td *ngIf="!subHeadWiseUnit.isSelected">{{subHeadWiseUnit.manipulate2}}</td>
                   </tr>
                   </tbody>
                   <tfoot>
                   <tr>
                     <td>Total (in {{amountUnit}})</td>
-                    <td>{{totalExistingAmount}}</td>
-                    <td>{{totalRemainingAmount}}</td>
+                    <td>{{totalManipulate}}</td>
+<!--                    <td>{{totalRemainingAmount}}</td>-->
                     <td>{{totlaRevisionAmount}}</td>
-                    <td>{{totalRevisiedAmount}}</td>
+                    <td>{{totalManipulate2}}</td>
                   </tr>
                   </tfoot>
                 </table>
@@ -189,8 +189,8 @@
                       <th>Unit</th>
                       <th>Sub Head</th>
                       <th>Bud. Type</th>
-                      <th>Allocated</th>
-                      <th>Existing</th>
+                      <th>Allocated(in {{amountUnit}})</th>
+                      <th>Existing (in {{amountUnit}})</th>
                       <th>Additional/Withdrawal (in {{amountUnit}})</th>
                       <th>Revised (in {{amountUnit}})</th>
 <!--                      <th>Remarks</th>-->
@@ -204,7 +204,7 @@
                     <td>{{td.subHead.subHeadDescr}}</td>
                     <td>{{td.allocationType.allocationType}}</td>
                     <td>{{td.allocated}}</td>
-                    <td>{{td.amount}} {{td.amountType.amountType}}</td>
+                    <td>{{td.amount}} </td>
                     <td>{{td.revisedAmount}}</td>
                     <td>{{td.bal}}</td>
                   </tr>

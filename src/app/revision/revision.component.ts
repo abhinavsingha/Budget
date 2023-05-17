@@ -80,7 +80,17 @@ export class RevisionComponent {
   allRevisedUnits: any;
   budgetRevisionUnitList2: any[] = [];
   private allocationDta: any;
-
+  private unitId: any;
+  totalManipulate: any=0.0;
+  totalManipulate2: any=0.0;
+  constructor(
+    private sharedService: SharedService,
+    private SpinnerService: NgxSpinnerService,
+    private cons: ConstantsService,
+    private apiService: ApiCallingServiceService,
+    private formBuilder: FormBuilder,
+    private common: CommonService
+  ) {}
   ngOnInit(): void {
     $.getScript('assets/js/adminlte.js');
     this.getBudgetFinYear();
@@ -96,14 +106,7 @@ export class RevisionComponent {
     $.getScript('assets/main.js');
   }
 
-  constructor(
-    private sharedService: SharedService,
-    private SpinnerService: NgxSpinnerService,
-    private cons: ConstantsService,
-    private apiService: ApiCallingServiceService,
-    private formBuilder: FormBuilder,
-    private common: CommonService
-  ) {}
+
 
   newFormGroup() {
     this.formdata = new FormGroup({
@@ -121,11 +124,9 @@ export class RevisionComponent {
       remarks: new FormControl('', Validators.required),
     });
   }
-
   getNewEmptyEntries() {
     this.budgetRevisionUnitList.push(new BudgetRevisionUnitList());
   }
-
   getBudgetFinYear() {
     this.SpinnerService.show();
     this.apiService.getApi(this.cons.api.getBudgetFinYear).subscribe((res) => {
@@ -370,6 +371,7 @@ export class RevisionComponent {
       this.userUnitRE=this.budgetRevisionUnitList2[index].revisionAmount;
     }
     this.budgetRevisionUnitList2[index].revisiedAmount = (parseFloat(this.budgetRevisionUnitList2[index].existingAmount)+parseFloat(this.budgetRevisionUnitList2[index].revisionAmount)).toFixed(4);
+    this.budgetRevisionUnitList2[index].manipulate2 = (parseFloat(this.budgetRevisionUnitList2[index].manipulate)+parseFloat(this.budgetRevisionUnitList2[index].revisionAmount)).toFixed(4);
     this.budgetRevisionUnitList2[index].revisionAmount=parseFloat(this.budgetRevisionUnitList2[index].revisionAmount).toFixed(4)
     this.getTotalAmount();
   }
@@ -381,6 +383,7 @@ export class RevisionComponent {
 
 
   private populateRevisionData() {
+    debugger;
     for (let i = 0; i < this.allRevisedUnits.length; i++) {
       const entry: BudgetRevisionUnitList = {
         id: undefined,
@@ -391,6 +394,8 @@ export class RevisionComponent {
         isSelected: false,
         amountType: this.allRevisedUnits[i].amountType,
         remainingAmount:(parseFloat(this.allRevisedUnits[i].balAmount)*parseFloat(this.allRevisedUnits[i].amountType.amount)/this.formdata.get('amountType')?.value.amount).toFixed(4),
+        manipulate:this.allRevisedUnits[i].manipulate,
+        manipulate2:this.allRevisedUnits[i].manipulate
       };
       this.budgetRevisionUnitList2.push(entry);
     }
@@ -500,10 +505,14 @@ export class RevisionComponent {
   allocation_withdrawl:any;
   userUnitRE:any;
   getTotalAmount() {
+    this.totalManipulate=0.0;
     this.totalExistingAmount = 0.0;
     this.totlaRevisionAmount = 0.0;
     this.totalRevisiedAmount = 0.0;
     this.totalRemainingAmount=0.0;
+    this.totalManipulate2=0.0;
+    debugger;
+
     for (let i = 0; i < this.budgetRevisionUnitList2.length; i++) {
       if (!this.budgetRevisionUnitList2[i].isSelected) {
         this.totalRemainingAmount=(parseFloat(this.totalRemainingAmount) +
@@ -514,6 +523,8 @@ export class RevisionComponent {
         this.totalRevisiedAmount =(
           parseFloat(this.totalRevisiedAmount) +
           parseFloat(this.budgetRevisionUnitList2[i].revisiedAmount)).toFixed(4);
+        this.totalManipulate=(parseFloat(this.totalManipulate)+parseFloat(this.budgetRevisionUnitList2[i].manipulate)).toFixed(4);
+        this.totalManipulate2=(parseFloat(this.totalManipulate2)+parseFloat(this.budgetRevisionUnitList2[i].manipulate2)).toFixed(4);
         if (this.budgetRevisionUnitList2[i].revisionAmount != undefined) {
           this.totlaRevisionAmount =(
             parseFloat(this.totlaRevisionAmount) +
@@ -636,6 +647,7 @@ export class RevisionComponent {
           this.formdata.get('allocationType')?.setValue(this.dasboardData.allocationType);
           console.log('DATA>>>>>>>' + this.dasboardData);
           this.sharedService.finYear=result['response'].budgetFinancialYear;
+          this.unitId = result['response'].userDetails.unitId;
           if(this.sharedService.finYear!=undefined)
             this.formdata.get('finYear')?.setValue(this.sharedService.finYear);
 
@@ -674,7 +686,23 @@ export class RevisionComponent {
 
           if (result['message'] == 'success') {
             this.allRevisedUnits = result['response'];
-            this.populateRevisionData();
+
+            let alloc=0.0;
+
+            for(let i=0;i<this.allRevisedUnits.length;i++){
+
+              if(this.allRevisedUnits[i].unit.unit!=this.unitId){
+                alloc=alloc + (parseFloat(this.allRevisedUnits[i].allocationAmount)*parseFloat(this.allRevisedUnits[i].amountType.amount)/this.formdata.get('amountType')?.value.amount);
+                this.allRevisedUnits[i].manipulate=(parseFloat(this.allRevisedUnits[i].allocationAmount)*parseFloat(this.allRevisedUnits[i].amountType.amount)/this.formdata.get('amountType')?.value.amount).toFixed(4);
+              }
+            }
+            for(let i=0;i<this.allRevisedUnits.length;i++){
+
+              if(this.allRevisedUnits[i].unit.unit==this.unitId){
+                this.allRevisedUnits[i].manipulate=(parseFloat(this.allRevisedUnits[i].allocationAmount)*parseFloat(this.allRevisedUnits[i].amountType.amount)/this.formdata.get('amountType')?.value.amount-alloc).toFixed(4);
+              }
+            }
+
             // this.subHeadFilterDatas = result['response'].subHeads;
             // this.tableData.splice(indexValue, 1);
             // if (this.subHeadFilterDatas != undefined) {
@@ -682,6 +710,8 @@ export class RevisionComponent {
             //     this.subHeadFilterDatas[i].amount = undefined;
             //   }
             // }
+            this.populateRevisionData();
+            debugger;
             this.setAmountType()
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
@@ -739,6 +769,9 @@ export class RevisionComponent {
     this.totalExistingAmount=0.0;
     this.totlaRevisionAmount =0.0;
     this.totalRemainingAmount=0.0;
+
+  }
+  dataManipulate(){
 
   }
 }
