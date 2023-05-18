@@ -53,9 +53,12 @@ export class BudgetAllocationReportComponent implements OnInit {
     subHead: new FormControl(),
     amountType: new FormControl(),
     reportType: new FormControl('--Select Report Type--'),
+    toDate: new FormControl(),
+    fromDate:new FormControl()
   });
   entry: any;
   private unitId: any;
+  showDate: boolean=false;
 
   ngOnInit(): void {
     $.getScript('assets/js/adminlte.js');
@@ -605,6 +608,10 @@ export class BudgetAllocationReportComponent implements OnInit {
           complete: () => console.info('complete'),
         });
     }else if (formdata.reportType == '08'){
+      if(formdata.toDate==undefined||formdata.fromDate==undefined){
+        Swal.fire("Please enter to and from date");
+        return;
+      }
       this.apiService
         .getApi(
           this.cons.api.getMainBEAllocationReport +
@@ -612,7 +619,7 @@ export class BudgetAllocationReportComponent implements OnInit {
           formdata.finYear.serialNo +
           '/ALL_101' +
           '/' +
-          formdata.amountType.amountTypeId
+          formdata.amountType.amountTypeId+'/'+formdata.toDate+'/'+formdata.fromDate
         )
         .subscribe({
           next: (v: object) => {
@@ -640,6 +647,10 @@ export class BudgetAllocationReportComponent implements OnInit {
           complete: () => console.info('complete'),
         });
     }else if (formdata.reportType == '09'){
+      if(formdata.toDate==undefined||formdata.fromDate==undefined){
+        Swal.fire("Please enter to and from date");
+        return;
+      }
       this.apiService
         .getApi(
           this.cons.api.getMainBEAllocationReport +
@@ -647,7 +658,7 @@ export class BudgetAllocationReportComponent implements OnInit {
           formdata.finYear.serialNo +
           '/ALL_102' +
           '/' +
-          formdata.amountType.amountTypeId
+          formdata.amountType.amountTypeId+'/'+formdata.toDate+'/'+formdata.fromDate
         )
         .subscribe({
           next: (v: object) => {
@@ -740,12 +751,19 @@ export class BudgetAllocationReportComponent implements OnInit {
     if (data.reportType == '03') {
       this.showUnit = true;
       this.showSubHead = false;
+      this.showDate=false;
     } else if (data.reportType == '04') {
       this.showSubHead = true;
       this.showUnit = false;
+      this.showDate=false;
+    }else if (data.reportType == '08'||data.reportType == '09') {
+      this.showSubHead = false;
+      this.showUnit = false;
+      this.showDate=true;
     } else {
       this.showSubHead = false;
       this.showUnit = false;
+      this.showDate=false;
     }
   }
 }

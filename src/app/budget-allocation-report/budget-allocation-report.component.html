@@ -75,6 +75,21 @@
                 </div>
               </div>
 
+              <div class="col-md-3" *ngIf="showDate">
+                <div class="form-group">
+                  <label>To Date</label>
+                  <input class="form-control" formControlName="toDate" id="toDate" placeholder="Enter Date"
+                         type="date" />
+                </div>
+              </div>
+              <div class="col-md-3" *ngIf="showDate">
+                <div class="form-group">
+                  <label>From Date</label>
+                  <input class="form-control" formControlName="fromDate" id="fromDate" placeholder="Enter Date"
+                         type="date" />
+                </div>
+              </div>
+
               <div class="col-md-3" id="unitinput" *ngIf="showUnit">
                 <div class="form-group">
                   <label>Unit <span class="text-danger">*</span></label>
