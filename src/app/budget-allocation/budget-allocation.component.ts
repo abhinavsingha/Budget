@@ -1021,6 +1021,14 @@ export class BudgetAllocationComponent implements OnInit {
     this.amountUnit = this.formdata.get('amountType')?.value.amountType;
     for (let i = 0; i < this.subHeadFilterDatas.length; i++) {
       if (this.subHeadFilterDatas[i].amountUnit != null) {
+        for(let j=0;j<this.subHeadFilterDatas[i].cdaParkingTrans.length;j++){
+          this.subHeadFilterDatas[i].cdaParkingTrans[j].totalParkingAmount=(parseFloat(this.subHeadFilterDatas[i].cdaParkingTrans[j].totalParkingAmount)*parseFloat(this.subHeadFilterDatas[i].amountUnit.amount) /
+          parseFloat(this.formdata.get('amountType')?.value.amount)
+        ).toFixed(4);
+          this.subHeadFilterDatas[i].cdaParkingTrans[j].remainingCdaAmount=(parseFloat(this.subHeadFilterDatas[i].cdaParkingTrans[j].remainingCdaAmount)*parseFloat(this.subHeadFilterDatas[i].amountUnit.amount) /
+            parseFloat(this.formdata.get('amountType')?.value.amount)
+          ).toFixed(4);
+        }
         this.subHeadFilterDatas[i].totalAmount = (
           (this.subHeadFilterDatas[i].totalAmount *
             this.subHeadFilterDatas[i].amountUnit.amount) /
@@ -1088,6 +1096,11 @@ export class BudgetAllocationComponent implements OnInit {
     }
     this.index=i;
     this.cdaDetail=subHeadData.cdaParkingTrans;
+    debugger;
+    for(let j=0;j<this.cdaDetail.length;j++){
+      this.cdaDetail[j].totalParkingAmount=parseFloat(this.cdaDetail[j].totalParkingAmount)*parseFloat(this.subHeadFilterDatas[i].amountUnit.amount)/parseFloat(this.amountUnits.amount)
+      this.cdaDetail[j].remainingCdaAmount=parseFloat(this.cdaDetail[j].remainingCdaAmount)*parseFloat(this.subHeadFilterDatas[i].amountUnit.amount)/parseFloat(this.amountUnits.amount)
+    }
     console.log(subHeadData);
     debugger;
   }

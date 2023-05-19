@@ -55,6 +55,7 @@ export class BudgetAllocationSubheadwiseComponent {
     remarks: new FormControl(),
     amountType: new FormControl(),
   });
+  private subHeadData: any;
 
   ngOnInit(): void {
     this.getAmountType();
@@ -242,14 +243,6 @@ export class BudgetAllocationSubheadwiseComponent {
       return;
     }
 
-    // if (this.subHeadWiseUnitList[0].amount == undefined) {
-    //   console.warn('===if===');
-    // } else if (this.subHeadWiseUnitList[0].amount == 0) {
-    //   console.warn('===if else===');
-    // } else {
-    //   console.warn('===else===');
-    // }
-
     let checkUserFilledAnyUnitData = this.subHeadWiseUnitList.filter(function (
       ele
     ) {
@@ -279,7 +272,17 @@ export class BudgetAllocationSubheadwiseComponent {
   }
 
   showData(selectedUnitDataWithAmount: any, formDataValue: any) {
+    if(this.cdaDetail.length==1){
+      for (var i = 0; i < selectedUnitDataWithAmount.length; i++) {
+        let cdaParking=[{
+          cdaParkingId:this.cdaDetail[0].cdaParkingId,
+          cdaAmount:selectedUnitDataWithAmount[i].amount
+        }]
+        selectedUnitDataWithAmount[i].cdaParkingId=cdaParking;
+      }
+    }
     for (var i = 0; i < selectedUnitDataWithAmount.length; i++) {
+      debugger;
       this.budgetAllocationArray.push({
         financialYear: formDataValue.finYear,
         unitName: selectedUnitDataWithAmount[i].unit,
@@ -289,13 +292,13 @@ export class BudgetAllocationSubheadwiseComponent {
         remarks: formDataValue.remarks,
         isChecked: false,
         amountType: formDataValue.amountType,
+        cdaParkingId:selectedUnitDataWithAmount[i].cdaParkingId
       });
     }
 
     this.subHeadWiseUnitList = [];
-    this.formdata.reset();
     this.getNewEmptyEntries();
-    this.newFormGroup();
+    // this.newFormGroup();
   }
 
   tableCheckBoxClicked(index: any) {
@@ -432,6 +435,7 @@ export class BudgetAllocationSubheadwiseComponent {
         allocationTypeId:
           this.budgetAllocationArray[i].allocationType.allocTypeId,
         amountTypeId: this.budgetAllocationArray[i].amountType.amountTypeId,
+        cdaParkingId:this.budgetAllocationArray[i].cdaParkingId,
       });
     }
 
@@ -544,7 +548,7 @@ export class BudgetAllocationSubheadwiseComponent {
       this.formdata.get('finYear')?.setValue(this.sharedService.finYear);
 
   }
-
+  cdaDetail:any[]=[];
   getFundAvailableBuFinYearAndSubHeadAndAllocationType(
     data: any,
     subhead: any
@@ -592,10 +596,15 @@ export class BudgetAllocationSubheadwiseComponent {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
+            this.subHeadData=result['response'];
             this.fundAvailableByFinYearAndUnitAndAllocationType = parseFloat(
               result['response'].fundAvailable
             );
-
+            this.cdaDetail=result['response'].cdaParkingTrans;
+            for(let cda of this.cdaDetail){
+              cda.totalParkingAmount=parseFloat(cda.totalParkingAmount)*parseFloat(cda.amountType.amount)/parseFloat(this.amountUnit.amount)
+              cda.remainingCdaAmount=parseFloat(cda.remainingCdaAmount)*parseFloat(cda.amountType.amount)/parseFloat(this.amountUnit.amount)
+            }
             this.formdata.patchValue({
               fundAvailable: parseFloat(result['response'].fundAvailable),
             });
@@ -697,5 +706,30 @@ export class BudgetAllocationSubheadwiseComponent {
     for(let i=0;i<this.budgetAllocationArray.length;i++){
       this.budgetAllocationArray[i].isChecked=this.isAllChecked;
     }
+  }
+
+  cdaWithdrawl() {
+    //add cda data to unit data
+    let cdaParkingId=[];
+    for(let i=0;i<this.cdaDetail.length;i++){
+      if(this.cdaDetail[i].amount!=undefined){
+        cdaParkingId.push({
+          cdaParkingId:this.cdaDetail[i].cdaParkingId,
+          cdaAmount:this.cdaDetail[i].amount
+        });
+      }
+    }
+    this.subHeadWiseUnitList[this.currentIndex].cdaParkingId=cdaParkingId;
+    this.cdaDetail=this.subHeadData.cdaParkingTrans;
+    for(let cda of this.cdaDetail){
+      cda.totalParkingAmount=parseFloat(cda.totalParkingAmount)*parseFloat(cda.amountType.amount)/parseFloat(this.amountUnit.amount)
+      cda.remainingCdaAmount=parseFloat(cda.remainingCdaAmount)*parseFloat(cda.amountType.amount)/parseFloat(this.amountUnit.amount)
+    }
+    debugger;
+  }
+currentIndex:any;
+  addCda(subHeadWiseUnit: any, i: number) {
+    this.currentIndex=i;
+
   }
 }

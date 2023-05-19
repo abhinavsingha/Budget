@@ -134,6 +134,7 @@
                     <tr>
                       <th>Unit</th>
                       <th>Amount</th>
+                      <th *ngIf="cdaDetail!=undefined&&cdaDetail.length>1">CDA Selection</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -151,6 +152,9 @@
                       <td><input type="number" class="form-control" id="Aallocationamount"
                           placeholder="Please Enter Amount" [(ngModel)]="subHeadWiseUnit.amount"
                           (change)="allocatedAmount(i)" /></td>
+                      <td *ngIf="cdaDetail!=undefined&&cdaDetail.length>1">
+                        <button type="submit" class="btn btn-warning mr-2" data-toggle="modal" data-target="#modal-lg" (click)="addCda(subHeadWiseUnit,i)" >Select CDA</button>
+                      </td>
                       <td><button type="submit" class="btn btn-danger mr-2"
                           (click)="deleteSubHeadWiseUnitList(i)">Delete</button></td>
                     </tr>
@@ -224,6 +228,57 @@
     </div>
     <!-- /.container-fluid -->
   </section>
+  <div class="modal fade" id="modal-lg">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">CDA Selction</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-12 mt-4">
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                  <thead>
+                  <tr>
+                    <!--                      <th>Sr.No.</th>-->
+                    <th>CDA</th>
+                    <th>Available Amount (in {{amountUnit.amountType}})</th>
+                    <th>Withdrawl (in {{amountUnit.amountType}})</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let cda of cdaDetail">
+                    <td>{{cda.ginNo.cdaName}}</td>
+                    <td>{{cda.remainingCdaAmount}}</td>
+                    <td><input type="number" id="Allocationamount" class="form-control" placeholder="Please Enter Amount" [(ngModel)]="cda.amount"/></td>
+                  </tr>
+
+                  </tbody>
+                </table>
+
+              </div>
+              <div class="row mt-2">
+                <div class="col-sm-12 col-md-12">
+                  <pagination-controls class="pagination float-right"></pagination-controls>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          <button  type="button" data-dismiss="modal" class="btn btn-primary" (click)="cdaWithdrawl()">Submit</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
 
   <!-- /.content -->
 </div>

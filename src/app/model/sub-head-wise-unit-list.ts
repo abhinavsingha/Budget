@@ -4,4 +4,5 @@ export class SubHeadWiseUnitList {
   amount: any;
   isSelected: any;
   amountUnit:any;
+  cdaParkingId:any;
 }
