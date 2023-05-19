@@ -91,6 +91,13 @@
                       </ng-select>
                     </div>
                   </div>
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label class="control-label">Allocation Type</label>
+                      <input type="text" class="form-control" id="PrevioAllocation" placeholder="Select Allocation Type" formControlName="allocType"
+                             name="" />
+                    </div>
+                  </div>
                 </div>
               </form>
             </div>
@@ -104,10 +111,11 @@
                       <th *ngIf="isSelectedRE || isSelectedMA ||isSectedVOA">BE</th>
                       <th *ngIf="isSelectedMA || isSectedSG">RE</th>
                       <th *ngIf="isSectedSG">MA</th>
-                      <th><ng-select class="form-control select2bs4" style="width: 100%" bindLabel="allocType"
-                          placeholder="Select Allocation Type" [items]="allocationTypeList"
-                          [(ngModel)]="autoSelectedAllocationType" (change)="allocationTypeChange($event)">
-                        </ng-select></th>
+<!--                      <th><ng-select class="form-control select2bs4" style="width: 100%" bindLabel="allocType"-->
+<!--                          placeholder="Select Allocation Type" [items]="allocationTypeList"-->
+<!--                          [(ngModel)]="autoSelectedAllocationType" (change)="allocationTypeChange($event)">-->
+<!--                        </ng-select></th>-->
+                      <th></th>
                       <!-- <th>Action</th> -->
                     </tr>
                   </thead>

@@ -330,6 +330,43 @@
           </div>
           <div><button type="submit" class="btn btn-primary mr-2" (click)="downloadCsv()">Download</button></div>
         </div>
+<!--        <div  class="card card-default">-->
+<!--          <h3 class="card-title">Previous Revisions</h3>-->
+<!--          <div class="row">-->
+<!--          <div class="col-sm-12">-->
+<!--            <div class="card-body table-responsive p-0">-->
+<!--              <table class="table table-hover text-nowrap">-->
+<!--                <thead>-->
+<!--                <tr>-->
+<!--                  <th>F.Y.</th>-->
+<!--                  <th>Unit</th>-->
+<!--                  <th>Sub Head</th>-->
+<!--                  <th>Type</th>-->
+<!--                  <th>Allocated ({{this.amountUnit}})</th>-->
+<!--                  <th>Additional/Withdrawal ({{this.amountUnit}})</th>-->
+<!--                  <th>Revised ({{this.amountUnit}})</th>-->
+<!--                </tr>-->
+<!--                </thead>-->
+<!--                <tbody>-->
+<!--                <tr *ngFor="let tbleDta of budgetDataLists| paginate :{itemsPerPage:10,currentPage:p}; let i = index">-->
+<!--                  <td>{{tbleDta.finYear.finYear}}</td>-->
+<!--                  <td>{{tbleDta.toUnit.descr}}</td>-->
+<!--                  <td>{{tbleDta.subHead.subHeadDescr}}</td>-->
+<!--                  <td>{{tbleDta.allocTypeId.allocDesc}}</td>-->
+<!--                  <td>{{tbleDta.allocationAmount}}</td>-->
+<!--                  <td>{{tbleDta.revisedAmount}}</td>-->
+<!--                  <td>{{tbleDta.balanceAmount}}</td>-->
+<!--                </tr>-->
+<!--                </tbody>-->
+<!--              </table>-->
+<!--            </div>-->
+<!--            <div class="col-sm-12 col-md-12">-->
+<!--              <pagination-controls class="pagination float-right" (pageChange)="p = $event"></pagination-controls>-->
+<!--            </div>-->
+
+<!--          </div>-->
+<!--        </div>-->
+<!--        </div>-->
         <!-- /.row -->
       </div>
       <!-- /.container-fluid -->

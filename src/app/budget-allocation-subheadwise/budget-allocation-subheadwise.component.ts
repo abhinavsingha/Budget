@@ -58,14 +58,14 @@ export class BudgetAllocationSubheadwiseComponent {
 
   ngOnInit(): void {
     this.getAmountType();
-    this.getBudgetFinYear();
+    // this.getBudgetFinYear();
     this.getSubHeadsData();
     this.getCgUnitData();
-    this.getAllocationTypeData();
+    // this.getAllocationTypeData();
     this.getNewEmptyEntries();
     this.getUnitDatas();
     this.uploadDocuments.push(new UploadDocuments());
-    this.getDashboardData();
+    this.sharedDashboardData();
     $.getScript('assets/main.js');
   }
 
@@ -507,32 +507,42 @@ export class BudgetAllocationSubheadwiseComponent {
 
     // this.common.successAlert('Success', 'Finally submitted', 'success');
   }
-  private getDashboardData() {
-    // this.SpinnerService.show();
-    this.apiService.postApi(this.cons.api.getDashboardData, null).subscribe(
-      (results) => {
-        this.SpinnerService.hide();
-        // this.dummydata();
-        let result: { [key: string]: any } = results;
-        if (result['message'] == 'success') {
-          // this.userRole = result['response'].userDetails.role[0].roleName;
-          this.formdata.patchValue({
-            allocationType: result['response'].allocationType,
-          });
+  // private getDashboardData() {
+  //   // this.SpinnerService.show();
+  //   this.apiService.postApi(this.cons.api.getDashboardData, null).subscribe(
+  //     (results) => {
+  //       this.SpinnerService.hide();
+  //       // this.dummydata();
+  //       let result: { [key: string]: any } = results;
+  //       if (result['message'] == 'success') {
+  //         // this.userRole = result['response'].userDetails.role[0].roleName;
+  //         this.formdata.patchValue({
+  //           allocationType: result['response'].allocationType,
+  //         });
+  //
+  //         this.sharedService.inbox = result['response'].inbox;
+  //         this.sharedService.outbox = result['response'].outBox;
+  //         this.sharedService.finYear=result['response'].budgetFinancialYear;
+  //         if(this.sharedService.finYear!=undefined)
+  //           this.formdata.get('finYear')?.setValue(this.sharedService.finYear);
+  //
+  //       }
+  //     },
+  //     (error) => {
+  //       console.log(error);
+  //       this.SpinnerService.hide();
+  //     }
+  //   );
+  // }
+  sharedDashboardData(){
+    if(this.sharedService.dashboardData!=undefined)
+    this.formdata.patchValue({
+      allocationType: this.sharedService.dashboardData.allocationType,
+    });
 
-          this.sharedService.inbox = result['response'].inbox;
-          this.sharedService.outbox = result['response'].outBox;
-          this.sharedService.finYear=result['response'].budgetFinancialYear;
-          if(this.sharedService.finYear!=undefined)
-            this.formdata.get('finYear')?.setValue(this.sharedService.finYear);
+    if(this.sharedService.finYear!=undefined)
+      this.formdata.get('finYear')?.setValue(this.sharedService.finYear);
 
-        }
-      },
-      (error) => {
-        console.log(error);
-        this.SpinnerService.hide();
-      }
-    );
   }
 
   getFundAvailableBuFinYearAndSubHeadAndAllocationType(

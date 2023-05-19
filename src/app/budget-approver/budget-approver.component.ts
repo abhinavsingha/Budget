@@ -41,6 +41,7 @@ export class BudgetApproverComponent implements OnInit {
   });
 
   isInboxAndOutbox: any;
+  private amountUnitData: any;
 
   ngOnInit(): void {
     if (
@@ -247,6 +248,7 @@ export class BudgetApproverComponent implements OnInit {
     this.getCurrentSubHeadData = data;
     this.showSubHeadDataInNextPage = data.subHead.subHeadDescr;
     this.amountUnit = data.amountUnit.amountType;
+    this.amountUnitData=data.amountUnit;
     this.multipleCdaParking = [];
     this.multipleCdaParking.push(new MultiCdaParking());
     this.totalAmountToAllocateCDAParking = data.allocationAmount;
@@ -295,6 +297,7 @@ export class BudgetApproverComponent implements OnInit {
     this.cdaParkingListResponseData = [];
     for (var i = 0; i < this.multipleCdaParking.length; i++) {
       this.cdaParkingListResponseData.push({
+        amountTypeId:this.amountUnitData.amountTypeId,
         budgetFinancialYearId: this.getCurrentSubHeadData.finYear.serialNo,
         allocationTypeID: this.getCurrentSubHeadData.allocTypeId.allocTypeId,
         ginNo: this.multipleCdaParking[i].cdaParkingUnit.ginNo,
@@ -368,6 +371,7 @@ export class BudgetApproverComponent implements OnInit {
   authGroupIdFromBackend: any;
   showUpdate: boolean = false;
   viewCDAParking(budgetData: any) {
+    this.amountUnitData=budgetData.amountUnit;
     this.showUpdate = true;
     this.showSubmit = false;
     this.showSubHeadDataInNextPage = budgetData.subHead.subHeadDescr;

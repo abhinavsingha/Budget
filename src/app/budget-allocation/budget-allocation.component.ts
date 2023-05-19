@@ -208,30 +208,40 @@ export class BudgetAllocationComponent implements OnInit {
     });
   }
 
-  getDashboardData() {
-    this.SpinnerService.show();
-    this.apiService.postApi(this.cons.api.getDashboardData, null).subscribe(
-      (results) => {
-        this.SpinnerService.hide();
-        let result: { [key: string]: any } = results;
-        if (result['message'] == 'success') {
-          this.formdata.patchValue({
-            allocationType: result['response'].allocationType,
-          });
-          this.sharedService.finYear=result['response'].budgetFinancialYear;
-          if(this.sharedService.finYear!=undefined)
-            this.formdata.get('finYearId')?.setValue(this.sharedService.finYear);
+  // getDashboardData() {
+  //   this.SpinnerService.show();
+  //   this.apiService.postApi(this.cons.api.getDashboardData, null).subscribe(
+  //     (results) => {
+  //       this.SpinnerService.hide();
+  //       let result: { [key: string]: any } = results;
+  //       if (result['message'] == 'success') {
+  //         this.formdata.patchValue({
+  //           allocationType: result['response'].allocationType,
+  //         });
+  //         this.sharedService.finYear=result['response'].budgetFinancialYear;
+  //         if(this.sharedService.finYear!=undefined)
+  //           this.formdata.get('finYearId')?.setValue(this.sharedService.finYear);
+  //
+  //         this.sharedService.inbox = result['response'].inbox;
+  //         this.sharedService.outbox = result['response'].outBox;
+  //       }
+  //     },
+  //     (error) => {
+  //       console.log(error);
+  //       this.SpinnerService.hide();
+  //     }
+  //   );
+  // }
+  sharedDashboardData(){
+    if(this.sharedService.dashboardData!=undefined){
+      this.formdata.patchValue({
 
-          this.sharedService.inbox = result['response'].inbox;
-          this.sharedService.outbox = result['response'].outBox;
-        }
-      },
-      (error) => {
-        console.log(error);
-        this.SpinnerService.hide();
-      }
-    );
-  }
+        allocationType: this.sharedService.dashboardData.allocationType,
+      });
+    }
+    if(this.sharedService.finYear!=undefined)
+      this.formdata.get('finYearId')?.setValue(this.sharedService.finYear);
+    }
 
   ngOnInit(): void {
     this.getBudgetFinYear();
@@ -241,7 +251,7 @@ export class BudgetAllocationComponent implements OnInit {
     this.getAllocationTypeData();
     this.deleteDataByPid();
     this.getAmountType();
-    this.getDashboardData();
+    this.sharedDashboardData();
     this.getSubHeadType();
 
     $.getScript('assets/js/adminlte.js');

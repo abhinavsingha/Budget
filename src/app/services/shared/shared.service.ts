@@ -9,5 +9,6 @@ export class SharedService {
   public roleHeading: any;
   public status:boolean=false;
   public finYear: any;
+  public dashboardData:any;
   constructor() { }
 }

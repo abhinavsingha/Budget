@@ -153,6 +153,7 @@ export class DashboardComponent implements OnInit {
         let result: { [key: string]: any } = v;
 
         if (result['message'] == 'success') {
+          this.sharedService.dashboardData = result['response'];
           this.dasboardData = result['response']; // debugger;
           var roles = result['response'].userDetails.role[0].roleName;
           if (localStorage.getItem('user_role') != roles) {

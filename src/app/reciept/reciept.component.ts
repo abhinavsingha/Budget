@@ -25,6 +25,7 @@ export class RecieptComponent {
     subHeadType: new FormControl(),
     remarks: new FormControl(),
     amountType: new FormControl(),
+    allocType:new FormControl()
   });
   formData=new FormGroup({
     amountType2: new FormControl(),
@@ -478,7 +479,7 @@ export class RecieptComponent {
 
     this.submitJson = {
       budgetFinancialYearId: this.selectedFinYear,
-      allocationTypeId: this.finalSelectedAllocationType.allocTypeId,
+      allocationType: this.formdata.get('allocType')?.value,
       amountTypeId: this.formdata.get('amountType')?.value.amountTypeId,
       authListData: authRequestsList,
       receiptSubRequests: budgetRequest,
