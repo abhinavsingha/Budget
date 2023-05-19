@@ -689,4 +689,14 @@ export class BudgetApproverComponent implements OnInit {
     // Generate and download the CSV file
     this.generateCSV(tableData, columns, filename, column);
   }
+  cdaData:any[]=[]
+  cdaDataList(cdaData: any) {
+
+    this.cdaData=cdaData;
+    debugger;
+  }
+
+  resetCdaList() {
+    this.cdaData=[];
+  }
 }
