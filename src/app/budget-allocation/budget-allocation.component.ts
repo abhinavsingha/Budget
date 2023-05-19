@@ -248,7 +248,7 @@ export class BudgetAllocationComponent implements OnInit {
     this.getCgUnitDataNew();
     this.getMajorDataNew();
     this.getUnitDatas();
-    this.getAllocationTypeData();
+    // this.getAllocationTypeData();
     this.deleteDataByPid();
     this.getAmountType();
     this.sharedDashboardData();
@@ -494,10 +494,18 @@ export class BudgetAllocationComponent implements OnInit {
   }
 
   saveBudgetDataFn(data: any) {
+    debugger;
     this.tableData;
     this.saveBudgetDataList.push(data);
     let budgetRequest: any[] = [];
     for (var i = 0; i < this.tableData.length; i++) {
+      let cda:any[]=[];
+      for(let j=0;j<this.finalData[i].cdaInfo.length;j++){
+        cda.push({
+          cdaParkingId:this.finalData[i].cdaInfo[j].cdaParkingId,
+          cdaAmount:this.finalData[i].cdaInfo[j].amount
+        })
+      }
       budgetRequest.push({
         budgetFinanciaYearId: this.tableData[i].financialYear.serialNo,
         toUnitId: this.tableData[i].unitName.unit,
@@ -506,6 +514,7 @@ export class BudgetAllocationComponent implements OnInit {
         remark: this.tableData[i].remarks,
         allocationTypeId: this.tableData[i].allocationType.allocTypeId,
         amountTypeId: this.formdata.get('amountType')?.value.amountTypeId,
+        cdaParkingId:cda
       });
     }
     this.submitJson = {
@@ -667,7 +676,7 @@ export class BudgetAllocationComponent implements OnInit {
   }
 
   tableData: any[] = [];
-
+  finalData:any[]=[];
   addSubHeadValue(data: any, formDataValue: any, subHeadIndex: any) {
     if (
       data.amount == undefined ||
@@ -684,7 +693,7 @@ export class BudgetAllocationComponent implements OnInit {
     }
 
     this.SpinnerService.show();
-    // debugger;
+     debugger;
     let submitJson = {
       finYearId: formDataValue.finYearId.serialNo,
       codeSubHeadId: data.budgetCodeId,
@@ -693,7 +702,26 @@ export class BudgetAllocationComponent implements OnInit {
       allocationType: formDataValue.allocationType.allocTypeId,
       subHeadTypeId: formDataValue.subHeadType.subHeadTypeId,
     };
+    let finalTableData:any;
+      if(this.subHeadFilterDatas[subHeadIndex].cdaParkingTrans.length>1){
+      finalTableData={
+        subHeadInfo:this.subHeadFilterDatas[subHeadIndex],
+        cdaInfo:this.cdaDetail
+      }
 
+    }
+      else
+      {
+        this.cdaDetail=this.subHeadFilterDatas[subHeadIndex].cdaParkingTrans
+        this.cdaDetail[0].amount=this.subHeadFilterDatas[subHeadIndex].amount;
+        finalTableData={
+          subHeadInfo:this.subHeadFilterDatas[subHeadIndex],
+          cdaInfo:this.cdaDetail
+        }
+      }
+    this.cdaDetail=undefined;
+
+    this.finalData.push(finalTableData);
     this.apiService
       .postApi(this.cons.api.saveFilterData, submitJson)
       .subscribe({
@@ -931,6 +959,8 @@ export class BudgetAllocationComponent implements OnInit {
 
   deleteRowFromTableData(tableSingleData: any, indexValue: any) {
     this.SpinnerService.show();
+    debugger;
+    this.finalData.splice(indexValue, 1);
     let submitJson = {
       finyearId: tableSingleData.financialYear.serialNo,
       majorHead: tableSingleData.selectedSubHead.majorHead,
@@ -973,6 +1003,13 @@ export class BudgetAllocationComponent implements OnInit {
       Swal.fire('Please Select Rupees in');
       this.subHeadFilterDatas[index].amount = undefined;
       return;
+    }
+    if(this.subHeadFilterDatas[index].amount>this.subHeadFilterDatas[index].totalAmount){
+      this.common.warningAlert('Allocation Amount limit exceed','Allocation amount cannot be larger than available balance','');
+      return
+    }if(this.subHeadFilterDatas[index].amount<0){
+      this.common.warningAlert('Allocation Amount cannot be less than 0','Allocation Amount cannot be less than 0','');
+      return
     }
     this.subHeadFilterDatas[index].amount = Number(
       this.subHeadFilterDatas[index].amount
@@ -1040,5 +1077,37 @@ export class BudgetAllocationComponent implements OnInit {
       },
       complete: () => console.info('complete'),
     });
+  }
+  cdaDetail:any;
+  index:number=0;
+  populateCda(subHeadData: any,i:number) {
+    if(subHeadData.amount==undefined)
+    {
+      this.common.warningAlert("Amount not selected",'Please select amount','');
+      return;
+    }
+    this.index=i;
+    this.cdaDetail=subHeadData.cdaParkingTrans;
+    console.log(subHeadData);
+    debugger;
+  }
+  cdaAllocationbalance:boolean=false;
+  cdaWithdrawl(cda: any) {
+    this.cdaAllocationbalance=false;
+    if(cda.amount>cda.remainingCdaAmount){
+      this.common.warningAlert('Amount Exceeds Balance','Cannot withdraw more than balance.','');
+      cda.amount=0;
+      return;
+    }
+
+    let sum=0.0;
+    for(let cdaData of this.cdaDetail){
+      if(cdaData.amount!=undefined)
+        sum=cdaData.amount+sum;
+    }
+    if(sum==this.subHeadFilterDatas[this.index].amount)
+      this.cdaAllocationbalance=true;
+    console.log(sum);
+    debugger;
   }
 }

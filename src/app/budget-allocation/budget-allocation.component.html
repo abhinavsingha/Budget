@@ -125,7 +125,7 @@
                         <th>Fund Available</th>
                         <th style="width:10%;">Amount <span style="font-size: 9px;">(in {{amountUnit}})</span></th>
                         <!--                        <th>Amount Unit</th>-->
-                        <!-- <th>CDA Parking</th> -->
+                         <th>CDA Selection</th>
                         <th>Action</th>
                       </tr>
                     </thead>
@@ -144,8 +144,11 @@
                             (change)="allocatedAmount(i,formdata.value)" style="width:102px;" />
                         </td>
                         <td>
-                          <button type=" submit" class="btn btn-primary mr-2"
-                            (click)="addSubHeadValue(subHeadData, formdata.value, i)">Add</button>
+                          <button *ngIf="subHeadData.cdaParkingTrans.length>1" type="submit" class="btn btn-warning mr-2" data-toggle="modal" data-target="#modal-lg" (click)="populateCda(subHeadData,i)">Select CDA</button>
+                        </td>
+                        <td>
+                          <button *ngIf="subHeadData.cdaParkingTrans.length>1  && !cdaAllocationbalance " type=" submit" class="btn btn-primary mr-2" (click)="addSubHeadValue(subHeadData, formdata.value, i)" disabled >Add</button>
+                          <button *ngIf="subHeadData.cdaParkingTrans.length<=1 || (subHeadData.cdaParkingTrans.length>1 && cdaAllocationbalance) " type=" submit" class="btn btn-primary mr-2" (click)="addSubHeadValue(subHeadData, formdata.value, i)"  >Add</button>
                         </td>
                         <!-- </div> -->
                       </tr>
@@ -235,7 +238,7 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">CDA Parking</h4>
+          <h4 class="modal-title">CDA Selction</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -247,27 +250,17 @@
                 <table class="table table-hover text-nowrap">
                   <thead>
                     <tr>
-                      <th>Sr.No.</th>
+<!--                      <th>Sr.No.</th>-->
                       <th>CDA</th>
-                      <th>Existing</th>
-                      <th>Current</th>
-                      <th>Total</th>
-                      <th>Action</th>
-
+                      <th>Amount</th>
+                      <th>Withdrawl</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td><ng-select class="form-control select2bs4" style="width: 100%" [items]="cgUnits"
-                          appendTo="body" bindLabel="descr" (change)="getAvailableFund($event)"
-                          placeholder="Select To Unit" formControlName="cbUnit">
-                        </ng-select></td>
-                      <td>2.30</td>
-                      <td><input type="number" id="Aallocationamount" class="form-control"
-                          placeholder="Please Enter Amount" /></td>
-                      <td>7.8</td>
-                      <td><button type="button" class="btn btn-primary">Add Row</button></td>
+                    <tr *ngFor="let cda of cdaDetail">
+                      <td>{{cda.ginNo.cdaName}}</td>
+                      <td>{{cda.remainingCdaAmount}}</td>
+                      <td><input type="number" id="Allocationamount" class="form-control" placeholder="Please Enter Amount" [(ngModel)]="cda.amount" (change)="cdaWithdrawl(cda)"/></td>
                     </tr>
 
                   </tbody>
@@ -285,7 +278,7 @@
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Submit</button>
+          <button *ngIf="cdaAllocationbalance" type="button" data-dismiss="modal" class="btn btn-primary">Submit</button>
         </div>
       </div>
       <!-- /.modal-content -->
