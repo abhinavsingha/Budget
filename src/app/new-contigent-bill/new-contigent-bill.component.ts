@@ -14,6 +14,7 @@ import * as $ from 'jquery';
 // import { UploadDocuments } from '../model/upload-documents';
 
 class newCb {
+  cbFilePath:any;
   label: string = '';
   isFlag: any;
   cbId: any;
@@ -255,7 +256,8 @@ export class NewContigentBillComponent implements OnInit {
         invoicePath: this.invoicePath,
         authGroupId: undefined,
         label: '',
-        cdaParkingId:cdatabledata
+        cdaParkingId: cdatabledata,
+        cbFilePath: undefined
       };
 
       let flag = false;
@@ -527,7 +529,7 @@ export class NewContigentBillComponent implements OnInit {
               cdaData.push(cdaItr);
             }
             const entry: newCb = {
-              cdaParkingId:cdaData,
+              cdaParkingId: cdaData,
               isFlag: getCbList[i].isFlag,
               cbId: getCbList[i].cbId,
               authUnitId: getCbList[i].authoritiesList[0].authUnit,
@@ -572,6 +574,7 @@ export class NewContigentBillComponent implements OnInit {
               invoicePath: getCbList[i].invoiceUploadId.pathURL,
               authGroupId: getCbList[i].authoritiesList[0].authGroupId,
               label: '',
+              cbFilePath: getCbList[i].cbFilePath
             };
             if (entry.status == 'Approved') this.approvedPresent = true;
             this.cbList.push(entry);
@@ -1063,7 +1066,7 @@ export class NewContigentBillComponent implements OnInit {
             cdatabledata.push(x);
           }
           let entry: newCb = {
-            cdaParkingId:cdatabledata,
+            cdaParkingId: cdatabledata,
             isFlag: undefined,
             cbId: undefined,
             authUnitId: this.unitId,
@@ -1101,6 +1104,7 @@ export class NewContigentBillComponent implements OnInit {
             invoicePath: undefined,
             authGroupId: undefined,
             label: '',
+            cbFilePath: undefined
           };
           this.cbList[i] = entry;
         } else {

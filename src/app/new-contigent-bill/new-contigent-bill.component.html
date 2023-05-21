@@ -293,15 +293,15 @@
                       <tr *ngFor="let cb of cbList  | paginate :{itemsPerPage:10,currentPage:p}; let i = index"
                         id="htmlData">
                         <!--                      <td><input (change)="getCheckedRows(cb.cbNo)" type="checkbox" value="{{cb.cbNo}}"></td>-->
-                        <td><input *ngIf="cb.status=='Pending for Submission'" type="checkbox" [(ngModel)]="cb.checked" [ngModelOptions]="{standalone: true}"></td>
-                        <td>{{cb.finYearName}}</td>
-                        <td>{{cb.unit}}</td>
-                        <td>{{cb.subHead}}</td>
-                        <td>{{cb.cbNo}}</td>
-                        <td>{{cb.amount}}</td>
-                        <td>{{cb.cbDate}}</td>
-                        <td>{{cb.status}}</td>
-                        <td>
+                        <td *ngIf="cb.cbFilePath==null"><input *ngIf="cb.status=='Pending for Submission'" type="checkbox" [(ngModel)]="cb.checked" [ngModelOptions]="{standalone: true}"></td>
+                        <td *ngIf="cb.cbFilePath==null">{{cb.finYearName}}</td>
+                        <td *ngIf="cb.cbFilePath==null">{{cb.unit}}</td>
+                        <td *ngIf="cb.cbFilePath==null">{{cb.subHead}}</td>
+                        <td *ngIf="cb.cbFilePath==null">{{cb.cbNo}}</td>
+                        <td *ngIf="cb.cbFilePath==null">{{cb.amount}}</td>
+                        <td *ngIf="cb.cbFilePath==null">{{cb.cbDate}}</td>
+                        <td *ngIf="cb.cbFilePath==null">{{cb.status}}</td>
+                        <td *ngIf="cb.cbFilePath==null">
                           <button (click)="updateFormdata(cb)" *ngIf="cb.status !== 'Approved'" class="btn btn-primary"
                             type="button">View
                           </button>
@@ -309,7 +309,7 @@
                             type="button">Download
                           </button>
                         </td>
-                        <td>
+                        <td *ngIf="cb.cbFilePath==null">
                           <form>
                             <div class="form-group">
                               <div *ngIf="cb.status === 'Approved'" class="input-group">
