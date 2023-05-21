@@ -342,7 +342,7 @@ export class RecieptComponent {
   }
 
   selectedFinYear: any;
-
+  previousRecieptData:any[]=[];
   getAllSubHeadByMajorHead(formData: any, formdataValue: any) {
     this.SpinnerService.show();
     let submitJson = {
@@ -360,9 +360,10 @@ export class RecieptComponent {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
+            this.previousRecieptData=[];
             this.isUpdate = false;
             this.autoSelectedAllocationType = null;
-            this.subHeadList = result['response'].budgetData;
+            this.subHeadList = result['response'].budgetData[0].data;
             for (let i = 0; i < this.subHeadList.length; i++) {
               this.subHeadList[i].codeSubHeadId =
                 this.subHeadList[i].budgetHead.codeSubHeadId;
@@ -373,6 +374,20 @@ export class RecieptComponent {
               this.subHeadList[i].amount = '';
               this.subHeadList[i].amountType = undefined;
             }
+
+            for(let i=0;i<result['response'].budgetData.length;i++){
+              if(result['response'].budgetData[i].allocationType!=null)
+                this.previousRecieptData.push(result['response'].budgetData[i]);
+            }
+            for(let i=0;i<this.previousRecieptData.length;i++){
+              for(let j=0;j<this.previousRecieptData[i].data.length;j++){
+                if(this.previousRecieptData[i].data[j].budgetAllocations==null){
+                  let alAm=[{allocationAmount:'Not defined'}]
+                  this.previousRecieptData[i].data[j].budgetAllocations=alAm;
+                }
+              }
+            }
+          debugger;
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }

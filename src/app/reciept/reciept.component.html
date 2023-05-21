@@ -115,7 +115,7 @@
 <!--                          placeholder="Select Allocation Type" [items]="allocationTypeList"-->
 <!--                          [(ngModel)]="autoSelectedAllocationType" (change)="allocationTypeChange($event)">-->
 <!--                        </ng-select></th>-->
-                      <th></th>
+                      <th *ngFor="let previousReciept of previousRecieptData">{{previousReciept.allocationType.allocDesc}}</th>
                       <!-- <th>Action</th> -->
                     </tr>
                   </thead>
@@ -135,6 +135,7 @@
                         <span *ngIf="subHeadData.ma == 0.0">-</span>
                         <span *ngIf="subHeadData.ma != 0.0">{{subHeadData.ma}}</span>
                       </td>
+                      <td  *ngFor="let previousReciept of previousRecieptData" >{{previousReciept.data[i].budgetAllocations[0].allocationAmount}}</td>
                       <td><input type="number" class="form-control" id="Aallocationamount"
                           placeholder="Please Enter Amount Here" [(ngModel)]="subHeadData.amount"
                           [ngModelOptions]="{standalone: true}" (change)="allocatedAmount(i,formdata.value)" /></td>
