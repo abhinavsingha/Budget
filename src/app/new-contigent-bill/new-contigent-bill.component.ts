@@ -52,9 +52,11 @@ class newCb {
   authorityId: any;
   invoicePath: any;
   authGroupId: any;
+  cdaParkingId:any;
 }
 
 class submitCb {
+  cdaParkingId:any;
   allocationTypeId: any;
   invoiceDocId: any;
   authorityDetails: any;
@@ -155,8 +157,9 @@ export class NewContigentBillComponent implements OnInit {
   masterChecked: boolean = false;
   dasboardData: any;
   allocation: any;
-  private FundAllotted: any;
+  FundAllotted: any;
   label: string = 'Choose File';
+  cdaData: any;
 
   constructor(
     public sharedService: SharedService,
@@ -198,6 +201,20 @@ export class NewContigentBillComponent implements OnInit {
     if (this.invoice == undefined) {
       undefinedValues.push('invoiceFile');
     }
+    let cdatabledata=[];
+    for(let cda of this.cdaData){
+      const x={
+        cdaParkingId:cda.cdaParkingId,
+        cdaAmount:cda.amount
+      }
+      if(cda.amount!=undefined||cda.amount>0)
+      cdatabledata.push(x);
+    }
+    debugger;
+    if(!this.amountEqualCda){
+      this.common.warningAlert('cda amount not equal to bill amount','','');
+      return;
+    }
     if (undefinedValues.length == 0) {
       const cb: newCb = {
         isFlag: undefined,
@@ -238,6 +255,7 @@ export class NewContigentBillComponent implements OnInit {
         invoicePath: this.invoicePath,
         authGroupId: undefined,
         label: '',
+        cdaParkingId:cdatabledata
       };
 
       let flag = false;
@@ -303,6 +321,8 @@ export class NewContigentBillComponent implements OnInit {
     this.SpinnerService.show();
     let json = {
       budgetHeadId: this.formdata.get('subHead')?.value.budgetCodeId,
+      budgetFinancialYearId:this.formdata.get('finYearName')?.value.serialNo,
+      unitId:this.unitId
     };
     this.apiService.postApi(this.cons.api.getAvailableFund, json).subscribe({
       next: (v: object) => {
@@ -329,6 +349,11 @@ export class NewContigentBillComponent implements OnInit {
                 ).toFixed(4)
               );
           }
+          this.cdaData=result['response'].cdaParkingTrans;
+          for(let cda of this.cdaData){
+            cda.remainingCdaAmount=parseFloat(cda.remainingCdaAmount)*parseFloat(this.FundAllotted.amountUnit.amount);
+          }
+
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
@@ -493,7 +518,16 @@ export class NewContigentBillComponent implements OnInit {
 
         for (let i = 0; i < getCbList.length; i++) {
           if(getCbList[i].authoritiesList.length>0) {
+            let cdaData=[];
+            for(let cda of getCbList[i].cdaData){
+              const cdaItr = {
+                cdaParkingId:cda.cdaParkingTrans,
+                cdaAmount:cda.amount
+              };
+              cdaData.push(cdaItr);
+            }
             const entry: newCb = {
+              cdaParkingId:cdaData,
               isFlag: getCbList[i].isFlag,
               cbId: getCbList[i].cbId,
               authUnitId: getCbList[i].authoritiesList[0].authUnit,
@@ -691,8 +725,10 @@ export class NewContigentBillComponent implements OnInit {
       });
     }
   }
-
+  cdaDatacb:any;
   updateFormdata(cbEntry: newCb) {
+
+    debugger;
     console.log('cbentry' + cbEntry);
     for (let i = 0; i < this.majorHeadData.length; i++) {
       let major = this.majorHeadData[i];
@@ -728,6 +764,8 @@ export class NewContigentBillComponent implements OnInit {
                         let json = {
                           budgetHeadId:
                             this.formdata.get('subHead')?.value.budgetCodeId,
+                            budgetFinancialYearId:this.formdata.get('finYearName')?.value.serialNo,
+                            unitId:this.unitId
                         };
                         this.apiService
                           .postApi(this.cons.api.getAvailableFund, json)
@@ -765,6 +803,14 @@ export class NewContigentBillComponent implements OnInit {
                                       this.FundAllotted.amountUnit.amount -
                                       parseFloat(this.FundAllotted.expenditure)
                                   );
+                                this.cdaData=result['response'].cdaParkingTrans;
+                                for(let cda of this.cdaData){
+                                  cda.remainingCdaAmount=parseFloat(cda.remainingCdaAmount)*parseFloat(cda.amountType.amount);
+                                  for(let cbEntryItr of cbEntry.cdaParkingId){
+                                    if(cda.cdaParkingId==cbEntryItr.cdaParkingId)
+                                      cda.amount=cbEntryItr.cdaAmount;
+                                  }
+                                }
                               } else {
                                 this.common.faliureAlert(
                                   'Please try later',
@@ -802,6 +848,8 @@ export class NewContigentBillComponent implements OnInit {
               this.formdata.get('subHead')?.setValue(sub);
               let json = {
                 budgetHeadId: this.formdata.get('subHead')?.value.budgetCodeId,
+                budgetFinancialYearId:this.formdata.get('finYearName')?.value.serialNo,
+                unitId:this.unitId
               };
               this.apiService
                 .postApi(this.cons.api.getAvailableFund, json)
@@ -834,6 +882,15 @@ export class NewContigentBillComponent implements OnInit {
                             this.FundAllotted.amountUnit.amount -
                             parseFloat(this.FundAllotted.expenditure)
                         );
+                      this.cdaData=result['response'].cdaParkingTrans;
+                      for(let cda of this.cdaData){
+                        cda.remainingCdaAmount=parseFloat(cda.remainingCdaAmount)*parseFloat(cda.amountType.amount);
+                        for(let cbEntryItr of cbEntry.cdaParkingId){
+                          if(cda.cdaParkingId==cbEntryItr.cdaParkingId)
+                            cda.amount=cbEntryItr.cdaAmount;
+                        }
+                      }
+
                     } else {
                       this.common.faliureAlert(
                         'Please try later',
@@ -930,16 +987,22 @@ export class NewContigentBillComponent implements OnInit {
             authorityId: this.cbList[i].authorityId,
             remarks: this.cbList[i].returnRemarks,
           };
-          let budgetId = '';
-          for (let j = 0; j < this.majorHeadData.length; j++) {
-            if (this.majorHeadData[j].majorHead == this.cbList[i].majorHead)
-              budgetId = this.majorHeadData[j].budgetCodeId;
+            let cdatabledata=[];
+            for(let cda of this.cdaData){
+              const x={
+                cdaParkingId:cda.cdaParkingId,
+                cdaAmount:cda.amount
+              }
+              if(cda.amount!=undefined||cda.amount>0)
+              cdatabledata.push(x);
+            }
             const updateCb: submitCb = {
+              cdaParkingId:cdatabledata,
               allocationTypeId: this.allocation.allocTypeId,
               onAccountOf: 'onAccountOf',
               authorityDetails:
                 'Sl. 10.1 of Schedule -10 of DFPCG-2017 vide Govt. of India , Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017',
-              budgetHeadId: budgetId,
+              budgetHeadId: this.formdata.get('subHead')?.value.budgetCodeId,
               budgetFinancialYearId: this.cbList[i].finSerialNo,
               cbAmount: this.cbList[i].amount,
               cbNumber: this.cbList[i].cbNo,
@@ -987,9 +1050,20 @@ export class NewContigentBillComponent implements OnInit {
                   this.common.faliureAlert('Error', e['error']['message'], 'error');
                 }
               });
+
+        }
+        else if (this.cbList[i].status == 'Pending for Submission') {
+          let cdatabledata=[];
+          for(let cda of this.cdaData){
+            const x={
+              cdaParkingId:cda.cdaParkingId,
+              cdaAmount:cda.amount
+            }
+            if(cda.amount!=undefined||cda.amount>0)
+            cdatabledata.push(x);
           }
-        } else if (this.cbList[i].status == 'Pending for Submission') {
           let entry: newCb = {
+            cdaParkingId:cdatabledata,
             isFlag: undefined,
             cbId: undefined,
             authUnitId: this.unitId,
@@ -1063,7 +1137,18 @@ export class NewContigentBillComponent implements OnInit {
           remarks: this.cbList[i].returnRemarks,
         };
         const authList: authList[] = [auth];
+        let cdatabledata=[];
+        for(let cda of this.cdaData){
+
+          const x={
+            cdaParkingId:cda.cdaParkingId,
+            cdaAmount:cda.amount
+          }
+          if(cda.amount!=undefined||cda.amount>0)
+          cdatabledata.push(x);
+        }
         const cb: submitCb = {
+          cdaParkingId:cdatabledata,
           onAccountOf: this.cbList[i].onAccOf,
           authorityDetails: this.cbList[i].authDetail,
           budgetHeadId: budgetId,
@@ -1362,5 +1447,16 @@ export class NewContigentBillComponent implements OnInit {
 
   setLabel(formValue: any, i: any) {
     this.cbList[i].label = formValue.uploadFile;
+  }
+  amountEqualCda:boolean=false
+  checkTotal() {
+    this.amountEqualCda=false
+    let sum=0.0;
+    for(let cda of this.cdaData){
+      if(cda.amount!=undefined)
+        sum=sum+cda.amount;
+    }
+    if(sum==parseFloat(this.formdata.get('amount')?.value))
+      this.amountEqualCda=true;
   }
 }
