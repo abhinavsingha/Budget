@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 
 
 interface cb {
+  cdaParkingId:any;
   authGroupId: any;
   onAccountOf: any;
   authorityDetails: any;
@@ -68,6 +69,8 @@ export class CbVerificationComponent {
   expenditure: any;
   private dasboardData: any;
   FundAllotted: any;
+  private unitId: any;
+  cdaData: any;
   constructor(
     private apiService: ApiCallingServiceService,
     private cons: ConstantsService,
@@ -109,6 +112,7 @@ export class CbVerificationComponent {
     this.getFinancialYear();
     this.getCgUnitData();
     this.getSubHeadType();
+    this.updateInbox();
   }
   private getContingentBill() {
     this.cbList = [];
@@ -139,7 +143,16 @@ export class CbVerificationComponent {
           // );
           if(getCbList[i].authoritiesList.length>0)
           {
+            let cdaData=[];
+            for(let cda of getCbList[i].cdaData){
+              const cdaItr = {
+                cdaParkingId:cda.cdaParkingTrans,
+                cdaAmount:cda.amount
+              };
+              cdaData.push(cdaItr);
+            }
             const entry: cb = {
+              cdaParkingId:cdaData,
               authGroupId: getCbList[i].authoritiesList[0].authGroupId,
               onAccountOf: getCbList[i].onAccountOf,
               authorityDetails: getCbList[i].authorityDetails,
@@ -260,31 +273,6 @@ export class CbVerificationComponent {
       });
   }
   updateFormdata(cbEntry: cb) {
-    // for (let i = 0; i < this.majorHeadData.length; i++) {
-    //   let major = this.majorHeadData[i];
-    //   if (major.majorHead == cbEntry.majorHead) {
-    //     this.formdata.get('majorHead')?.setValue(cbEntry.majorHead);
-    //     this.majorHead = major;
-    //     if (this.subHeadData == undefined) {
-    //       this.SpinnerService.show();
-    //       let url =
-    //         this.cons.api.getAllSubHeadByMajorHead +
-    //         '/' +
-    //         this.majorHead.majorHead;
-    //       this.apiService.getApi(url).subscribe((results) => {
-    //         let result: { [key: string]: any } = results;
-    //         this.subHeadData = result['response'];
-    //         for (let i = 0; i < this.subHeadData.length; i++) {
-    //           let sub = this.subHeadData[i];
-    //           if (sub.subHeadDescr == cbEntry.subHead) {
-    //             this.formdata.get('subHead')?.setValue(sub);
-    //           }
-    //         }
-    //         this.SpinnerService.hide();
-    //       });
-    //     }
-    //   }
-    // }
     let subHeadType:any;
     console.log('cbentry' + cbEntry);
     for (let i = 0; i < this.majorHeadData.length; i++) {
@@ -313,6 +301,8 @@ export class CbVerificationComponent {
                       this.formdata.get('subHead')?.setValue(sub);
                       let json = {
                         budgetHeadId: this.formdata.get('subHead')?.value.budgetCodeId,
+                        budgetFinancialYearId:this.formdata.get('finYearName')?.value.serialNo,
+                        unitId:this.unitId
                       };
                       this.apiService.postApi(this.cons.api.getAvailableFund, json).subscribe({
                         next: (v: object) => {
@@ -328,7 +318,14 @@ export class CbVerificationComponent {
                             this.formdata
                               .get('balance')
                               ?.setValue(parseFloat(this.FundAllotted.fundallocated)*this.FundAllotted.amountUnit.amount - parseFloat(this.FundAllotted.expenditure));
-
+                            this.cdaData=result['response'].cdaParkingTrans;
+                            for(let cda of this.cdaData){
+                              cda.remainingCdaAmount=parseFloat(cda.remainingCdaAmount)*parseFloat(cda.amountType.amount);
+                              for(let cbEntryItr of cbEntry.cdaParkingId){
+                                if(cda.cdaParkingId==cbEntryItr.cdaParkingId)
+                                  cda.amount=cbEntryItr.cdaAmount;
+                              }
+                            }
                           } else {
                             this.common.faliureAlert('Please try later', result['message'], '');
                           }
@@ -520,6 +517,7 @@ export class CbVerificationComponent {
           if (result['message'] == 'success') {
             this.sharedService.inbox = result['response'].inbox;
             this.sharedService.outbox = result['response'].outBox;
+            this.unitId=result['response'].userDetails.unitId;
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }

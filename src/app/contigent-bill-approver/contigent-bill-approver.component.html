@@ -137,13 +137,25 @@
                     readonly />
                 </div>
               </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>CB Amount</label>
-                  <input type="number" class="form-control" id="Amount" placeholder="Enter Amount"
-                    formControlName="amount"  />
+              <div class=" col-md-4 row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>CB Amount <i class="fas fa-info-circle" title="Withdraw Amount From CDA For CB Amount. For This Click On Withdraw Amount"></i></label>
+                    <input class="form-control" formControlName="amount" id="Amount" type="number" placeholder="Enter Amount in INR" />
+                  </div>
+                </div>
+                <div class="col-md-6 pl-0">
+                  <label style="opacity: 0;">.</label><br>
+                  <button  class="btn btn-warning " type="button" data-toggle="modal" data-target="#modal-lg">Withdraw Amount</button>
                 </div>
               </div>
+<!--              <div class="col-md-4">-->
+<!--                <div class="form-group">-->
+<!--                  <label>CB Amount</label>-->
+<!--                  <input type="number" class="form-control" id="Amount" placeholder="Enter Amount"-->
+<!--                    formControlName="amount"  />-->
+<!--                </div>-->
+<!--              </div>-->
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Proggressive Expenditure Including This Bill</label>
@@ -277,7 +289,58 @@
     </div>
     <!-- /.container-fluid -->
   </section>
+  <div class="modal fade" id="modal-lg">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">CDA Details</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-12 mt-4">
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                  <thead>
+                  <tr>
+                    <!--                    <th>S.No.</th>-->
+                    <th>CDA Name</th>
+                    <th>Available Amount(INR)</th>
+                    <th>Withdrawl Amount(INR)</th>
 
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let cda of cdaData">
+                    <!--                    <td>1</td>-->
+                    <td>{{cda.ginNo.cdaName}}</td>
+                    <td>{{cda.remainingCdaAmount}}</td>
+                    <td><input [(ngModel)]="cda.amount" disabled type="number" class="form-control" placeholder="Enter Amount in INR" /></td>
+                  </tr>
+
+                  </tbody>
+                </table>
+              </div>
+              <div class="row mt-2">
+                <div class="col-sm-12 col-md-12">
+                  <pagination-controls class="pagination float-right"></pagination-controls>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          <!--          <button type="button" class="btn btn-primary">Submit</button>-->
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
   <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->

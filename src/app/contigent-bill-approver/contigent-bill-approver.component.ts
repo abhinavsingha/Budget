@@ -10,6 +10,7 @@ import { SharedService } from '../services/shared/shared.service';
 import Swal from 'sweetalert2';
 
 interface cb {
+  cdaParkingId:any;
   authGroupId: any;
   onAccountOf: any;
   authorityDetails: any;
@@ -73,6 +74,8 @@ export class ContigentBillApproverComponent implements OnInit {
     private datePipe: DatePipe,
     public sharedService: SharedService
   ) {}
+  private unitId: any;
+  cdaData: any;
   selectedCb: any;
   cbList: cb[] = [];
   disabled: boolean = true;
@@ -107,6 +110,7 @@ export class ContigentBillApproverComponent implements OnInit {
     this.getFinancialYear();
     this.getCgUnitData();
     this.getSubHeadType();
+    this.updateInbox();
   }
   // getDashBoardDta() {
   //   this.SpinnerService.show();
@@ -163,25 +167,17 @@ export class ContigentBillApproverComponent implements OnInit {
 
         for (let i = 0; i < getCbList.length; i++) {
           console.log('interation :' + i);
-          // let url =
-          //   this.cons.api.getAvailableFund + '/' + getCbList[i].cbUnitId.unit;
-          // this.apiService.getApi(url).subscribe(
-          //   (res) => {
-          //     let result: { [key: string]: any } = res;
-          //     this.budgetAllotted = result['response'].fundAvailable;
-          //   },
-          //   (error) => {
-          //     console.log(error);
-          //     this.SpinnerService.hide();
-          //     //remove after test
-          //     this.budgetAllotted = 0;
-          //     this.formdata
-          //       .get('budgetAllocated')
-          //       ?.setValue(this.budgetAllotted);
-          //   }
-          // );
-          if(getCbList[i].authoritiesList.length>0){
-          const entry: cb = {
+         if(getCbList[i].authoritiesList.length>0){
+           let cdaData=[];
+           for(let cda of getCbList[i].cdaData){
+             const cdaItr = {
+               cdaParkingId:cda.cdaParkingTrans,
+               cdaAmount:cda.amount
+             };
+             cdaData.push(cdaItr);
+           }
+           const entry: cb = {
+             cdaParkingId:cdaData,
             authGroupId: getCbList[i].authoritiesList[0].authGroupId,
             onAccountOf: getCbList[i].onAccountOf,
             authorityDetails: getCbList[i].authorityDetails,
@@ -307,6 +303,8 @@ export class ContigentBillApproverComponent implements OnInit {
                       this.formdata.get('subHead')?.setValue(sub);
                       let json = {
                         budgetHeadId: this.formdata.get('subHead')?.value.budgetCodeId,
+                        budgetFinancialYearId:this.formdata.get('finYearName')?.value.serialNo,
+                        unitId:this.unitId
                       };
                       this.apiService.postApi(this.cons.api.getAvailableFund, json).subscribe({
                         next: (v: object) => {
@@ -322,7 +320,14 @@ export class ContigentBillApproverComponent implements OnInit {
                             this.formdata
                               .get('balance')
                               ?.setValue(parseFloat(this.FundAllotted.fundallocated)*this.FundAllotted.amountUnit.amount - parseFloat(this.FundAllotted.expenditure));
-
+                            this.cdaData=result['response'].cdaParkingTrans;
+                            for(let cda of this.cdaData){
+                              cda.remainingCdaAmount=parseFloat(cda.remainingCdaAmount)*parseFloat(cda.amountType.amount);
+                              for(let cbEntryItr of cbEntry.cdaParkingId){
+                                if(cda.cdaParkingId==cbEntryItr.cdaParkingId)
+                                  cda.amount=cbEntryItr.cdaAmount;
+                              }
+                            }
                           } else {
                             this.common.faliureAlert('Please try later', result['message'], '');
                           }
@@ -522,6 +527,7 @@ export class ContigentBillApproverComponent implements OnInit {
           if (result['message'] == 'success') {
             this.sharedService.inbox = result['response'].inbox;
             this.sharedService.outbox = result['response'].outBox;
+            this.unitId=result['response'].userDetails.unitId;
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
