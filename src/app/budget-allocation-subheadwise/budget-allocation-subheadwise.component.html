@@ -246,15 +246,15 @@
                   <tr>
                     <!--                      <th>Sr.No.</th>-->
                     <th>CDA</th>
-                    <th>Available Amount (in {{amountUnit.amountType}})</th>
-                    <th>Withdrawl (in {{amountUnit.amountType}})</th>
+                    <th *ngIf="amountUnit!=undefined">Available Amount (in {{amountUnit.amountType}})</th>
+                    <th *ngIf="amountUnit!=undefined">Withdrawl (in {{amountUnit.amountType}})</th>
                   </tr>
                   </thead>
                   <tbody>
                   <tr *ngFor="let cda of cdaDetail">
                     <td>{{cda.ginNo.cdaName}}</td>
                     <td>{{cda.remainingCdaAmount}}</td>
-                    <td><input type="number" id="Allocationamount" class="form-control" placeholder="Please Enter Amount" [(ngModel)]="cda.amount"/></td>
+                    <td><input type="number" (change)="calcCdaTotal()" id="Allocationamount" class="form-control" placeholder="Please Enter Amount" [(ngModel)]="cda.amount"/></td>
                   </tr>
 
                   </tbody>

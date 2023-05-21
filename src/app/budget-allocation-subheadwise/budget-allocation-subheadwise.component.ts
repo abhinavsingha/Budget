@@ -709,6 +709,10 @@ export class BudgetAllocationSubheadwiseComponent {
   }
 
   cdaWithdrawl() {
+    if(!this.amountEqual){
+      this.common.warningAlert('Cda total not equal to amount allocated','Cda total not equal to amount allocated','');
+      return;
+    }
     //add cda data to unit data
     let cdaParkingId=[];
     for(let i=0;i<this.cdaDetail.length;i++){
@@ -731,5 +735,16 @@ currentIndex:any;
   addCda(subHeadWiseUnit: any, i: number) {
     this.currentIndex=i;
 
+  }
+  amountEqual:boolean=false;
+  calcCdaTotal() {
+    this.amountEqual=false;
+    let sum=0.0;
+    for(let cda of this.cdaDetail){
+      if(cda.amount!=undefined)
+        sum=sum+parseFloat(cda.amount);
+    }
+    if(sum==parseFloat(this.budgetAllocationArray[this.currentIndex].amount))
+      this.amountEqual=true;
   }
 }
