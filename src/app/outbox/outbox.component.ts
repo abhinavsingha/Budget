@@ -105,6 +105,8 @@ export class OutboxComponent implements OnInit {
         this.router.navigate(['/budget-approval']);
       } else if (li.status == 'Pending') {
         this.router.navigate(['/budget-approval']);
+      }else if (li.status == 'Rejected') {
+        this.router.navigate(['/budget-approval']);
       }
       // this.sharedService.redirectedFrom = 'inbox';
       // window.location.href = '/budget-approval';

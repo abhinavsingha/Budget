@@ -117,11 +117,19 @@
           <form [formGroup]="formdata">
             <div class="row">
               <div class="col-md-4"
-                *ngIf="type=='Budget Allocation' && userRole=='Budget Approver' && isInboxAndOutbox!= 'Outbox'">
+                *ngIf="type=='Budget Allocation' && userRole=='Budget Approver' && isInboxAndOutbox!= 'Outbox'&&budgetDataList[0].status=='Pending'">
                 <div class="form-group">
                   <label>Approve/Return Remarks</label>
-                  <input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Remarks"
+                  <input type="text" class="form-control" id="PrevAllocation1" placeholder="Enter Remarks"
                     formControlName="remarks" />
+                </div>
+              </div>
+              <div class="col-md-4"
+                   *ngIf="type=='Budget Allocation'   &&budgetDataList[0].status!='Pending'">
+                <div class="form-group">
+                  <label>Approve/Return Remarks</label>
+                  <input type="text" class="form-control" [(ngModel)]="budgetDataList[0].remarks" id="PrevAllocation" placeholder="Enter Remarks" [readOnly]="true"
+                         formControlName="remarks" />
                 </div>
               </div>
             </div>
@@ -130,7 +138,7 @@
         <!-- /.card-body -->
 
         <div class=" card-footer"
-          *ngIf="type=='Budget Allocation' && userRole=='Budget Approver' && isInboxAndOutbox!= 'Outbox'">
+          *ngIf="type=='Budget Allocation' && userRole=='Budget Approver' && isInboxAndOutbox!= 'Outbox' &&budgetDataList[0].status=='Pending'">
           <div class="row">
             <button type="submit" class="btn btn-primary mr-2" (click)="approveForm(formdata.value)">Approve</button>
             <button type="submit" class="btn btn-danger" (click)="returnForm(formdata.value)">Return</button>

@@ -500,11 +500,14 @@ export class BudgetAllocationComponent implements OnInit {
     let budgetRequest: any[] = [];
     for (var i = 0; i < this.tableData.length; i++) {
       let cda:any[]=[];
-      for(let j=0;j<this.finalData[i].cdaInfo.length;j++){
-        cda.push({
-          cdaParkingId:this.finalData[i].cdaInfo[j].cdaParkingId,
-          cdaAmount:this.finalData[i].cdaInfo[j].amount
-        })
+      for(let j=0;j<this.finalData[i].cdaInfo.length;j++) {
+        if (this.finalData[i].cdaInfo[j].amount != undefined)
+        {
+          cda.push({
+            cdaParkingId: this.finalData[i].cdaInfo[j].cdaParkingId,
+            cdaAmount: this.finalData[i].cdaInfo[j].amount
+          });
+      }
       }
       budgetRequest.push({
         budgetFinanciaYearId: this.tableData[i].financialYear.serialNo,

@@ -108,6 +108,8 @@ export class InboxComponent implements OnInit {
         this.router.navigate(['/budget-approval']);
       } else if (li.status == 'Pending') {
         this.router.navigate(['/budget-approval']);
+      } else if (li.status == 'Rejected') {
+        this.router.navigate(['/budget-approval']);
       }
       // window.location.href = '/budget-approval';
     } else if (li.isType == 'Budget Reciept') {
