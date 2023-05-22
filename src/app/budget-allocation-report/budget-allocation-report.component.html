@@ -62,8 +62,7 @@
                   <select class="form-control select2bs4" style="width: 100%" placeholder="Select Report Type"
                     id="reporttype" (change)="selectReportType(formdata.value)" formControlName="reportType">
                     <option selected disabled>--Select Report Type--</option>
-                    <option value="01">BE</option>
-                    <option value="02">RE</option>
+                    <option value="01">Allocation Report</option>
                     <option value="03">Unit Wise</option>
                     <option value="04">Subhead Wise</option>
                     <option value="05">Revised BE</option>
@@ -72,6 +71,20 @@
                     <option value="08">FER BE Report</option>
                     <option value="09">FER RE Report</option>
                   </select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>AllocationType <span class="text-danger">*</span></label>
+                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="allocationType"
+                             bindLabel="allocDesc" placeholder="Select Allocation Type" formControlName="allocationType"></ng-select>
+                </div>
+              </div>
+              <div class="col-md-4" *ngIf="bere">
+                <div class="form-group">
+                  <label>AllocationType for RE <span class="text-danger">*</span></label>
+                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="allocationType"
+                             bindLabel="allocDesc" placeholder="Select Allocation Type" formControlName="allocationType2"></ng-select>
                 </div>
               </div>
 

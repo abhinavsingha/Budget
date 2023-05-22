@@ -54,7 +54,9 @@ export class BudgetAllocationReportComponent implements OnInit {
     amountType: new FormControl(),
     reportType: new FormControl('--Select Report Type--'),
     toDate: new FormControl(),
-    fromDate:new FormControl()
+    fromDate:new FormControl(),
+    allocationType:new FormControl(),
+    allocationType2:new FormControl(),
   });
   entry: any;
   private unitId: any;
@@ -67,8 +69,10 @@ export class BudgetAllocationReportComponent implements OnInit {
     this.getCgUnitData();
     this.majorDataNew();
     this.getSubHeadsData();
-    this.getAllocationType();
+    // this.getAllocationType();
     this.getAmountType();
+    this.allocationType=this.sharedService.getAllocationTypeData();
+    debugger;
   }
 
   constructor(
@@ -179,20 +183,20 @@ export class BudgetAllocationReportComponent implements OnInit {
     });
   }
 
-  getAllocationType() {
-    this.SpinnerService.show();
-    this.apiService
-      .getApi(this.cons.api.getAllocationTypeData)
-      .subscribe((res) => {
-        let result: { [key: string]: any } = res;
-        if (result['message'] == 'success') {
-          this.allocationType = result['response'];
-          this.SpinnerService.hide();
-        } else {
-          this.common.faliureAlert('Please try later', result['message'], '');
-        }
-      });
-  }
+  // getAllocationType() {
+  //   this.SpinnerService.show();
+  //   this.apiService
+  //     .getApi(this.cons.api.getAllocationTypeData)
+  //     .subscribe((res) => {
+  //       let result: { [key: string]: any } = res;
+  //       if (result['message'] == 'success') {
+  //         this.allocationType = result['response'];
+  //         this.SpinnerService.hide();
+  //       } else {
+  //         this.common.faliureAlert('Please try later', result['message'], '');
+  //       }
+  //     });
+  // }
 
   getAllocationReportRevised() {
     this.SpinnerService.show();
@@ -353,6 +357,7 @@ export class BudgetAllocationReportComponent implements OnInit {
         finYearId: formdata.finYear.serialNo,
         unitId: formdata.toUnit.unit,
         amountTypeId: formdata.amountType.amountTypeId,
+        allocationTypeId:formdata.allocationType.allocTypeId
       };
       debugger;
       this.apiService
@@ -396,6 +401,7 @@ export class BudgetAllocationReportComponent implements OnInit {
         finYearId: formdata.finYear.serialNo,
         subHeadId: formdata.subHead.budgetCodeId,
         amountTypeId: formdata.amountType.amountTypeId,
+        allocationTypeId:formdata.allocationType.allocTypeId
       };
       debugger;
       this.apiService
@@ -432,7 +438,8 @@ export class BudgetAllocationReportComponent implements OnInit {
           this.cons.api.getBEAllocationReport +
             '/' +
             formdata.finYear.serialNo +
-            '/ALL_101' +
+            '/'+
+          formdata.allocationType.allocTypeId +
             '/' +
             formdata.amountType.amountTypeId
         )
@@ -460,43 +467,45 @@ export class BudgetAllocationReportComponent implements OnInit {
           },
           complete: () => console.info('complete'),
         });
-    } else if (formdata.reportType == '02') {
-      //It is for RE report
-      debugger;
-      this.apiService
-        .getApi(
-          this.cons.api.getBEAllocationReport +
-            '/' +
-            formdata.finYear.serialNo +
-            '/ALL_102' +
-            '/' +
-            formdata.amountType.amountTypeId
-        )
-        .subscribe({
-          next: (v: object) => {
-            this.SpinnerService.hide();
-            let result: { [key: string]: any } = v;
-            if (result['message'] == 'success') {
-              this.downloadPdf(
-                result['response'][0].path,
-                result['response'][0].fileName
-              );
-            } else {
-              this.common.faliureAlert(
-                'Please try later',
-                result['message'],
-                ''
-              );
-            }
-          },
-          error: (e) => {
-            this.SpinnerService.hide();
-            console.error(e);
-            this.common.faliureAlert('Error', e['error']['message'], 'error');
-          },
-          complete: () => console.info('complete'),
-        });
-    } else if (formdata.reportType == '05') {
+    }
+    // else if (formdata.reportType == '02') {
+    //   //It is for RE report
+    //   debugger;
+    //   this.apiService
+    //     .getApi(
+    //       this.cons.api.getBEAllocationReport +
+    //         '/' +
+    //         formdata.finYear.serialNo +
+    //         '/ALL_102' +
+    //         '/' +
+    //         formdata.amountType.amountTypeId
+    //     )
+    //     .subscribe({
+    //       next: (v: object) => {
+    //         this.SpinnerService.hide();
+    //         let result: { [key: string]: any } = v;
+    //         if (result['message'] == 'success') {
+    //           this.downloadPdf(
+    //             result['response'][0].path,
+    //             result['response'][0].fileName
+    //           );
+    //         } else {
+    //           this.common.faliureAlert(
+    //             'Please try later',
+    //             result['message'],
+    //             ''
+    //           );
+    //         }
+    //       },
+    //       error: (e) => {
+    //         this.SpinnerService.hide();
+    //         console.error(e);
+    //         this.common.faliureAlert('Error', e['error']['message'], 'error');
+    //       },
+    //       complete: () => console.info('complete'),
+    //     });
+    // }
+    else if (formdata.reportType == '05') {
       //It is for Revised BE report
       debugger;
       this.apiService
@@ -578,8 +587,9 @@ export class BudgetAllocationReportComponent implements OnInit {
           this.cons.api.getBEREAllocationReport +
             '/' +
             formdata.finYear.serialNo +
-            '/ALL_101' +
-            '/' +
+            '/' +formdata.allocationType.allocTypeId+
+            '/' +formdata.allocationType2.allocTypeId+
+          '/'+
             formdata.amountType.amountTypeId
         )
         .subscribe({
@@ -725,6 +735,7 @@ export class BudgetAllocationReportComponent implements OnInit {
   showUnit: boolean = false;
   showSubHead: boolean = false;
   amountType: any;
+  bere: boolean=false;
   getAmountType() {
     this.apiService.getApi(this.cons.api.showAllAmountUnit).subscribe({
       next: (v: object) => {
@@ -752,15 +763,25 @@ export class BudgetAllocationReportComponent implements OnInit {
       this.showUnit = true;
       this.showSubHead = false;
       this.showDate=false;
+      this.bere=false;
     } else if (data.reportType == '04') {
       this.showSubHead = true;
       this.showUnit = false;
       this.showDate=false;
-    }else if (data.reportType == '08'||data.reportType == '09') {
+      this.bere=false;
+    }else if (data.reportType == '07') {
+      this.showSubHead = false;
+      this.showUnit = false;
+      this.showDate=false;
+      this.bere=true;
+    }
+    else if (data.reportType == '08'||data.reportType == '09') {
       this.showSubHead = false;
       this.showUnit = false;
       this.showDate=true;
+      this.bere=false;
     } else {
+      this.bere=false;
       this.showSubHead = false;
       this.showUnit = false;
       this.showDate=false;

@@ -19,7 +19,6 @@ class TableData{
   From_Unit:any;
   Subhead:any;
   Type:any;
-  Remaining_Amount:any;
   Allocated_Fund:any;
 }
 @Component({
@@ -655,14 +654,14 @@ export class BudgetApproverComponent implements OnInit {
       let totalA=0.0;
       for(let i=0;i<this.budgetDataList.length;i++){
         totalA=totalA+(parseFloat(this.budgetDataList[i].allocationAmount)*this.budgetDataList[i].amountUnit.amount);
-        totalR=totalR+(parseFloat(this.budgetDataList[i].balanceAmount)*this.budgetDataList[i].remeningBalanceUnit.amount);
+        // totalR=totalR+(parseFloat(this.budgetDataList[i].balanceAmount)*this.budgetDataList[i].remeningBalanceUnit.amount);
         let table:any= {
           Financial_Year: this.budgetDataList[i].finYear.finYear.replaceAll(',',' '),
           To_Unit: this.budgetDataList[i].toUnit.descr.replaceAll(',',' '),
           From_Unit: this.budgetDataList[i].fromUnit.descr.replaceAll(',',' '),
           Subhead: this.budgetDataList[i].subHead.subHeadDescr.replaceAll(',',' '),
           Type: this.budgetDataList[i].allocTypeId.allocType.replaceAll(',',' '),
-          Remaining_Amount: (parseFloat(this.budgetDataList[i].balanceAmount)*this.budgetDataList[i].remeningBalanceUnit.amount/this.budgetDataList[i].amountUnit.amount).toString(),
+          // Remaining_Amount: (parseFloat(this.budgetDataList[i].balanceAmount)*this.budgetDataList[i].remeningBalanceUnit.amount/this.budgetDataList[i].amountUnit.amount).toString(),
           Allocated_Fund: (this.budgetDataList[i].allocationAmount.replaceAll(',',' ')).toString()
         }
         tableData.push(table);
@@ -673,7 +672,6 @@ export class BudgetApproverComponent implements OnInit {
         From_Unit: '',
         Subhead: '',
         Type: 'TOTAL',
-        Remaining_Amount: (parseFloat(totalR.toFixed(4))/parseFloat(this.budgetDataList[0].amountUnit.amount)).toString(),
         Allocated_Fund: (parseFloat(totalA.toFixed(4))/parseFloat(this.budgetDataList[0].amountUnit.amount)).toString()
       }
       tableData.push(table);
@@ -682,8 +680,8 @@ export class BudgetApproverComponent implements OnInit {
     //   { name: 'Jane', age: 25, city: 'San Francisco' },
     //   { name: 'Bob', age: 35, city: 'Chicago' },
     // ];
-    const columns = ['Financial_Year', 'To_Unit', 'From_Unit','Subhead','Type','Remaining_Amount'+' in '+this.budgetDataList[0].amountUnit.amountType,'Allocated_Fund'+' in '+this.budgetDataList[0].amountUnit.amountType];
-    const column = ['Financial_Year', 'To_Unit', 'From_Unit','Subhead','Type','Remaining_Amount','Allocated_Fund'];
+    const columns = ['Financial_Year', 'To_Unit', 'From_Unit','Subhead','Type','Allocated_Fund'+' in '+this.budgetDataList[0].amountUnit.amountType];
+    const column = ['Financial_Year', 'To_Unit', 'From_Unit','Subhead','Type','Allocated_Fund'];
     const filename = this.type+'.csv';
 
     // Generate and download the CSV file

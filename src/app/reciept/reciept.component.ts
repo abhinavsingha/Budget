@@ -54,6 +54,7 @@ export class RecieptComponent {
 
   defaultAllocationType: any;
   defaultAmountType: any;
+  outboxResponse: any;
 
   ngOnInit(): void {
     $.getScript('./assets/js/adminlte.js');
@@ -65,6 +66,8 @@ export class RecieptComponent {
     this.getBudgetRecipt();
     this.getSubHeadType();
     this.getModData();
+    this.outboxResponse=this.sharedService.inboxOutbox();
+    debugger;
   }
 
   constructor(

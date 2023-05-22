@@ -104,6 +104,7 @@ export class ApprovedBudgetComponent implements OnInit {
             let authGroupId = this.budgetDataList[0].authGroupId;
             this.getAllocationReport(authGroupId);
           }
+
           this.SpinnerService.hide();
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
@@ -279,5 +280,12 @@ export class ApprovedBudgetComponent implements OnInit {
   }
   previewURL() {
     window.open(this.invoicePath, '_blank');
+  }
+  cdaData:any;
+  getCdaData(cdaData: any) {
+    this.cdaData=cdaData;
+    for(let cda of cdaData){
+      cda.available=parseFloat(cda.amount)+parseFloat(cda.remainingAmount).toFixed(4);
+    }
   }
 }
