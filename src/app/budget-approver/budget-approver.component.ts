@@ -169,10 +169,22 @@ export class BudgetApproverComponent implements OnInit {
 
   approveFormFinally(formDataValue: any) {
     this.SpinnerService.show();
+    let cdapark:any[]=[];
+    for(let list of this.budgetDataList){
+      for(let cda of list.cdaData){
+        const entry={
+          cdacrDrId:cda.cdaCrdrId,
+          allocatedAmount:cda.amount,
+          allocatedAmountType:cda.amountTypeMain.amountTypeId
+        }
+        cdapark.push(entry);
+      }
+    }
     let submitJson = {
       authGroupId: this.budgetDataList[0].authGroupId,
       status: 'Approved',
       remarks: formDataValue.remarks,
+      cdaParkingId:cdapark
     };
     this.apiService
       .postApi(this.cons.api.approveBudgetOrReject, submitJson)
@@ -204,10 +216,22 @@ export class BudgetApproverComponent implements OnInit {
 
   returnFormFinally(formDataValue: any) {
     this.SpinnerService.show();
+    let cdapark:any[]=[];
+    for(let list of this.budgetDataList){
+      for(let cda of list.cdaData){
+        const entry={
+          cdacrDrId:cda.cdaCrdrId,
+          allocatedAmount:cda.amount,
+          allocatedAmountType:cda.amountTypeMain.amountTypeId
+        }
+        cdapark.push(entry);
+      }
+    }
     let submitJson = {
       authGroupId: this.budgetDataList[0].authGroupId,
       status: 'Rejected',
       remarks: formDataValue.remarks,
+      cdaParkingId:cdapark
     };
     this.apiService
       .postApi(this.cons.api.approveBudgetOrReject, submitJson)

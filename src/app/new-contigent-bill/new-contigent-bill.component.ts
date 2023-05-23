@@ -14,6 +14,7 @@ import * as $ from 'jquery';
 // import { UploadDocuments } from '../model/upload-documents';
 
 class newCb {
+  gst:any;
   cbFilePath:any;
   label: string = '';
   isFlag: any;
@@ -57,6 +58,7 @@ class newCb {
 }
 
 class submitCb {
+  gst:any;
   cdaParkingId:any;
   allocationTypeId: any;
   invoiceDocId: any;
@@ -115,6 +117,7 @@ export class NewContigentBillComponent implements OnInit {
     uploadFile: new FormControl(),
   });
   formdata = new FormGroup({
+    gst:new FormControl(),
     onAccOf: new FormControl(
       'Quarterly payment(3rd Qtr) towars hiring of Designer/Developer IT Manpower(Project SDOT)'
     ),
@@ -218,6 +221,7 @@ export class NewContigentBillComponent implements OnInit {
     }
     if (undefinedValues.length == 0) {
       const cb: newCb = {
+        gst:this.formdata.get('gst')?.value,
         isFlag: undefined,
         cbId: undefined,
         onAccOf: this.formdata.get('onAccOf')?.value,
@@ -529,6 +533,7 @@ export class NewContigentBillComponent implements OnInit {
               cdaData.push(cdaItr);
             }
             const entry: newCb = {
+              gst:getCbList[i].gst,
               cdaParkingId: cdaData,
               isFlag: getCbList[i].isFlag,
               cbId: getCbList[i].cbId,
@@ -1000,6 +1005,7 @@ export class NewContigentBillComponent implements OnInit {
               cdatabledata.push(x);
             }
             const updateCb: submitCb = {
+              gst:this.formdata.get('gst')?.value,
               cdaParkingId:cdatabledata,
               allocationTypeId: this.allocation.allocTypeId,
               onAccountOf: 'onAccountOf',
@@ -1066,6 +1072,7 @@ export class NewContigentBillComponent implements OnInit {
             cdatabledata.push(x);
           }
           let entry: newCb = {
+            gst:this.formdata.get('gst')?.value,
             cdaParkingId: cdatabledata,
             isFlag: undefined,
             cbId: undefined,
@@ -1152,6 +1159,7 @@ export class NewContigentBillComponent implements OnInit {
           cdatabledata.push(x);
         }
         const cb: submitCb = {
+          gst:this.cbList[i].gst,
           cdaParkingId:cdatabledata,
           onAccountOf: this.cbList[i].onAccOf,
           authorityDetails: this.cbList[i].authDetail,

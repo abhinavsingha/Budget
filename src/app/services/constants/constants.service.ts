@@ -190,7 +190,10 @@ export class ConstantsService {
     getMainBEAllocationReport: this.serviceUrl + 'reportController/getMainBEAllocationReport',
     getApprovedFilePath: this.serviceUrl +'fileUpload/getApprovedFilePath',
     getSubHeadWiseExpenditureByUnitIdFinYearIdAllocationTypeIdSubHeadTypeId: this.serviceUrl + 'dashBoard/getSubHeadWiseExpenditureByUnitIdFinYearIdAllocationTypeIdSubHeadTypeId',
-    saveBudgetAllocationSubHeadWise: this.serviceUrl+'budgetAllocation/saveBudgetAllocationSubHeadWise'
+    saveBudgetAllocationSubHeadWise: this.serviceUrl+'budgetAllocation/saveBudgetAllocationSubHeadWise',
+    getApprovedList: this.serviceUrl+'inboxOutbox/getApprovedList',
+    getApprovedListData: this.serviceUrl+'inboxOutbox/getApprovedListData',
+
 
   };
 }

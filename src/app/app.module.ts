@@ -45,6 +45,8 @@ import { SearchPipeRecieptPipe } from './services/search-pipe-reciept/search-pip
 import { ManageUserRoleComponent } from './manage-user-role/manage-user-role.component';
 import { SearchUserPipePipe } from './services/search-user/search-user-pipe.pipe';
 import { RevisionApprovalComponent } from './revision-approval/revision-approval.component';
+import {ApprovedComponent} from "./approved/approved.component";
+// import {ViewFormComponent} from "./view-form/view-form.component";
 
 // import { DialogComponent } from './dialog/dialog.component';
 // import { MatIconModule } from '@angular/material/icon';
@@ -71,8 +73,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        // url: 'http://localhost:8080/auth',
-        url: 'https://icg.net.in/auth/',
+        url: 'http://localhost:8080/auth',
+        // url: 'https://icg.net.in/auth/',
         realm: 'icgrms',
         clientId: 'budget',
       },
@@ -114,6 +116,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
     SearchPipeRecieptPipe,
     ManageUserRoleComponent,
     SearchUserPipePipe,
+    ApprovedComponent,
+    // ViewFormComponent
     // DialogComponent,
   ],
   imports: [
