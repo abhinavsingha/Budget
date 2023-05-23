@@ -148,6 +148,7 @@
                       <th>Allocated</th>
 <!--                      <th>Existing</th>-->
                       <th>Additional/Withdrawal (in {{amountUnit}})</th>
+<!--                      <th>CDA Details</th>-->
                       <th>Revised (in {{amountUnit}})</th>
 <!--                      <th>Action</th>-->
                     </tr>
@@ -158,6 +159,7 @@
                     <td *ngIf="!subHeadWiseUnit.isSelected">{{subHeadWiseUnit.manipulate}} </td>
 <!--                    <td *ngIf="!subHeadWiseUnit.isSelected">{{subHeadWiseUnit.remainingAmount}}</td>-->
                     <td *ngIf="!subHeadWiseUnit.isSelected"><input type="number" (change)="revisionAmount(i)" [(ngModel)]="subHeadWiseUnit.revisionAmount"></td>
+<!--                    <td><button type="button" class="btn btn-warning mr-2" data-toggle="modal" data-target="#modal-lg">Cda Details</button></td>-->
                     <td *ngIf="!subHeadWiseUnit.isSelected">{{subHeadWiseUnit.manipulate2}}</td>
                   </tr>
                   </tbody>
@@ -167,6 +169,7 @@
                     <td>{{totalManipulate}}</td>
 <!--                    <td>{{totalRemainingAmount}}</td>-->
                     <td>{{totlaRevisionAmount}}</td>
+<!--                    <td></td>-->
                     <td>{{totalManipulate2}}</td>
                   </tr>
                   </tfoot>
@@ -241,7 +244,66 @@
     </div>
     <!-- /.container-fluid -->
   </section>
+  <div class="modal fade" id="modal-lg">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">CDA Details</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-12 mt-4">
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                  <thead>
+                  <tr>
+                    <!--                    <th>S.No.</th>-->
+                    <th>CDA Name</th>
+                    <th >Available Amount(INR)</th>
+                    <th >Withdrawl Amount(INR)</th>
 
+                  </tr>
+                  </thead>
+                  <tbody>
+<!--                  <tr *ngFor="let cda of cdaData">-->
+<!--                    &lt;!&ndash;                    <td>1</td>&ndash;&gt;-->
+<!--                    <td>{{cda.ginNo.cdaName}}</td>-->
+<!--                    <td>{{cda.remainingCdaAmount}}</td>-->
+<!--                    <td><input (change)="checkTotal()" [(ngModel)]="cda.amount" type="number" class="form-control" placeholder="Enter Amount in INR" /></td>-->
+<!--                  </tr>-->
+
+                  </tbody>
+                  <!--                  <tfoot>-->
+                  <!--                                        <tr>-->
+                  <!--                                          <td></td>-->
+                  <!--                                          <td><strong>Total</strong></td>-->
+                  <!--                                          <td><strong>16.5</strong></td>-->
+                  <!--                                          <td><strong>8.4</strong></td>-->
+                  <!--                                        </tr>-->
+                  <!--                                        </tfoot>-->
+                </table>
+              </div>
+              <div class="row mt-2">
+                <div class="col-sm-12 col-md-12">
+                  <pagination-controls class="pagination float-right"></pagination-controls>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
   <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->

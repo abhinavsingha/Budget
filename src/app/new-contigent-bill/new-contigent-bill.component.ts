@@ -58,6 +58,7 @@ class newCb {
 }
 
 class submitCb {
+  oldCbId:any;
   gst:any;
   cdaParkingId:any;
   allocationTypeId: any;
@@ -924,6 +925,7 @@ export class NewContigentBillComponent implements OnInit {
       }
     }
 
+    this.formdata.get('gst')?.setValue(cbEntry.gst);
     this.formdata.get('amount')?.setValue(cbEntry.amount);
     this.formdata.get('unit')?.setValue(this.unitName);
     this.formdata.get('authorityUnit')?.setValue(this.unitName);
@@ -1004,6 +1006,7 @@ export class NewContigentBillComponent implements OnInit {
               if(cda.amount!=undefined||cda.amount>0)
               cdatabledata.push(x);
             }
+            debugger;
             const updateCb: submitCb = {
               gst:this.formdata.get('gst')?.value,
               cdaParkingId:cdatabledata,
@@ -1029,6 +1032,7 @@ export class NewContigentBillComponent implements OnInit {
               invoiceDocId: this.invoice,
               authList: [updateAuthority],
               contingentBilId: this.cbList[i].contingentBilId,
+              oldCbId:this.cbList[i].cbId
             };
             let updateList = [updateCb];
             this.apiService
@@ -1159,6 +1163,7 @@ export class NewContigentBillComponent implements OnInit {
           cdatabledata.push(x);
         }
         const cb: submitCb = {
+          oldCbId:undefined,
           gst:this.cbList[i].gst,
           cdaParkingId:cdatabledata,
           onAccountOf: this.cbList[i].onAccOf,

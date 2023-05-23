@@ -94,7 +94,8 @@ export class CdaParkingReportComponent implements OnInit {
     cdas: new FormControl(),
     amountType: new FormControl(),
     allocationType: new FormControl(),
-    subHeadType:new FormControl()
+    subHeadType:new FormControl(),
+    reportType:new FormControl
   });
 
   updateBudgetFormData = new FormGroup({
@@ -105,6 +106,7 @@ export class CdaParkingReportComponent implements OnInit {
   amountType: any;
   allocationType: any;
   subHeadType: any;
+   unitData: any;
 
   ngOnInit(): void {
     $.getScript('assets/js/adminlte.js');
@@ -115,6 +117,23 @@ export class CdaParkingReportComponent implements OnInit {
     this.getAllocationTypeData();
     this.getDashboardData();
     this.getSubHeadType();
+    this.getAllCda();
+    this.getCgUnitData();
+  }
+  getCgUnitData() {
+    this.SpinnerService.show();
+    var comboJson = null;
+    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe(
+      (res) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = res;
+        this.unitData = result['response'];
+      },
+      (error) => {
+        console.log(error);
+        this.SpinnerService.hide();
+      }
+    );
   }
   getSubHeadType() {
     this.apiService.getApi(this.cons.api.getSubHeadType).subscribe({
@@ -124,6 +143,26 @@ export class CdaParkingReportComponent implements OnInit {
 
         if (result['message'] == 'success') {
           this.subHeadType = result['response'];
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
+  }
+  getAllCda() {
+    this.apiService.getApi(this.cons.api.getAllCda).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+
+        if (result['message'] == 'success') {
+          this.cdaUnitList = result['response'];
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
@@ -222,6 +261,27 @@ export class CdaParkingReportComponent implements OnInit {
     });
   }
   nType: any;
+  subHead: any;
+  setSubHead() {
+    this.SpinnerService.show();
+    let json = {
+      budgetHeadType: this.formdata.get('subHeadType')?.value.subHeadTypeId,
+      majorHead: this.formdata.get('majorHead')?.value.majorHead,
+    };
+    this.apiService
+      .postApi(this.cons.api.getAllSubHeadByMajorHead, json)
+      .subscribe(
+        (res) => {
+          let result: { [key: string]: any } = res;
+          this.subHeadData = result['response'];
+          this.SpinnerService.hide();
+        },
+        (error) => {
+          console.log(error);
+          this.SpinnerService.hide();
+        }
+      );
+  }
   getCdaParkingReport() {
     this.SpinnerService.show();
 
@@ -319,7 +379,7 @@ export class CdaParkingReportComponent implements OnInit {
 
     let submitJson = {
       financialYearId: formdata.finYear.serialNo,
-      cdaType: formdata.cdas.cda,
+      cdaType: formdata.cdas.ginNo,
       majorHead: formdata.majorHead.majorHead,
       amountType: formdata.amountType.amountTypeId,
       allocationTypeId: formdata.allocationType.allocTypeId,
@@ -362,5 +422,19 @@ export class CdaParkingReportComponent implements OnInit {
         console.error('Failed to download PDF:', error);
       }
     );
+  }
+  showSubhead:boolean=false;
+  showUnit:boolean=false;
+  show(formdata:any) {
+    debugger;
+    this.showSubhead=false;
+    this.showUnit=false;
+    if(formdata.reportType=='02')
+      this.showUnit=true;
+    else if(formdata.reportType=='01'){
+      this.setSubHead();
+      this.showSubhead=true;
+    }
+
   }
 }

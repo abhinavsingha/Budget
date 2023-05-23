@@ -193,6 +193,7 @@ export class ConstantsService {
     saveBudgetAllocationSubHeadWise: this.serviceUrl+'budgetAllocation/saveBudgetAllocationSubHeadWise',
     getApprovedList: this.serviceUrl+'inboxOutbox/getApprovedList',
     getApprovedListData: this.serviceUrl+'inboxOutbox/getApprovedListData',
+    getAllCda: this.serviceUrl+'budgetRecipet/getAllCda'
 
 
   };

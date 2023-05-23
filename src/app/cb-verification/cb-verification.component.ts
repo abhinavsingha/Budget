@@ -50,6 +50,7 @@ class updateRequest {
   status: any;
   groupId: any;
   remarks: any;
+  cdaParkingId:any;
 }
 
 @Component({
@@ -124,28 +125,12 @@ export class CbVerificationComponent {
 
         for (let i = 0; i < getCbList.length; i++) {
           console.log('interation :' + i);
-          // let url =
-          //   this.cons.api.getAvailableFund + '/' + getCbList[i].cbUnitId.unit;
-          // this.apiService.getApi(url).subscribe(
-          //   (res) => {
-          //     let result: { [key: string]: any } = res;
-          //     this.budgetAllotted = result['response'].fundAvailable;
-          //   },
-          //   (error) => {
-          //     console.log(error);
-          //     this.SpinnerService.hide();
-          //     //remove after test
-          //     this.budgetAllotted = 0;
-          //     this.formdata
-          //       .get('budgetAllocated')
-          //       ?.setValue(this.budgetAllotted);
-          //   }
-          // );
           if(getCbList[i].authoritiesList.length>0)
           {
             let cdaData=[];
             for(let cda of getCbList[i].cdaData){
               const cdaItr = {
+                cdacrDrId: cda.cdaCrdrId,
                 cdaParkingId:cda.cdaParkingTrans,
                 cdaAmount:cda.amount
               };
@@ -403,11 +388,22 @@ export class CbVerificationComponent {
       // if(this.cbList[i].cbNo==this.formdata.get('cbNo')?.value){
       this.cbList[i].status = 'Verified';
     }
-
+    let cdapark:any[]=[];
+    debugger;
+    for(let list of this.cbList){
+      for(let cda of list.cdaParkingId){
+        const entry={
+          cdacrDrId:cda.cdacrDrId,
+          allocatedAmount:cda.cdaAmount,
+        }
+        cdapark.push(entry);
+      }
+    }
     const update: updateRequest = {
       status: this.cbList[0].status,
       groupId: this.cbList[0].authGroupId,
       remarks: undefined,
+      cdaParkingId:cdapark
     };
     this.apiService
       .postApi(this.cons.api.verifyContingentBill, update)
@@ -459,10 +455,22 @@ export class CbVerificationComponent {
       // if(this.cbList[i].cbNo==this.formdata.get('cbNo')?.value){
       this.cbList[i].status = 'Rejected';
     }
+    let cdapark:any[]=[];
+    debugger;
+    for(let list of this.cbList){
+      for(let cda of list.cdaParkingId){
+        const entry={
+          cdacrDrId:cda.cdacrDrId,
+          allocatedAmount:cda.cdaAmount,
+        }
+        cdapark.push(entry);
+      }
+    }
     const update: updateRequest = {
       status: this.cbList[0].status,
       groupId: this.cbList[0].authGroupId,
       remarks: this.formdata.get('returnRemarks')?.value,
+      cdaParkingId: cdapark
     };
     this.apiService
       .postApi(this.cons.api.verifyContingentBill, update)

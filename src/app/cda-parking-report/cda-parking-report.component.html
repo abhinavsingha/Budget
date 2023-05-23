@@ -81,8 +81,36 @@
               <div class="col-md-3">
                 <div class="form-group">
                   <label>CDA <span class="text-danger">*</span></label>
-                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="cdaUnitList" bindLabel="cda"
+                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="cdaUnitList" bindLabel="cdaName"
                     placeholder="Select CDA" formControlName="cdas">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Report Type <span class="text-danger">*</span></label>
+                  <select class="form-control select2bs4" style="width: 100%" placeholder="Select Report Type"
+                          id="reporttype" formControlName="reportType" (change)="show(formdata.value)">
+                    <option selected disabled>--Select Report Type--</option>
+                    <option value="01">Subhead Wise</option>
+                    <option value="02">Unit Wise</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3" *ngIf="showUnit">
+                <div class="form-group">
+                  <label>Unit</label>
+                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="unitData" bindLabel="descr"
+                             placeholder="Select Unit" formControlName="unit">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-md-3" *ngIf="showSubhead">
+                <div class="form-group">
+                  <label>Sub Head</label>
+                  <ng-select [(ngModel)]="subHead" [items]="subHeadData" bindLabel="subHeadDescr"
+                             class="form-control select2bs4" formControlName="subHead" name="subHead"
+                             placeholder="Select Sub Head" style="width: 100%">
                   </ng-select>
                 </div>
               </div>
