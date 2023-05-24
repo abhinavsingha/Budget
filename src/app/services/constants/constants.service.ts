@@ -9,7 +9,8 @@ export class ConstantsService {
   // serviceUrl = 'https://icg.net.in/budget/'; //prod
   // serviceUrl = 'http://488e-203-153-42-234.ngrok.io/'; //dev
   // serviceUrl = 'http://192.168.1.131:1111/'; //dev
-  serviceUrl = 'https://icg.net.in/budget/';
+  // serviceUrl = 'https://icg.net.in/budget/';
+  serviceUrl = 'http://192.168.1.131:1111/';
   api = {
     getDataBudgetAllocation:
       this.serviceUrl + 'budgetAllocation/getDataBudgetAllocation',

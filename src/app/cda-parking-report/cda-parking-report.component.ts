@@ -95,7 +95,9 @@ export class CdaParkingReportComponent implements OnInit {
     amountType: new FormControl(),
     allocationType: new FormControl(),
     subHeadType:new FormControl(),
-    reportType:new FormControl
+    reportType:new FormControl,
+    subHead:new FormControl(),
+    unit:new FormControl()
   });
 
   updateBudgetFormData = new FormGroup({
@@ -106,7 +108,12 @@ export class CdaParkingReportComponent implements OnInit {
   amountType: any;
   allocationType: any;
   subHeadType: any;
-   unitData: any;
+  unitData: any;
+  data: any;
+  head: any;
+  keys: string[]=[];
+  downloadFilename: string = '';
+  downloadPath: any;
 
   ngOnInit(): void {
     $.getScript('assets/js/adminlte.js');
@@ -376,15 +383,42 @@ export class CdaParkingReportComponent implements OnInit {
       );
       return;
     }
+    let submitJson:any;
+    if(formdata.reportType=='01'){
+      submitJson = {
+        financialYearId: formdata.finYear.serialNo,
+        cdaType: formdata.cdas.ginNo,
+        majorHead: formdata.majorHead.majorHead,
+        amountType: formdata.amountType.amountTypeId,
+        allocationTypeId: formdata.allocationType.allocTypeId,
+        subHeadType:formdata.subHeadType.subHeadTypeId,
+        budgetHeadId:formdata.subHead.budgetCodeId,
+        reportType:formdata.reportType
+      };}
+      else if (formdata.reportType=='02'){
+      submitJson = {
+        financialYearId: formdata.finYear.serialNo,
+        cdaType: formdata.cdas.ginNo,
+        majorHead: formdata.majorHead.majorHead,
+        amountType: formdata.amountType.amountTypeId,
+        allocationTypeId: formdata.allocationType.allocTypeId,
+        subHeadType:formdata.subHeadType.subHeadTypeId,
+        unitId:formdata.unit.unit,
+        reportType:formdata.reportType
+      };
+      }
+      else{
+      submitJson = {
+        financialYearId: formdata.finYear.serialNo,
+        cdaType: formdata.cdas.ginNo,
+        majorHead: formdata.majorHead.majorHead,
+        amountType: formdata.amountType.amountTypeId,
+        allocationTypeId: formdata.allocationType.allocTypeId,
+        subHeadType:formdata.subHeadType.subHeadTypeId,
+      };
+    }
 
-    let submitJson = {
-      financialYearId: formdata.finYear.serialNo,
-      cdaType: formdata.cdas.ginNo,
-      majorHead: formdata.majorHead.majorHead,
-      amountType: formdata.amountType.amountTypeId,
-      allocationTypeId: formdata.allocationType.allocTypeId,
-      subHeadType:formdata.subHeadType.subHeadTypeId
-    };
+
 
     this.apiService
       .postApi(this.cons.api.getCdaParkingReport, submitJson)
@@ -393,11 +427,16 @@ export class CdaParkingReportComponent implements OnInit {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
+            this.data=result['response'].allCdaData;
+            this.head=this.data.head;
+            this.keys=this.objectKeys(this.data);
+            this.downloadPath=result['response'].path;
+            this.downloadFilename=result['response'].fileName;
             // this.downloadPdf()
-            this.downloadPdf(
-              result['response'].path,
-              result['response'].fileName
-            );
+            // this.downloadPdf(
+            //   result['response'].path,
+            //   result['response'].fileName
+            // );
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
@@ -436,5 +475,16 @@ export class CdaParkingReportComponent implements OnInit {
       this.showSubhead=true;
     }
 
+  }
+
+  downloadCsv() {
+
+  }
+  objectKeys(data: any):string[] {
+    return Object.keys(data);
+  }
+
+  getArr(key: string) {
+    return(this.data[key]);
   }
 }

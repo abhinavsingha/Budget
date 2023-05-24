@@ -122,8 +122,8 @@
         <!-- /.card-body -->
         <div class="card-footer">
           <div class="row">
-            <button type="submit" class="btn btn-primary mr-2" (click)="downloadCDAParkingReport(formdata.value)"><i
-                class="fas fa-download"></i> Download</button>
+            <button type="submit" class="btn btn-primary mr-2"  (click)="downloadCDAParkingReport(formdata.value)"><i
+                class="fas fa-download"></i> Search</button>
           </div>
         </div>
 
@@ -134,5 +134,65 @@
   </section>
 
   <!-- /.content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="card card-default">
+        <div class="card-header">
+          <h3 class="card-title">View Report</h3>
+
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+          </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="card-body table-responsive p-0" *ngIf="data!=undefined">
+                <table class="table table-hover text-nowrap">
+                  <!--        <thead>-->
+                  <!--        <tr>-->
+                  <!--          <th *ngFor="let thead of head ; let i = index">{{thead.name}}</th>-->
+
+                  <!--        </tr>-->
+                  <!--        </thead>-->
+                  <tbody>
+                  <tr *ngFor="let key of keys">
+                    <td><b>{{key}}</b></td>
+                    <td *ngFor="let val of getArr(key)">{{val.name}}</td>
+                  </tr>
+                  </tbody>
+                </table>
+
+
+              </div>
+              <!--    <div class="row mt-2">-->
+              <!--      <div class="col-sm-12 col-md-5">-->
+              <!--        <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">-->
+              <!--        </div>-->
+              <!--      </div>-->
+              <!--      <div class="col-sm-12 col-md-7">-->
+              <!--        <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">-->
+              <!--          <pagination-controls class="pagination float-right" (pageChange)="p = $event"></pagination-controls>-->
+              <!--        </div>-->
+              <!--      </div>-->
+              <!--    </div>-->
+            </div>
+          </div>
+        </div>
+
+        <!-- /.card-body -->
+        <div class="card-footer">
+          <div class="row">
+            <button type="submit" class="btn btn-primary mr-2" (click)="downloadPdf(downloadPath,downloadFilename)"><i class="fas fa-download"></i> Download</button>
+          </div>
+        </div>
+      </div>
+      </div>
+      <!-- /.row -->
+    <!-- /.container-fluid -->
+  </section>
 </div>
 <!-- /.content-wrapper -->
