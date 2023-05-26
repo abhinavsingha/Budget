@@ -84,7 +84,7 @@ export class ConstantsService {
 
     getAllStation: this.serviceUrl + 'unitRebaseController/getAllStation',
 
-    saveRebase: this.serviceUrl + 'unitRebaseController/saveUnitRebase',
+    saveUnitRebase: this.serviceUrl + 'unitRebaseController/saveUnitRebase',
 
     getDashBoardDta: this.serviceUrl + 'dashBoard/getDashBoardDta',
 
@@ -185,17 +185,22 @@ export class ConstantsService {
     getCdaDataList: this.serviceUrl + 'cdaParkingController/getCdaDataList',
     getContingentBillReport:
       this.serviceUrl + 'reportController/getContingentBillReport',
-    updateInboxOutBox: this.serviceUrl + 'dashBoard/updateInboxOutBox', approveRevisionBudgetOrReject: this.serviceUrl + 'budgetAllocation/approveRevisionBudgetOrReject',
-    getAllRevisionGroupId: this.serviceUrl + 'budgetAllocation/getAllRevisionGroupId',
+    updateInboxOutBox: this.serviceUrl + 'dashBoard/updateInboxOutBox',
+    approveRevisionBudgetOrReject:
+      this.serviceUrl + 'budgetAllocation/approveRevisionBudgetOrReject',
+    getAllRevisionGroupId:
+      this.serviceUrl + 'budgetAllocation/getAllRevisionGroupId',
     getAllCgUnitData: this.serviceUrl + 'budgetAllocation/getAllCgUnitData',
-    getMainBEAllocationReport: this.serviceUrl + 'reportController/getMainBEAllocationReport',
-    getApprovedFilePath: this.serviceUrl +'fileUpload/getApprovedFilePath',
-    getSubHeadWiseExpenditureByUnitIdFinYearIdAllocationTypeIdSubHeadTypeId: this.serviceUrl + 'dashBoard/getSubHeadWiseExpenditureByUnitIdFinYearIdAllocationTypeIdSubHeadTypeId',
-    saveBudgetAllocationSubHeadWise: this.serviceUrl+'budgetAllocation/saveBudgetAllocationSubHeadWise',
-    getApprovedList: this.serviceUrl+'inboxOutbox/getApprovedList',
-    getApprovedListData: this.serviceUrl+'inboxOutbox/getApprovedListData',
-    getAllCda: this.serviceUrl+'budgetRecipet/getAllCda'
-
-
+    getMainBEAllocationReport:
+      this.serviceUrl + 'reportController/getMainBEAllocationReport',
+    getApprovedFilePath: this.serviceUrl + 'fileUpload/getApprovedFilePath',
+    getSubHeadWiseExpenditureByUnitIdFinYearIdAllocationTypeIdSubHeadTypeId:
+      this.serviceUrl +
+      'dashBoard/getSubHeadWiseExpenditureByUnitIdFinYearIdAllocationTypeIdSubHeadTypeId',
+    saveBudgetAllocationSubHeadWise:
+      this.serviceUrl + 'budgetAllocation/saveBudgetAllocationSubHeadWise',
+    getApprovedList: this.serviceUrl + 'inboxOutbox/getApprovedList',
+    getApprovedListData: this.serviceUrl + 'inboxOutbox/getApprovedListData',
+    getAllCda: this.serviceUrl + 'budgetRecipet/getAllCda',
   };
 }
