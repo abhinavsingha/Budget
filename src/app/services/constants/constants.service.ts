@@ -202,5 +202,8 @@ export class ConstantsService {
     getApprovedList: this.serviceUrl + 'inboxOutbox/getApprovedList',
     getApprovedListData: this.serviceUrl + 'inboxOutbox/getApprovedListData',
     getAllCda: this.serviceUrl + 'budgetRecipet/getAllCda',
+
+    getAllIsShipCgUnitData:
+      this.serviceUrl + 'unitRebaseController/getAllIsShipCgUnitData',
   };
 }
