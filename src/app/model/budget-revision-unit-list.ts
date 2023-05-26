@@ -9,4 +9,5 @@ export class BudgetRevisionUnitList {
   remainingAmount:any;
   manipulate:any;
   manipulate2:any;
+  cdaTransData:any;
 }

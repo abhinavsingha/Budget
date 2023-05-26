@@ -19,6 +19,7 @@ export class SharedService {
   public dashboardData:any;
   private outboxResponse: any;
   public allocationType: any;
+  public approve: any;
   constructor(
     private router: Router,
     private http: HttpClient,

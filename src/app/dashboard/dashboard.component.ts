@@ -155,6 +155,8 @@ export class DashboardComponent implements OnInit {
         if (result['message'] == 'success') {
           this.sharedService.dashboardData = result['response'];
           this.dasboardData = result['response']; // debugger;
+          this.sharedService.approve=result['response'].approved;
+
           var roles = result['response'].userDetails.role[0].roleName;
           if (localStorage.getItem('user_role') != roles) {
             window.location.reload();

@@ -85,7 +85,7 @@
                       <!--                        *ngIf="isInboxAndOutbox!= 'Outbox' && type!='Budget Allocation' && userRole!='Budget Approver'">-->
                       <!--                        {{buggetData.balanceAmount}} {{buggetData.remeningBalanceUnit.amountType}}</td>-->
                       <td
-                        *ngIf="isInboxAndOutbox!= 'Outbox' && type!='Budget Allocation' && userRole!='Budget Approver'">
+                        *ngIf="isInboxAndOutbox== 'approved' && type!='Budget Allocation' && userRole!='Budget Approver'">
                         <button *ngIf="buggetData.isCDAparking == '0'" type="submit" class="btn btn-warning mr-2"
                           data-toggle="modal" data-target="#modal-lg" (click)="addCDAParking(buggetData)">Add
                           CDA Parking</button>

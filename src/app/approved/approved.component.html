@@ -51,26 +51,28 @@
                             <tr>
                               <th>S.No.</th>
                               <th>Type</th>
-                              <th>Submission Date</th>
-                              <th>Approved Date</th>
-                              <th>Unit/Subhead</th>
+                              <th>Created Date & Time</th>
+                              <th>Unit/SubHead</th>
                               <th>Status</th>
                               <th>Action</th>
                             </tr>
                           </thead>
                           <tbody>
-                                 <tr *ngFor="let entry of list| paginate :{itemsPerPage:20,currentPage:p}; let i = index" (click)="redirect(entry)">
-                                   <td>{{20 *(p-1)+i+1}}</td>
-                                  <td>{{entry.allocationType}}</td>
-                                  <td>{{entry.submissionDate}}</td>
-                                  <td>{{entry.approvedDate}}</td>
-                                  <td>{{entry.type}}</td>
-                                  <td>{{entry.status}}</td>
-                                  <td>
-                                    <button type="submit" class="btn btn-warning mr-2" (click)="redirect(entry)"><i class="fas fa-eye"></i> View</button>
-                                    <button type="submit" class="btn btn-primary" (click)="getAuthDoc(entry)"><i class="fas fa-file"></i> Auth Doc</button>
-                                  </td>
-                                </tr>
+                          <tr *ngFor="let li of inboxList| paginate :{itemsPerPage:20,currentPage:p}; let i = index"
+                              id="htmlData" >
+                            <td>{{20 *(p-1)+i+1}}</td>
+                            <td>{{li.isType}}</td>
+                            <td>{{li.createDate}}</td>
+                            <!-- <td>{{li.createBy}}</td> -->
+                            <!--                    <td>{{li.unitName}}</td>-->
+                            <!--                    <td>{{li.unitName}}</td>-->
+                            <td>{{li.type}}</td>
+                            <td>{{li.status}}</td>
+                            <td><button type="submit" class="btn btn-warning mr-2" (click)="redirect(li)"> <i
+                              class="fas fa-eye"></i> View</button>
+                              <button *ngIf="li.status== 'Fully Approved'||li.isType=='Budget Reciept'" type="button" class="btn btn-warning mr-2" (click)="getAuthDoc(li)">Auth Doc</button>
+                            </td>
+                          </tr>
                           </tbody>
                         </table>
                       </div>
@@ -87,176 +89,14 @@
                       </div>
                     </div>
                   </div>
-              <!-- /.row -->
-              <div class="row" *ngIf="isShow">
-                <div class="col-sm-12">
-                  <div class="card-body table-responsive p-0">
-                    <table class="table table-hover text-nowrap">
-                      <thead>
-                        <tr>
-                          <th>S.No.</th>
-                          <th>F.Y.</th>
-                          <th>Unit/Sub Head</th>
-                          <th>Allocation Type</th>
-                          <th>Allocation Amount(Crores)</th>
-                          <th>Approved Amount(Crores)</th>
-                          <th>Reciept Amount(Crores)</th>
-                          <th>Status</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                             <tr>
-                              <td>1</td>
-                              <td>2022-23</td>
-                              <td>RHQ(W)</td>
-                              <td>BE</td>
-                              <td>2.00</td>
-                              <td>1.00</td>
-                              <td>1.00</td>
-                              <td>Approved</td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>2022-23</td>
-                                <td>RHQ(W)</td>
-                                <td>BE</td>
-                                <td>2.00</td>
-                                <td>1.00</td>
-                                <td>1.00</td>
-                                <td>Approved</td>
-                              </tr>
-                              <tr>
-                                <td>1</td>
-                                <td>2022-23</td>
-                                <td>RHQ(W)</td>
-                                <td>BE</td>
-                                <td>2.00</td>
-                                <td>1.00</td>
-                                <td>1.00</td>
-                                <td>Approved</td>
-                              </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <div class="row mt-2">
-                    <div class="col-sm-12 col-md-5">
-                      <div
-                        class="dataTables_info"
-                        id="example2_info"
-                        role="status"
-                        aria-live="polite"
-                      >
-                        Showing 1 to 10 of 57 entries
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md-7">
-                      <div
-                        class="dataTables_paginate paging_simple_numbers"
-                        id="example2_paginate"
-                      >
-                        <ul class="pagination float-right">
-                          <li
-                            class="paginate_button page-item previous disabled"
-                            id="example2_previous"
-                          >
-                            <a
-                              href="#"
-                              aria-controls="example2"
-                              data-dt-idx="0"
-                              tabindex="0"
-                              class="page-link"
-                              >Previous</a
-                            >
-                          </li>
-                          <li class="paginate_button page-item active">
-                            <a
-                              href="#"
-                              aria-controls="example2"
-                              data-dt-idx="1"
-                              tabindex="0"
-                              class="page-link"
-                              >1</a
-                            >
-                          </li>
-                          <li class="paginate_button page-item">
-                            <a
-                              href="#"
-                              aria-controls="example2"
-                              data-dt-idx="2"
-                              tabindex="0"
-                              class="page-link"
-                              >2</a
-                            >
-                          </li>
-                          <li class="paginate_button page-item">
-                            <a
-                              href="#"
-                              aria-controls="example2"
-                              data-dt-idx="3"
-                              tabindex="0"
-                              class="page-link"
-                              >3</a
-                            >
-                          </li>
-                          <li class="paginate_button page-item">
-                            <a
-                              href="#"
-                              aria-controls="example2"
-                              data-dt-idx="4"
-                              tabindex="0"
-                              class="page-link"
-                              >4</a
-                            >
-                          </li>
-                          <li class="paginate_button page-item">
-                            <a
-                              href="#"
-                              aria-controls="example2"
-                              data-dt-idx="5"
-                              tabindex="0"
-                              class="page-link"
-                              >5</a
-                            >
-                          </li>
-                          <li class="paginate_button page-item">
-                            <a
-                              href="#"
-                              aria-controls="example2"
-                              data-dt-idx="6"
-                              tabindex="0"
-                              class="page-link"
-                              >6</a
-                            >
-                          </li>
-                          <li
-                            class="paginate_button page-item next"
-                            id="example2_next"
-                          >
-                            <a
-                              href="#"
-                              aria-controls="example2"
-                              data-dt-idx="7"
-                              tabindex="0"
-                              class="page-link"
-                              >Next</a
-                            >
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-          <!-- /.row -->
-
             </form>
           </div>
           <!-- /.card-body -->
-          <div class="card-footer">
-            <div class="row">
-              <button type="submit" class="btn btn-primary mr-2"><i class="fas fa-download"></i> Download</button>
-            </div>
-          </div>
+<!--          <div class="card-footer">-->
+<!--            <div class="row">-->
+<!--              <button type="submit" class="btn btn-primary mr-2"><i class="fas fa-download"></i> Download</button>-->
+<!--            </div>-->
+<!--          </div>-->
         </div>
         <!-- /.row -->
       </div>

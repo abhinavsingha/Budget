@@ -187,6 +187,7 @@ export class RecieptComponent {
             ).toFixed(4);
             this.finalTableData[i].isEdit = false;
           }
+          this.updateInbox();
         }
         this.SpinnerService.hide();
       } else {
@@ -802,6 +803,7 @@ export class RecieptComponent {
           if (result['message'] == 'success') {
             this.sharedService.inbox = result['response'].inbox;
             this.sharedService.outbox = result['response'].outBox;
+            this.sharedService.approve=result['response'].approved;
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }

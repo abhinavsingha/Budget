@@ -18,6 +18,7 @@ import Swal from "sweetalert2";
 import {SharedService} from "../services/shared/shared.service";
 
 class tableData {
+  cdaDetails:any;
   isAllocated:any;
   checked: boolean = false;
   financialYear: any;
@@ -32,6 +33,7 @@ class tableData {
 }
 
 class revision {
+  cdaParkingId:any;
   isAllocated:any;
   budgetFinanciaYearId: any;
   toUnitId: any;
@@ -80,9 +82,13 @@ export class RevisionComponent {
   allRevisedUnits: any;
   budgetRevisionUnitList2: any[] = [];
   private allocationDta: any;
-  private unitId: any;
+  unitId: any;
   totalManipulate: any=0.0;
   totalManipulate2: any=0.0;
+  loginIndex: any;
+  newRevisionAmount: number=0;
+  private localIndex: any;
+  cdaDetails: any;
   constructor(
     private sharedService: SharedService,
     private SpinnerService: NgxSpinnerService,
@@ -355,6 +361,8 @@ export class RevisionComponent {
   }
 
   revisionAmount(index: any) {
+    this.localIndex=index;
+    this.budgetRevisionUnitList2[this.loginIndex].revisionAmount=0.0;
     if(this.budgetRevisionUnitList2[index].revisionAmount==undefined)
       this.budgetRevisionUnitList2[index].revisionAmount=0.0000.toFixed(4);
     if(parseFloat(this.budgetRevisionUnitList2[index].existingAmount)+parseFloat(this.budgetRevisionUnitList2[index].revisionAmount)<0){
@@ -386,6 +394,7 @@ export class RevisionComponent {
     debugger;
     for (let i = 0; i < this.allRevisedUnits.length; i++) {
       const entry: BudgetRevisionUnitList = {
+        cdaTransData:this.allRevisedUnits[i].cdaTransData,
         id: undefined,
         unit: this.allRevisedUnits[i].unit,
         existingAmount: (parseFloat(this.allRevisedUnits[i].allocationAmount)*parseFloat(this.allRevisedUnits[i].amountType.amount)/this.formdata.get('amountType')?.value.amount).toFixed(4),
@@ -404,10 +413,6 @@ export class RevisionComponent {
   tabledata: tableData[] = [];
   masterChecked: boolean = false;
   saveDataToTable() {
-    if(this.totlaRevisionAmount!=0){
-      Swal.fire('Additional/Withdrawal Total should be 0.');
-      return;
-    }
     const alloc = {
       allocationType: this.formdata.get('allocationType')?.value.allocDesc,
       allocationTypeId: this.formdata.get('allocationType')?.value.allocTypeId,
@@ -426,6 +431,7 @@ export class RevisionComponent {
         !this.budgetRevisionUnitList2[i].isSelected
       ) {
         let data: tableData= {
+          cdaDetails:undefined,
           checked: false,
           financialYear: undefined,
           unit: undefined,
@@ -440,6 +446,7 @@ export class RevisionComponent {
         }
         if(this.budgetRevisionUnitList2[i].revisionAmount<0){
           data = {
+            cdaDetails:this.budgetRevisionUnitList2[i].cdaTransData,
             isAllocated: 0,
             checked: false,
             financialYear: this.formdata.get('finYear')?.value,
@@ -455,6 +462,7 @@ export class RevisionComponent {
         }
         else{
           data = {
+            cdaDetails:this.budgetRevisionUnitList2[i].cdaTransData,
             isAllocated: 1,
             checked: false,
             financialYear: this.formdata.get('finYear')?.value,
@@ -463,7 +471,7 @@ export class RevisionComponent {
             allocationType: alloc,
             allocated: parseFloat(this.budgetRevisionUnitList2[i].existingAmount).toFixed(4),
             amountType: this.budgetRevisionUnitList2[i].amountType,
-            amount: parseFloat(this.budgetRevisionUnitList2[i].remainingAmount).toFixed(4),
+            amount: (parseFloat(this.budgetRevisionUnitList2[i].existingAmount)-parseFloat(this.budgetRevisionUnitList2[i].revisionAmount)).toFixed(4),
             revisedAmount: parseFloat(
               this.budgetRevisionUnitList2[i].revisionAmount
             ).toFixed(4),
@@ -477,6 +485,7 @@ export class RevisionComponent {
       }
     }
     this.getTotalAmount();
+    debugger;
   }
   selectAll() {
     for (let i = 0; i < this.tabledata.length; i++) {
@@ -511,6 +520,7 @@ export class RevisionComponent {
     this.totalRevisiedAmount = 0.0;
     this.totalRemainingAmount=0.0;
     this.totalManipulate2=0.0;
+
     debugger;
 
     for (let i = 0; i < this.budgetRevisionUnitList2.length; i++) {
@@ -540,6 +550,23 @@ export class RevisionComponent {
       this.allocation_withdrawl=(parseFloat(this.totlaRevisionAmount)).toFixed(4);
     this.formdata.get('reallocateFund')?.setValue(parseFloat(this.allocation_withdrawl).toFixed(4));
     this.formdata.get('balanceFund')?.setValue((parseFloat(this.formdata.get('fundAvailable')?.value)-parseFloat(this.allocation_withdrawl)*parseFloat(this.formdata.get('amountType')?.value.amount)).toFixed(4));
+    this.autoCalcHomeUnitRevision(this.localIndex);
+  }
+  autoCalcHomeUnitRevision(index:any){
+    this.budgetRevisionUnitList2[this.loginIndex].revisionAmount=(parseFloat(this.totlaRevisionAmount)*-1).toFixed(4);
+    this.budgetRevisionUnitList2[this.loginIndex].manipulate2=(parseFloat(this.budgetRevisionUnitList2[this.loginIndex].revisionAmount)+parseFloat(this.budgetRevisionUnitList2[this.loginIndex].manipulate)).toFixed(4);
+    if(this.budgetRevisionUnitList2[this.loginIndex].manipulate2<0){
+      this.common.warningAlert('Unit out of Funds','Cannot withdraw more than available','');
+      this.budgetRevisionUnitList2[index].revisionAmount=0;
+      this.budgetRevisionUnitList2[this.loginIndex].manipulate2=this.budgetRevisionUnitList2[this.loginIndex].manipulate;
+      debugger;
+      this.revisionAmount(index);
+
+    }
+    else{
+      this.totalManipulate2=parseFloat(this.totalManipulate2)+parseFloat(this.budgetRevisionUnitList2[this.loginIndex].revisionAmount);
+      this.newRevisionAmount=parseFloat(this.totlaRevisionAmount)+parseFloat(this.budgetRevisionUnitList2[this.loginIndex].revisionAmount);
+    }
 
   }
   getAllocationTypeData() {
@@ -568,7 +595,19 @@ export class RevisionComponent {
   saveRevisionData() {
     const requestJson: revision[] = [];
     for (let i = 0; i < this.tabledata.length; i++) {
+      let cdapark:any[]=[]
+      for(let cda of this.tabledata[i].cdaDetails){
+        const cdaP={
+          cdaParkingId:cda.cdaParkingId,
+          cdaAmount:cda.amount,
+          allocatedAmount:cda.totalParkingAmount,
+          allocatedAmountType:this.formdata.get('amountType')?.value.amountTypeId,
+        }
+        cdapark.push(cdaP)
+
+      }
       const entry: revision = {
+        cdaParkingId:cdapark,
         isAllocated:this.tabledata[i].isAllocated,
         budgetFinanciaYearId: this.tabledata[i].financialYear.serialNo,
         toUnitId: this.tabledata[i].unit.unit,
@@ -584,6 +623,7 @@ export class RevisionComponent {
     const req = {
       budgetRequest: requestJson,
     };
+    debugger;
     this.apiService
       .postApi(this.cons.api.saveBudgetRevisionData, req)
       .subscribe({
@@ -699,7 +739,9 @@ export class RevisionComponent {
             for(let i=0;i<this.allRevisedUnits.length;i++){
 
               if(this.allRevisedUnits[i].unit.unit==this.unitId){
+                this.cdaDetails=this.allRevisedUnits[i].cdaTransData;
                 this.allRevisedUnits[i].manipulate=(parseFloat(this.allRevisedUnits[i].allocationAmount)*parseFloat(this.allRevisedUnits[i].amountType.amount)/this.formdata.get('amountType')?.value.amount-alloc).toFixed(4);
+                this.loginIndex=i;
               }
             }
 
@@ -773,5 +815,10 @@ export class RevisionComponent {
   }
   dataManipulate(){
 
+  }
+
+  checkTotal() {
+    debugger;
+    this.budgetRevisionUnitList2[this.loginIndex].cdaTransData;
   }
 }
