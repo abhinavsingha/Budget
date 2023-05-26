@@ -46,6 +46,13 @@
               <span class="right badge badge-danger">{{this.sharedService.approve}}</span></p>
           </a>
         </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link" [routerLink]="['/archive']" [routerLinkActive]="['active']">
+            <i class="fas fa-paper-plane nav-icon"></i>
+            <p>Archive
+              <span class="right badge badge-danger">{{this.sharedService.archive}}</span></p>
+          </a>
+        </li>
         <li class="nav-item menu-is-opening menu-open" *ngIf="userRole=='Budget Manager'">
           <a href="" class="nav-link">
             <i class="nav-icon fas fa-rupee-sign"></i>
@@ -144,6 +151,12 @@
           <a href="#" class="nav-link" [routerLink]="['/unit-rebase']" [routerLinkActive]="['active']">
             <i class="fas fa-ship nav-icon"></i>
             <p>Unit Rebase</p>
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'">
+          <a href="#" class="nav-link" [routerLink]="['/all-allocation']" [routerLinkActive]="['active']">
+            <i class="fas fa-ship nav-icon"></i>
+            <p>All Allocation</p>
           </a>
         </li>
       </ul>

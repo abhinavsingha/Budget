@@ -23,6 +23,8 @@ import { ApprovedBudgetComponent } from './approved-budget/approved-budget.compo
 import { ManageUserRoleComponent } from './manage-user-role/manage-user-role.component';
 import {RevisionApprovalComponent} from "./revision-approval/revision-approval.component";
 import {ApprovedComponent} from "./approved/approved.component";
+import {ArchiveComponent} from "./archive/archive.component";
+import {AllAllocationComponent} from "./all-allocation/all-allocation.component";
 // import {ViewFormComponent} from "./view-form/view-form.component";
 
 
@@ -83,6 +85,8 @@ const routes: Routes = [
   { path: 'cda-parking-report', component: CdaParkingReportComponent },
   { path: 'budget-approved', component: ApprovedBudgetComponent },
   { path: 'manage-user-role', component: ManageUserRoleComponent },
+  { path: 'all-allocation', component: AllAllocationComponent },
+  { path: 'archive', component: ArchiveComponent },
   // { path: 'view-form', component: ViewFormComponent },
 ];
 

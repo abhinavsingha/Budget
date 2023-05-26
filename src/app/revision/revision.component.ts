@@ -380,7 +380,13 @@ export class RevisionComponent {
     }
     this.budgetRevisionUnitList2[index].revisiedAmount = (parseFloat(this.budgetRevisionUnitList2[index].existingAmount)+parseFloat(this.budgetRevisionUnitList2[index].revisionAmount)).toFixed(4);
     this.budgetRevisionUnitList2[index].manipulate2 = (parseFloat(this.budgetRevisionUnitList2[index].manipulate)+parseFloat(this.budgetRevisionUnitList2[index].revisionAmount)).toFixed(4);
-    this.budgetRevisionUnitList2[index].revisionAmount=parseFloat(this.budgetRevisionUnitList2[index].revisionAmount).toFixed(4)
+    this.budgetRevisionUnitList2[index].revisionAmount=parseFloat(this.budgetRevisionUnitList2[index].revisionAmount).toFixed(4);
+    debugger;
+    if(parseFloat(this.budgetRevisionUnitList2[index].manipulate2)<parseFloat(this.budgetRevisionUnitList2[index].expenditure)/parseFloat(this.formdata.get('amountType')?.value.amount)){
+      this.budgetRevisionUnitList2[index].revisionAmount=0
+      this.common.warningAlert('Allocation cannot be less than Expenditure','Allocation cannot be less than Expenditure','')
+      this.revisionAmount(index);
+    }
     this.getTotalAmount();
   }
 
@@ -394,6 +400,7 @@ export class RevisionComponent {
     debugger;
     for (let i = 0; i < this.allRevisedUnits.length; i++) {
       const entry: BudgetRevisionUnitList = {
+        expenditure:this.allRevisedUnits[i].expenditureAmount,
         cdaTransData:this.allRevisedUnits[i].cdaTransData,
         id: undefined,
         unit: this.allRevisedUnits[i].unit,
@@ -454,7 +461,7 @@ export class RevisionComponent {
             subHead: this.formdata.get('subHead')?.value,
             allocationType: {allocationTypeId:this.formdata.get('allocationType')?.value.allocTypeId,allocationType:this.formdata.get('allocationType')?.value.allocType},
             amountType: this.budgetRevisionUnitList2[i].amountType,
-            amount: parseFloat(this.budgetRevisionUnitList2[i].remainingAmount).toFixed(4),
+            amount: (parseFloat(this.budgetRevisionUnitList2[i].existingAmount)-parseFloat(this.budgetRevisionUnitList2[i].revisionAmount)).toFixed(4),
             allocated: parseFloat(this.budgetRevisionUnitList2[i].existingAmount).toFixed(4),
             revisedAmount: parseFloat(this.budgetRevisionUnitList2[i].revisionAmount).toFixed(4),
             bal:parseFloat(this.budgetRevisionUnitList2[i].revisiedAmount).toFixed(4)

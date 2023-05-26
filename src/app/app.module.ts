@@ -46,6 +46,8 @@ import { ManageUserRoleComponent } from './manage-user-role/manage-user-role.com
 import { SearchUserPipePipe } from './services/search-user/search-user-pipe.pipe';
 import { RevisionApprovalComponent } from './revision-approval/revision-approval.component';
 import {ApprovedComponent} from "./approved/approved.component";
+import {AllAllocationComponent} from "./all-allocation/all-allocation.component";
+import {ArchiveComponent} from "./archive/archive.component";
 // import {ViewFormComponent} from "./view-form/view-form.component";
 
 // import { DialogComponent } from './dialog/dialog.component';
@@ -88,6 +90,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
 
 @NgModule({
   declarations: [
+    AllAllocationComponent,
+    ArchiveComponent,
     AppComponent,
     HeaderComponent,
     SidebarComponent,

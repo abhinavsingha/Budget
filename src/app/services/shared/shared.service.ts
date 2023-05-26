@@ -20,6 +20,7 @@ export class SharedService {
   private outboxResponse: any;
   public allocationType: any;
   public approve: any;
+  public archive: any;
   constructor(
     private router: Router,
     private http: HttpClient,
