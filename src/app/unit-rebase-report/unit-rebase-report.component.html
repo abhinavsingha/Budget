@@ -1,0 +1,96 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Unit Rebase Report</h1>
+        </div>
+        <!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Unit Rebase Report</a></li>
+          </ol>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="card card-default">
+        <div class="card-header">
+          <h3 class="card-title">Unit Rebase Report</h3>
+
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+          </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+          <form>
+            <div class="row">
+              <!-- <div class="col-md-3">
+                  <div class="form-group">
+                    <label>Unit<span class="text-danger">*</span></label>
+                    <ng-select class="form-control select2bs4" style="width: 100%"  
+                      placeholder="Select Unit" formControlName="unitName">
+                    </ng-select>
+                  </div>
+                </div> -->
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Unit <span class="text-danger">*</span></label>
+                  <select class="form-control select2bs4" style="width: 100%" placeholder="Select Unit" id="reporttype"
+                    formControlName="reportType">
+                    <option selected disabled>--Select Unit--</option>
+                    <option value="01">All Unit</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>From Date<span class="text-danger">*</span></label>
+                  <input class="form-control" formControlName="cbDate" id="cbDate" placeholder="Enter Date"
+                    type="date" />
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>To Date<span class="text-danger">*</span></label>
+                  <input class="form-control" formControlName="cbDate" id="cbDate" placeholder="Enter Date"
+                    type="date" />
+                </div>
+              </div>
+            </div>
+          </form>
+
+
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+          <div class="row">
+            <button type="submit" class="btn btn-primary mr-2"><i class="fas fa-download"></i> Download</button>
+          </div>
+        </div>
+
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->

@@ -21,12 +21,12 @@ import { CdaParkingReportComponent } from './cda-parking-report/cda-parking-repo
 import { CbVerificationComponent } from './cb-verification/cb-verification.component';
 import { ApprovedBudgetComponent } from './approved-budget/approved-budget.component';
 import { ManageUserRoleComponent } from './manage-user-role/manage-user-role.component';
-import {RevisionApprovalComponent} from "./revision-approval/revision-approval.component";
-import {ApprovedComponent} from "./approved/approved.component";
-import {ArchiveComponent} from "./archive/archive.component";
-import {AllAllocationComponent} from "./all-allocation/all-allocation.component";
+import { RevisionApprovalComponent } from './revision-approval/revision-approval.component';
+import { ApprovedComponent } from './approved/approved.component';
+import { ArchiveComponent } from './archive/archive.component';
+import { AllAllocationComponent } from './all-allocation/all-allocation.component';
+import { UnitRebaseReportComponent } from './unit-rebase-report/unit-rebase-report.component';
 // import {ViewFormComponent} from "./view-form/view-form.component";
-
 
 const routes: Routes = [
   // { path: '', component: LoginComponent },
@@ -41,7 +41,7 @@ const routes: Routes = [
   { path: 'budget-approval', component: BudgetApproverComponent },
   { path: 'new-contigent-bill', component: NewContigentBillComponent },
   { path: 'manage-users', component: ManageUserComponent },
-  {path:'approved',component:ApprovedComponent},
+  { path: 'approved', component: ApprovedComponent },
   {
     path: 'budget-allocation-report',
     component: BudgetAllocationReportComponent,
@@ -87,6 +87,7 @@ const routes: Routes = [
   { path: 'manage-user-role', component: ManageUserRoleComponent },
   { path: 'all-allocation', component: AllAllocationComponent },
   { path: 'archive', component: ArchiveComponent },
+  { path: 'unit-rebase-report', component: UnitRebaseReportComponent },
   // { path: 'view-form', component: ViewFormComponent },
 ];
 

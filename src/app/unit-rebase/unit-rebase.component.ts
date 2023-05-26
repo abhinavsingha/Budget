@@ -29,7 +29,9 @@ export class UnitRebaseComponent {
   formdata = new FormGroup({
     finYear: new FormControl(),
     toUnit: new FormControl(),
-    toStation: new FormControl(),
+    fromStation: new FormControl(),
+    fromUnitDHQ: new FormControl(),
+    fromUnitRHQ: new FormControl(),
   });
 
   formdataForToStation = new FormGroup({
@@ -38,6 +40,8 @@ export class UnitRebaseComponent {
     authUnit: new FormControl(),
     authority: new FormControl(),
     date: new FormControl(),
+    toUnitDHQ: new FormControl(),
+    toUnitRHQ: new FormControl(),
   });
   private dasboardData: any;
 
@@ -46,7 +50,7 @@ export class UnitRebaseComponent {
     this.getBudgetFinYear();
     this.getCgUnitData();
     this.getAllStation();
-    this.getDashBoardDta()
+    this.getDashBoardDta();
     $.getScript('assets/main.js');
   }
 
@@ -67,8 +71,9 @@ export class UnitRebaseComponent {
         if (result['message'] == 'success') {
           this.dasboardData = result['response'];
           console.log('DATA>>>>>>>' + this.dasboardData);
-            this.formdata.get('finYear')?.setValue(result['response'].budgetFinancialYear);
-
+          this.formdata
+            .get('finYear')
+            ?.setValue(result['response'].budgetFinancialYear);
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
@@ -99,15 +104,24 @@ export class UnitRebaseComponent {
 
   getCgUnitData() {
     this.SpinnerService.show();
-
-    this.apiService.getApi(this.cons.api.getAllCgUnitData).subscribe((res) => {
-      let result: { [key: string]: any } = res;
-      if (result['message'] == 'success') {
-        this.allunits = result['response'];
+    this.apiService.getApi(this.cons.api.getAllIsShipCgUnitData).subscribe({
+      next: (v: object) => {
+        debugger;
         this.SpinnerService.hide();
-      } else {
-        this.common.faliureAlert('Please try later', result['message'], '');
-      }
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.allunits = result['response'];
+          this.SpinnerService.hide();
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
     });
   }
 
@@ -188,35 +202,37 @@ export class UnitRebaseComponent {
     this.SpinnerService.show();
     var newSubmitJson = data;
 
-    this.apiService.postApi(this.cons.api.saveRebase, newSubmitJson).subscribe({
-      next: (v: object) => {
-        this.SpinnerService.hide();
-        let result: { [key: string]: any } = v;
-        if (result['message'] == 'success') {
-          this.getCgUnitData();
-          this.getAllStation();
-          Swal.fire({
-            title: 'Success',
-            text: result['response']['msg'],
-            icon: 'success',
-            showCancelButton: false,
-            confirmButtonText: 'OK'
-          }).then((result) => {
-            if (result.isConfirmed) {
-              location.reload();
-            }
-          });
-        } else {
-          this.common.faliureAlert('Please try later', result['message'], '');
-        }
-      },
-      error: (e) => {
-        this.SpinnerService.hide();
-        console.error(e);
-        this.common.faliureAlert('Error', e['error']['message'], 'error');
-      },
-      complete: () => console.info('complete'),
-    });
+    this.apiService
+      .postApi(this.cons.api.saveUnitRebase, newSubmitJson)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            this.getCgUnitData();
+            this.getAllStation();
+            Swal.fire({
+              title: 'Success',
+              text: result['response']['msg'],
+              icon: 'success',
+              showCancelButton: false,
+              confirmButtonText: 'OK',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                location.reload();
+              }
+            });
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
   }
 
   file: any;
@@ -279,28 +295,46 @@ export class UnitRebaseComponent {
   }
 
   finallySubmitUnitRebase(formdata: any, formdataForToStation: any) {
-    let submitJson = {
-      budgetFinanciaYearId: formdata.finYear.serialNo,
-      toUnitId: formdata.toUnit.unit,
-      stationId: formdataForToStation.toStation.stationId,
-      occurrenceDate: formdataForToStation.occDate,
-      authority: formdataForToStation.authority,
-      authDate: formdataForToStation.date,
-      authUnitId: formdataForToStation.authUnit.unit,
-      authDocId: this.uploadFileResponse.uploadDocId,
-      authorityId:'123'
-    };
+    var newTableListData: any[] = [];
+    for (var i = 0; i < this.tableDataList.length; i++) {
+      newTableListData.push({
+        budgetHeadId: this.tableDataList[i].subHead.budgetCodeId,
+        allocAmount: this.tableDataList[i].allocatedAmount,
+        expAmount: this.tableDataList[i].expenditureAmount,
+        balAmount: this.tableDataList[i].remBal,
+        amountType: this.tableDataList[i].amountType.amountTypeId,
+      });
+    }
 
+    let submitJson = {
+      authDate: formdataForToStation.date,
+      authDocId: this.uploadFileResponse.uploadDocId,
+      authUnitId: formdataForToStation.authUnit.unit,
+      authority: formdataForToStation.authority,
+      finYear: formdata.finYear.serialNo,
+      occurrenceDate: formdataForToStation.occDate,
+      rebaseUnitId: formdata.toUnit.unit,
+      headUnitId: formdata.fromUnitDHQ,
+      frmStationId: formdata.fromStation,
+      toStationId: formdataForToStation.toStation.stationId,
+      toHeadUnitId: formdataForToStation.toUnitDHQ,
+      unitRebaseRequests: newTableListData,
+    };
+    debugger;
     this.confirmModel(submitJson);
   }
 
   selectUnit(data: any) {
+    debugger;
     this.formdata.patchValue({
-      toStation: data.cgStation.stationName,
+      fromStation: data.cgStation.stationName,
+      fromUnitDHQ: data.cgStation.dhqName,
+      fromUnitRHQ: data.cgStation.rhqId,
     });
   }
 
   tableDataList: any[] = [];
+  showNODataFound: Boolean = true;
 
   showList(data: any) {
     // ;
@@ -308,7 +342,7 @@ export class UnitRebaseComponent {
     // data.toUnit.unit;
     // getAllUnitRebaseData/{finYear}/{unit}
     this.SpinnerService.show();
-
+    debugger;
     this.apiService
       .getApi(
         this.cons.api.getAllUnitRebaseData +
@@ -317,16 +351,37 @@ export class UnitRebaseComponent {
           '/' +
           data.toUnit.unit
       )
-      .subscribe((res) => {
-        let result: { [key: string]: any } = res;
-        if (result['message'] == 'success') {
-          this.tableDataList = result['response'];
-
+      .subscribe({
+        next: (v: object) => {
           this.SpinnerService.hide();
-        } else {
-          this.common.faliureAlert('Please try later', result['message'], '');
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            this.tableDataList = result['response'];
+            this.showNODataFound = false;
+          } else {
+            this.tableDataList = [];
+            this.showNODataFound = true;
+            this.common.warningAlert(
+              'Data Not Found',
+              'No Data Found',
+              'warning'
+            );
+          }
+        },
+        error: (e) => {
           this.SpinnerService.hide();
-        }
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
       });
+  }
+
+  selectToStation(data: any) {
+    debugger;
+    this.formdataForToStation.patchValue({
+      toUnitDHQ: data.dhqName,
+      toUnitRHQ: data.rhqId,
+    });
   }
 }

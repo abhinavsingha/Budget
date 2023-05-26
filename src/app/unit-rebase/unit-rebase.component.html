@@ -55,14 +55,29 @@
                   </ng-select>
                 </div>
               </div>
-              <div class="col-md-3">
+              <div class="col-md-2">
                 <div class="form-group">
                   <label>From Station</label>
-                  <input type="text" class="form-control" id="frmStation" placeholder="Mumbai RHQ(W)"
-                    formControlName="toStation" readonly />
+                  <input type="text" class="form-control" id="frmStation" placeholder="-" formControlName="fromStation"
+                    readonly />
                 </div>
               </div>
-              <div class="col-md-3">
+              <div class="col-md-1">
+                <div class="form-group">
+                  <label style="opacity:0">.</label>
+                  <br>
+                  <input type="text" class="form-control" placeholder="-" formControlName="fromUnitDHQ" readonly />
+                </div>
+              </div>
+
+              <div class="col-md-1">
+                <div class="form-group">
+                  <label style="opacity:0">.</label>
+                  <br>
+                  <input type="text" class="form-control" placeholder="-" formControlName="fromUnitRHQ" readonly />
+                </div>
+              </div>
+              <div class="col-md-2">
                 <div class="form-group">
                   <label style="opacity:0">.</label>
                   <br>
@@ -90,39 +105,15 @@
                     <tr *ngFor="let td of tableDataList| paginate :{itemsPerPage:20,currentPage:p}; let i = index">
                       <td>{{td.unit}}</td>
                       <td>{{td.finYear}}</td>
-                      <td>{{td.subHead}}</td>
+                      <td>{{td.subHead.subHeadDescr}}</td>
                       <td>{{td.allocatedAmount}}</td>
                       <td>{{td.expenditureAmount}}</td>
-                      <td>{{td.allcAmntSubtrctExpnAmunt}}</td>
+                      <td>{{td.remBal}}</td>
                       <td>{{td.lastCbDate}}</td>
                     </tr>
-                    <!--<tr>
-                       <td>ICGS Sarang</td>
-                       <td>2022-23</td>
-                       <td>Office Expenses</td>
-                       <td>120000.00</td>
-                       <td>100000.00</td>
-                       <td>20000.00</td>
-                       <td>12/10/2022</td>
-                     </tr>
-                     <tr>
-                       <td>ICGS Sarang</td>
-                       <td>2022-23</td>
-                       <td>Office Expenses</td>
-                       <td>120000.00</td>
-                       <td>100000.00</td>
-                       <td>20000.00</td>
-                       <td>12/10/2022</td>
-                     </tr>
-                     <tr>
-                       <td>ICGS Sarang</td>
-                       <td>2022-23</td>
-                       <td>Office Expenses</td>
-                       <td>120000.00</td>
-                       <td>100000.00</td>
-                       <td>20000.00</td>
-                       <td>12/10/2022</td>
-                     </tr> -->
+                    <tr class="noData py-3" *ngIf="showNODataFound">
+                      <td>No Data Found</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -143,15 +134,29 @@
 
           <form [formGroup]="formdataForToStation">
             <div class="row">
-              <div class="col-md-4">
+              <div class="col-md-2">
                 <div class="form-group">
                   <label>To Station</label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [items]="allStationsList"
-                    bindLabel="stationName" placeholder="Select To Station" formControlName="toStation">
+                    bindLabel="stationName" placeholder="Select To Station" formControlName="toStation"
+                    (change)="selectToStation($event)">
                   </ng-select>
                 </div>
               </div>
-
+              <div class="col-md-1">
+                <div class="form-group">
+                  <label style="opacity:0">.</label>
+                  <br>
+                  <input type="text" class="form-control" placeholder="-" formControlName="toUnitDHQ" readonly />
+                </div>
+              </div>
+              <div class="col-md-1">
+                <div class="form-group">
+                  <label style="opacity:0">.</label>
+                  <br>
+                  <input type="text" class="form-control" placeholder="-" formControlName="toUnitRHQ" readonly />
+                </div>
+              </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Occurrence Date</label>

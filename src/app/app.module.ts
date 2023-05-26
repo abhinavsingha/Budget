@@ -33,6 +33,8 @@ import { RecieptComponent } from './reciept/reciept.component';
 import { UnitRebaseComponent } from './unit-rebase/unit-rebase.component';
 import { CdaParkingReportComponent } from './cda-parking-report/cda-parking-report.component';
 
+import { UnitRebaseReportComponent } from './unit-rebase-report/unit-rebase-report.component';
+
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { DatePipe } from '@angular/common';
 import { SharedService } from './services/shared/shared.service';
@@ -45,9 +47,9 @@ import { SearchPipeRecieptPipe } from './services/search-pipe-reciept/search-pip
 import { ManageUserRoleComponent } from './manage-user-role/manage-user-role.component';
 import { SearchUserPipePipe } from './services/search-user/search-user-pipe.pipe';
 import { RevisionApprovalComponent } from './revision-approval/revision-approval.component';
-import {ApprovedComponent} from "./approved/approved.component";
-import {AllAllocationComponent} from "./all-allocation/all-allocation.component";
-import {ArchiveComponent} from "./archive/archive.component";
+import { ApprovedComponent } from './approved/approved.component';
+import { AllAllocationComponent } from './all-allocation/all-allocation.component';
+import { ArchiveComponent } from './archive/archive.component';
 // import {ViewFormComponent} from "./view-form/view-form.component";
 
 // import { DialogComponent } from './dialog/dialog.component';
@@ -121,6 +123,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     ManageUserRoleComponent,
     SearchUserPipePipe,
     ApprovedComponent,
+    UnitRebaseReportComponent,
     // ViewFormComponent
     // DialogComponent,
   ],
