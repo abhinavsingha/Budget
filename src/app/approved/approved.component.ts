@@ -98,7 +98,10 @@ export class ApprovedComponent implements OnInit {
     localStorage.setItem('type',entry.isType);
     this.sharedService.sharedValue = entry.groupId;
     this.sharedService.redirectedFrom = 'approved';
+    if(entry.isBgOrCg=='BG'||entry.isBgOrCg=='BR')
     this.router.navigate(['/budget-approval']);
+    else
+      this.router.navigate(['/contingent-bill-aprover'])
   }
 
   getAuthDoc(entry: any) {

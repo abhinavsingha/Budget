@@ -205,5 +205,8 @@ export class ConstantsService {
 
     getAllIsShipCgUnitData:
       this.serviceUrl + 'unitRebaseController/getAllIsShipCgUnitData',
+    getAllocationByFinYear: this.serviceUrl+'budgetAllocation/getAllocationByFinYear',
+    updateAllocation: this.serviceUrl+'budgetAllocation/updateAllocation',
+
   };
 }

@@ -49,6 +49,7 @@ class updateRequest {
   status: any;
   groupId: any;
   remarks: any;
+  cdaParkingId:any;
 }
 @Component({
   selector: 'app-contigent-bill-approver',
@@ -171,6 +172,7 @@ export class ContigentBillApproverComponent implements OnInit {
            let cdaData=[];
            for(let cda of getCbList[i].cdaData){
              const cdaItr = {
+               cdacrDrId: cda.cdaCrdrId,
                cdaParkingId:cda.cdaParkingTrans,
                cdaAmount:cda.amount
              };
@@ -433,11 +435,22 @@ export class ContigentBillApproverComponent implements OnInit {
       // if(this.cbList[i].cbNo==this.formdata.get('cbNo')?.value){
       this.cbList[i].status = 'Approved';
     }
-
+    let cdapark:any[]=[];
+    debugger;
+    for(let list of this.cbList){
+      for(let cda of list.cdaParkingId){
+        const entry={
+          cdacrDrId:cda.cdacrDrId,
+          allocatedAmount:cda.cdaAmount,
+        }
+        cdapark.push(entry);
+      }
+    }
     const update: updateRequest = {
       status: this.cbList[0].status,
       groupId: this.cbList[0].authGroupId,
-      remarks: undefined,
+      remarks: this.formdata.get('returnRemarks')?.value,
+      cdaParkingId:cdapark
     };
     this.apiService
       .postApi(this.cons.api.approveContingentBill, update)
@@ -490,11 +503,22 @@ export class ContigentBillApproverComponent implements OnInit {
       // if(this.cbList[i].cbNo==this.formdata.get('cbNo')?.value){
       this.cbList[i].status = 'Rejected';
     }
-
+    let cdapark:any[]=[];
+    debugger;
+    for(let list of this.cbList){
+      for(let cda of list.cdaParkingId){
+        const entry={
+          cdacrDrId:cda.cdacrDrId,
+          allocatedAmount:cda.cdaAmount,
+        }
+        cdapark.push(entry);
+      }
+    }
     const update: updateRequest = {
       status: this.cbList[0].status,
       groupId: this.cbList[0].authGroupId,
       remarks: this.formdata.get('returnRemarks')?.value,
+      cdaParkingId:cdapark
     };
     this.apiService
       .postApi(this.cons.api.approveContingentBill, update)

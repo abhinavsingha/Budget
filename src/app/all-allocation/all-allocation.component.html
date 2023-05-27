@@ -21,37 +21,35 @@
       <!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-  
+
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
         <div class="card card-default">
           <div class="card-header">
             <h3 class="card-title">All Allocation</h3>
-  
+
             <div class="card-tools">
 
             </div>
           </div>
           <!-- /.card-header -->
           <div class="card-body">
-            <form>
+            <form [formGroup]="formdata">
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
                           <label>Financial Year</label>
-                          <select class="form-control select2bs4" style="width: 100%">
-                            <option selected="selected">2022-23</option>
-                            <option>2021-22</option>
-                            <option>2020-21</option>
-                          </select>
+                          <ng-select [items]="budgetFinYears" bindLabel="finYear" class="form-control select2bs4"
+                                     formControlName="finyear" placeholder="Select Financial Year" required style="width: 100%">
+                          </ng-select>
                         </div>
                       </div>
                       <div class="col-md-3">
                         <label style="opacity:0">.</label>
                         <br>
-                        <button type="submit" class="btn btn-primary mr-2"><i class="fas fa-search"></i> Search</button>
-                        
+                        <button type="button" class="btn btn-primary mr-2" (click)="getAllocationTypeData(formdata.value)"><i class="fas fa-search" ></i> Search</button>
+
                       </div>
                 </div>
               <div class="row">
@@ -63,166 +61,170 @@
                           <th>S.No.</th>
                           <th>Allocation Id</th>
                           <th>Allocation Name</th>
-                          <th>Allocation Year</th>
+<!--                          <th>Allocation Year</th>-->
                           <th>Created Date</th>
+                          <th>Status</th>
                           <th>Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                             <tr>
-                              <td>1</td>
-                              <td>546464</td>
-                              <td>BE</td>
-                              <td>2022-23</td>
-                              <td>23/02/2023</td>
+                             <tr *ngFor="let allocation of allocationType; let i = index">
+                              <td>{{i+1}}</td>
+                              <td>{{allocation.allocTypeId}}</td>
+                              <td>{{allocation.allocType}}</td>
+<!--                              <td>{{}}2022-23</td>-->
+                              <td>{{allocation.createdOn}}</td>
+                              <td *ngIf="allocation.isFlag=='0'">Deactive</td>
+                              <td *ngIf="allocation.isFlag=='1'">Active</td>
+
                               <td>
-                                <button type="submit" class="btn btn-warning mr-2" data-toggle="modal" data-target="#modal-lg"><i class="fas fa-edit"></i> Update</button>
+                                <button type="submit" class="btn btn-warning mr-2" data-toggle="modal" data-target="#modal-lg" (click)="isSelect(i)"><i class="fas fa-edit" ></i> Update</button>
                               </td>
                             </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>546464</td>
-                                <td>BE</td>
-                                <td>2022-23</td>
-                                <td>23/02/2023</td>
-                                <td>
-                                  <button type="submit" class="btn btn-warning mr-2" data-toggle="modal" data-target="#modal-lg"><i class="fas fa-edit"></i> Update</button>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>1</td>
-                                <td>546464</td>
-                                <td>BE</td>
-                                <td>2022-23</td>
-                                <td>23/02/2023</td>
-                                <td>
-                                  <button type="submit" class="btn btn-warning mr-2" data-toggle="modal" data-target="#modal-lg"><i class="fas fa-edit"></i> Update</button>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>1</td>
-                                <td>546464</td>
-                                <td>BE</td>
-                                <td>2022-23</td>
-                                <td>23/02/2023</td>
-                                <td>
-                                  <button type="submit" class="btn btn-warning mr-2" data-toggle="modal" data-target="#modal-lg"><i class="fas fa-edit"></i> Update</button>
-                                </td>
-                              </tr>
+<!--                            <tr>-->
+<!--                                <td>1</td>-->
+<!--                                <td>546464</td>-->
+<!--                                <td>BE</td>-->
+<!--                                <td>2022-23</td>-->
+<!--                                <td>23/02/2023</td>-->
+<!--                                <td>-->
+<!--                                  <button type="submit" class="btn btn-warning mr-2" data-toggle="modal" data-target="#modal-lg"><i class="fas fa-edit"></i> Update</button>-->
+<!--                                </td>-->
+<!--                              </tr>-->
+<!--                              <tr>-->
+<!--                                <td>1</td>-->
+<!--                                <td>546464</td>-->
+<!--                                <td>BE</td>-->
+<!--                                <td>2022-23</td>-->
+<!--                                <td>23/02/2023</td>-->
+<!--                                <td>-->
+<!--                                  <button type="submit" class="btn btn-warning mr-2" data-toggle="modal" data-target="#modal-lg"><i class="fas fa-edit"></i> Update</button>-->
+<!--                                </td>-->
+<!--                              </tr>-->
+<!--                              <tr>-->
+<!--                                <td>1</td>-->
+<!--                                <td>546464</td>-->
+<!--                                <td>BE</td>-->
+<!--                                <td>2022-23</td>-->
+<!--                                <td>23/02/2023</td>-->
+<!--                                <td>-->
+<!--                                  <button type="submit" class="btn btn-warning mr-2" data-toggle="modal" data-target="#modal-lg"><i class="fas fa-edit"></i> Update</button>-->
+<!--                                </td>-->
+<!--                              </tr>-->
                       </tbody>
                     </table>
                   </div>
-                  <div class="row mt-2">
-                    <div class="col-sm-12 col-md-5">
-                      <div
-                        class="dataTables_info"
-                        id="example2_info"
-                        role="status"
-                        aria-live="polite"
-                      >
-                        Showing 1 to 10 of 57 entries
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md-7">
-                      <div
-                        class="dataTables_paginate paging_simple_numbers"
-                        id="example2_paginate"
-                      >
-                        <ul class="pagination float-right">
-                          <li
-                            class="paginate_button page-item previous disabled"
-                            id="example2_previous"
-                          >
-                            <a
-                              href="#"
-                              aria-controls="example2"
-                              data-dt-idx="0"
-                              tabindex="0"
-                              class="page-link"
-                              >Previous</a
-                            >
-                          </li>
-                          <li class="paginate_button page-item active">
-                            <a
-                              href="#"
-                              aria-controls="example2"
-                              data-dt-idx="1"
-                              tabindex="0"
-                              class="page-link"
-                              >1</a
-                            >
-                          </li>
-                          <li class="paginate_button page-item">
-                            <a
-                              href="#"
-                              aria-controls="example2"
-                              data-dt-idx="2"
-                              tabindex="0"
-                              class="page-link"
-                              >2</a
-                            >
-                          </li>
-                          <li class="paginate_button page-item">
-                            <a
-                              href="#"
-                              aria-controls="example2"
-                              data-dt-idx="3"
-                              tabindex="0"
-                              class="page-link"
-                              >3</a
-                            >
-                          </li>
-                          <li class="paginate_button page-item">
-                            <a
-                              href="#"
-                              aria-controls="example2"
-                              data-dt-idx="4"
-                              tabindex="0"
-                              class="page-link"
-                              >4</a
-                            >
-                          </li>
-                          <li class="paginate_button page-item">
-                            <a
-                              href="#"
-                              aria-controls="example2"
-                              data-dt-idx="5"
-                              tabindex="0"
-                              class="page-link"
-                              >5</a
-                            >
-                          </li>
-                          <li class="paginate_button page-item">
-                            <a
-                              href="#"
-                              aria-controls="example2"
-                              data-dt-idx="6"
-                              tabindex="0"
-                              class="page-link"
-                              >6</a
-                            >
-                          </li>
-                          <li
-                            class="paginate_button page-item next"
-                            id="example2_next"
-                          >
-                            <a
-                              href="#"
-                              aria-controls="example2"
-                              data-dt-idx="7"
-                              tabindex="0"
-                              class="page-link"
-                              >Next</a
-                            >
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
+<!--                  <div class="row mt-2">-->
+<!--                    <div class="col-sm-12 col-md-5">-->
+<!--                      <div-->
+<!--                        class="dataTables_info"-->
+<!--                        id="example2_info"-->
+<!--                        role="status"-->
+<!--                        aria-live="polite"-->
+<!--                      >-->
+<!--                        Showing 1 to 10 of 57 entries-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                    <div class="col-sm-12 col-md-7">-->
+<!--                      <div-->
+<!--                        class="dataTables_paginate paging_simple_numbers"-->
+<!--                        id="example2_paginate"-->
+<!--                      >-->
+<!--                        <ul class="pagination float-right">-->
+<!--                          <li-->
+<!--                            class="paginate_button page-item previous disabled"-->
+<!--                            id="example2_previous"-->
+<!--                          >-->
+<!--                            <a-->
+<!--                              href="#"-->
+<!--                              aria-controls="example2"-->
+<!--                              data-dt-idx="0"-->
+<!--                              tabindex="0"-->
+<!--                              class="page-link"-->
+<!--                              >Previous</a-->
+<!--                            >-->
+<!--                          </li>-->
+<!--                          <li class="paginate_button page-item active">-->
+<!--                            <a-->
+<!--                              href="#"-->
+<!--                              aria-controls="example2"-->
+<!--                              data-dt-idx="1"-->
+<!--                              tabindex="0"-->
+<!--                              class="page-link"-->
+<!--                              >1</a-->
+<!--                            >-->
+<!--                          </li>-->
+<!--                          <li class="paginate_button page-item">-->
+<!--                            <a-->
+<!--                              href="#"-->
+<!--                              aria-controls="example2"-->
+<!--                              data-dt-idx="2"-->
+<!--                              tabindex="0"-->
+<!--                              class="page-link"-->
+<!--                              >2</a-->
+<!--                            >-->
+<!--                          </li>-->
+<!--                          <li class="paginate_button page-item">-->
+<!--                            <a-->
+<!--                              href="#"-->
+<!--                              aria-controls="example2"-->
+<!--                              data-dt-idx="3"-->
+<!--                              tabindex="0"-->
+<!--                              class="page-link"-->
+<!--                              >3</a-->
+<!--                            >-->
+<!--                          </li>-->
+<!--                          <li class="paginate_button page-item">-->
+<!--                            <a-->
+<!--                              href="#"-->
+<!--                              aria-controls="example2"-->
+<!--                              data-dt-idx="4"-->
+<!--                              tabindex="0"-->
+<!--                              class="page-link"-->
+<!--                              >4</a-->
+<!--                            >-->
+<!--                          </li>-->
+<!--                          <li class="paginate_button page-item">-->
+<!--                            <a-->
+<!--                              href="#"-->
+<!--                              aria-controls="example2"-->
+<!--                              data-dt-idx="5"-->
+<!--                              tabindex="0"-->
+<!--                              class="page-link"-->
+<!--                              >5</a-->
+<!--                            >-->
+<!--                          </li>-->
+<!--                          <li class="paginate_button page-item">-->
+<!--                            <a-->
+<!--                              href="#"-->
+<!--                              aria-controls="example2"-->
+<!--                              data-dt-idx="6"-->
+<!--                              tabindex="0"-->
+<!--                              class="page-link"-->
+<!--                              >6</a-->
+<!--                            >-->
+<!--                          </li>-->
+<!--                          <li-->
+<!--                            class="paginate_button page-item next"-->
+<!--                            id="example2_next"-->
+<!--                          >-->
+<!--                            <a-->
+<!--                              href="#"-->
+<!--                              aria-controls="example2"-->
+<!--                              data-dt-idx="7"-->
+<!--                              tabindex="0"-->
+<!--                              class="page-link"-->
+<!--                              >Next</a-->
+<!--                            >-->
+<!--                          </li>-->
+<!--                        </ul>-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                  </div>-->
                 </div>
               </div>
           <!-- /.row -->
-             
+
             </form>
           </div>
           <!-- /.card-body -->
@@ -232,9 +234,9 @@
       </div>
       <!-- /.container-fluid -->
     </section>
-  
+
     <!-- /.content -->
-    <div class="modal fade" id="modal-lg">
+    <div class="modal fade" id="modal-lg" *ngIf="model">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
@@ -246,38 +248,34 @@
             <div class="modal-body">
                 <div class="row">
                       <div class="col-md-3">
-                        <div class="form-group">
+                        <div class="form-group" >
                           <label>Allocation Id</label>
-                          <input type="text" class="form-control"  placeholder="Enter Allocation Id" />
+                          <input type="text" class="form-control" [(ngModel)]="allocTypeId" [readOnly]="true" placeholder="Enter Allocation Id" />
                         </div>
                       </div>
                       <div class="col-md-3">
                         <div class="form-group">
                           <label>Allocation Name</label>
-                          <input type="text" class="form-control"  placeholder="Enter Allocation Name" />
+                          <input type="text" class="form-control" [(ngModel)]="allocDesc" placeholder="Enter Allocation Name" />
                         </div>
                       </div>
-                      <div class="col-md-3">
-                        <div class="form-group">
-                          <label>Allocation Year</label>
-                          <select class="form-control select2bs4" style="width: 100%">
-                            <option selected="selected">2022-23</option>
-                            <option>2021-22</option>
-                            <option>2020-21</option>
-                          </select>
-                        </div>
-                      </div>
+<!--                      <div class="col-md-3">-->
+<!--                        <div class="form-group">-->
+<!--                          <label>Allocation Year</label>-->
+<!--                          <input type="text" class="form-control" [(ngModel)]="allocationType[index].finYear" placeholder="Enter FinYear" />-->
+<!--                        </div>-->
+<!--                      </div>-->
                       <div class="col-md-3">
                         <div class="form-group">
                           <label>Created Date</label>
-                          <input type="date" class="form-control" id="Date" placeholder="Enter Created Date" />
+                          <input type="text" class="form-control" id="Date" [(ngModel)]="createdOn" [readOnly]="true" placeholder="Enter Created Date" />
                         </div>
                       </div>
                 </div>
               </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Submit</button>
+              <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="saveData()">Submit</button>
             </div>
           </div>
           <!-- /.modal-content -->
@@ -287,4 +285,3 @@
       <!-- /.modal -->
   </div>
   <!-- /.content-wrapper -->
-  
