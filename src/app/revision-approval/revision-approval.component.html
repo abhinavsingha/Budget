@@ -128,7 +128,7 @@
                                   <td>{{tbleDta.allocTypeId.allocDesc}}</td>
                                   <td>{{tbleDta.allocationAmount}}</td>
                                   <td>{{tbleDta.revisedAmount}}</td>
-                                  <td>{{tbleDta.balanceAmount}}</td>
+                                  <td>{{tbleDta.bal}}</td>
 <!--                                  <td>{{}}</td>-->
                                 </tr>
                           </tbody>
@@ -282,13 +282,13 @@
                     />
                   </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4" *ngIf="sharedService.redirectedFrom!='approved'">
                   <div class="form-group">
                     <label for="exampleInputFile">View Document</label>
                     <div class="input-group">
                     <div class="custom-file">
-                    <input #browseFileInput type="file" class="custom-file-input" id="exampleInputFile" >
-                    <label class="custom-file-label" for="exampleInputFile">File.pdf</label>
+                    <input #browseFileInput type="file" class="custom-file-input" (change)="setLabel()" id="exampleInputFile" >
+                    <label class="custom-file-label" for="exampleInputFile">{{filename}}</label>
                     </div>
                       <div class="input-group-append">
 

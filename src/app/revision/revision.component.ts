@@ -619,8 +619,10 @@ export class RevisionComponent {
         budgetFinanciaYearId: this.tabledata[i].financialYear.serialNo,
         toUnitId: this.tabledata[i].unit.unit,
         subHeadId: this.tabledata[i].subHead.budgetCodeId,
-        amount: this.tabledata[i].amount,
-        revisedAmount: this.tabledata[i].revisedAmount,
+        amount:this.tabledata[i].allocated,
+        // amount: this.tabledata[i].amount,//allocation
+        // revisedAmount: this.tabledata[i].revisedAmount,//additional/withdrawal
+         revisedAmount: this.tabledata[i].revisedAmount,//additional/withdrawal
         allocationTypeId: this.tabledata[i].allocationType.allocationTypeId,
         amountTypeId:this.formdata.get('amountType')?.value.amountTypeId,
         remark: this.formdata.get('remarks')?.value,

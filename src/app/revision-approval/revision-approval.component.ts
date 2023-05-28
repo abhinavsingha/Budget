@@ -54,6 +54,7 @@ export class RevisionApprovalComponent {
   minorHead: any;
   allocationType: any;
   status:boolean=false;
+  filename:string='Select Document';
   ngOnInit(): void {
     if (
       localStorage.getItem('isInboxOrOutbox') != null ||
@@ -67,6 +68,7 @@ export class RevisionApprovalComponent {
     ) {
       this.getAlGroupId(localStorage.getItem('group_id'));
     }
+    debugger;
     this.getDashBoardDta();
     $.getScript('assets/js/adminlte.js');
   }
@@ -93,7 +95,9 @@ export class RevisionApprovalComponent {
           this.formdata.get('allocationType')?.setValue(this.budgetDataLists[0].allocTypeId);
           this.formdata.get('remarks')?.setValue(this.budgetDataLists[0].remarks);
           this.amountUnit=this.budgetDataLists[0].amountUnit.amountType;
-
+          for(let data of this.budgetDataLists){
+            data.bal=(parseFloat(data.allocationAmount)+parseFloat(data.revisedAmount)).toFixed(4);
+          }
 
           this.SpinnerService.hide();
         } else {
@@ -295,6 +299,7 @@ export class RevisionApprovalComponent {
       const formData = new FormData();
       console.log(this.formdata.get('file')?.value);
       formData.append('file', file);
+      debugger;
       this.SpinnerService.show();
       this.apiService.postApi(this.cons.api.fileUpload, formData).subscribe({
         next: (v: object) => {
@@ -437,5 +442,8 @@ export class RevisionApprovalComponent {
   }
 
 
-
+  setLabel() {
+    debugger;
+    this.filename=this.browseFileInput.nativeElement.value;
+  }
 }
