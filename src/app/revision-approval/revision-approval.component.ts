@@ -55,6 +55,7 @@ export class RevisionApprovalComponent {
   allocationType: any;
   status:boolean=false;
   filename:string='Select Document';
+  oldBudgetDataLists: any;
   ngOnInit(): void {
     if (
       localStorage.getItem('isInboxOrOutbox') != null ||
@@ -98,7 +99,10 @@ export class RevisionApprovalComponent {
           for(let data of this.budgetDataLists){
             data.bal=(parseFloat(data.allocationAmount)+parseFloat(data.revisedAmount)).toFixed(4);
           }
-
+          this.oldBudgetDataLists=result['response'].oldBudgetRevision;
+          for(let data of this.oldBudgetDataLists){
+            data.bal=(parseFloat(data.allocationAmount)+parseFloat(data.revisedAmount)).toFixed(4);
+          }
           this.SpinnerService.hide();
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');

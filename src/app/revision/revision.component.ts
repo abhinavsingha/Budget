@@ -829,5 +829,14 @@ export class RevisionComponent {
   checkTotal() {
     debugger;
     this.budgetRevisionUnitList2[this.loginIndex].cdaTransData;
+    let sum =0
+    for(let cda of this.cdaDetails){
+      if(cda.amount!=undefined){
+        sum =sum + parseFloat(cda.amount);
+      }
+    }
+    if(sum!=this.budgetRevisionUnitList2[this.loginIndex].revisionAmount){
+      this.common.warningAlert('CDA amount mismatch','CDA total does not match the amount','');
+    }
   }
 }

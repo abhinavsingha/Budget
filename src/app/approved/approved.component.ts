@@ -9,6 +9,7 @@ import {DatePipe, Location} from "@angular/common";
 import {SharedService} from "../services/shared/shared.service";
 
 class InboxList {
+  unit_sub:any;
   isType:string|undefined;
   serial: number | undefined;
   type: undefined;
@@ -80,8 +81,9 @@ export class ApprovedComponent implements OnInit {
               unitName: list[i].toUnit.descr,
               groupId: list[i].groupId,
               status: list[i].status,
+              unit_sub:list[i].type,
               type: list[i].isBgOrCg,
-              // unit_sub:list[i].type
+
             };
             this.inboxList.push(entry);
           }

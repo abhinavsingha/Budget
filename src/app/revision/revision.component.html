@@ -273,7 +273,7 @@
                     <!--                    <td>1</td>-->
                     <td>{{cda.ginNo.cdaName}}</td>
                     <td>{{cda.remainingCdaAmount}}</td>
-                    <td><input (change)="checkTotal()" [(ngModel)]="cda.amount" type="number" class="form-control" placeholder="Enter Amount in INR" /></td>
+                    <td><input  [(ngModel)]="cda.amount" type="number" class="form-control" placeholder="Enter Amount in INR" /></td>
                   </tr>
 
                   </tbody>
@@ -298,7 +298,7 @@
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" data-dismiss="modal" (change)="checkTotal()">Submit</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="checkTotal()">Submit</button>
         </div>
       </div>
       <!-- /.modal-content -->
