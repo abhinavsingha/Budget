@@ -6,7 +6,12 @@ import { ConstantsService } from '../services/constants/constants.service';
 import { CommonService } from '../services/common/common.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import Swal from 'sweetalert2';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-unit-rebase',
@@ -26,13 +31,13 @@ export class UnitRebaseComponent {
 
   uploadFileResponse: any;
 
-  formdata = new FormGroup({
-    finYear: new FormControl(),
-    toUnit: new FormControl(),
-    fromStation: new FormControl(),
-    fromUnitDHQ: new FormControl(),
-    fromUnitRHQ: new FormControl(),
-  });
+  // formdata = new FormGroup({
+  //   finYear: new FormControl(),
+  //   toUnit: new FormControl(),
+  //   fromStation: new FormControl(),
+  //   fromUnitDHQ: new FormControl(),
+  //   fromUnitRHQ: new FormControl(),
+  // });
 
   formdataForToStation = new FormGroup({
     toStation: new FormControl(),
@@ -54,13 +59,22 @@ export class UnitRebaseComponent {
     $.getScript('assets/main.js');
   }
 
+  formdata!: FormGroup;
   constructor(
     private SpinnerService: NgxSpinnerService,
     private cons: ConstantsService,
     private apiService: ApiCallingServiceService,
     private formBuilder: FormBuilder,
     private common: CommonService
-  ) {}
+  ) {
+    this.formdata = formBuilder.group({
+      finYear: [null, Validators.required],
+      toUnit: [null, Validators.required],
+      fromStation: new FormControl(),
+      fromUnitDHQ: new FormControl(),
+      fromUnitRHQ: new FormControl(),
+    });
+  }
   getDashBoardDta() {
     this.SpinnerService.show();
 
@@ -297,12 +311,20 @@ export class UnitRebaseComponent {
   finallySubmitUnitRebase(formdata: any, formdataForToStation: any) {
     var newTableListData: any[] = [];
     for (var i = 0; i < this.tableDataList.length; i++) {
+      var date = new Date(this.tableDataList[i].lastCbDate);
       newTableListData.push({
         budgetHeadId: this.tableDataList[i].subHead.budgetCodeId,
         allocAmount: this.tableDataList[i].allocatedAmount,
         expAmount: this.tableDataList[i].expenditureAmount,
         balAmount: this.tableDataList[i].remBal,
         amountType: this.tableDataList[i].amountType.amountTypeId,
+        allocationTypeId: this.tableDataList[i].allocationType.allocTypeId,
+        lastCbDate:
+          date.getFullYear() +
+          '-' +
+          (date.getMonth() + 1) +
+          '-' +
+          date.getDate(),
       });
     }
 
@@ -324,8 +346,20 @@ export class UnitRebaseComponent {
     this.confirmModel(submitJson);
   }
 
+  tooltipFromUnitDHQ: String = '';
+  tooltipFromUnitRHQ: String = '';
   selectUnit(data: any) {
-    debugger;
+    if (data == undefined) {
+      this.tooltipFromUnitDHQ = '';
+      this.tooltipFromUnitRHQ = '';
+      this.formdata.patchValue({
+        fromStation: '',
+        fromUnitDHQ: '',
+        fromUnitRHQ: '',
+      });
+    }
+    this.tooltipFromUnitDHQ = data.cgStation.dhqName;
+    this.tooltipFromUnitRHQ = data.cgStation.rhqId;
     this.formdata.patchValue({
       fromStation: data.cgStation.stationName,
       fromUnitDHQ: data.cgStation.dhqName,

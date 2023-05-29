@@ -9,8 +9,7 @@ export class ConstantsService {
   // serviceUrl = 'https://icg.net.in/budget/'; //prod
   // serviceUrl = 'http://488e-203-153-42-234.ngrok.io/'; //dev
   // serviceUrl = 'http://192.168.1.131:1111/'; //dev
-  serviceUrl = 'https://icg.net.in/budget/';
-  // serviceUrl = 'http://192.168.1.131:1111/';
+  serviceUrl = 'http://192.168.1.112:1111/'; //arvind system
   api = {
     getDataBudgetAllocation:
       this.serviceUrl + 'budgetAllocation/getDataBudgetAllocation',
@@ -186,6 +185,9 @@ export class ConstantsService {
 
     getContingentBillReport:
       this.serviceUrl + 'reportController/getContingentBillReport',
+
+    getUnitRebaseReport:
+      this.serviceUrl + 'reportController/getUnitRebaseReport',
 
     updateInboxOutBox: this.serviceUrl + 'dashBoard/updateInboxOutBox',
 

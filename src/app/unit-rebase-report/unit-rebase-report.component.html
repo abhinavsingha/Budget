@@ -37,51 +37,37 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body">
-          <form>
+          <form [formGroup]="formdata">
             <div class="row">
               <!-- <div class="col-md-3">
-                  <div class="form-group">
-                    <label>Unit<span class="text-danger">*</span></label>
-                    <ng-select class="form-control select2bs4" style="width: 100%"  
-                      placeholder="Select Unit" formControlName="unitName">
-                    </ng-select>
-                  </div>
-                </div> -->
-
-              <div class="col-md-3">
                 <div class="form-group">
                   <label>Unit <span class="text-danger">*</span></label>
-                  <select class="form-control select2bs4" style="width: 100%" placeholder="Select Unit" id="reporttype"
-                    formControlName="reportType">
+                  <select class="form-control select2bs4" style="width: 100%" id="selectedUnit" formControlName="unit">
                     <option selected disabled>--Select Unit--</option>
                     <option value="01">All Unit</option>
                   </select>
                 </div>
-              </div>
-
+              </div> -->
               <div class="col-md-3">
                 <div class="form-group">
                   <label>From Date<span class="text-danger">*</span></label>
-                  <input class="form-control" formControlName="cbDate" id="cbDate" placeholder="Enter Date"
-                    type="date" />
+                  <input class="form-control" formControlName="fromDate" placeholder="Enter Date" type="date" />
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
                   <label>To Date<span class="text-danger">*</span></label>
-                  <input class="form-control" formControlName="cbDate" id="cbDate" placeholder="Enter Date"
-                    type="date" />
+                  <input class="form-control" formControlName="toDate" placeholder="Enter Date" type="date" />
                 </div>
               </div>
             </div>
           </form>
-
-
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
           <div class="row">
-            <button type="submit" class="btn btn-primary mr-2"><i class="fas fa-download"></i> Download</button>
+            <button type="submit" class="btn btn-primary mr-2" (click)="downloadRebaseReport(formdata.value)"
+              [disabled]="!formdata.valid"><i class="fas fa-download"></i> Download</button>
           </div>
         </div>
 

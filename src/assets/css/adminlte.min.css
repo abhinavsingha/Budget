@@ -11203,11 +11203,12 @@ body.sidebar-collapse:not(.sidebar-mini-xs):not(.sidebar-mini-md):not(
 body:not(.layout-fixed) .main-sidebar {
   height: inherit;
   min-height: 100%;
-  position: absolute;
+  position: fixed;
   top: 0;
 }
 body:not(.layout-fixed) .main-sidebar .sidebar {
   overflow-y: auto;
+  height: 76vh!important;
 }
 .layout-fixed .brand-link {
   width: 250px;
@@ -12166,7 +12167,7 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
   display: block;
   font-size: 1.25rem;
   line-height: 1.5;
-  padding: 0.8125rem 0.5rem;
+  padding: 0.8125rem 0.5rem 0.5rem 0.5rem;
   transition: width 0.3s ease-in-out;
   white-space: nowrap;
 }
@@ -12212,7 +12213,7 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
   margin-left: 0.8rem;
   margin-right: 0.5rem;
   margin-top: -3px;
-  max-height: 120px;
+  max-height: 92px;
   width: auto;
 }
 .brand-link .brand-image-xs {
@@ -59423,5 +59424,13 @@ a.text-muted:hover {
 }
 .dark-mode .border-dark {
   border-color: #4b545c !important;
+}
+
+input.ng-invalid.ng-touched {
+    box-shadow: 0 0 1px #ff0000, 0 0 2px #ff0000, 0 0 3px #ff0000, 0 0 4px #ff0000
+}
+
+ng-select.ng-invalid.ng-touched {
+    box-shadow: 0 0 1px #ff0000, 0 0 2px #ff0000, 0 0 3px #ff0000, 0 0 4px #ff0000
 }
 /*# sourceMappingURL=adminlte.min.css.map */
