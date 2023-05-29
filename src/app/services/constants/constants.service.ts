@@ -183,30 +183,44 @@ export class ConstantsService {
     getModData: this.serviceUrl + 'budgetRecipet/getModData',
 
     getCdaDataList: this.serviceUrl + 'cdaParkingController/getCdaDataList',
+
     getContingentBillReport:
       this.serviceUrl + 'reportController/getContingentBillReport',
+
     updateInboxOutBox: this.serviceUrl + 'dashBoard/updateInboxOutBox',
+
     approveRevisionBudgetOrReject:
       this.serviceUrl + 'budgetAllocation/approveRevisionBudgetOrReject',
+
     getAllRevisionGroupId:
       this.serviceUrl + 'budgetAllocation/getAllRevisionGroupId',
+
     getAllCgUnitData: this.serviceUrl + 'budgetAllocation/getAllCgUnitData',
+
     getMainBEAllocationReport:
       this.serviceUrl + 'reportController/getMainBEAllocationReport',
+
     getApprovedFilePath: this.serviceUrl + 'fileUpload/getApprovedFilePath',
+
     getSubHeadWiseExpenditureByUnitIdFinYearIdAllocationTypeIdSubHeadTypeId:
       this.serviceUrl +
       'dashBoard/getSubHeadWiseExpenditureByUnitIdFinYearIdAllocationTypeIdSubHeadTypeId',
+
     saveBudgetAllocationSubHeadWise:
       this.serviceUrl + 'budgetAllocation/saveBudgetAllocationSubHeadWise',
+
     getApprovedList: this.serviceUrl + 'inboxOutbox/getApprovedList',
+
     getApprovedListData: this.serviceUrl + 'inboxOutbox/getApprovedListData',
+
     getAllCda: this.serviceUrl + 'budgetRecipet/getAllCda',
 
     getAllIsShipCgUnitData:
       this.serviceUrl + 'unitRebaseController/getAllIsShipCgUnitData',
-    getAllocationByFinYear: this.serviceUrl+'budgetAllocation/getAllocationByFinYear',
-    updateAllocation: this.serviceUrl+'budgetAllocation/updateAllocation',
 
+    getAllocationByFinYear:
+      this.serviceUrl + 'budgetAllocation/getAllocationByFinYear',
+
+    updateAllocation: this.serviceUrl + 'budgetAllocation/updateAllocation',
   };
 }
