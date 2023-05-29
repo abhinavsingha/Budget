@@ -87,7 +87,7 @@
                       <td
                         *ngIf="isInboxAndOutbox== 'approved' && type!='Budget Allocation' && userRole!='Budget Approver'">
                         <button *ngIf="buggetData.isCDAparking == '0'" type="submit" class="btn btn-warning mr-2"
-                          data-toggle="modal" data-target="#modal-lg" (click)="addCDAParking(buggetData)">Add
+                          data-toggle="modal" data-target="#modal-lg" (click)="addCDAParking(buggetData,i)">Add
                           CDA Parking</button>
                         <button *ngIf="buggetData.isCDAparking == '1'" type="submit" class="btn btn-primary mr-2"
                           data-toggle="modal" data-target="#modal-lg" (click)="viewCDAParking(buggetData)"  >View &
@@ -204,7 +204,7 @@
         </div>
         <div class="modal-footer justify-content-start">
           <button class="btn btn-danger mr-2" data-dismiss="modal">Close</button>
-          <button class="btn btn-primary mr-2" (click)="saveCdaParkingData()" *ngIf="showSubmit"
+          <button class="btn btn-primary mr-2" data-dismiss="modal" (click)="saveCdaParkingData()" *ngIf="showSubmit"
             [disabled]="isdisableSubmitButton">Submit</button>
           <button class="btn btn-warning" (click)="updateCdaParkingDataApi()" *ngIf="showUpdate"
             [disabled]="isdisableUpdateButton">Update</button>

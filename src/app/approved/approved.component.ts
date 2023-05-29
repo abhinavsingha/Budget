@@ -80,7 +80,8 @@ export class ApprovedComponent implements OnInit {
               unitName: list[i].toUnit.descr,
               groupId: list[i].groupId,
               status: list[i].status,
-              type: list[i].isBgOrCg
+              type: list[i].isBgOrCg,
+              // unit_sub:list[i].type
             };
             this.inboxList.push(entry);
           }

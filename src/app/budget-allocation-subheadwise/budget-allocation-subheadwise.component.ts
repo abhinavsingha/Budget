@@ -734,7 +734,6 @@ export class BudgetAllocationSubheadwiseComponent {
 currentIndex:any;
   addCda(subHeadWiseUnit: any, i: number) {
     this.currentIndex=i;
-
   }
   amountEqual:boolean=false;
   calcCdaTotal() {
@@ -743,8 +742,9 @@ currentIndex:any;
     for(let cda of this.cdaDetail){
       if(cda.amount!=undefined)
         sum=sum+parseFloat(cda.amount);
+    debugger;
     }
-    if(sum==parseFloat(this.budgetAllocationArray[this.currentIndex].amount))
+    if(sum==parseFloat(this.subHeadWiseUnitList[this.currentIndex].amount))
       this.amountEqual=true;
   }
 }

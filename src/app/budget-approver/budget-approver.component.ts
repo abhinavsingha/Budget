@@ -41,6 +41,7 @@ export class BudgetApproverComponent implements OnInit {
 
   isInboxAndOutbox: any;
   private amountUnitData: any;
+  private currentIndex: number=0;
 
   ngOnInit(): void {
     if (
@@ -267,7 +268,8 @@ export class BudgetApproverComponent implements OnInit {
   showSubmit: boolean = false;
   amountUnit: any;
   showSubHeadDataInNextPage: any;
-  addCDAParking(data: any) {
+  addCDAParking(data: any,index:number) {
+    this.currentIndex=index;
     debugger;
     this.getCurrentSubHeadData = data;
     this.showSubHeadDataInNextPage = data.subHead.subHeadDescr;
@@ -348,8 +350,9 @@ export class BudgetApproverComponent implements OnInit {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
+            this.budgetDataList[this.currentIndex].isCDAparking='1';
             // this.router.navigate(['/budget-approval']);
-            window.location.reload();
+            this.common.successAlert('Cda Saved','CDA Parking Saved succesfully','');
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
