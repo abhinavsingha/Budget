@@ -252,7 +252,7 @@ export class BudgetAllocationComponent implements OnInit {
     this.getAmountType();
     this.sharedDashboardData();
     this.getSubHeadType();
-
+    this.getDashBoardDta();
     $.getScript('assets/js/adminlte.js');
     $.getScript('assets/main.js');
   }
@@ -491,18 +491,55 @@ export class BudgetAllocationComponent implements OnInit {
       this.file = event.target.files[0];
     }
   }
+  getDashBoardDta() {
+    this.SpinnerService.show();
 
+    this.apiService.postApi(this.cons.api.getDashBoardDta, null).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.sharedService.dashboardData = result['response'];
+          this.sharedService.approve=result['response'].approved;
+          localStorage.setItem(
+            'defautAllocationType',
+            result['response'].allocationType.allocType
+          );
+          this.sharedService.finYear = result['response'].budgetFinancialYear;
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
+  }
   saveBudgetDataFn(data: any) {
     this.tableData;
     this.saveBudgetDataList.push(data);
     let budgetRequest: any[] = [];
     for (var i = 0; i < this.tableData.length; i++) {
       let cda: any[] = [];
-      for (let j = 0; j < this.finalData[i].cdaInfo.length; j++) {
-        if (this.finalData[i].cdaInfo[j].amount != undefined) {
+      for (let j = 0; j < this.tableData[i].selectedSubHead.cdaParkingTrans.length; j++) {
+        if(this.tableData[i].selectedSubHead.cdaParkingTrans.length==1){
+          this.tableData[i].selectedSubHead.cdaParkingTrans[0].amount=this.tableData[i].selectedSubHead.amount;
+        }
+        if (this.tableData[i].selectedSubHead.cdaParkingTrans[j].amount != undefined) {
           cda.push({
-            cdaParkingId: this.finalData[i].cdaInfo[j].cdaParkingId,
-            cdaAmount: this.finalData[i].cdaInfo[j].amount,
+            cdaParkingId: this.tableData[i].selectedSubHead.cdaParkingTrans[j].cdaParkingId,
+            cdaAmount: this.tableData[i].selectedSubHead.cdaParkingTrans[j].amount,
+          }
+
+          );
+        }
+        else{
+          cda.push({
+            cdaParkingId: this.tableData[i].selectedSubHead.cdaParkingTrans[j].cdaParkingId,
+            cdaAmount: 0,
           });
         }
       }

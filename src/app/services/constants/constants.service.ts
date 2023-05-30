@@ -227,5 +227,6 @@ export class ConstantsService {
       this.serviceUrl + 'budgetAllocation/getAllocationByFinYear',
 
     updateAllocation: this.serviceUrl + 'budgetAllocation/updateAllocation',
+    getRevisedAllocationReport: this.serviceUrl + 'reportController/getRevisedAllocationReport',
   };
 }

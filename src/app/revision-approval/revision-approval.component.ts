@@ -8,6 +8,8 @@ import {CommonService} from "../services/common/common.service";
 import {Router} from "@angular/router";
 import {SharedService} from "../services/shared/shared.service";
 import Swal from "sweetalert2";
+import * as FileSaver from "file-saver";
+import {HttpClient} from "@angular/common/http";
 @Component({
   selector: 'app-revision-approval',
   templateUrl: './revision-approval.component.html',
@@ -28,7 +30,8 @@ export class RevisionApprovalComponent {
     private formBuilder: FormBuilder,
     private common: CommonService,
     private router: Router,
-    public sharedService: SharedService
+    public sharedService: SharedService,
+    private http: HttpClient,
   ) {}
   isInboxAndOutbox: any;
   type:any;
@@ -401,37 +404,17 @@ export class RevisionApprovalComponent {
     let totalR=0.0;
     let totalA=0.0;
     for(let i=0;i<this.budgetDataLists.length;i++){
-      // totalA=totalA+(parseFloat(this.budgetDataList[i].allocationAmount)*this.budgetDataList[i].amountUnit.amount);
-      // totalR=totalR+(parseFloat(this.budgetDataList[i].balanceAmount)*this.budgetDataList[i].remeningBalanceUnit.amount);
-      /*<th>F.Y.</th>
-      <th>Unit</th>
-      <th>Sub Head</th>
-      <th>Type</th>
-      <th>Allocated ({{this.amountUnit}})</th>
-      <th>Additional/Withdrawal ({{this.amountUnit}})</th>
-      <th>Revised ({{this.amountUnit}})</th>*/
       let table:any= {
         Financial_Year: this.budgetDataLists[i].finYear.finYear.replaceAll(',',' '),
         Unit: this.budgetDataLists[i].toUnit.descr.replaceAll(',',' '),
         Subhead: this.budgetDataLists[i].subHead.subHeadDescr.replaceAll(',',' '),
         Type: this.budgetDataLists[i].allocTypeId.allocType.replaceAll(',',' '),
         Allocated_Fund: this.budgetDataLists[i].allocationAmount.replaceAll(',',' ')+' ' +this.budgetDataLists[i].amountUnit.amountType,
-        AdditionalOrWithdrawal: this.budgetDataLists[i].revisedAmount.replaceAll(',',' ')+' ' +this.budgetDataLists[i].remeningBalanceUnit.amountType,
-        Revised:this.budgetDataLists[i].balanceAmount.replaceAll(',',' ')+' ' +this.budgetDataLists[i].remeningBalanceUnit.amountType
+        AdditionalOrWithdrawal: this.budgetDataLists[i].revisedAmount.replaceAll(',',' ')+' ' +this.budgetDataLists[i].amountUnit.amountType,
+        Revised:(parseFloat(this.budgetDataLists[i].allocationAmount)+parseFloat(this.budgetDataLists[i].revisedAmount))+' ' +this.budgetDataLists[i].amountUnit.amountType
       }
       tableData.push(table);
     }
-    // let table:any= {
-    //   Financial_Year: '',
-    //   To_Unit: '',
-    //   From_Unit: '',
-    //   Subhead: '',
-    //   Type: 'TOTAL',
-    //   Remaining_Amount: (parseFloat(totalR.toFixed(4))/10000000).toString() + 'Crore',
-    //   Allocated_Fund: (parseFloat(totalA.toFixed(4))/10000000).toString() + 'Crore'
-    // }
-    // tableData.push(table);
-    // Generate CSV content
     const csvContent = this.generateCsvData(tableData);
     // Create Blob object from CSV content
     const blob = new Blob([csvContent], { type: 'text/csv' });
@@ -451,26 +434,41 @@ export class RevisionApprovalComponent {
     this.filename=this.browseFileInput.nativeElement.value;
   }
 
-  downloadPdf() {
-    // this.apiService
-    //   .getApi(this.cons.api.saveAuthData)
-    //   .subscribe({
-    //     next: (v: object) => {
-    //       this.SpinnerService.hide();
-    //       let result: { [key: string]: any } = v;
-    //       if (result['message'] == 'success') {
-    //         this.router.navigate(['/dashboard']);
-    //         this.getDashBoardDta();
-    //       } else {
-    //         this.common.faliureAlert('Please try later', result['message'], '');
-    //       }
-    //     },
-    //     error: (e) => {
-    //       this.SpinnerService.hide();
-    //       console.error(e);
-    //       this.common.faliureAlert('Error', e['error']['message'], 'error');
-    //     },
-    //     complete: () => console.info('complete'),
-    //   });
+  downloadPDF() {
+    this.apiService
+      .getApi(this.cons.api.getRevisedAllocationReport+'/'+localStorage.getItem('group_id'))
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            this.downloadPdf(
+              result['response'][0].path,
+              result['response'][0].fileName
+            );
+            console.log(result['response']);
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
+  }
+  downloadPdf(pdfUrl: string, fileName: any): void {
+    this.http.get(pdfUrl, { responseType: 'blob' }).subscribe(
+      (blob: Blob) => {
+        this.SpinnerService.hide();
+        FileSaver.saveAs(blob, fileName);
+      },
+      (error) => {
+        this.SpinnerService.hide();
+        console.error('Failed to download PDF:', error);
+      }
+    );
   }
 }

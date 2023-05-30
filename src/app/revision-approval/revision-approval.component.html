@@ -329,7 +329,7 @@
             </div>
           </div>
           <div><button type="submit" class="btn btn-primary mr-2" (click)="downloadCsv()">Download Csv</button></div>
-          <div><button type="submit" class="btn btn-primary mr-2" (click)="downloadPdf()">Download Pdf</button></div>
+          <div *ngIf="isInboxAndOutbox=='Inbox' && userRole=='Budget Manager'"><button type="submit" class="btn btn-primary mr-2" (click)="downloadPDF()">Download Pdf</button></div>
         </div>
         <div  class="card card-default">
           <h3 class="card-title">Previous Revisions</h3>
