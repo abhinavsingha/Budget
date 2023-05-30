@@ -13,13 +13,13 @@ import Swal from 'sweetalert2';
 import { SharedService } from '../services/shared/shared.service';
 import { MultiCdaParking } from '../model/multi-cda-parking';
 import * as Papa from 'papaparse';
-class TableData{
-  Financial_Year:any;
-  To_Unit:any;
-  From_Unit:any;
-  Subhead:any;
-  Type:any;
-  Allocated_Fund:any;
+class TableData {
+  Financial_Year: any;
+  To_Unit: any;
+  From_Unit: any;
+  Subhead: any;
+  Type: any;
+  Allocated_Fund: any;
 }
 @Component({
   selector: 'app-budget-approver',
@@ -41,7 +41,7 @@ export class BudgetApproverComponent implements OnInit {
 
   isInboxAndOutbox: any;
   private amountUnitData: any;
-  private currentIndex: number=0;
+  private currentIndex: number = 0;
 
   ngOnInit(): void {
     if (
@@ -171,14 +171,14 @@ export class BudgetApproverComponent implements OnInit {
 
   approveFormFinally(formDataValue: any) {
     this.SpinnerService.show();
-    let cdapark:any[]=[];
-    for(let list of this.budgetDataList){
-      for(let cda of list.cdaData){
-        const entry={
-          cdacrDrId:cda.cdaCrdrId,
-          allocatedAmount:cda.amount,
-          allocatedAmountType:cda.amountTypeMain.amountTypeId
-        }
+    let cdapark: any[] = [];
+    for (let list of this.budgetDataList) {
+      for (let cda of list.cdaData) {
+        const entry = {
+          cdacrDrId: cda.cdaCrdrId,
+          allocatedAmount: cda.amount,
+          allocatedAmountType: cda.amountTypeMain.amountTypeId,
+        };
         cdapark.push(entry);
       }
     }
@@ -186,7 +186,7 @@ export class BudgetApproverComponent implements OnInit {
       authGroupId: this.budgetDataList[0].authGroupId,
       status: 'Approved',
       remarks: formDataValue.remarks,
-      cdaParkingId:cdapark
+      cdaParkingId: cdapark,
     };
     this.apiService
       .postApi(this.cons.api.approveBudgetOrReject, submitJson)
@@ -218,14 +218,14 @@ export class BudgetApproverComponent implements OnInit {
 
   returnFormFinally(formDataValue: any) {
     this.SpinnerService.show();
-    let cdapark:any[]=[];
-    for(let list of this.budgetDataList){
-      for(let cda of list.cdaData){
-        const entry={
-          cdacrDrId:cda.cdaCrdrId,
-          allocatedAmount:cda.amount,
-          allocatedAmountType:cda.amountTypeMain.amountTypeId
-        }
+    let cdapark: any[] = [];
+    for (let list of this.budgetDataList) {
+      for (let cda of list.cdaData) {
+        const entry = {
+          cdacrDrId: cda.cdaCrdrId,
+          allocatedAmount: cda.amount,
+          allocatedAmountType: cda.amountTypeMain.amountTypeId,
+        };
         cdapark.push(entry);
       }
     }
@@ -233,7 +233,7 @@ export class BudgetApproverComponent implements OnInit {
       authGroupId: this.budgetDataList[0].authGroupId,
       status: 'Rejected',
       remarks: formDataValue.remarks,
-      cdaParkingId:cdapark
+      cdaParkingId: cdapark,
     };
     this.apiService
       .postApi(this.cons.api.approveBudgetOrReject, submitJson)
@@ -268,13 +268,13 @@ export class BudgetApproverComponent implements OnInit {
   showSubmit: boolean = false;
   amountUnit: any;
   showSubHeadDataInNextPage: any;
-  addCDAParking(data: any,index:number) {
-    this.currentIndex=index;
+  addCDAParking(data: any, index: number) {
+    this.currentIndex = index;
     debugger;
     this.getCurrentSubHeadData = data;
     this.showSubHeadDataInNextPage = data.subHead.subHeadDescr;
     this.amountUnit = data.amountUnit.amountType;
-    this.amountUnitData=data.amountUnit;
+    this.amountUnitData = data.amountUnit;
     this.multipleCdaParking = [];
     this.multipleCdaParking.push(new MultiCdaParking());
     this.totalAmountToAllocateCDAParking = data.allocationAmount;
@@ -323,7 +323,7 @@ export class BudgetApproverComponent implements OnInit {
     this.cdaParkingListResponseData = [];
     for (var i = 0; i < this.multipleCdaParking.length; i++) {
       this.cdaParkingListResponseData.push({
-        amountTypeId:this.amountUnitData.amountTypeId,
+        amountTypeId: this.amountUnitData.amountTypeId,
         budgetFinancialYearId: this.getCurrentSubHeadData.finYear.serialNo,
         allocationTypeID: this.getCurrentSubHeadData.allocTypeId.allocTypeId,
         ginNo: this.multipleCdaParking[i].cdaParkingUnit.ginNo,
@@ -350,9 +350,13 @@ export class BudgetApproverComponent implements OnInit {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
-            this.budgetDataList[this.currentIndex].isCDAparking='1';
+            this.budgetDataList[this.currentIndex].isCDAparking = '1';
             // this.router.navigate(['/budget-approval']);
-            this.common.successAlert('Cda Saved','CDA Parking Saved succesfully','');
+            this.common.successAlert(
+              'Cda Saved',
+              'CDA Parking Saved succesfully',
+              ''
+            );
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
@@ -398,7 +402,7 @@ export class BudgetApproverComponent implements OnInit {
   authGroupIdFromBackend: any;
   showUpdate: boolean = false;
   viewCDAParking(budgetData: any) {
-    this.amountUnitData=budgetData.amountUnit;
+    this.amountUnitData = budgetData.amountUnit;
     this.showUpdate = true;
     this.showSubmit = false;
     this.showSubHeadDataInNextPage = budgetData.subHead.subHeadDescr;
@@ -493,7 +497,8 @@ export class BudgetApproverComponent implements OnInit {
     ).toFixed(4);
     if (
       this.balancedRemaingCdaParkingAmount == '0' ||
-      this.balancedRemaingCdaParkingAmount == '0.0000'
+      this.balancedRemaingCdaParkingAmount == '0.0000' ||
+      this.balancedRemaingCdaParkingAmount == '-0.0000'
     ) {
       this.isdisableSubmitButton = false;
       this.isdisableUpdateButton = false;
@@ -507,8 +512,10 @@ export class BudgetApproverComponent implements OnInit {
     this.getCurrentSubHeadData;
     this.multipleCdaParking;
     this.cdaParkingListResponseData = [];
+    debugger;
     for (var i = 0; i < this.multipleCdaParking.length; i++) {
       this.cdaParkingListResponseData.push({
+        amountTypeId: this.amountUnitData.amountTypeId,
         budgetFinancialYearId: this.getCurrentSubHeadData.finYear.serialNo,
         allocationTypeID: this.getCurrentSubHeadData.allocTypeId.allocTypeId,
         ginNo: this.multipleCdaParking[i].cdaParkingUnit.ginNo,
@@ -516,8 +523,10 @@ export class BudgetApproverComponent implements OnInit {
         currentParkingAmount: this.multipleCdaParking[i].cdaParkingUnit.amount,
         availableParkingAmount: this.multipleCdaParking[i].amount,
         authGroupId: this.getCurrentSubHeadData.authGroupId,
+        transactionId: this.getCurrentSubHeadData.allocationId,
       });
     }
+
     this.updateCdaParkingData(this.cdaParkingListResponseData);
   }
 
@@ -634,9 +643,12 @@ export class BudgetApproverComponent implements OnInit {
   //   document.removeChild(link);
   // }
 
-
-
-  generateCSV(data: any[], columns: string[], filename: string,column: string[]) {
+  generateCSV(
+    data: any[],
+    columns: string[],
+    filename: string,
+    column: string[]
+  ) {
     const csvData: any[][] = [];
 
     // Add column names as the first row
@@ -657,72 +669,97 @@ export class BudgetApproverComponent implements OnInit {
     // Create a CSV file download
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
 
-      const link = document.createElement('a');
-      if (link.download !== undefined) {
-        // Browsers that support HTML5 download attribute
-        const url = URL.createObjectURL(blob);
-        link.setAttribute('href', url);
-        link.setAttribute('download', filename);
-        link.style.visibility = 'hidden';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      } else {
-        // Fallback for unsupported browsers
-        alert('CSV download is not supported in this browser.');
-      }
-
+    const link = document.createElement('a');
+    if (link.download !== undefined) {
+      // Browsers that support HTML5 download attribute
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', filename);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      // Fallback for unsupported browsers
+      alert('CSV download is not supported in this browser.');
+    }
   }
-
 
   downloadCsv() {
     // Example data and column names
-      let tableData=[];
-      let totalR=0.0;
-      let totalA=0.0;
-      for(let i=0;i<this.budgetDataList.length;i++){
-        totalA=totalA+(parseFloat(this.budgetDataList[i].allocationAmount)*this.budgetDataList[i].amountUnit.amount);
-        // totalR=totalR+(parseFloat(this.budgetDataList[i].balanceAmount)*this.budgetDataList[i].remeningBalanceUnit.amount);
-        let table:any= {
-          Financial_Year: this.budgetDataList[i].finYear.finYear.replaceAll(',',' '),
-          To_Unit: this.budgetDataList[i].toUnit.descr.replaceAll(',',' '),
-          From_Unit: this.budgetDataList[i].fromUnit.descr.replaceAll(',',' '),
-          Subhead: this.budgetDataList[i].subHead.subHeadDescr.replaceAll(',',' '),
-          Type: this.budgetDataList[i].allocTypeId.allocType.replaceAll(',',' '),
-          // Remaining_Amount: (parseFloat(this.budgetDataList[i].balanceAmount)*this.budgetDataList[i].remeningBalanceUnit.amount/this.budgetDataList[i].amountUnit.amount).toString(),
-          Allocated_Fund: (this.budgetDataList[i].allocationAmount.replaceAll(',',' ')).toString()
-        }
-        tableData.push(table);
-      }
-      let table:TableData= {
-        Financial_Year: '',
-        To_Unit: '',
-        From_Unit: '',
-        Subhead: '',
-        Type: 'TOTAL',
-        Allocated_Fund: (parseFloat(totalA.toFixed(4))/parseFloat(this.budgetDataList[0].amountUnit.amount)).toString()
-      }
+    let tableData = [];
+    let totalR = 0.0;
+    let totalA = 0.0;
+    for (let i = 0; i < this.budgetDataList.length; i++) {
+      totalA =
+        totalA +
+        parseFloat(this.budgetDataList[i].allocationAmount) *
+          this.budgetDataList[i].amountUnit.amount;
+      // totalR=totalR+(parseFloat(this.budgetDataList[i].balanceAmount)*this.budgetDataList[i].remeningBalanceUnit.amount);
+      let table: any = {
+        Financial_Year: this.budgetDataList[i].finYear.finYear.replaceAll(
+          ',',
+          ' '
+        ),
+        To_Unit: this.budgetDataList[i].toUnit.descr.replaceAll(',', ' '),
+        From_Unit: this.budgetDataList[i].fromUnit.descr.replaceAll(',', ' '),
+        Subhead: this.budgetDataList[i].subHead.subHeadDescr.replaceAll(
+          ',',
+          ' '
+        ),
+        Type: this.budgetDataList[i].allocTypeId.allocType.replaceAll(',', ' '),
+        // Remaining_Amount: (parseFloat(this.budgetDataList[i].balanceAmount)*this.budgetDataList[i].remeningBalanceUnit.amount/this.budgetDataList[i].amountUnit.amount).toString(),
+        Allocated_Fund: this.budgetDataList[i].allocationAmount
+          .replaceAll(',', ' ')
+          .toString(),
+      };
       tableData.push(table);
+    }
+    let table: TableData = {
+      Financial_Year: '',
+      To_Unit: '',
+      From_Unit: '',
+      Subhead: '',
+      Type: 'TOTAL',
+      Allocated_Fund: (
+        parseFloat(totalA.toFixed(4)) /
+        parseFloat(this.budgetDataList[0].amountUnit.amount)
+      ).toString(),
+    };
+    tableData.push(table);
     // const data = [
     //   { name: 'John', age: 30, city: 'New York' },
     //   { name: 'Jane', age: 25, city: 'San Francisco' },
     //   { name: 'Bob', age: 35, city: 'Chicago' },
     // ];
-    const columns = ['Financial_Year', 'To_Unit', 'From_Unit','Subhead','Type','Allocated_Fund'+' in '+this.budgetDataList[0].amountUnit.amountType];
-    const column = ['Financial_Year', 'To_Unit', 'From_Unit','Subhead','Type','Allocated_Fund'];
-    const filename = this.type+'.csv';
+    const columns = [
+      'Financial_Year',
+      'To_Unit',
+      'From_Unit',
+      'Subhead',
+      'Type',
+      'Allocated_Fund' + ' in ' + this.budgetDataList[0].amountUnit.amountType,
+    ];
+    const column = [
+      'Financial_Year',
+      'To_Unit',
+      'From_Unit',
+      'Subhead',
+      'Type',
+      'Allocated_Fund',
+    ];
+    const filename = this.type + '.csv';
 
     // Generate and download the CSV file
     this.generateCSV(tableData, columns, filename, column);
   }
-  cdaData:any[]=[]
+  cdaData: any[] = [];
   cdaDataList(cdaData: any) {
-
-    this.cdaData=cdaData;
+    this.cdaData = cdaData;
     debugger;
   }
 
   resetCdaList() {
-    this.cdaData=[];
+    this.cdaData = [];
   }
 }
