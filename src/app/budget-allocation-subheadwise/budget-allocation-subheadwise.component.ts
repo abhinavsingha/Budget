@@ -63,8 +63,8 @@ export class BudgetAllocationSubheadwiseComponent {
     this.getSubHeadsData();
     this.getCgUnitData();
     // this.getAllocationTypeData();
-    this.getNewEmptyEntries();
-    this.getUnitDatas();
+    // this.getNewEmptyEntries();
+    // this.getUnitDatas();
     this.uploadDocuments.push(new UploadDocuments());
     this.sharedDashboardData();
     $.getScript('assets/main.js');
@@ -80,10 +80,21 @@ export class BudgetAllocationSubheadwiseComponent {
   ) {}
 
   getNewEmptyEntries() {
-    this.subHeadWiseUnitList.push(new SubHeadWiseUnitList());
-    this.subHeadWiseUnitList.push(new SubHeadWiseUnitList());
-    this.subHeadWiseUnitList.push(new SubHeadWiseUnitList());
-    this.subHeadWiseUnitList.push(new SubHeadWiseUnitList());
+    for(let unit of this.allunits){
+      let entry:SubHeadWiseUnitList= {
+        id: undefined,
+        unit: unit,
+        amount: 0.0000,
+        isSelected: true,
+        amountUnit: undefined,
+        cdaParkingId: []
+      }
+      this.subHeadWiseUnitList.push(entry);
+    }
+    // this.subHeadWiseUnitList.push(new SubHeadWiseUnitList());
+    // this.subHeadWiseUnitList.push(new SubHeadWiseUnitList());
+    // this.subHeadWiseUnitList.push(new SubHeadWiseUnitList());
+    // this.subHeadWiseUnitList.push(new SubHeadWiseUnitList());
   }
 
   newFormGroup() {
@@ -155,6 +166,7 @@ export class BudgetAllocationSubheadwiseComponent {
         if (result['message'] == 'success') {
           this.allunits = result['response'];
           this.SpinnerService.hide();
+          this.getNewEmptyEntries();
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
@@ -312,14 +324,14 @@ export class BudgetAllocationSubheadwiseComponent {
 
   uploadDocuments: any[] = [];
   unitForDocuments: any[] = [];
-  getUnitDatas() {
-    this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
-      this.SpinnerService.hide();
-      let result: { [key: string]: any } = res;
-      this.unitForDocuments = result['response'];
-    });
-  }
+  // getUnitDatas() {
+  //   this.SpinnerService.show();
+  //   this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
+  //     this.SpinnerService.hide();
+  //     let result: { [key: string]: any } = res;
+  //     this.unitForDocuments = result['response'];
+  //   });
+  // }
   file: any;
 
   onChangeFile(event: any) {

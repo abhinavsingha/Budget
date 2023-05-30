@@ -135,7 +135,7 @@
                       <th>Unit</th>
                       <th>Amount</th>
                       <th *ngIf="cdaDetail!=undefined&&cdaDetail.length>1">CDA Selection</th>
-                      <th>Action</th>
+<!--                      <th>Action</th>-->
                     </tr>
                   </thead>
                   <tbody>
@@ -145,18 +145,20 @@
                         <div class="form-group">
                           <ng-select class="form-control select2bs4" style="width: 100%" [items]="allunits"
                             bindLabel="descr" appendTo="body" placeholder="Select To Unit"
-                            [(ngModel)]="subHeadWiseUnit.unit">
+                            [(ngModel)]="subHeadWiseUnit.unit" [readonly]="true">
                           </ng-select>
                         </div>
                       </td>
                       <td><input type="number" class="form-control" id="Aallocationamount"
                           placeholder="Please Enter Amount" [(ngModel)]="subHeadWiseUnit.amount"
                           (change)="allocatedAmount(i)" /></td>
-                      <td *ngIf="cdaDetail!=undefined&&cdaDetail.length>1">
+                      <td *ngIf="cdaDetail!=undefined&&cdaDetail.length>1&&subHeadWiseUnit.amount>0">
                         <button type="submit" class="btn btn-warning mr-2" data-toggle="modal" data-target="#modal-lg" (click)="addCda(subHeadWiseUnit,i)" >Select CDA</button>
                       </td>
-                      <td><button type="submit" class="btn btn-danger mr-2"
-                          (click)="deleteSubHeadWiseUnitList(i)">Delete</button></td>
+                      <td *ngIf="cdaDetail!=undefined&&cdaDetail.length>1&&subHeadWiseUnit.amount==0">
+                      </td>
+<!--                      <td><button type="submit" class="btn btn-danger mr-2"-->
+<!--                          (click)="deleteSubHeadWiseUnitList(i)">Delete</button></td>-->
                     </tr>
                   </tbody>
                   <tfoot>
