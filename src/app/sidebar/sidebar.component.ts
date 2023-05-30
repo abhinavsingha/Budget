@@ -38,6 +38,9 @@ export class SidebarComponent {
     //   localStorage.setItem('user_role', 'Admin');
     // }
     this.getDashBoardDta();
+    $.getScript('assets/plugins/bootstrap/js/bootstrap.bundle.min.js');
+    $('.collapse').hide();
+    $('.collapse2').hide();
   }
 
   constructor(
@@ -50,6 +53,29 @@ export class SidebarComponent {
     private common: CommonService
   ) {}
 
+  dropMenu() {
+    if ($('.collapse').hasClass('show')) {
+      $('.collapse').removeClass('show');
+      $('.drop-budget').removeClass('menu-open');
+      $('.collapse').hide();
+    } else {
+      $('.collapse').show();
+      $('.collapse').addClass('show');
+      $('.drop-budget').addClass('menu-open');
+    }
+  }
+
+  dropMenuReport() {
+    if ($('.collapse2').hasClass('show')) {
+      $('.collapse2').removeClass('show');
+      $('.drop-report').removeClass('menu-open');
+      $('.collapse2').hide();
+    } else {
+      $('.collapse2').show();
+      $('.collapse2').addClass('show');
+      $('.drop-report').addClass('menu-open');
+    }
+  }
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('cgwwaUserDetails');

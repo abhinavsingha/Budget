@@ -60,15 +60,15 @@
             </p>
           </a>
         </li>
-        <li class="nav-item menu-is-opening menu-open" *ngIf="userRole=='Budget Manager'">
-          <a href="#" class="nav-link">
+        <li class="nav-item drop-budget" *ngIf="userRole=='Budget Manager'">
+          <a href="#" class="nav-link" (click)="dropMenu()">
             <i class="nav-icon fas fa-rupee-sign"></i>
             <p>
               Budget
               <i class="fas fa-angle-left right"></i>
             </p>
           </a>
-          <ul class="nav nav-treeview">
+          <ul class="nav nav-treeview" class="nav collapse">
             <li class="nav-item" *ngIf="userRole=='Budget Manager' && this.unitId == '001321'">
               <a href="#" class="nav-link" [routerLink]="['/reciept']" [routerLinkActive]="['active']">
                 <i class="fas fa-file-alt nav-icon"></i>
@@ -128,6 +128,36 @@
             <p>New Contingent Bill</p>
           </a>
         </li>
+
+        <li class="nav-item drop-report">
+          <a class="nav-link" (click)="dropMenuReport()">
+            <i class="nav-icon fas fa-rupee-sign"></i>
+            <p>Report <i class="fas fa-angle-left right"></i></p>
+          </a>
+          <ul class="nav collapse2">
+            <li class="nav-item" *ngIf=" userRole=='Budget Approver' || userRole=='Budget Manager'">
+              <a href="#" class="nav-link" [routerLink]="['/budget-allocation-report']" [routerLinkActive]="['active']">
+                <i class="fas fa-file-download nav-icon"></i>
+                <p>Budget Allocation Report</p>
+              </a>
+            </li>
+            <li class="nav-item" *ngIf=" userRole=='Budget Approver'|| userRole=='Budget Manager'">
+              <a href="#" class="nav-link" [routerLink]="['/cda-parking-report']" [routerLinkActive]="['active']">
+                <i class="fas fa-file-invoice nav-icon"></i>
+                <p>CDA Parking Report</p>
+              </a>
+            </li>
+            <li class="nav-item" *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'">
+              <a href="#" class="nav-link" [routerLink]="['/unit-rebase-report']" [routerLinkActive]="['active']">
+                <i class="fas fa-ship nav-icon"></i>
+                <p>Unit Rebase Report</p>
+              </a>
+
+
+            </li>
+
+          </ul>
+        </li>
         <!--        <li class="nav-item" *ngIf=" userRole=='CB Creator'">-->
         <!--          <a href="#" class="nav-link" [routerLink]="['/cb-verification']" [routerLinkActive]="['active']">-->
         <!--            <i class="fas fa-file-alt nav-icon"></i>-->
@@ -137,24 +167,14 @@
 
         <!-- <li class="nav-item"
           *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'|| userRole=='CB Creator'|| userRole=='CB Approver' || userRole=='Viewer'"> -->
-        <li class="nav-item" *ngIf=" userRole=='Budget Approver' || userRole=='Budget Manager'">
-          <a href="#" class="nav-link" [routerLink]="['/budget-allocation-report']" [routerLinkActive]="['active']">
-            <i class="fas fa-file-download nav-icon"></i>
-            <p>Budget Allocation Report</p>
-          </a>
-        </li>
+
         <!-- <li class="nav-item " *ngIf="userRole=='Budget Manager' || userRole=='CB Creator'">
           <a href="#" class="nav-link" [routerLink]="['/cda-parking']" [routerLinkActive]="['active']">
             <i class="fas fa-coins nav-icon"></i>
             <p>CDA Parking</p>
           </a>
         </li> -->
-        <li class="nav-item" *ngIf=" userRole=='Budget Approver'|| userRole=='Budget Manager'">
-          <a href="#" class="nav-link" [routerLink]="['/cda-parking-report']" [routerLinkActive]="['active']">
-            <i class="fas fa-file-invoice nav-icon"></i>
-            <p>CDA Parking Report</p>
-          </a>
-        </li>
+
         <li class="nav-item" *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'">
           <a href="#" class="nav-link" [routerLink]="['/unit-rebase']" [routerLinkActive]="['active']">
             <i class="fas fa-ship nav-icon"></i>
@@ -167,12 +187,9 @@
             <p>All Allocation</p>
           </a>
         </li>
-        <li class="nav-item" *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'">
-          <a href="#" class="nav-link" [routerLink]="['/unit-rebase-report']" [routerLinkActive]="['active']">
-            <i class="fas fa-ship nav-icon"></i>
-            <p>Unit Rebase Report</p>
-          </a>
-        </li>
+
+
+
       </ul>
     </nav>
     <!-- /.sidebar-menu -->
