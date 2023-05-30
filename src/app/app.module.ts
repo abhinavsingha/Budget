@@ -124,6 +124,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     SearchUserPipePipe,
     ApprovedComponent,
     UnitRebaseReportComponent,
+
     // ViewFormComponent
     // DialogComponent,
   ],

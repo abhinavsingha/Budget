@@ -110,6 +110,11 @@
                         formControlName="remarks" />
                     </div>
                   </div>
+                  <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary mr-2"
+                      (click)="saveFurtherTable(formdata.value)">Save</button>
+                    <label style="opacity:0">.</label><br>
+                  </div>
                 </div>
 
               </div>
@@ -125,8 +130,8 @@
                         <th>Fund Available</th>
                         <th style="width:10%;">Amount <span style="font-size: 9px;">(in {{amountUnit}})</span></th>
                         <!--                        <th>Amount Unit</th>-->
-                         <th>CDA Selection</th>
-                        <th>Action</th>
+                        <th>CDA Selection</th>
+                        <!-- <th>Action</th> -->
                       </tr>
                     </thead>
                     <tbody>
@@ -144,12 +149,19 @@
                             (change)="allocatedAmount(i,formdata.value)" style="width:102px;" />
                         </td>
                         <td>
-                          <button *ngIf="subHeadData.cdaParkingTrans.length>1" type="submit" class="btn btn-warning mr-2" data-toggle="modal" data-target="#modal-lg" (click)="populateCda(subHeadData,i)">Select CDA</button>
+                          <button *ngIf="subHeadData.cdaParkingTrans.length>1" type="submit"
+                            class="btn btn-warning mr-2" data-toggle="modal" data-target="#modal-lg"
+                            (click)="populateCda(subHeadData,i)">Select CDA</button>
                         </td>
-                        <td>
-                          <button *ngIf="subHeadData.cdaParkingTrans.length>1  && !cdaAllocationbalance " type=" submit" class="btn btn-primary mr-2" (click)="addSubHeadValue(subHeadData, formdata.value, i)" disabled >Add</button>
-                          <button *ngIf="subHeadData.cdaParkingTrans.length<=1 || (subHeadData.cdaParkingTrans.length>1 && cdaAllocationbalance) " type=" submit" class="btn btn-primary mr-2" (click)="addSubHeadValue(subHeadData, formdata.value, i)"  >Add</button>
-                        </td>
+                        <!-- <td>
+                          <button *ngIf="subHeadData.cdaParkingTrans.length>1  && !cdaAllocationbalance " type=" submit"
+                            class="btn btn-primary mr-2" (click)="addSubHeadValue(subHeadData, formdata.value, i)"
+                            disabled>Add</button>
+                          <button
+                            *ngIf="subHeadData.cdaParkingTrans.length<=1 || (subHeadData.cdaParkingTrans.length>1 && cdaAllocationbalance) "
+                            type=" submit" class="btn btn-primary mr-2"
+                            (click)="addSubHeadValue(subHeadData, formdata.value, i)">Add</button>
+                        </td> -->
                         <!-- </div> -->
                       </tr>
                     </tbody>
@@ -179,38 +191,40 @@
                       <th>Sub Head</th>
                       <th>Amount (in {{amountUnit}})</th>
                       <!-- <th>Remarks</th> -->
-                      <th>Action</th>
+                      <!-- <th>Action</th> -->
                     </tr>
                   </thead>
                   <tbody>
                     <tr
-                      *ngFor="let newBudgetAllocation of tableData  | paginate :{itemsPerPage:10,currentPage:p}; let i = index">
+                      *ngFor="let newBudgetAllocation of tableData  | paginate :{itemsPerPage:25,currentPage:p}; let i = index">
 
-                      <td>{{i+1}}</td>
+                      <td>{{25 *(p-1)+i+1}}</td>
                       <td>{{newBudgetAllocation.financialYear.finYear}}</td>
                       <td>{{newBudgetAllocation.unitName.descr}}</td>
                       <td>{{newBudgetAllocation.allocationType.allocDesc}}</td>
                       <td>{{newBudgetAllocation.selectedSubHead.subHeadDescr}}</td>
-                      <td>{{newBudgetAllocation.selectedSubHead.amount}}</td>
+                      <td *ngIf="newBudgetAllocation.selectedSubHead.amount == undefined">
+                        0
+                      </td>
+                      <td *ngIf="newBudgetAllocation.selectedSubHead.amount != undefined">
+                        {{newBudgetAllocation.selectedSubHead.amount}}
+                      </td>
                       <!-- <td>{{newBudgetAllocation.remarks}}</td> -->
-                      <button type=" submit" class="btn btn-danger mr-2"
-                        (click)="deleteRowFromTableData(newBudgetAllocation,i)">Delete</button>
+                      <!-- <button type=" submit" class="btn btn-danger mr-2"
+                        (click)="deleteRowFromTableData(newBudgetAllocation,i)">Delete</button> -->
                     </tr>
 
                   </tbody>
                 </table>
 
               </div>
-              <!-- <div class="row mt-2">
+              <div class="row mt-2">
 
                 <div class="col-sm-12 col-md-12">
-                  <button type="submit" class="btn btn-danger mr-2 float-left"
-                    (click)="delteFromTable()">Delete</button>
-
                   <pagination-controls (pageChange)="p = $event" class="pagination float-right"></pagination-controls>
 
                 </div>
-              </div> -->
+              </div>
             </div>
           </div>
 
@@ -250,7 +264,7 @@
                 <table class="table table-hover text-nowrap">
                   <thead>
                     <tr>
-<!--                      <th>Sr.No.</th>-->
+                      <!--                      <th>Sr.No.</th>-->
                       <th>CDA</th>
                       <th>Amount (in {{amountUnit}})</th>
                       <th>Withdrawl (in {{amountUnit}})</th>
@@ -260,7 +274,9 @@
                     <tr *ngFor="let cda of cdaDetail">
                       <td>{{cda.ginNo.cdaName}}</td>
                       <td>{{cda.remainingCdaAmount}}</td>
-                      <td><input type="number" id="Allocationamount" class="form-control" placeholder="Please Enter Amount" [(ngModel)]="cda.amount" (change)="cdaWithdrawl(cda)"/></td>
+                      <td><input type="number" id="Allocationamount" class="form-control"
+                          placeholder="Please Enter Amount" [(ngModel)]="cda.amount" (change)="cdaWithdrawl(cda)" />
+                      </td>
                     </tr>
 
                   </tbody>
@@ -278,7 +294,8 @@
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-          <button *ngIf="cdaAllocationbalance" type="button" data-dismiss="modal" class="btn btn-primary">Submit</button>
+          <button *ngIf="cdaAllocationbalance" type="button" data-dismiss="modal"
+            class="btn btn-primary">Submit</button>
         </div>
       </div>
       <!-- /.modal-content -->
