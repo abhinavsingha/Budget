@@ -69,7 +69,7 @@ export class BudgetAllocationReportComponent implements OnInit {
     this.getCgUnitData();
     this.majorDataNew();
     this.getSubHeadsData();
-    // this.getAllocationType();
+    this.getAllocationType();
     this.getAmountType();
     this.allocationType=this.sharedService.getAllocationTypeData();
     debugger;
@@ -183,20 +183,20 @@ export class BudgetAllocationReportComponent implements OnInit {
     });
   }
 
-  // getAllocationType() {
-  //   this.SpinnerService.show();
-  //   this.apiService
-  //     .getApi(this.cons.api.getAllocationTypeData)
-  //     .subscribe((res) => {
-  //       let result: { [key: string]: any } = res;
-  //       if (result['message'] == 'success') {
-  //         this.allocationType = result['response'];
-  //         this.SpinnerService.hide();
-  //       } else {
-  //         this.common.faliureAlert('Please try later', result['message'], '');
-  //       }
-  //     });
-  // }
+  getAllocationType() {
+    this.SpinnerService.show();
+    this.apiService
+      .getApi(this.cons.api.getAllocationTypeData)
+      .subscribe((res) => {
+        let result: { [key: string]: any } = res;
+        if (result['message'] == 'success') {
+          this.allocationType = result['response'];
+          this.SpinnerService.hide();
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      });
+  }
 
   getAllocationReportRevised() {
     this.SpinnerService.show();
@@ -512,8 +512,8 @@ export class BudgetAllocationReportComponent implements OnInit {
         .getApi(
           this.cons.api.getREAllocationReport +
             '/' +
-            formdata.finYear.serialNo +
-            '/ALL_106' +
+            formdata.finYear.serialNo +'/'+
+          formdata.allocationType.allocTypeId +
             '/' +
             formdata.amountType.amountTypeId
         )
@@ -627,7 +627,9 @@ export class BudgetAllocationReportComponent implements OnInit {
           this.cons.api.getMainBEAllocationReport +
           '/' +
           formdata.finYear.serialNo +
-          '/ALL_101' +
+          '/' +
+          formdata.allocationType.allocTypeId+
+
           '/' +
           formdata.amountType.amountTypeId+'/'+formdata.toDate+'/'+formdata.fromDate
         )
