@@ -159,7 +159,7 @@ export class BudgetAllocationSubheadwiseComponent {
 
   getCgUnitData() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe({
+    this.apiService.getApi(this.cons.api.getCgUnitWithoutMOD).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
