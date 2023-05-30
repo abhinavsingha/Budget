@@ -44,6 +44,7 @@ export class BudgetApproverComponent implements OnInit {
   private currentIndex: number = 0;
 
   ngOnInit(): void {
+    debugger;
     if (
       localStorage.getItem('isInboxOrOutbox') != null ||
       localStorage.getItem('isInboxOrOutbox') != undefined

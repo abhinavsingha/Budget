@@ -1195,6 +1195,18 @@ export class BudgetAllocationComponent implements OnInit {
     this.subHeadFilterDatas;
     debugger;
     for (var i = 0; i < this.subHeadFilterDatas.length; i++) {
+      let sum=0.0
+      for(let cda of this.subHeadFilterDatas[i].cdaParkingTrans){
+        if(cda.amount!=undefined){
+          sum=sum+parseFloat(cda.amount);
+        }
+      }
+      if(sum!=parseFloat(this.subHeadFilterDatas[i].amount))
+      {
+        this.tableData=[];
+        this.common.faliureAlert('CDA amount mismatch','CDA amount does not match allocation amount','');
+        return;
+      }
       this.tableData.push({
         financialYear: formDataValue.finYearId,
         unitName: formDataValue.unitId,

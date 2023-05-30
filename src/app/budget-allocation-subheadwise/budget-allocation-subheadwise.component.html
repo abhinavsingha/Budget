@@ -132,7 +132,7 @@
                 <table class="table table-hover text-nowrap" style="height: 262px;">
                   <thead>
                     <tr>
-                      <th>Unit</th>
+                      <th style="width:150px !important;">Unit</th>
                       <th>Amount</th>
                       <th *ngIf="cdaDetail!=undefined&&cdaDetail.length>1">CDA Selection</th>
 <!--                      <th>Action</th>-->
@@ -141,7 +141,7 @@
                   <tbody>
                     <tr *ngFor="let subHeadWiseUnit of subHeadWiseUnitList; let i = index">
 
-                      <td>
+                      <td style="width:150px !important;">
                         <div class="form-group">
                           <ng-select class="form-control select2bs4" style="width: 100%" [items]="allunits"
                             bindLabel="descr" appendTo="body" placeholder="Select To Unit"
@@ -161,14 +161,14 @@
 <!--                          (click)="deleteSubHeadWiseUnitList(i)">Delete</button></td>-->
                     </tr>
                   </tbody>
-                  <tfoot>
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td><button type="submit" class="btn btn-primary mr-2"
-                          (click)="moveDataToNextGrid(formdata.value)">Add Row</button></td>
-                    </tr>
-                  </tfoot>
+<!--                  <tfoot>-->
+<!--                    <tr>-->
+<!--                      <td></td>-->
+<!--                      <td></td>-->
+<!--                      <td><button type="submit" class="btn btn-primary mr-2"-->
+<!--                          (click)="moveDataToNextGrid(formdata.value)">Add Row</button></td>-->
+<!--                    </tr>-->
+<!--                  </tfoot>-->
                 </table>
 
               </div>
@@ -213,7 +213,7 @@
                 <div class="col-sm-12 col-md-12">
                   <button type="submit" class="btn btn-danger mr-2 float-left"
                     (click)="delteFromTable()">Delete</button>
-                  <pagination-controls class="pagination float-right"></pagination-controls>
+                  <pagination-controls class="pagination float-right" (pageChange)="p = $event"></pagination-controls>
                 </div>
               </div>
             </div>

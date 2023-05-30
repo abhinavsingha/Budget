@@ -100,7 +100,9 @@ export class ApprovedComponent implements OnInit {
     localStorage.setItem('isInboxOrOutbox','approved');
     this.sharedService.redirectedFrom='approved';
     localStorage.setItem('type',entry.isType);
+    localStorage.setItem('group_id',entry.groupId);
     this.sharedService.sharedValue = entry.groupId;
+
     this.sharedService.redirectedFrom = 'approved';
     debugger;
     if(entry.type=='BG'||entry.type=='BR'){

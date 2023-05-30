@@ -382,11 +382,11 @@ export class RevisionComponent {
     this.budgetRevisionUnitList2[index].manipulate2 = (parseFloat(this.budgetRevisionUnitList2[index].manipulate)+parseFloat(this.budgetRevisionUnitList2[index].revisionAmount)).toFixed(4);
     this.budgetRevisionUnitList2[index].revisionAmount=parseFloat(this.budgetRevisionUnitList2[index].revisionAmount).toFixed(4);
     debugger;
-    if(parseFloat(this.budgetRevisionUnitList2[index].manipulate2)<parseFloat(this.budgetRevisionUnitList2[index].expenditure)/parseFloat(this.formdata.get('amountType')?.value.amount)){
-      this.budgetRevisionUnitList2[index].revisionAmount=0
-      this.common.warningAlert('Allocation cannot be less than Expenditure','Allocation cannot be less than Expenditure','')
-      this.revisionAmount(index);
-    }
+    // if(parseFloat(this.budgetRevisionUnitList2[index].manipulate2)<parseFloat(this.budgetRevisionUnitList2[index].expenditure)/parseFloat(this.formdata.get('amountType')?.value.amount)){
+    //   this.budgetRevisionUnitList2[index].revisionAmount=0
+    //   this.common.warningAlert('Allocation cannot be less than Expenditure','Allocation cannot be less than Expenditure','')
+    //   this.revisionAmount(index);
+    // }
     this.getTotalAmount();
   }
 
@@ -464,7 +464,7 @@ export class RevisionComponent {
             amount: (parseFloat(this.budgetRevisionUnitList2[i].existingAmount)-parseFloat(this.budgetRevisionUnitList2[i].revisionAmount)).toFixed(4),
             allocated: parseFloat(this.budgetRevisionUnitList2[i].existingAmount).toFixed(4),
             revisedAmount: parseFloat(this.budgetRevisionUnitList2[i].revisionAmount).toFixed(4),
-            bal:parseFloat(this.budgetRevisionUnitList2[i].revisiedAmount).toFixed(4)
+            bal:parseFloat(this.budgetRevisionUnitList2[i].manipulate2).toFixed(4)
           };
         }
         else{
@@ -483,7 +483,7 @@ export class RevisionComponent {
               this.budgetRevisionUnitList2[i].revisionAmount
             ).toFixed(4),
             bal:parseFloat(
-              this.budgetRevisionUnitList2[i].revisiedAmount
+              this.budgetRevisionUnitList2[i].manipulate2
             ).toFixed(4)
           };
         }

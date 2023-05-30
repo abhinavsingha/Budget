@@ -244,7 +244,7 @@ export class BudgetAllocationSubheadwiseComponent {
     }
 
     for (let i = 0; i < this.subHeadWiseUnitList.length; i++) {
-      this.amount = this.amount + this.subHeadWiseUnitList[i].amount;
+      this.amount = this.amount + parseFloat(this.subHeadWiseUnitList[i].amount);
     }
     this.formdata.patchValue({
       currentAllocation: this.amount,
@@ -262,7 +262,7 @@ export class BudgetAllocationSubheadwiseComponent {
     });
 
     if (checkUserFilledAnyUnitData.length == this.subHeadWiseUnitList.length) {
-      this.common.faliureAlert('Please Fill atleast on unit data', '', '');
+      this.common.faliureAlert('Please Fill atleast one unit data', '', '');
       return;
     }
 
@@ -295,6 +295,17 @@ export class BudgetAllocationSubheadwiseComponent {
     }
     for (var i = 0; i < selectedUnitDataWithAmount.length; i++) {
       debugger;
+      let sum=0.0;
+      for(let cda of selectedUnitDataWithAmount[i].cdaParkingId){
+        if(cda.cdaAmount!=undefined){
+          sum=sum+parseFloat(cda.cdaAmount);
+        }
+      }
+      if(sum!=selectedUnitDataWithAmount[i].amount){
+        this.common.faliureAlert('CDA amount mismatch','CDA amount does not mactch allocated amount','');
+        this.budgetAllocationArray=[];
+        return;
+      }
       this.budgetAllocationArray.push({
         financialYear: formDataValue.finYear,
         unitName: selectedUnitDataWithAmount[i].unit,
