@@ -276,9 +276,13 @@ export class ApprovedBudgetComponent implements OnInit {
     window.open(this.invoicePath, '_blank');
   }
   cdaData:any;
+  cdaDataAmountUnit:string='';
   getCdaData(cdaData: any) {
     this.cdaData=cdaData;
+    if(cdaData.length>0)
+      this.cdaDataAmountUnit=cdaData[0].amountType.amountType;
     for(let cda of cdaData){
+      cda.remainingAmount=((parseFloat(cda.amountTypeMain.amount)*parseFloat(cda.remainingAmount))/parseFloat(cda.amountType.amount)).toFixed(4);
       cda.available=(parseFloat(cda.amount)+parseFloat(cda.remainingAmount)).toFixed(4);
     }
   }

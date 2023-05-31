@@ -761,8 +761,12 @@ export class BudgetApproverComponent implements OnInit {
   }
   cdaData: any[] = [];
   report: any;
+  allocAmountUnit: string='';
+  amountUnitType: string='';
   cdaDataList(cdaData: any) {
     this.cdaData = cdaData;
+    this.allocAmountUnit=cdaData[0].amountTypeMain.amountType;
+    this.amountUnitType=cdaData[0].amountType.amountType;
     debugger;
   }
 
