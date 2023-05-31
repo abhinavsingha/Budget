@@ -382,11 +382,11 @@ export class RevisionComponent {
     this.budgetRevisionUnitList2[index].manipulate2 = (parseFloat(this.budgetRevisionUnitList2[index].manipulate)+parseFloat(this.budgetRevisionUnitList2[index].revisionAmount)).toFixed(4);
     this.budgetRevisionUnitList2[index].revisionAmount=parseFloat(this.budgetRevisionUnitList2[index].revisionAmount).toFixed(4);
     debugger;
-    // if(parseFloat(this.budgetRevisionUnitList2[index].manipulate2)<parseFloat(this.budgetRevisionUnitList2[index].expenditure)/parseFloat(this.formdata.get('amountType')?.value.amount)){
-    //   this.budgetRevisionUnitList2[index].revisionAmount=0
-    //   this.common.warningAlert('Allocation cannot be less than Expenditure','Allocation cannot be less than Expenditure','')
-    //   this.revisionAmount(index);
-    // }
+    if(parseFloat(this.budgetRevisionUnitList2[index].manipulate2)<parseFloat(this.budgetRevisionUnitList2[index].expenditure)/parseFloat(this.formdata.get('amountType')?.value.amount)){
+      this.budgetRevisionUnitList2[index].revisionAmount=0
+      this.common.warningAlert('Allocation cannot be less than Expenditure','Allocation cannot be less than Expenditure: '+((parseFloat(this.budgetRevisionUnitList2[index].expenditure))/parseFloat(this.formdata.get('amountType')?.value.amount)).toFixed(4)+this.formdata.get('amountType')?.value.amountType,'')
+      this.revisionAmount(index);
+    }
     this.getTotalAmount();
   }
 
