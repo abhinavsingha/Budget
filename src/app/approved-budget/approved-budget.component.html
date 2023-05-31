@@ -72,22 +72,36 @@
                 </div>
 
                 <div class="row mt-2">
+
                   <div class="col-sm-12 col-md-5">
-                    <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
-                      <a class="btn btn-primary mr-2" href={{path}} target="_blank"><i class="fas fa-download"></i>
-                        Download</a>
-                    </div>
+<!--                    <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">-->
+<!--                      <a class="btn btn-primary mr-2" href={{path}} target="_blank"><i class="fas fa-download"></i>-->
+<!--                        Download</a>-->
+<!--                    </div>-->
+
                   </div>
                   <div class="col-sm-12 col-md-7">
+                    <div class="form-group" [formGroup]="formdata">
+                      <select class="form-control select2bs4" style="width: 100%"
+                              id="reporttype" formControlName="reportType" >
+                        <option selected disabled value="Select Report Type">--Select Report Type--</option>
+                        <option value="01">CSV Report</option>
+                        <option value="02">PDF Report</option>
+                        <option value="03">DOCX Report</option>
+                      </select>
+                    </div>
+                    <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
+                      <a class="btn btn-primary mr-2" (click)="downloadReport(formdata.value)" target="_blank"><i class="fas fa-download"></i>Download</a>
+                    </div>
                     <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
                       <pagination-controls class="pagination float-right"
-                        (pageChange)="p = $event"></pagination-controls>
+                                           (pageChange)="p = $event"></pagination-controls>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <!-- /.row -->
+                                  <!-- /.row -->
             <div class="row">
               <div class="col-md-4">
                 <div class="form-group">

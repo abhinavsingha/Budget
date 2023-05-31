@@ -63,7 +63,7 @@
                     <div class="form-group">
                       <label>Allocation Type</label>
                       <ng-select class="form-control select2bs4" style="width: 100%" [items]="allocationType"
-                        bindLabel="allocDesc" placeholder="Select Allocation Type" formControlName="allocationType">
+                                 [readonly]="true"   bindLabel="allocDesc" placeholder="Select Allocation Type" formControlName="allocationType">
                       </ng-select>
                     </div>
                   </div>

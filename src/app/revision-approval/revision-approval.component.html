@@ -324,11 +324,15 @@
           <!-- /.card-body -->
           <div class="card-footer">
             <div class="row" *ngIf="!status && userRole=='Budget Approver';">
-              <button type="submit" class="btn btn-primary mr-2 "  (click)="approveForm(formdata.value)">Approve</button>
-              <button type="submit" class="btn btn-danger"  (click)="returnFormFinally(formdata.value)">Return</button>
+              <button type="submit" class="btn btn-primary mr-2 "  (click)="approveForm(formdata.value)"> <i class="fas fa-check"></i>
+                Approve</button>
+              <button type="submit" class="btn btn-danger mr-2"  (click)="returnFormFinally(formdata.value)"><i class="fas fa-arrow-return"></i> Return</button>
+
+            </div>
+            <div class="row">
+              <button type="submit" class="btn btn-primary mr-2" (click)="downloadCsv()"><i class="fas fa-download"></i> Download Csv</button>
             </div>
           </div>
-          <div><button type="submit" class="btn btn-primary mr-2" (click)="downloadCsv()">Download Csv</button></div>
           <div *ngIf="isInboxAndOutbox=='Inbox' && userRole=='Budget Manager'"><button type="submit" class="btn btn-primary mr-2" (click)="downloadPDF()">Download Pdf</button></div>
         </div>
         <div  class="card card-default">

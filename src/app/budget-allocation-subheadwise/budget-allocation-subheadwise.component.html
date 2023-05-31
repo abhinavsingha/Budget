@@ -79,7 +79,7 @@
                     <div class="form-group">
                       <label>Allocation Type</label>
                       <ng-select class="form-control select2bs4" style="width: 100%" [items]="allocationType"
-                        bindLabel="allocDesc" placeholder="Select Allocation Type" formControlName="allocationType">
+                                 [readonly]="true" bindLabel="allocDesc" placeholder="Select Allocation Type" formControlName="allocationType">
                       </ng-select>
                     </div>
                   </div>
@@ -132,7 +132,7 @@
                 <table class="table table-hover text-nowrap" style="height: 262px;">
                   <thead>
                     <tr>
-                      <th style="width:150px !important;">Unit</th>
+                      <th >Unit</th>
                       <th>Amount</th>
                       <th *ngIf="cdaDetail!=undefined&&cdaDetail.length>1">CDA Selection</th>
 <!--                      <th>Action</th>-->
@@ -141,12 +141,13 @@
                   <tbody>
                     <tr *ngFor="let subHeadWiseUnit of subHeadWiseUnitList; let i = index">
 
-                      <td style="width:150px !important;">
+                      <td>
                         <div class="form-group">
-                          <ng-select class="form-control select2bs4" style="width: 100%" [items]="allunits"
-                            bindLabel="descr" appendTo="body" placeholder="Select To Unit"
-                            [(ngModel)]="subHeadWiseUnit.unit" [readonly]="true">
-                          </ng-select>
+                          <span   bindLabel="descr" [(ngModel)]="subHeadWiseUnit.unit">{{subHeadWiseUnit.unit.descr}}</span>
+<!--                          <ng-select class="form-control select2bs4" style="width: 100%" [items]="allunits"-->
+<!--                             appendTo="body" placeholder="Select To Unit"-->
+<!--                            [(ngModel)]="subHeadWiseUnit.unit" [readonly]="true">-->
+<!--                          </ng-select>-->
                         </div>
                       </td>
                       <td><input type="number" class="form-control" id="Aallocationamount"

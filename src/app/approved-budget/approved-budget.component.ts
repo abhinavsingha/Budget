@@ -7,6 +7,17 @@ import { ApiCallingServiceService } from '../services/api-calling/api-calling-se
 import { CommonService } from '../services/common/common.service';
 import { SharedService } from '../services/shared/shared.service';
 import { Router } from '@angular/router';
+import * as FileSaver from "file-saver";
+import {HttpClient} from "@angular/common/http";
+import * as Papa from "papaparse";
+class TableData {
+  Financial_Year: any;
+  To_Unit: any;
+  From_Unit: any;
+  Subhead: any;
+  Type: any;
+  Allocated_Fund: any;
+}
 
 @Component({
   selector: 'app-approved-budget',
@@ -27,6 +38,7 @@ export class ApprovedBudgetComponent implements OnInit {
     authority: new FormControl(),
     authUnit: new FormControl(),
     remarks: new FormControl(),
+    reportType:new FormControl('Select Report Type')
   });
 
   isInboxAndOutbox: any;
@@ -35,7 +47,9 @@ export class ApprovedBudgetComponent implements OnInit {
   invoicePath: any;
   private userUnitId: any;
   private dashboardData: any;
+  private authGroupId: any;
   constructor(
+    private http: HttpClient,
     private SpinnerService: NgxSpinnerService,
     private cons: ConstantsService,
     private apiService: ApiCallingServiceService,
@@ -101,8 +115,7 @@ export class ApprovedBudgetComponent implements OnInit {
         if (result['message'] == 'success') {
           this.budgetDataList = result['response'].budgetResponseist;
           if (this.budgetDataList.length > 0) {
-            let authGroupId = this.budgetDataList[0].authGroupId;
-            this.getAllocationReport(authGroupId);
+            this.authGroupId = this.budgetDataList[0].authGroupId;
           }
 
           this.SpinnerService.hide();
@@ -113,26 +126,7 @@ export class ApprovedBudgetComponent implements OnInit {
   }
   path: any;
   currentUnit: any;
-  getAllocationReport(authGroupId: any) {
-    this.SpinnerService.show();
-    // debugger;
-    this.apiService
-      .getApi(this.cons.api.getAllocationReport + '/' + authGroupId)
-      .subscribe((res) => {
-        let result: { [key: string]: any } = res;
-        // debugger;
-        if (result['message'] == 'success') {
-          if (result['response'].length > 0) {
-            this.path = result['response'][0].path;
-          }
-          // this.budgetDataList = result['response'].budgetResponseist;
 
-          this.SpinnerService.hide();
-        } else {
-          this.common.faliureAlert('Please try later', result['message'], '');
-        }
-      });
-  }
   getCgUnitData() {
     this.SpinnerService.show();
     var comboJson = null;
@@ -285,7 +279,184 @@ export class ApprovedBudgetComponent implements OnInit {
   getCdaData(cdaData: any) {
     this.cdaData=cdaData;
     for(let cda of cdaData){
-      cda.available=parseFloat(cda.amount)+parseFloat(cda.remainingAmount).toFixed(4);
+      cda.available=(parseFloat(cda.amount)+parseFloat(cda.remainingAmount)).toFixed(4);
     }
+  }
+  getAllocationReport(authGroupId: any) {
+    this.SpinnerService.show();
+    // debugger;
+    this.apiService
+      .getApi(this.cons.api.getAllocationReport + '/' + authGroupId)
+      .subscribe((res) => {
+        let result: { [key: string]: any } = res;
+        // debugger;
+        if (result['message'] == 'success') {
+          if (result['response'].length > 0) {
+            this.downloadPdf(
+              result['response'][0].path,
+              result['response'][0].fileName
+            );
+          }
+          // this.budgetDataList = result['response'].budgetResponseist;
+
+          this.SpinnerService.hide();
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      });
+  }getAllocationReportDocx(authGroupId: any) {
+    this.SpinnerService.show();
+    // debugger;
+    this.apiService
+      .getApi(this.cons.api.getAllocationReportDoc + '/' + authGroupId)
+      .subscribe((res) => {
+        let result: { [key: string]: any } = res;
+        // debugger;
+        if (result['message'] == 'success') {
+          if (result['response'].length > 0) {
+            this.downloadPdf(
+              result['response'][0].path,
+              result['response'][0].fileName
+            );
+            this.path = result['response'][0].path;
+          }
+          // this.budgetDataList = result['response'].budgetResponseist;
+
+          this.SpinnerService.hide();
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      });
+  }
+  downloadPdf(pdfUrl: string, fileName: any): void {
+    this.http.get(pdfUrl, { responseType: 'blob' }).subscribe(
+      (blob: Blob) => {
+        this.SpinnerService.hide();
+        FileSaver.saveAs(blob, fileName);
+      },
+      (error) => {
+        this.SpinnerService.hide();
+        console.error('Failed to download PDF:', error);
+      }
+    );
+  }
+  downloadReport(formdata:any) {
+    debugger;
+    if(formdata.reportType=='02')
+      this.getAllocationReport(this.authGroupId);
+    else if(formdata.reportType=='03')
+      this.getAllocationReportDocx(this.authGroupId);
+    else if(formdata.reportType=='01')
+      this.downloadCsv();
+  }
+  generateCSV(
+    data: any[],
+    columns: string[],
+    filename: string,
+    column: string[]
+  ) {
+    const csvData: any[][] = [];
+
+    // Add column names as the first row
+    csvData.push(columns);
+
+    // Add data rows
+    data.forEach((item) => {
+      const row: string[] = [];
+      column.forEach((colmn) => {
+        row.push(item[colmn]);
+      });
+      csvData.push(row);
+    });
+
+    // Convert the array to CSV using PapaParse
+    const csv = Papa.unparse(csvData);
+
+    // Create a CSV file download
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+
+    const link = document.createElement('a');
+    if (link.download !== undefined) {
+      // Browsers that support HTML5 download attribute
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', filename);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      // Fallback for unsupported browsers
+      alert('CSV download is not supported in this browser.');
+    }
+  }
+
+  downloadCsv() {
+    // Example data and column names
+    let tableData = [];
+    let totalR = 0.0;
+    let totalA = 0.0;
+    for (let i = 0; i < this.budgetDataList.length; i++) {
+      totalA =
+        totalA +
+        parseFloat(this.budgetDataList[i].allocationAmount) *
+        this.budgetDataList[i].amountUnit.amount;
+      // totalR=totalR+(parseFloat(this.budgetDataList[i].balanceAmount)*this.budgetDataList[i].remeningBalanceUnit.amount);
+      let table: any = {
+        Financial_Year: this.budgetDataList[i].finYear.finYear.replaceAll(
+          ',',
+          ' '
+        ),
+        To_Unit: this.budgetDataList[i].toUnit.descr.replaceAll(',', ' '),
+        From_Unit: this.budgetDataList[i].fromUnit.descr.replaceAll(',', ' '),
+        Subhead: this.budgetDataList[i].subHead.subHeadDescr.replaceAll(
+          ',',
+          ' '
+        ),
+        Type: this.budgetDataList[i].allocTypeId.allocType.replaceAll(',', ' '),
+        // Remaining_Amount: (parseFloat(this.budgetDataList[i].balanceAmount)*this.budgetDataList[i].remeningBalanceUnit.amount/this.budgetDataList[i].amountUnit.amount).toString(),
+        Allocated_Fund: this.budgetDataList[i].allocationAmount
+          .replaceAll(',', ' ')
+          .toString(),
+      };
+      tableData.push(table);
+    }
+    let table: TableData = {
+      Financial_Year: '',
+      To_Unit: '',
+      From_Unit: '',
+      Subhead: '',
+      Type: 'TOTAL',
+      Allocated_Fund: (
+        parseFloat(totalA.toFixed(4)) /
+        parseFloat(this.budgetDataList[0].amountUnit.amount)
+      ).toString(),
+    };
+    tableData.push(table);
+    // const data = [
+    //   { name: 'John', age: 30, city: 'New York' },
+    //   { name: 'Jane', age: 25, city: 'San Francisco' },
+    //   { name: 'Bob', age: 35, city: 'Chicago' },
+    // ];
+    const columns = [
+      'Financial_Year',
+      'To_Unit',
+      'From_Unit',
+      'Subhead',
+      'Type',
+      'Allocated_Fund' + ' in ' + this.budgetDataList[0].amountUnit.amountType,
+    ];
+    const column = [
+      'Financial_Year',
+      'To_Unit',
+      'From_Unit',
+      'Subhead',
+      'Type',
+      'Allocated_Fund',
+    ];
+    const filename = this.type + '.csv';
+
+    // Generate and download the CSV file
+    this.generateCSV(tableData, columns, filename, column);
   }
 }

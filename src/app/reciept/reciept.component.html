@@ -5,13 +5,13 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0">Budget Reciept</h1>
+          <h1 class="m-0">Budget Receipt</h1>
         </div>
         <!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item"><a href="#">Budget Reciept</a></li>
+            <li class="breadcrumb-item"><a href="#">Budget Receipt</a></li>
           </ol>
         </div>
         <!-- /.col -->
@@ -27,7 +27,7 @@
     <div class="container-fluid">
       <div class="card card-default">
         <div class="card-header">
-          <h3 class="card-title">Budget Reciept</h3>
+          <h3 class="card-title">Budget Receipt</h3>
 
           <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -102,11 +102,11 @@
               </form>
             </div>
             <div class="col-md-9">
-              <div class="card-body table-responsive p-0 " style="height:355px;">
-                <table class="table table-hover text-nowrap" style="height:400px;">
+              <div class="card-body table-responsive p-0 " style="height:430px;">
+                <table class="table table-hover text-nowrap" style="height:430px;">
                   <thead>
                     <tr>
-                      <th>Sr. No.</th>
+                      <th>Sr.No.</th>
                       <th>Sub Head</th>
                       <th *ngIf="isSelectedRE || isSelectedMA ||isSectedVOA">BE</th>
                       <th *ngIf="isSelectedMA || isSectedSG">RE</th>
@@ -116,7 +116,7 @@
 <!--                          [(ngModel)]="autoSelectedAllocationType" (change)="allocationTypeChange($event)">-->
 <!--                        </ng-select></th>-->
                       <th *ngFor="let previousReciept of previousRecieptData">{{previousReciept.allocationType.allocDesc}}</th>
-                      <!-- <th>Action</th> -->
+                       <th>Amount</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -235,7 +235,7 @@
       </div>
       <div class="card card-default">
         <div class="card-header">
-          <h3 class="card-title">View Reciept</h3>
+          <h3 class="card-title">View Receipt</h3>
 
           <div class="card-tools">
             <div class="input-group input-group-sm">

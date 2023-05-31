@@ -6,9 +6,9 @@ import { Injectable } from '@angular/core';
 export class ConstantsService {
   constructor() {}
 
-  serviceUrl = 'https://icg.net.in/budget/'; //prod
+  // serviceUrl = 'https://icg.net.in/budget/'; //prod
   // serviceUrl = 'http://488e-203-153-42-234.ngrok.io/'; //dev
-  // serviceUrl = 'http://192.168.1.131:1111/'; //dev
+  serviceUrl = 'http://192.168.1.131:1111/'; //dev
   // serviceUrl = 'http://192.168.1.112:1111/'; //arvind system
   api = {
     getDataBudgetAllocation:
@@ -228,5 +228,7 @@ export class ConstantsService {
 
     updateAllocation: this.serviceUrl + 'budgetAllocation/updateAllocation',
     getRevisedAllocationReport: this.serviceUrl + 'reportController/getRevisedAllocationReport',
+    getAllocationReportDoc: this.serviceUrl + 'reportController/getAllocationReportDoc',
+
   };
 }

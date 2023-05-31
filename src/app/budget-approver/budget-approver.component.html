@@ -96,9 +96,24 @@
 
                     </tr>
                   </tbody>
-                </table>
-                <div><button type="submit" class="btn btn-primary mr-2" (click)="downloadCsv()">Download</button></div>
 
+                </table>
+
+                </div>
+              <div class="row mt-2" [formGroup]="formdata">
+                <div class="col-md-3">
+                  <div class="form-group" >
+                    <select class="form-control select2bs4" style="width: 100%"
+                            id="reporttype" formControlName="reportType"  >
+                      <option selected disabled value="Select Report Type">--Select Report Type--</option>
+                      <option value="01">CSV Report</option>
+                      <option value="02">PDF Report</option>
+                      <option value="03">DOCX Report</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <button type="submit" class="btn btn-primary mr-2" (click)="downloadReport(formdata.value)"><i class="fas fa-download"></i> Download</button></div>
               </div>
               <div class="row mt-2">
                 <div class="col-sm-12 col-md-5">

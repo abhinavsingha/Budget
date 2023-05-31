@@ -13,6 +13,8 @@ import Swal from 'sweetalert2';
 import { SharedService } from '../services/shared/shared.service';
 import { MultiCdaParking } from '../model/multi-cda-parking';
 import * as Papa from 'papaparse';
+import * as FileSaver from "file-saver";
+import {HttpClient} from "@angular/common/http";
 class TableData {
   Financial_Year: any;
   To_Unit: any;
@@ -37,11 +39,13 @@ export class BudgetApproverComponent implements OnInit {
 
   formdata = new FormGroup({
     remarks: new FormControl(),
+    reportType:new FormControl('Select Report Type')
   });
 
   isInboxAndOutbox: any;
   private amountUnitData: any;
   private currentIndex: number = 0;
+  private authGroupId: any;
 
   ngOnInit(): void {
     debugger;
@@ -64,7 +68,7 @@ export class BudgetApproverComponent implements OnInit {
         this.getAlGroupId(localStorage.getItem('group_id'));
       }
     }
-
+    this.authGroupId=localStorage.getItem('group_id');
     this.getCdaUnitList();
     this.multipleCdaParking.push(new MultiCdaParking());
     this.getDashBoardDta();
@@ -73,6 +77,7 @@ export class BudgetApproverComponent implements OnInit {
 
   constructor(
     // private matDialog: MatDialog,
+    private http: HttpClient,
     private SpinnerService: NgxSpinnerService,
     private cons: ConstantsService,
     private apiService: ApiCallingServiceService,
@@ -755,6 +760,7 @@ export class BudgetApproverComponent implements OnInit {
     this.generateCSV(tableData, columns, filename, column);
   }
   cdaData: any[] = [];
+  report: any;
   cdaDataList(cdaData: any) {
     this.cdaData = cdaData;
     debugger;
@@ -762,5 +768,72 @@ export class BudgetApproverComponent implements OnInit {
 
   resetCdaList() {
     this.cdaData = [];
+  }
+  getAllocationReport(authGroupId: any) {
+    this.SpinnerService.show();
+    // debugger;
+    this.apiService
+      .getApi(this.cons.api.getAllocationReport + '/' + authGroupId)
+      .subscribe((res) => {
+        let result: { [key: string]: any } = res;
+        // debugger;
+        if (result['message'] == 'success') {
+          if (result['response'].length > 0) {
+            this.downloadPdf(
+              result['response'][0].path,
+              result['response'][0].fileName
+            );
+          }
+          // this.budgetDataList = result['response'].budgetResponseist;
+
+          this.SpinnerService.hide();
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      });
+  }getAllocationReportDocx(authGroupId: any) {
+    this.SpinnerService.show();
+    // debugger;
+    this.apiService
+      .getApi(this.cons.api.getAllocationReportDoc + '/' + authGroupId)
+      .subscribe((res) => {
+        let result: { [key: string]: any } = res;
+        // debugger;
+        if (result['message'] == 'success') {
+          if (result['response'].length > 0) {
+            this.downloadPdf(
+              result['response'][0].path,
+              result['response'][0].fileName
+            );
+          }
+          // this.budgetDataList = result['response'].budgetResponseist;
+
+          this.SpinnerService.hide();
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      });
+  }
+  downloadPdf(pdfUrl: string, fileName: any): void {
+    this.http.get(pdfUrl, { responseType: 'blob' }).subscribe(
+      (blob: Blob) => {
+        this.SpinnerService.hide();
+        FileSaver.saveAs(blob, fileName);
+      },
+      (error) => {
+        this.SpinnerService.hide();
+        console.error('Failed to download PDF:', error);
+      }
+    );
+  }
+  downloadReport(formdata:any) {
+    debugger;
+
+    if(formdata.reportType=='02')
+      this.getAllocationReport(this.authGroupId);
+    else if(formdata.reportType=='03')
+      this.getAllocationReportDocx(this.authGroupId);
+    else if(formdata.reportType=='01')
+      this.downloadCsv();
   }
 }
