@@ -18,6 +18,8 @@ import Swal from "sweetalert2";
 import {SharedService} from "../services/shared/shared.service";
 
 class tableData {
+  manipulate:any;
+  manipulate2:any;
   cdaDetails:any;
   isAllocated:any;
   checked: boolean = false;
@@ -381,7 +383,7 @@ export class RevisionComponent {
     this.budgetRevisionUnitList2[index].revisiedAmount = (parseFloat(this.budgetRevisionUnitList2[index].existingAmount)+parseFloat(this.budgetRevisionUnitList2[index].revisionAmount)).toFixed(4);
     this.budgetRevisionUnitList2[index].manipulate2 = (parseFloat(this.budgetRevisionUnitList2[index].manipulate)+parseFloat(this.budgetRevisionUnitList2[index].revisionAmount)).toFixed(4);
     this.budgetRevisionUnitList2[index].revisionAmount=parseFloat(this.budgetRevisionUnitList2[index].revisionAmount).toFixed(4);
-    debugger;
+    //debugger;
     if(parseFloat(this.budgetRevisionUnitList2[index].manipulate2)<parseFloat(this.budgetRevisionUnitList2[index].expenditure)/parseFloat(this.formdata.get('amountType')?.value.amount)){
       this.budgetRevisionUnitList2[index].revisionAmount=0
       this.common.warningAlert('Allocation cannot be less than Expenditure','Allocation cannot be less than Expenditure: '+((parseFloat(this.budgetRevisionUnitList2[index].expenditure))/parseFloat(this.formdata.get('amountType')?.value.amount)).toFixed(4)+this.formdata.get('amountType')?.value.amountType,'')
@@ -397,7 +399,7 @@ export class RevisionComponent {
 
 
   private populateRevisionData() {
-    debugger;
+    //debugger;
     for (let i = 0; i < this.allRevisedUnits.length; i++) {
       const entry: BudgetRevisionUnitList = {
         expenditure:this.allRevisedUnits[i].expenditureAmount,
@@ -438,6 +440,8 @@ export class RevisionComponent {
         !this.budgetRevisionUnitList2[i].isSelected
       ) {
         let data: tableData= {
+          manipulate:undefined,
+          manipulate2:undefined,
           cdaDetails:undefined,
           checked: false,
           financialYear: undefined,
@@ -464,7 +468,9 @@ export class RevisionComponent {
             amount: (parseFloat(this.budgetRevisionUnitList2[i].existingAmount)-parseFloat(this.budgetRevisionUnitList2[i].revisionAmount)).toFixed(4),
             allocated: parseFloat(this.budgetRevisionUnitList2[i].existingAmount).toFixed(4),
             revisedAmount: parseFloat(this.budgetRevisionUnitList2[i].revisionAmount).toFixed(4),
-            bal:parseFloat(this.budgetRevisionUnitList2[i].manipulate2).toFixed(4)
+            bal:parseFloat(this.budgetRevisionUnitList2[i].manipulate2).toFixed(4),
+            manipulate:parseFloat(this.budgetRevisionUnitList2[i].manipulate).toFixed(4),
+            manipulate2:parseFloat(this.budgetRevisionUnitList2[i].manipulate2).toFixed(4),
           };
         }
         else{
@@ -477,6 +483,8 @@ export class RevisionComponent {
             subHead: this.formdata.get('subHead')?.value,
             allocationType: alloc,
             allocated: parseFloat(this.budgetRevisionUnitList2[i].existingAmount).toFixed(4),
+            manipulate:parseFloat(this.budgetRevisionUnitList2[i].manipulate).toFixed(4),
+            manipulate2:parseFloat(this.budgetRevisionUnitList2[i].manipulate2).toFixed(4),
             amountType: this.budgetRevisionUnitList2[i].amountType,
             amount: (parseFloat(this.budgetRevisionUnitList2[i].existingAmount)-parseFloat(this.budgetRevisionUnitList2[i].revisionAmount)).toFixed(4),
             revisedAmount: parseFloat(
@@ -487,12 +495,27 @@ export class RevisionComponent {
             ).toFixed(4)
           };
         }
+        let sum=0;
+        debugger;
+        for(let cda of data.cdaDetails){
+          if(cda.amount!=undefined)
+            sum+=parseFloat(cda.amount);
+          else
+            cda.amount=0;
+        }
+        if(sum!=data.revisedAmount&&this.unitId==this.budgetRevisionUnitList2[i].unit.unit)
+        {
+          this.common.faliureAlert('CDA amount mismatch','CDA amount does not match revision amount','');
+          this.tabledata=[];
+          return;
+        }
+        debugger;
         this.tabledata.push(data);
         this.budgetRevisionUnitList2[i].isSelected = true;
       }
     }
     this.getTotalAmount();
-    debugger;
+    //debugger;
   }
   selectAll() {
     for (let i = 0; i < this.tabledata.length; i++) {
@@ -562,6 +585,7 @@ export class RevisionComponent {
   autoCalcHomeUnitRevision(index:any){
     this.budgetRevisionUnitList2[this.loginIndex].revisionAmount=(parseFloat(this.totlaRevisionAmount)*-1).toFixed(4);
     this.budgetRevisionUnitList2[this.loginIndex].manipulate2=(parseFloat(this.budgetRevisionUnitList2[this.loginIndex].revisionAmount)+parseFloat(this.budgetRevisionUnitList2[this.loginIndex].manipulate)).toFixed(4);
+
     if(this.budgetRevisionUnitList2[this.loginIndex].manipulate2<0){
       this.common.warningAlert('Unit out of Funds','Cannot withdraw more than available','');
       this.budgetRevisionUnitList2[index].revisionAmount=0;
@@ -574,7 +598,10 @@ export class RevisionComponent {
       this.totalManipulate2=parseFloat(this.totalManipulate2)+parseFloat(this.budgetRevisionUnitList2[this.loginIndex].revisionAmount);
       this.newRevisionAmount=parseFloat(this.totlaRevisionAmount)+parseFloat(this.budgetRevisionUnitList2[this.loginIndex].revisionAmount);
     }
-
+    this.totalManipulate2=0.0;
+    for (let i = 0; i < this.budgetRevisionUnitList2.length; i++) {
+      this.totalManipulate2=(parseFloat(this.totalManipulate2)+parseFloat(this.budgetRevisionUnitList2[i].manipulate2)).toFixed(4);
+    }
   }
   getAllocationTypeData() {
     this.SpinnerService.show();
@@ -601,6 +628,10 @@ export class RevisionComponent {
   }
   saveRevisionData() {
     const requestJson: revision[] = [];
+    if(this.tabledata.length==0){
+      this.common.faliureAlert('No entry found','Add atlest one entry','');
+      return;
+    }
     for (let i = 0; i < this.tabledata.length; i++) {
       let cdapark:any[]=[]
       for(let cda of this.tabledata[i].cdaDetails){
@@ -632,7 +663,7 @@ export class RevisionComponent {
     const req = {
       budgetRequest: requestJson,
     };
-    debugger;
+    //debugger;
     this.apiService
       .postApi(this.cons.api.saveBudgetRevisionData, req)
       .subscribe({
@@ -762,7 +793,7 @@ export class RevisionComponent {
             //   }
             // }
             this.populateRevisionData();
-            debugger;
+            //debugger;
             this.setAmountType()
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
@@ -827,7 +858,7 @@ export class RevisionComponent {
   }
 
   checkTotal() {
-    debugger;
+    //debugger;
     this.budgetRevisionUnitList2[this.loginIndex].cdaTransData;
     let sum =0
     for(let cda of this.cdaDetails){

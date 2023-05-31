@@ -55,7 +55,7 @@
                 <div class="col-md-4">
                   <div class="form-group">
                     <label>Sub Head</label>
-                    <ng-select [readonly]="true" name="subHead" class="form-control select2bs4" style="width: 100%"
+                    <ng-select [readonly]="true"  class="form-control select2bs4" style="width: 100%"
                                [items]="subHead" bindLabel="subHeadDescr" placeholder="Select Sub Head"
                                formControlName="subHead" >
                     </ng-select>
@@ -64,7 +64,7 @@
                 <div class="col-md-4">
                   <div class="form-group">
                     <label>Major Head</label>
-                    <ng-select [readonly]="true" name="majorHead"  class="form-control select2bs4"
+                    <ng-select [readonly]="true"  class="form-control select2bs4"
                                style="width: 100%" [items]="majorHead" bindLabel="majorHead" placeholder="Select Major Head"
                                formControlName="majorHead">
                     </ng-select>
@@ -73,7 +73,7 @@
                 <div class="col-md-4">
                   <div class="form-group">
                     <label>Minor Head</label>
-                    <ng-select [readonly]="true" name="MinorHead" class="form-control select2bs4" style="width: 100%"
+                    <ng-select [readonly]="true" class="form-control select2bs4" style="width: 100%"
                                [items]="minorHead" bindLabel="minorHead" placeholder="Select Minor Head"
                                formControlName="minorHead"></ng-select>
                   </div>
@@ -87,7 +87,7 @@
                     </ng-select>
                   </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4" *ngIf="!(status && userRole=='Budget Manager' && !sharedService.status && sharedService.redirectedFrom!='approved');">
                   <div class="form-group">
                     <label>Remarks</label>
                     <input
@@ -113,9 +113,9 @@
                               <th>Unit</th>
                               <th>Sub Head</th>
                               <th>Type</th>
-                              <th>Allocated ({{this.amountUnit}})</th>
-                              <th>Additional/Withdrawal ({{this.amountUnit}})</th>
-                              <th>Revised ({{this.amountUnit}})</th>
+                              <th>Allocated ({{amountUnit}})</th>
+                              <th>Additional/Withdrawal ({{amountUnit}})</th>
+                              <th>Revised ({{amountUnit}})</th>
 <!--                              <th>Remarks</th>-->
                             </tr>
                           </thead>
@@ -132,121 +132,32 @@
 <!--                                  <td>{{}}</td>-->
                                 </tr>
                           </tbody>
+                          <tfoot *ngIf="sharedService.redirectedFrom!='approved'">
+
+                            <button type="submit" class="btn btn-primary mr-2" (click)="downloadCsv1()"><i class="fas fa-download"></i> Download Csv</button>
+                            <button type="submit" class="btn btn-primary mr-2" (click)="downloadPDF()"><i class="fas fa-download"></i>Download Pdf</button>
+                          </tfoot>
                         </table>
                       </div>
                       <div class="col-sm-12 col-md-12">
                         <pagination-controls class="pagination float-right" (pageChange)="p = $event"></pagination-controls>
                       </div>
-<!--                      <div class="row mt-2">-->
-<!--                        <div class="col-sm-12 col-md-5">-->
-<!--                          <div-->
-<!--                            class="dataTables_info"-->
-<!--                            id="example2_info"-->
-<!--                            role="status"-->
-<!--                            aria-live="polite"-->
-<!--                          >-->
-<!--                            Showing 1 to 10 of 57 entries-->
-<!--                          </div>-->
-<!--                        </div>-->
-<!--                        <div class="col-sm-12 col-md-7">-->
-<!--                          <div-->
-<!--                            class="dataTables_paginate paging_simple_numbers"-->
-<!--                            id="example2_paginate"-->
-<!--                          >-->
-<!--                            <ul class="pagination float-right">-->
-<!--                              <li-->
-<!--                                class="paginate_button page-item previous disabled"-->
-<!--                                id="example2_previous"-->
-<!--                              >-->
-<!--                                <a-->
-<!--                                  href="#"-->
-<!--                                  aria-controls="example2"-->
-<!--                                  data-dt-idx="0"-->
-<!--                                  tabindex="0"-->
-<!--                                  class="page-link"-->
-<!--                                  >Previous</a-->
-<!--                                >-->
-<!--                              </li>-->
-<!--                              <li class="paginate_button page-item active">-->
-<!--                                <a-->
-<!--                                  href="#"-->
-<!--                                  aria-controls="example2"-->
-<!--                                  data-dt-idx="1"-->
-<!--                                  tabindex="0"-->
-<!--                                  class="page-link"-->
-<!--                                  >1</a-->
-<!--                                >-->
-<!--                              </li>-->
-<!--                              <li class="paginate_button page-item">-->
-<!--                                <a-->
-<!--                                  href="#"-->
-<!--                                  aria-controls="example2"-->
-<!--                                  data-dt-idx="2"-->
-<!--                                  tabindex="0"-->
-<!--                                  class="page-link"-->
-<!--                                  >2</a-->
-<!--                                >-->
-<!--                              </li>-->
-<!--                              <li class="paginate_button page-item">-->
-<!--                                <a-->
-<!--                                  href="#"-->
-<!--                                  aria-controls="example2"-->
-<!--                                  data-dt-idx="3"-->
-<!--                                  tabindex="0"-->
-<!--                                  class="page-link"-->
-<!--                                  >3</a-->
-<!--                                >-->
-<!--                              </li>-->
-<!--                              <li class="paginate_button page-item">-->
-<!--                                <a-->
-<!--                                  href="#"-->
-<!--                                  aria-controls="example2"-->
-<!--                                  data-dt-idx="4"-->
-<!--                                  tabindex="0"-->
-<!--                                  class="page-link"-->
-<!--                                  >4</a-->
-<!--                                >-->
-<!--                              </li>-->
-<!--                              <li class="paginate_button page-item">-->
-<!--                                <a-->
-<!--                                  href="#"-->
-<!--                                  aria-controls="example2"-->
-<!--                                  data-dt-idx="5"-->
-<!--                                  tabindex="0"-->
-<!--                                  class="page-link"-->
-<!--                                  >5</a-->
-<!--                                >-->
-<!--                              </li>-->
-<!--                              <li class="paginate_button page-item">-->
-<!--                                <a-->
-<!--                                  href="#"-->
-<!--                                  aria-controls="example2"-->
-<!--                                  data-dt-idx="6"-->
-<!--                                  tabindex="0"-->
-<!--                                  class="page-link"-->
-<!--                                  >6</a-->
-<!--                                >-->
-<!--                              </li>-->
-<!--                              <li-->
-<!--                                class="paginate_button page-item next"-->
-<!--                                id="example2_next"-->
-<!--                              >-->
-<!--                                <a-->
-<!--                                  href="#"-->
-<!--                                  aria-controls="example2"-->
-<!--                                  data-dt-idx="7"-->
-<!--                                  tabindex="0"-->
-<!--                                  class="page-link"-->
-<!--                                  >Next</a-->
-<!--                                >-->
-<!--                              </li>-->
-<!--                            </ul>-->
-<!--                          </div>-->
-<!--                        </div>-->
-<!--                      </div>-->
                     </div>
                   </div>
               <!-- /.row -->
+              <div class="row">
+                <div class="col-md-4" >
+                  <div class="form-group">
+                    <label>Return Remarks</label>
+                    <input
+                    type="text"
+                    class="form-control"
+                    id="PrevAllocation"
+                    placeholder="Return Remarks"
+                    formControlName="returnRemark"/>
+                  </div>
+                </div>
+              </div>
               <div *ngIf="status && userRole=='Budget Manager' && !sharedService.status && sharedService.redirectedFrom!='approved';" class="row">
 <!--              <div  class="row">-->
               <div class="col-md-4">
@@ -300,21 +211,9 @@
                     </div>
                     </div>
                 </div>
-                <div class="col-md-4" *ngIf="userRole=='Budget Approver';">
-                  <div class="form-group">
-                    <label>Return Remarks</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="PrevAllocation"
-                      placeholder="Return Remarks"
-                      formControlName="returnRemark"
-                    />
-                  </div>
-                </div>
 
               </div>
-              <div class="col-md-4" *ngIf="status && userRole!='Budget Approver' && !sharedService.status;">
+              <div class="col-md-4" *ngIf="status && userRole=='Budget Manager' && !sharedService.status && sharedService.redirectedFrom!='approved';" class="row">
                 <div class="row" [formGroup]="formdata">
                   <button class="btn btn-primary mr-2" type="button" (click)="save(formdata.value)">Submit</button>
                 </div>
@@ -323,17 +222,28 @@
           </div>
           <!-- /.card-body -->
           <div class="card-footer">
+<!--            <div class="col-md-4">-->
+<!--              <div class="form-group" [formGroup]="formdata">-->
+<!--&lt;!&ndash;                <label>Remarks</label>&ndash;&gt;-->
+<!--                <input-->
+<!--                  type="text"-->
+<!--                  class="form-control"-->
+<!--                  id="reRemarks"-->
+<!--                  placeholder="Approve/Return Remarks"-->
+<!--                  formControlName="returnRemarks"-->
+<!--                />-->
+<!--              </div>-->
+<!--            </div>-->
             <div class="row" *ngIf="!status && userRole=='Budget Approver';">
               <button type="submit" class="btn btn-primary mr-2 "  (click)="approveForm(formdata.value)"> <i class="fas fa-check"></i>
                 Approve</button>
               <button type="submit" class="btn btn-danger mr-2"  (click)="returnFormFinally(formdata.value)"><i class="fas fa-arrow-return"></i> Return</button>
 
             </div>
-            <div class="row">
-              <button type="submit" class="btn btn-primary mr-2" (click)="downloadCsv1()"><i class="fas fa-download"></i> Download Csv</button>
-            </div>
+
+            <div class="row"></div>
           </div>
-          <div *ngIf="isInboxAndOutbox=='Inbox' && userRole=='Budget Manager'"><button type="submit" class="btn btn-primary mr-2" (click)="downloadPDF()">Download Pdf</button></div>
+
         </div>
         <div  class="card card-default">
           <h3 class="card-title">Previous Revisions</h3>
@@ -363,6 +273,7 @@
                   <td>{{tbleDta.bal}}</td>
                 </tr>
                 </tbody>
+
               </table>
             </div>
             <div class="col-sm-12 col-md-12">

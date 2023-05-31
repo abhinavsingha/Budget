@@ -22,7 +22,7 @@ export class RevisionApprovalComponent {
   private userUnitId: any;
   currentUnit: any;
   browse: any;
-  amountUnit: string|undefined;
+  amountUnit: string='';
   constructor(
     // private matDialog: MatDialog,
     private SpinnerService: NgxSpinnerService,
@@ -52,10 +52,10 @@ export class RevisionApprovalComponent {
     returnRemark:new FormControl(),
   });
   p: number = 1;
-  finYear: any;
-  subHead: any;
-  majorHead: any;
-  minorHead: any;
+  finYear: any[]=[];
+  subHead: any[]=[];
+  majorHead: any[]=[];
+  minorHead: any[]=[];
   allocationType: any;
   status:boolean=false;
   filename:string='Select Document';
@@ -99,6 +99,8 @@ export class RevisionApprovalComponent {
           this.allocationType=this.budgetDataLists[0].allocTypeId;
           this.formdata.get('allocationType')?.setValue(this.budgetDataLists[0].allocTypeId);
           this.formdata.get('remarks')?.setValue(this.budgetDataLists[0].remarks);
+          if(this.budgetDataLists[0].returnRemarks!=undefined)
+            this.formdata.get('returnRemark')?.setValue(this.budgetDataLists[0].returnRemarks);
           this.amountUnit=this.budgetDataLists[0].amountUnit.amountType;
           for(let data of this.budgetDataLists){
             data.bal=(parseFloat(data.allocationAmount)+parseFloat(data.revisedAmount)).toFixed(4);
@@ -160,7 +162,7 @@ export class RevisionApprovalComponent {
     let submitJson = {
       authGroupId: this.budgetDataLists[0].authGroupId,
       status: 'Approved',
-      remarks: formDataValue.remarks,
+      remarks: formDataValue.returnRemark,
     };
     this.apiService
       .postApi(this.cons.api.approveRevisionBudgetOrReject, submitJson)
@@ -196,7 +198,7 @@ export class RevisionApprovalComponent {
     let submitJson = {
       authGroupId: this.budgetDataLists[0].authGroupId,
       status: 'Rejected',
-      remarks: formDataValue.remarks,
+      remarks: formDataValue.returnRemark,
     };
     this.apiService
       .postApi(this.cons.api.approveRevisionBudgetOrReject, submitJson)
@@ -442,8 +444,20 @@ export class RevisionApprovalComponent {
         AdditionalOrWithdrawal: this.budgetDataLists[i].revisedAmount.replaceAll(',',' '),
         Revised:(parseFloat(this.budgetDataLists[i].allocationAmount)+parseFloat(this.budgetDataLists[i].revisedAmount))
       }
+      totalA=totalA+parseFloat(this.budgetDataLists[i].allocationAmount);
+      totalR=totalR+(parseFloat(this.budgetDataLists[i].allocationAmount)+parseFloat(this.budgetDataLists[i].revisedAmount));
       tableData.push(table);
     }
+    let table:any= {
+      Financial_Year: '',
+      Unit: '',
+      Subhead: '',
+      Type: 'Total',
+      Allocated_Fund: totalA,
+      AdditionalOrWithdrawal: '',
+      Revised:totalR
+    }
+    tableData.push(table);
     const columns = [
       'Financial_Year',
       'Unit',
