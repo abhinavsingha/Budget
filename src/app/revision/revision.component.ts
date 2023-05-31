@@ -834,6 +834,9 @@ export class RevisionComponent {
       if(cda.amount!=undefined){
         sum =sum + parseFloat(cda.amount);
       }
+      else{
+        cda.amount=0;
+      }
     }
     if(sum!=this.budgetRevisionUnitList2[this.loginIndex].revisionAmount){
       this.common.warningAlert('CDA amount mismatch','CDA total does not match the amount','');

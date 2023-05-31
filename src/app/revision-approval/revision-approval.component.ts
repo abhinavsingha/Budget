@@ -10,6 +10,7 @@ import {SharedService} from "../services/shared/shared.service";
 import Swal from "sweetalert2";
 import * as FileSaver from "file-saver";
 import {HttpClient} from "@angular/common/http";
+import * as Papa from "papaparse";
 @Component({
   selector: 'app-revision-approval',
   templateUrl: './revision-approval.component.html',
@@ -427,7 +428,83 @@ export class RevisionApprovalComponent {
     window.URL.revokeObjectURL(link.href);
     document.removeChild(link);
   }
+  downloadCsv1() {
+    let tableData=[];
+    let totalR=0.0;
+    let totalA=0.0;
+    for(let i=0;i<this.budgetDataLists.length;i++){
+      let table:any= {
+        Financial_Year: this.budgetDataLists[i].finYear.finYear.replaceAll(',',' '),
+        Unit: this.budgetDataLists[i].toUnit.descr.replaceAll(',',' '),
+        Subhead: this.budgetDataLists[i].subHead.subHeadDescr.replaceAll(',',' '),
+        Type: this.budgetDataLists[i].allocTypeId.allocType.replaceAll(',',' '),
+        Allocated_Fund: this.budgetDataLists[i].allocationAmount.replaceAll(',',' '),
+        AdditionalOrWithdrawal: this.budgetDataLists[i].revisedAmount.replaceAll(',',' '),
+        Revised:(parseFloat(this.budgetDataLists[i].allocationAmount)+parseFloat(this.budgetDataLists[i].revisedAmount))
+      }
+      tableData.push(table);
+    }
+    const columns = [
+      'Financial_Year',
+      'Unit',
+      'Subhead',
+      'Type',
+      'Allocated_Fund' + ' in ' + this.budgetDataLists[0].amountUnit.amountType,
+      'AdditionalOrWithdrawal'+' in ' + this.budgetDataLists[0].amountUnit.amountType,
+      'Revised'+' in '+this.budgetDataLists[0].amountUnit.amountType
+    ];
+    const column = ['Financial_Year',
+      'Unit',
+      'Subhead',
+      'Type',
+      'Allocated_Fund',
+      'AdditionalOrWithdrawal',
+      'Revised'
+    ];
+    const filename = this.type + '.csv';
+    this.generateCSV(tableData, columns, filename, column);
+  }
+  generateCSV(
+    data: any[],
+    columns: string[],
+    filename: string,
+    column: string[]
+  ) {
+    const csvData: any[][] = [];
 
+    // Add column names as the first row
+    csvData.push(columns);
+
+    // Add data rows
+    data.forEach((item) => {
+      const row: string[] = [];
+      column.forEach((colmn) => {
+        row.push(item[colmn]);
+      });
+      csvData.push(row);
+    });
+
+    // Convert the array to CSV using PapaParse
+    const csv = Papa.unparse(csvData);
+
+    // Create a CSV file download
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+
+    const link = document.createElement('a');
+    if (link.download !== undefined) {
+      // Browsers that support HTML5 download attribute
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', filename);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      // Fallback for unsupported browsers
+      alert('CSV download is not supported in this browser.');
+    }
+  }
 
   setLabel() {
     debugger;
