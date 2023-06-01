@@ -1306,6 +1306,7 @@ export class NewContigentBillComponent implements OnInit {
                     result['response']['msg'],
                     'success'
                   );
+                  this.updateInbox();
                   this.SpinnerService.hide();
                 } else {
                   this.common.faliureAlert(
