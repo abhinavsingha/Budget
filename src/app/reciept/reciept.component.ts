@@ -738,13 +738,16 @@ export class RecieptComponent {
   }
 
   setAmountType2(formData: any) {
+    debugger;
     for (let i = 0; i < this.finalTableData.length; i++) {
       this.finalTableData[i].allocationAmount = (
         (this.finalTableData[i].allocationAmount *
-          this.finalTableData[i].amountUnit.amount) /
-        formData.amountType2.amount
+          this.finalTableData[i].amountUnit.amount) /parseFloat(this.formData.get('amountType2')?.value.amount)
+
+        // formData.amountType2.amount
       ).toFixed(4);
-      this.finalTableData[i].amountUnit = formData.amountType2;
+      this.finalTableData[i].amountUnit =this.formData.get('amountType2')?.value;
+        // formData.amountType2;
     }
   }
 

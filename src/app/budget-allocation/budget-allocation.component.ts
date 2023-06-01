@@ -1201,7 +1201,7 @@ export class BudgetAllocationComponent implements OnInit {
           sum=sum+parseFloat(cda.amount);
         }
       }
-      if(sum!=parseFloat(this.subHeadFilterDatas[i].amount))
+      if(sum!=parseFloat(this.subHeadFilterDatas[i].amount)&&this.subHeadFilterDatas[i].cdaParkingTrans.length>1)
       {
         this.tableData=[];
         this.common.faliureAlert('CDA amount mismatch','CDA amount does not match allocation amount','');
