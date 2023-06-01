@@ -112,7 +112,8 @@
                       <td>{{td.allocatedAmount}}</td>
                       <td>{{td.expenditureAmount}}</td>
                       <td>{{td.remBal}}</td>
-                      <td>{{td.lastCbDate | date:'MM/dd/yyyy'}}</td>
+                      <td *ngIf="td.lastCbDate != null">{{td.lastCbDate | date:'MM/dd/yyyy'}}</td>
+                      <td *ngIf="td.lastCbDate == null"> - </td>
                     </tr>
                     <tr class="noData py-3" *ngIf="showNODataFound">
                       <td>No Data Found</td>

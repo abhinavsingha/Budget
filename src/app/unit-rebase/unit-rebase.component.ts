@@ -311,7 +311,16 @@ export class UnitRebaseComponent {
   finallySubmitUnitRebase(formdata: any, formdataForToStation: any) {
     var newTableListData: any[] = [];
     for (var i = 0; i < this.tableDataList.length; i++) {
-      var date = new Date(this.tableDataList[i].lastCbDate);
+      var stringDate = null;
+      if (this.tableDataList[i].lastCbDate != null) {
+        var date = new Date(this.tableDataList[i].lastCbDate);
+        stringDate =
+          date.getFullYear() +
+          '-' +
+          (date.getMonth() + 1) +
+          '-' +
+          date.getDate();
+      }
       newTableListData.push({
         budgetHeadId: this.tableDataList[i].subHead.budgetCodeId,
         allocAmount: this.tableDataList[i].allocatedAmount,
@@ -319,12 +328,7 @@ export class UnitRebaseComponent {
         balAmount: this.tableDataList[i].remBal,
         amountType: this.tableDataList[i].amountType.amountTypeId,
         allocationTypeId: this.tableDataList[i].allocationType.allocTypeId,
-        lastCbDate:
-          date.getFullYear() +
-          '-' +
-          (date.getMonth() + 1) +
-          '-' +
-          date.getDate(),
+        lastCbDate: stringDate,
       });
     }
 
@@ -389,6 +393,7 @@ export class UnitRebaseComponent {
         next: (v: object) => {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
+          debugger;
           if (result['message'] == 'success') {
             this.tableDataList = result['response'];
             this.showNODataFound = false;
