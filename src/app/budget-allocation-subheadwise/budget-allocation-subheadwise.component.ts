@@ -733,7 +733,7 @@ export class BudgetAllocationSubheadwiseComponent {
 
   cdaWithdrawl() {
     if(!this.amountEqual){
-      this.common.warningAlert('Cda total not equal to amount allocated','Cda total not equal to amount allocated','');
+      this.common.warningAlert('CDA total not equal to amount allocated','Cda total not equal to amount allocated','');
       return;
     }
     //add cda data to unit data

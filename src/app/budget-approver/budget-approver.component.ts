@@ -363,7 +363,7 @@ export class BudgetApproverComponent implements OnInit {
             this.budgetDataList[this.currentIndex].isCDAparking = '1';
             // this.router.navigate(['/budget-approval']);
             this.common.successAlert(
-              'Cda Saved',
+              'CDA Saved',
               'CDA Parking Saved succesfully',
               ''
             );
