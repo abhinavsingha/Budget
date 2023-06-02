@@ -119,6 +119,7 @@ export class BudgetApproverComponent implements OnInit {
         if (result['message'] == 'success') {
           //debugger;
           this.budgetDataList = result['response'].budgetResponseist;
+          // this.formdata.get('remarks')?.setValue(result['response'].budgetResponseist[0].returnRemarks);
           this.SpinnerService.hide();
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
