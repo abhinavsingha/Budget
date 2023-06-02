@@ -101,7 +101,7 @@ export class CdaParkingComponent implements OnInit {
     //
     //
     //   },error => {
-    //     console.log(error);
+    //     console.error(error);
     //     this.SpinnerService.hide();
     //   }
     // );
@@ -122,7 +122,7 @@ export class CdaParkingComponent implements OnInit {
         this.finYearData = result['response'];
       },
       (error) => {
-        console.log(error);
+        console.error(error);
         this.SpinnerService.hide();
       }
     );
@@ -137,7 +137,7 @@ export class CdaParkingComponent implements OnInit {
         this.unitData = result['response'];
       },
       (error) => {
-        console.log(error);
+        console.error(error);
         this.SpinnerService.hide();
       }
     );
@@ -158,7 +158,7 @@ export class CdaParkingComponent implements OnInit {
       },
       error: (e) => {
         this.SpinnerService.hide();
-        console.log('error');
+        console.error('error');
       },
       complete: () => console.info('complete'),
     });
@@ -174,7 +174,7 @@ export class CdaParkingComponent implements OnInit {
         this.SpinnerService.hide();
       },
       (error) => {
-        console.log(error);
+        console.error(error);
         this.SpinnerService.hide();
       }
     );
@@ -193,24 +193,24 @@ export class CdaParkingComponent implements OnInit {
       },
       error: (e) => {
         this.SpinnerService.hide();
-        console.log('error');
+        console.error('error');
       },
       complete: () => console.info('complete'),
     });
   }
   invoiceUpload() {
     const file: File = this.authFileInput.nativeElement.files[0];
-    console.log(file);
+    // console.log(file);
     const formData = new FormData();
-    console.log(this.authorityFile);
+    // console.log(this.authorityFile);
     formData.append('file', file);
     this.SpinnerService.show();
     this.apiService.postApi(this.cons.api.fileUpload, formData).subscribe({
       next: (v: object) => {
         let result: { [key: string]: any } = v;
         if (result['message'] == 'success') {
-          console.log('mid' + result['response'].uploadDocId);
-          console.info('FILE UPLOADED');
+          // console.log('mid' + result['response'].uploadDocId);
+          // console.info('FILE UPLOADED');
           this.authFile = result['response'].uploadDocId;
           this.SpinnerService.hide();
           this.common.successAlert(
@@ -230,10 +230,10 @@ export class CdaParkingComponent implements OnInit {
       (res) => {
         let result: { [key: string]: any } = res;
         this.openPdfUrlInNewTab(result['response'].pathURL);
-        console.log(result['response'].pathURL);
+        // console.log(result['response'].pathURL);
       },
       (error) => {
-        console.log(error);
+        console.error(error);
         this.SpinnerService.hide();
       }
     );
@@ -262,7 +262,7 @@ export class CdaParkingComponent implements OnInit {
         this.SpinnerService.hide();
       },
       (error) => {
-        console.log(error);
+        console.error(error);
         this.SpinnerService.hide();
       }
     );
@@ -288,7 +288,7 @@ export class CdaParkingComponent implements OnInit {
             parseFloat(this.cdaData[i].current);
         this.cdaTotalTotal = this.cdaTotalTotal + this.cdaData[i].total;
       }
-      console.log(this.cdaData);
+      // console.log(this.cdaData);
     }
   }
   checkFieldsAddCda() {
@@ -372,7 +372,7 @@ export class CdaParkingComponent implements OnInit {
         }
       }
     });
-    console.log(this.cdaTableData);
+    // console.log(this.cdaTableData);
   }
 
   deleteFromCdaTable() {
@@ -460,7 +460,7 @@ export class CdaParkingComponent implements OnInit {
       cdaRequest: cdaArray,
       authRequests: authArray,
     };
-    console.log(cdaReq);
+    // console.log(cdaReq);
 
     this.SpinnerService.show();
     this.apiService
@@ -469,7 +469,7 @@ export class CdaParkingComponent implements OnInit {
         next: (v: object) => {
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
-            console.log(result['response']);
+            // console.log(result['response']);
 
             this.SpinnerService.hide();
             this.common.successAlert(

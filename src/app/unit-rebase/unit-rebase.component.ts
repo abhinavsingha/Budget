@@ -84,7 +84,7 @@ export class UnitRebaseComponent {
         let result: { [key: string]: any } = v;
         if (result['message'] == 'success') {
           this.dasboardData = result['response'];
-          console.log('DATA>>>>>>>' + this.dasboardData);
+          // console.log('DATA>>>>>>>' + this.dasboardData);
           this.formdata
             .get('finYear')
             ?.setValue(result['response'].budgetFinancialYear);
@@ -261,7 +261,7 @@ export class UnitRebaseComponent {
       (res) => {
         let result: { [key: string]: any } = res;
         this.openPdfUrlInNewTab(result['response'].pathURL);
-        console.log(result['response'].pathURL);
+        // console.log(result['response'].pathURL);
       },
       (error) => {
         console.log(error);

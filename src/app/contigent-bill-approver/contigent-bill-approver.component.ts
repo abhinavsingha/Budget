@@ -163,11 +163,11 @@ export class ContigentBillApproverComponent implements OnInit {
     this.apiService.getApi(this.cons.api.getCb).subscribe(
       (res) => {
         let result: { [key: string]: any } = res;
-        console.log(result['response']);
+        // console.log(result['response']);
         let getCbList = result['response'];
 
         for (let i = 0; i < getCbList.length; i++) {
-          console.log('interation :' + i);
+          // console.log('interation :' + i);
          if(getCbList[i].authoritiesList.length>0){
            let cdaData=[];
            for(let cda of getCbList[i].cdaData){
@@ -222,12 +222,12 @@ export class ContigentBillApproverComponent implements OnInit {
           };
           if (entry.authGroupId == this.sharedService.sharedValue)
             this.cbList.push(entry);
-          console.log(entry+"      ||     "+this.cbList);
+          // console.log(entry+"      ||     "+this.cbList);
         }
         }
       },
       (error) => {
-        console.log(error);
+        // console.log(error);
       }
     );
   }
@@ -273,12 +273,12 @@ export class ContigentBillApproverComponent implements OnInit {
         this.updateFormdata(cbEntry);
       } else if (cbEntry.cbNo == cbNo && cbEntry.checked == true)
         cbEntry.checked = false;
-      if (cbEntry.checked) console.log(cbEntry.cbNo + ' ');
+      // if (cbEntry.checked) console.log(cbEntry.cbNo + ' ');
     });
   }
   updateFormdata(cbEntry: cb) {
     let subHeadType:any;
-    console.log('cbentry' + cbEntry);
+    // console.log('cbentry' + cbEntry);
     for (let i = 0; i < this.majorHeadData.length; i++) {
       let major = this.majorHeadData[i];
       if (major.majorHead == cbEntry.majorHead) {
@@ -346,7 +346,7 @@ export class ContigentBillApproverComponent implements OnInit {
                   this.SpinnerService.hide();
                 },
                 (error) => {
-                  console.log(error);
+                  console.error(error);
                   this.SpinnerService.hide();
                 }
               );
@@ -476,7 +476,7 @@ export class ContigentBillApproverComponent implements OnInit {
     this.getContingentBill();
     // }
     // }
-    console.log(this.cbList);
+    // console.log(this.cbList);
   }
 
   confirmRejectModel() {
@@ -571,10 +571,10 @@ export class ContigentBillApproverComponent implements OnInit {
         (res) => {
           let result: { [key: string]: any } = res;
           this.openPdfUrlInNewTab(result['response'].pathURL);
-          console.log(result['response'].pathURL);
+          // console.log(result['response'].pathURL);
         },
         (error) => {
-          console.log(error);
+          console.error(error);
           this.SpinnerService.hide();
         }
       );

@@ -199,7 +199,7 @@ export class InboxComponent implements OnInit {
         this.SpinnerService.hide();
         this.authDocPath=result['response'].uploadID;
         this.viewFile(this.authDocPath);
-        console.log('success');
+        // console.log('success');
       } else {
         this.common.faliureAlert('Please try later', result['message'], '');
       }
@@ -223,10 +223,10 @@ export class InboxComponent implements OnInit {
         (res) => {
           let result: { [key: string]: any } = res;
           this.openPdfUrlInNewTab(result['response'].pathURL);
-          console.log(result['result'].pathURL);
+          // console.log(result['result'].pathURL);
         },
         (error) => {
-          console.log(error);
+          console.error(error);
           this.SpinnerService.hide();
         }
       );

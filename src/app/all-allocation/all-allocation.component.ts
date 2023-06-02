@@ -80,7 +80,7 @@ export class AllAllocationComponent implements OnInit {
     const tokenValueHeader = localStorage.getItem('newToken');
     this.SpinnerService.show();
     var comboJson = null;
-    console.log(JSON.stringify(comboJson) + ' ======');
+    // console.log(JSON.stringify(comboJson) + ' ======');
     this.apiService.getApi(this.cons.api.getBudgetFinYear).subscribe((res) => {
       this.SpinnerService.hide();
 

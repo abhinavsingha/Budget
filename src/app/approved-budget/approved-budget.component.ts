@@ -87,7 +87,7 @@ export class ApprovedBudgetComponent implements OnInit {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
-            debugger;
+            // debugger;
             this.dashboardData=result['response'];
             this.userRole = result['response'].userDetails.role[0].roleName;
             this.userUnitId=result['response'].userDetails.unitId;
@@ -187,7 +187,7 @@ export class ApprovedBudgetComponent implements OnInit {
         }
       },
       (error) => {
-        console.log(error);
+        console.error(error);
         this.SpinnerService.hide();
       }
     );
@@ -197,10 +197,10 @@ export class ApprovedBudgetComponent implements OnInit {
       (res) => {
         let result: { [key: string]: any } = res;
         this.openPdfUrlInNewTab(result['response'].pathURL);
-        console.log(result['response'].pathURL);
+        // console.log(result['response'].pathURL);
       },
       (error) => {
-        console.log(error);
+        console.error(error);
         this.SpinnerService.hide();
       }
     );
@@ -210,9 +210,9 @@ export class ApprovedBudgetComponent implements OnInit {
   }
   upload() {
     const file: File = this.invoiceFileInput.nativeElement.files[0];
-    console.log(file);
+    // console.log(file);
     const formData = new FormData();
-    console.log(this.formdata.get('file')?.value);
+    // console.log(this.formdata.get('file')?.value);
     formData.append('file', file);
     this.SpinnerService.show();
     this.apiService.postApi(this.cons.api.fileUpload, formData).subscribe({
@@ -345,7 +345,7 @@ export class ApprovedBudgetComponent implements OnInit {
     );
   }
   downloadReport(formdata:any) {
-    debugger;
+    // debugger;
     if(formdata.reportType=='02')
       this.getAllocationReport(this.authGroupId);
     else if(formdata.reportType=='03')

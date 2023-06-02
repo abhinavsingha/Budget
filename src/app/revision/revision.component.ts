@@ -327,11 +327,11 @@ export class RevisionComponent {
           this.uploadFileResponse = '';
           // this.newSubcArr = [];
           this.uploadFileResponse = result['response'];
-          console.log(
-            'upload file data ======= ' +
-              JSON.stringify(this.uploadFileResponse) +
-              ' =submitJson'
-          );
+          // console.log(
+          //   'upload file data ======= ' +
+          //     JSON.stringify(this.uploadFileResponse) +
+          //     ' =submitJson'
+          // );
 
           this.uploadDocuments[index].uploadDocId =
             this.uploadFileResponse.uploadDocId;
@@ -520,9 +520,9 @@ export class RevisionComponent {
   selectAll() {
     for (let i = 0; i < this.tabledata.length; i++) {
       this.tabledata[i].checked = this.masterChecked;
-      console.log(this.tabledata[i].checked);
+      // console.log(this.tabledata[i].checked);
     }
-    console.log(this.masterChecked);
+    // console.log(this.masterChecked);
   }
   deleteTableData() {
     for (let i = this.tabledata.length - 1; i >= 0; i--) {
@@ -725,7 +725,7 @@ export class RevisionComponent {
         if (result['message'] == 'success') {
           this.dasboardData = result['response'];
           this.formdata.get('allocationType')?.setValue(this.dasboardData.allocationType);
-          console.log('DATA>>>>>>>' + this.dasboardData);
+          // console.log('DATA>>>>>>>' + this.dasboardData);
           this.sharedService.finYear=result['response'].budgetFinancialYear;
           this.unitId = result['response'].userDetails.unitId;
           if(this.sharedService.finYear!=undefined)

@@ -207,7 +207,7 @@ export class DashboardComponent implements OnInit {
             }
           }
 
-          console.log('DATA>>>>>>>' + this.dasboardData);
+          // console.log('DATA>>>>>>>' + this.dasboardData);
           this.draw();
           this.unitId = result['response'].userDetails.unitId;
           if (this.unitId == '001321') {
@@ -236,12 +236,12 @@ export class DashboardComponent implements OnInit {
         if (result['message'] == 'success') {
           this.sharedService.inbox = result['response'].inbox;
           this.sharedService.outbox = result['response'].outBox;
-          console.log(
-            'inbox' +
-              this.sharedService.inbox +
-              'outbox' +
-              this.sharedService.outbox
-          );
+          // console.log(
+          //   'inbox' +
+          //     this.sharedService.inbox +
+          //     'outbox' +
+          //     this.sharedService.outbox
+          // );
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }

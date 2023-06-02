@@ -72,7 +72,7 @@ export class BudgetAllocationReportComponent implements OnInit {
     this.getAllocationType();
     this.getAmountType();
     this.allocationType=this.sharedService.getAllocationTypeData();
-    debugger;
+    // debugger;
   }
 
   constructor(
@@ -117,7 +117,7 @@ export class BudgetAllocationReportComponent implements OnInit {
 
     this.apiService.getApi(this.cons.api.getAllCgUnitData).subscribe((res) => {
       let result: { [key: string]: any } = res;
-      debugger;
+      // debugger;
       if (result['message'] == 'success') {
         this.allunits = result['response'];
         this.SpinnerService.hide();
@@ -147,7 +147,7 @@ export class BudgetAllocationReportComponent implements OnInit {
 
     this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
       let result: { [key: string]: any } = res;
-      debugger;
+      // debugger;
       if (result['message'] == 'success') {
         this.allunits = result['response'];
         this.SpinnerService.hide();
@@ -235,7 +235,7 @@ export class BudgetAllocationReportComponent implements OnInit {
               this.allocationRepoList.push(dataEntry);
             }
 
-            console.log('DATA>>>>>>>' + this.AllocationReportRevised);
+            // console.log('DATA>>>>>>>' + this.AllocationReportRevised);
             this.draw();
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
@@ -359,7 +359,7 @@ export class BudgetAllocationReportComponent implements OnInit {
         amountTypeId: formdata.amountType.amountTypeId,
         allocationTypeId:formdata.allocationType.allocTypeId
       };
-      debugger;
+      // debugger;
       this.apiService
         .postApi(this.cons.api.getUnitWiseAllocationReport, submitJson)
         .subscribe({
@@ -403,7 +403,7 @@ export class BudgetAllocationReportComponent implements OnInit {
         amountTypeId: formdata.amountType.amountTypeId,
         allocationTypeId:formdata.allocationType.allocTypeId
       };
-      debugger;
+      // debugger;
       this.apiService
         .postApi(this.cons.api.getSubHeadWiseAllocationReport, submitJson)
         .subscribe({
@@ -432,7 +432,7 @@ export class BudgetAllocationReportComponent implements OnInit {
         });
     } else if (formdata.reportType == '01') {
       //It is for BE report
-      debugger;
+      // debugger;
       this.apiService
         .getApi(
           this.cons.api.getBEAllocationReport +
@@ -507,7 +507,7 @@ export class BudgetAllocationReportComponent implements OnInit {
     // }
     else if (formdata.reportType == '05') {
       //It is for Revised BE report
-      debugger;
+      // debugger;
       this.apiService
         .getApi(
           this.cons.api.getREAllocationReport +
@@ -544,7 +544,7 @@ export class BudgetAllocationReportComponent implements OnInit {
     } else if (formdata.reportType == '06')
     {
       //It is for Revised RE report
-      debugger;
+      // debugger;
       this.apiService
         .getApi(
           this.cons.api.getREAllocationReport +
@@ -581,7 +581,7 @@ export class BudgetAllocationReportComponent implements OnInit {
     } else if (formdata.reportType == '07')
     {
       //It is for Revised BE & RE report
-      debugger;
+      // debugger;
       this.apiService
         .getApi(
           this.cons.api.getBEREAllocationReport +
@@ -714,7 +714,7 @@ export class BudgetAllocationReportComponent implements OnInit {
   }
 
   downloadBill(cb: any) {
-    console.log(cb);
+    // console.log(cb);
     let json = {
       authGroupId: cb.authGroupId,
     };
@@ -728,7 +728,7 @@ export class BudgetAllocationReportComponent implements OnInit {
         );
       },
       (error) => {
-        console.log(error);
+        console.error(error);
         this.SpinnerService.hide();
       }
     );

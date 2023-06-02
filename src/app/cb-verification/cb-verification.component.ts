@@ -120,11 +120,11 @@ export class CbVerificationComponent {
     this.apiService.getApi(this.cons.api.getCb).subscribe(
       (res) => {
         let result: { [key: string]: any } = res;
-        console.log(result['response']);
+        // console.log(result['response']);
         let getCbList = result['response'];
 
         for (let i = 0; i < getCbList.length; i++) {
-          console.log('interation :' + i);
+          // console.log('interation :' + i);
           if(getCbList[i].authoritiesList.length>0)
           {
             let cdaData=[];
@@ -180,13 +180,13 @@ export class CbVerificationComponent {
             };
             if (entry.authGroupId == this.sharedService.sharedValue)
               this.cbList.push(entry);
-            console.log(entry+"      ||     "+this.cbList);
+            // console.log(entry+"      ||     "+this.cbList);
           }
 
         }
       },
       (error) => {
-        console.log(error);
+        console.error(error);
       }
     );
   }
@@ -232,7 +232,6 @@ export class CbVerificationComponent {
         this.updateFormdata(cbEntry);
       } else if (cbEntry.cbNo == cbNo && cbEntry.checked == true)
         cbEntry.checked = false;
-      if (cbEntry.checked) console.log(cbEntry.cbNo + ' ');
     });
   }
   getSubHeadType(){
@@ -259,7 +258,7 @@ export class CbVerificationComponent {
   }
   updateFormdata(cbEntry: cb) {
     let subHeadType:any;
-    console.log('cbentry' + cbEntry);
+    // console.log('cbentry' + cbEntry);
     for (let i = 0; i < this.majorHeadData.length; i++) {
       let major = this.majorHeadData[i];
       if (major.majorHead == cbEntry.majorHead) {
@@ -327,7 +326,7 @@ export class CbVerificationComponent {
                   this.SpinnerService.hide();
                 },
                 (error) => {
-                  console.log(error);
+                  console.error(error);
                   this.SpinnerService.hide();
                 }
               );
@@ -389,7 +388,7 @@ export class CbVerificationComponent {
       this.cbList[i].status = 'Verified';
     }
     let cdapark:any[]=[];
-    debugger;
+    // debugger;
     for(let list of this.cbList){
       for(let cda of list.cdaParkingId){
         const entry={
@@ -429,7 +428,7 @@ export class CbVerificationComponent {
       });
     // }
     // }
-    console.log(this.cbList);
+    // console.log(this.cbList);
   }
   confirmRejectModel() {
     Swal.fire({
@@ -456,7 +455,7 @@ export class CbVerificationComponent {
       this.cbList[i].status = 'Rejected';
     }
     let cdapark:any[]=[];
-    debugger;
+    // debugger;
     for(let list of this.cbList){
       for(let cda of list.cdaParkingId){
         const entry={
@@ -504,10 +503,10 @@ export class CbVerificationComponent {
         (res) => {
           let result: { [key: string]: any } = res;
           this.openPdfUrlInNewTab(result['response'].pathURL);
-          console.log(result['response'].pathURL);
+          // console.log(result['response'].pathURL);
         },
         (error) => {
-          console.log(error);
+          console.error(error);
           this.SpinnerService.hide();
         }
       );

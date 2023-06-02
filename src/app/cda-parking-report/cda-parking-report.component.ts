@@ -137,7 +137,7 @@ export class CdaParkingReportComponent implements OnInit {
         this.unitData = result['response'];
       },
       (error) => {
-        console.log(error);
+        console.error(error);
         this.SpinnerService.hide();
       }
     );
@@ -223,7 +223,7 @@ export class CdaParkingReportComponent implements OnInit {
         }
       },
       (error) => {
-        console.log(error);
+        console.error(error);
         this.SpinnerService.hide();
       }
     );
@@ -284,7 +284,7 @@ export class CdaParkingReportComponent implements OnInit {
           this.SpinnerService.hide();
         },
         (error) => {
-          console.log(error);
+          console.error(error);
           this.SpinnerService.hide();
         }
       );
@@ -320,7 +320,7 @@ export class CdaParkingReportComponent implements OnInit {
             this.cdaParkingReportList.push(dataEntry);
           }
 
-          console.log('DATA>>>>>>>' + this.CdaParkingReport);
+          // console.log('DATA>>>>>>>' + this.CdaParkingReport);
           // this.draw();
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');

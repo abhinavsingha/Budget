@@ -276,7 +276,7 @@ export class NewContigentBillComponent implements OnInit {
         this.cleardata(0);
         this.getFinancialYear();
         this.updateInbox();
-        console.log('?????????????'+this.invoiceFileInput);
+        // console.log('?????????????'+this.invoiceFileInput);
         const label=document.getElementById("invoice2");
         if(label!=null)
           label.textContent='Choose File';
@@ -397,9 +397,6 @@ export class NewContigentBillComponent implements OnInit {
             'S1.10.1 of Shedule-10 of DFPCG-2017 vide Govt. of India, Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017'
           );
       }
-      if (cbEntry.checked) {
-        console.log(cbEntry.cbNo + ' ');
-      }
     });
   }
 
@@ -413,7 +410,7 @@ export class NewContigentBillComponent implements OnInit {
         this.unitData = result['response'];
       },
       (error) => {
-        console.log(error);
+        console.error(error);
         this.SpinnerService.hide();
       }
     );
@@ -430,7 +427,7 @@ export class NewContigentBillComponent implements OnInit {
         // this.formdata.get('finYearName')?.setValue(this.finYearData[0]);
       },
       (error) => {
-        console.log(error);
+        console.error(error);
         this.SpinnerService.hide();
       }
     );
@@ -453,7 +450,7 @@ export class NewContigentBillComponent implements OnInit {
       },
       error: (e) => {
         this.SpinnerService.hide();
-        console.log('error');
+        console.error(e);
       },
       complete: () => console.info('complete'),
     });
@@ -476,7 +473,7 @@ export class NewContigentBillComponent implements OnInit {
         }
       },
       (error) => {
-        console.log(error);
+        console.error(error);
         this.SpinnerService.hide();
       }
     );
@@ -501,7 +498,7 @@ export class NewContigentBillComponent implements OnInit {
           this.formdata.get('unit')?.setValue(this.unitName);
           this.formdata.get('authorityUnit')?.setValue(this.unitName);
           this.allocation = this.dasboardData.allocationType;
-          console.log('DATA>>>>>>>' + this.dasboardData);
+          // console.log('DATA>>>>>>>' + this.dasboardData);
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
@@ -520,7 +517,7 @@ export class NewContigentBillComponent implements OnInit {
       (res) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = res;
-        console.log(result['response']);
+        // console.log(result['response']);
         let getCbList = result['response'];
 
         for (let i = 0; i < getCbList.length; i++) {
@@ -588,7 +585,7 @@ export class NewContigentBillComponent implements OnInit {
           //     this.SpinnerService.hide();
           //   },
           //   (error) => {
-          //     console.log(error);
+          //     console.error(error);
           //     this.SpinnerService.hide();
           //     //remove after test
           //   }
@@ -596,7 +593,7 @@ export class NewContigentBillComponent implements OnInit {
         }
       },
       (error) => {
-        console.log(error);
+        console.error(error);
       }
     );
   }
@@ -618,7 +615,7 @@ export class NewContigentBillComponent implements OnInit {
           this.SpinnerService.hide();
         },
         (error) => {
-          console.log(error);
+          console.error(error);
           this.SpinnerService.hide();
         }
       );
@@ -664,9 +661,9 @@ export class NewContigentBillComponent implements OnInit {
   upload(key: string) {
     if (key == 'invoice') {
       const file: File = this.invoiceFileInput.nativeElement.files[0];
-      console.log(file);
+      // console.log(file);
       const formData = new FormData();
-      console.log(this.formdata.get('file')?.value);
+      // console.log(this.formdata.get('file')?.value);
       formData.append('file', file);
       this.SpinnerService.show();
       this.apiService.postApi(this.cons.api.fileUpload, formData).subscribe({
@@ -697,9 +694,9 @@ export class NewContigentBillComponent implements OnInit {
       });
     } else {
       const file: File = this.browseFileInput.nativeElement.files[0];
-      console.log(file);
+      // console.log(file);
       const formData = new FormData();
-      console.log(this.formdata.get('file')?.value);
+      // console.log(this.formdata.get('file')?.value);
       formData.append('file', file);
       this.SpinnerService.show();
       this.apiService.postApi(this.cons.api.fileUpload, formData).subscribe({
@@ -718,7 +715,7 @@ export class NewContigentBillComponent implements OnInit {
               new Date(),
               'yyyy-MM-dd'
             );
-            console.log(this.uploadFileDate);
+            // console.log(this.uploadFileDate);
             this.SpinnerService.hide();
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
@@ -738,7 +735,7 @@ export class NewContigentBillComponent implements OnInit {
   updateFormdata(cbEntry: newCb) {
 
     debugger;
-    console.log('cbentry' + cbEntry);
+    // console.log('cbentry' + cbEntry);
     for (let i = 0; i < this.majorHeadData.length; i++) {
       let major = this.majorHeadData[i];
       if (major.majorHead == cbEntry.majorHead) {
@@ -844,7 +841,7 @@ export class NewContigentBillComponent implements OnInit {
                     this.SpinnerService.hide();
                   },
                   (error) => {
-                    console.log(error);
+                    console.error(error);
                     this.SpinnerService.hide();
                   }
                 );
@@ -1047,7 +1044,7 @@ export class NewContigentBillComponent implements OnInit {
                       result['response']['msg'],
                       'success'
                     );
-                    console.log(result['response']);
+                    // console.log(result['response']);
                     this.SpinnerService.hide();
                   } else {
                     this.common.faliureAlert(
@@ -1251,7 +1248,7 @@ export class NewContigentBillComponent implements OnInit {
   }
 
   downloadBill(cb: any) {
-    console.log(cb);
+    // console.log(cb);
     let json = {
       cbId: cb.cbId,
     };
@@ -1264,7 +1261,7 @@ export class NewContigentBillComponent implements OnInit {
           this.downloadPdf(result['response'][0].path,result['response'][0].fileName);
         },
         (error) => {
-          console.log(error);
+          console.error(error);
           this.SpinnerService.hide();
         }
       );
@@ -1272,9 +1269,9 @@ export class NewContigentBillComponent implements OnInit {
   docId: any;
   uploadBill(cb: any) {
     const file: File = this.uploadFileInput.nativeElement.files[0];
-    console.log(file);
+    // console.log(file);
     const formData = new FormData();
-    console.log(this.formdata.get('file')?.value);
+    // console.log(this.formdata.get('file')?.value);
     formData.append('file', file);
     this.SpinnerService.show();
     this.apiService.postApi(this.cons.api.fileUpload, formData).subscribe({
@@ -1349,10 +1346,10 @@ export class NewContigentBillComponent implements OnInit {
       (res) => {
         let result: { [key: string]: any } = res;
         this.openPdfUrlInNewTab(result['response'].pathURL);
-        console.log(result['response'].pathURL);
+        // console.log(result['response'].pathURL);
       },
       (error) => {
-        console.log(error);
+        console.error(error);
         this.SpinnerService.hide();
       }
     );
@@ -1387,7 +1384,7 @@ export class NewContigentBillComponent implements OnInit {
       if (cbDate > date) {
         Swal.fire('Cbdate cannot be a future date');
         this.formdata.get('cbDate')?.reset();
-        console.log('date= ' + this.formdata.get('cbDate')?.value);
+        // console.log('date= ' + this.formdata.get('cbDate')?.value);
       }
     }
   }
@@ -1424,9 +1421,9 @@ export class NewContigentBillComponent implements OnInit {
   selectAll() {
     for (let i = 0; i < this.cbList.length; i++) {
       this.cbList[i].checked = this.masterChecked;
-      console.log(this.cbList[i].checked);
+      // console.log(this.cbList[i].checked);
     }
-    console.log(this.masterChecked);
+    // console.log(this.masterChecked);
   }
 
   getCbNo(formdata: any) {

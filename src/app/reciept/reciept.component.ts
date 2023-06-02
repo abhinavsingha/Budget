@@ -326,10 +326,10 @@ export class RecieptComponent {
       (res) => {
         let result: { [key: string]: any } = res;
         this.openPdfUrlInNewTab(result['response'].pathURL);
-        console.log(result['response'].pathURL);
+        // console.log(result['response'].pathURL);
       },
       (error) => {
-        console.log(error);
+        console.error(error);
         this.SpinnerService.hide();
       }
     );
@@ -528,7 +528,7 @@ export class RecieptComponent {
     // var newSubmitJson = this.submitJson;
     var newSubmitJson = data;
 
-    console.log(JSON.stringify(newSubmitJson) + ' =submitJson for save budget');
+    // console.log(JSON.stringify(newSubmitJson) + ' =submitJson for save budget');
 
     this.apiService
       .postApi(this.cons.api.budgetRecipetSave, newSubmitJson)

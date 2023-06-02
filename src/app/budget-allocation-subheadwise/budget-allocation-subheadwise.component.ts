@@ -229,7 +229,7 @@ export class BudgetAllocationSubheadwiseComponent {
   }
 
   saveFirstForm(formDataValue: any) {
-    debugger;
+    // //debugger;
     if (
       formDataValue.finYear == null ||
       formDataValue.subHead == null ||
@@ -294,7 +294,7 @@ export class BudgetAllocationSubheadwiseComponent {
       }
     }
     for (var i = 0; i < selectedUnitDataWithAmount.length; i++) {
-      debugger;
+      // //debugger;
       let sum=0.0;
       for(let cda of selectedUnitDataWithAmount[i].cdaParkingId){
         if(cda.cdaAmount!=undefined){
@@ -500,7 +500,7 @@ export class BudgetAllocationSubheadwiseComponent {
     this.SpinnerService.show();
     // var newSubmitJson = this.submitJson;
     var newSubmitJson = data;
-    console.log(JSON.stringify(newSubmitJson) + ' =submitJson for save budget');
+    // console.log(JSON.stringify(newSubmitJson) + ' =submitJson for save budget');
 
     this.apiService
       .postApi(this.cons.api.saveBudgetAllocationSubHeadWise, newSubmitJson)
@@ -576,7 +576,7 @@ export class BudgetAllocationSubheadwiseComponent {
     data: any,
     subhead: any
   ) {
-    debugger;
+    // //debugger;
     this.formdata.patchValue({
       majorHead: subhead.majorHead,
       minorHead: subhead.minorHead,
@@ -752,7 +752,7 @@ export class BudgetAllocationSubheadwiseComponent {
       cda.totalParkingAmount=parseFloat(cda.totalParkingAmount)*parseFloat(cda.amountType.amount)/parseFloat(this.amountUnit.amount)
       cda.remainingCdaAmount=parseFloat(cda.remainingCdaAmount)*parseFloat(cda.amountType.amount)/parseFloat(this.amountUnit.amount)
     }
-    debugger;
+    //debugger;
   }
 currentIndex:any;
   addCda(subHeadWiseUnit: any, i: number) {
@@ -765,7 +765,7 @@ currentIndex:any;
     for(let cda of this.cdaDetail){
       if(cda.amount!=undefined)
         sum=sum+parseFloat(cda.amount);
-    debugger;
+    //debugger;
     }
     if(sum==parseFloat(this.subHeadWiseUnitList[this.currentIndex].amount))
       this.amountEqual=true;

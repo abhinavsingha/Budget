@@ -48,7 +48,7 @@ export class BudgetApproverComponent implements OnInit {
   private authGroupId: any;
 
   ngOnInit(): void {
-    debugger;
+    //debugger;
     if (
       localStorage.getItem('isInboxOrOutbox') != null ||
       localStorage.getItem('isInboxOrOutbox') != undefined
@@ -62,7 +62,7 @@ export class BudgetApproverComponent implements OnInit {
       this.type = localStorage.getItem('type');
 
       if (this.type == 'Budget Reciept') {
-        debugger;
+        //debugger;
         this.getAllGroupIdAndUnitId(this.sharedService.sharedValue);
       } else {
         this.getAlGroupId(localStorage.getItem('group_id'));
@@ -94,7 +94,7 @@ export class BudgetApproverComponent implements OnInit {
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
-          debugger;
+          //debugger;
           this.budgetDataList = result['response'].budgetResponseist;
           for (let i = 0; i < this.budgetDataList.length; i++) {
             if (this.budgetDataList[i].balanceAmount != undefined) {
@@ -117,7 +117,7 @@ export class BudgetApproverComponent implements OnInit {
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
-          debugger;
+          //debugger;
           this.budgetDataList = result['response'].budgetResponseist;
           this.SpinnerService.hide();
         } else {
@@ -276,7 +276,7 @@ export class BudgetApproverComponent implements OnInit {
   showSubHeadDataInNextPage: any;
   addCDAParking(data: any, index: number) {
     this.currentIndex = index;
-    debugger;
+    //debugger;
     this.getCurrentSubHeadData = data;
     this.showSubHeadDataInNextPage = data.subHead.subHeadDescr;
     this.amountUnit = data.amountUnit.amountType;
@@ -500,7 +500,7 @@ export class BudgetApproverComponent implements OnInit {
         amount = amount + parseFloat(unitIndex[i].amount);
       }
     }
-    debugger;
+    //debugger;
     this.balancedRemaingCdaParkingAmount = (
       this.totalAmountToAllocateCDAParking - amount
     ).toFixed(4);
@@ -521,7 +521,7 @@ export class BudgetApproverComponent implements OnInit {
     this.getCurrentSubHeadData;
     this.multipleCdaParking;
     this.cdaParkingListResponseData = [];
-    debugger;
+    //debugger;
     for (var i = 0; i < this.multipleCdaParking.length; i++) {
       this.cdaParkingListResponseData.push({
         amountTypeId: this.amountUnitData.amountTypeId,
@@ -770,7 +770,7 @@ export class BudgetApproverComponent implements OnInit {
     this.cdaData = cdaData;
     this.allocAmountUnit=cdaData[0].amountTypeMain.amountType;
     this.amountUnitType=cdaData[0].amountType.amountType;
-    debugger;
+    //debugger;
   }
 
   resetCdaList() {
@@ -778,12 +778,12 @@ export class BudgetApproverComponent implements OnInit {
   }
   getAllocationReport(authGroupId: any) {
     this.SpinnerService.show();
-    // debugger;
+    // //debugger;
     this.apiService
       .getApi(this.cons.api.getAllocationReport + '/' + authGroupId)
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
-        // debugger;
+        // //debugger;
         if (result['message'] == 'success') {
           if (result['response'].length > 0) {
             this.downloadPdf(
@@ -800,12 +800,12 @@ export class BudgetApproverComponent implements OnInit {
       });
   }getAllocationReportDocx(authGroupId: any) {
     this.SpinnerService.show();
-    // debugger;
+    // //debugger;
     this.apiService
       .getApi(this.cons.api.getAllocationReportDoc + '/' + authGroupId)
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
-        // debugger;
+        // //debugger;
         if (result['message'] == 'success') {
           if (result['response'].length > 0) {
             this.downloadPdf(
@@ -834,7 +834,7 @@ export class BudgetApproverComponent implements OnInit {
     );
   }
   downloadReport(formdata:any) {
-    debugger;
+    //debugger;
 
     if(formdata.reportType=='02')
       this.getAllocationReport(this.authGroupId);

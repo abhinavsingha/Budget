@@ -305,9 +305,9 @@ export class RevisionApprovalComponent {
   }
   upload() {
       const file: File = this.browseFileInput.nativeElement.files[0];
-      console.log(file);
+      // console.log(file);
       const formData = new FormData();
-      console.log(this.formdata.get('file')?.value);
+      // console.log(this.formdata.get('file')?.value);
       formData.append('file', file);
       debugger;
       this.SpinnerService.show();
@@ -343,7 +343,7 @@ export class RevisionApprovalComponent {
       (res) => {
         let result: { [key: string]: any } = res;
         this.openPdfUrlInNewTab(result['response'].pathURL);
-        console.log(result['response'].pathURL);
+        // console.log(result['response'].pathURL);
       },
       (error) => {
         console.log(error);
@@ -537,7 +537,7 @@ export class RevisionApprovalComponent {
               result['response'][0].path,
               result['response'][0].fileName
             );
-            console.log(result['response']);
+            // console.log(result['response']);
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }

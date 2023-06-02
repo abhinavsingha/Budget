@@ -375,9 +375,9 @@ export class BudgetAllocationComponent implements OnInit {
       });
     }
 
-    console.log(
-      'New Major Heads ............' + JSON.stringify(majorHeadWithSubHeads)
-    );
+    // console.log(
+    //   'New Major Heads ............' + JSON.stringify(majorHeadWithSubHeads)
+    // );
   }
   majorHeadBySelectingUnit: any[] = [];
 
@@ -392,7 +392,7 @@ export class BudgetAllocationComponent implements OnInit {
 
     if (unitIndex > -1) {
       const asdasd = this.arrayWithUnitMajorHeadAndSubHead[unitIndex];
-      console.log('Asdasd == ' + asdasd);
+      // console.log('Asdasd == ' + asdasd);
       this.majorHeadBySelectingUnit = asdasd.majorHeads;
     }
   }
@@ -407,7 +407,7 @@ export class BudgetAllocationComponent implements OnInit {
 
     if (majorHeadIndex > -1) {
       const asdasd = this.majorHeadBySelectingUnit[majorHeadIndex];
-      console.log('Asdasd == ' + asdasd);
+      // console.log('Asdasd == ' + asdasd);
       this.subHeadBySelectingMajorHead = asdasd.subHeads;
     }
   }
@@ -416,7 +416,7 @@ export class BudgetAllocationComponent implements OnInit {
     const tokenValueHeader = localStorage.getItem('newToken');
     this.SpinnerService.show();
     var comboJson = null;
-    console.log(JSON.stringify(comboJson) + ' ======');
+    // console.log(JSON.stringify(comboJson) + ' ======');
     this.apiService.getApi(this.cons.api.getBudgetFinYear).subscribe((res) => {
       this.SpinnerService.hide();
 
@@ -431,7 +431,7 @@ export class BudgetAllocationComponent implements OnInit {
     // Only for demo
     this.SpinnerService.show();
     var comboJson = null;
-    console.log(JSON.stringify(comboJson) + ' ======');
+    // console.log(JSON.stringify(comboJson) + ' ======');
     this.apiService
       .getApi(this.cons.api.getAvailableFund + '/' + cgUnit.unit)
       .subscribe((res) => {
@@ -579,7 +579,7 @@ export class BudgetAllocationComponent implements OnInit {
   finallySubmit(data: any) {
     this.SpinnerService.show();
     var newSubmitJson = data;
-    console.log(JSON.stringify(newSubmitJson) + ' =submitJson for save budget');
+    // console.log(JSON.stringify(newSubmitJson) + ' =submitJson for save budget');
     this.apiService
       .postApi(this.cons.api.saveBudgetAllocationUnitWise, newSubmitJson)
       .subscribe({
@@ -634,9 +634,9 @@ export class BudgetAllocationComponent implements OnInit {
     } else {
       this.subHeadDataFormObject.id = indexValue + 1;
       this.subHeadDataFormObject.amount = data.subHeadAmount;
-      console.log(
-        'Value Come from the subHeads = ' + this.subHeadDataFormObject
-      );
+      // console.log(
+      //   'Value Come from the subHeads = ' + this.subHeadDataFormObject
+      // );
       this.subHeadDataFormList.push(this.subHeadDataFormObject);
       this.subHeadDataFormObject = {
         id: null,
@@ -647,7 +647,7 @@ export class BudgetAllocationComponent implements OnInit {
   }
 
   inputBoxValueNew(data: any, indexValue: any) {
-    console.log('Heelo world' + this.demoSubHeads[data].subheadDesc);
+    // console.log('Heelo world' + this.demoSubHeads[data].subheadDesc);
   }
 
   subHeadArrayWithoutUnit: any[] = [];
@@ -1167,7 +1167,7 @@ export class BudgetAllocationComponent implements OnInit {
           parseFloat(this.subHeadFilterDatas[i].amountUnit.amount)) /
         parseFloat(this.amountUnits.amount);
     }
-    console.log(subHeadData);
+    // console.log(subHeadData);
   }
   cdaAllocationbalance: boolean = false;
   cdaWithdrawl(cda: any) {
@@ -1188,12 +1188,12 @@ export class BudgetAllocationComponent implements OnInit {
     }
     if (sum == this.subHeadFilterDatas[this.index].amount)
       this.cdaAllocationbalance = true;
-    console.log(sum);
+    // console.log(sum);
   }
 
   saveFurtherTable(formDataValue: any) {
     this.subHeadFilterDatas;
-    debugger;
+    // debugger;
     for (var i = 0; i < this.subHeadFilterDatas.length; i++) {
       let sum=0.0
       for(let cda of this.subHeadFilterDatas[i].cdaParkingTrans){
@@ -1216,6 +1216,6 @@ export class BudgetAllocationComponent implements OnInit {
       });
     }
 
-    debugger;
+    // debugger;
   }
 }

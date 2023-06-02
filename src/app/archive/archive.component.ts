@@ -85,7 +85,7 @@ export class ArchiveComponent implements OnInit {
             this.inboxList.push(entry);
           }
         }
-        debugger;
+        // debugger;
       } else {
         this.common.faliureAlert('Please try later', result['message'], '');
       }
@@ -93,7 +93,7 @@ export class ArchiveComponent implements OnInit {
   }
 
   redirect(entry: any) {
-    debugger;
+    // debugger;
     localStorage.setItem('isInboxOrOutbox','approved');
     localStorage.setItem('type',entry.isType);
     this.sharedService.sharedValue = entry.groupId;
@@ -102,14 +102,14 @@ export class ArchiveComponent implements OnInit {
   }
 
   getAuthDoc(entry: any) {
-    debugger;
+    // debugger;
     this.apiService.getApi(this.cons.api.getApprovedFilePath+'/'+entry.groupId+'/'+entry.type).subscribe((res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
           this.SpinnerService.hide();
           this.authDocPath=result['response'].uploadID;
           this.viewFile(this.authDocPath);
-          console.log('success');
+          // console.log('success');
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
@@ -133,11 +133,11 @@ export class ArchiveComponent implements OnInit {
           let result: { [key: string]: any } = res;
           if (result['message'] == 'success') {
           this.openPdfUrlInNewTab(result['response'].pathURL);
-          console.log(result['result'].pathURL);
+          // console.log(result['result'].pathURL);
           }
         },
         (error) => {
-          console.log(error);
+          console.error(error);
           this.SpinnerService.hide();
         }
       );
