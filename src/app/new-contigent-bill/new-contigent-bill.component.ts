@@ -1447,6 +1447,8 @@ export class NewContigentBillComponent implements OnInit {
         if (result['message'] == 'success') {
           this.sharedService.inbox = result['response'].inbox;
           this.sharedService.outbox = result['response'].outBox;
+          this.sharedService.approve=result['response'].approved;
+          this.sharedService.archive=result['response'].archived;
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
