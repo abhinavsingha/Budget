@@ -68,7 +68,7 @@ export class ArchiveComponent implements OnInit {
                 isType='Budget Allocation';
             }
             else if(list[i].isBgOrCg=="BR"){
-              isType='Budget Reciept';
+              isType='Budget Receipt';
             }
             else if(list[i].isBgOrCg=="CB"){
               isType='Contingent Bill';

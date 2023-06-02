@@ -113,7 +113,7 @@ export class InboxComponent implements OnInit {
         this.router.navigate(['/budget-approval']);
       }
       // window.location.href = '/budget-approval';
-    } else if (li.isType == 'Budget Reciept') {
+    } else if (li.isType == 'Budget Receipt') {
       this.router.navigate(['/budget-approval']);
       this.sharedService.redirectedFrom = 'inbox';
       // window.location.href = '/budget-approval';
@@ -142,7 +142,7 @@ export class InboxComponent implements OnInit {
                 isType='Budget Allocation';
             }
             else if(list[i].isBgOrCg=="BR"){
-              isType='Budget Reciept';
+              isType='Budget Receipt';
             }
             else if(list[i].isBgOrCg=="CB"){
               isType='Contingent Bill';
@@ -188,7 +188,7 @@ export class InboxComponent implements OnInit {
       isType='BG';
     else if(li.isType=='Budget Revision')
       isType='BG';
-    else if(li.isType=='Budget Reciept')
+    else if(li.isType=='Budget Receipt')
       isType='BR';
     else
       isType='CB';
