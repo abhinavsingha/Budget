@@ -554,7 +554,8 @@ export class BudgetApproverComponent implements OnInit {
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
             // this.router.navigate(['/budget-approval']);
-            window.location.reload();
+            // window.location.reload();
+            this.common.successAlert('Updated','CDA updated Successfully','')
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }

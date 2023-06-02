@@ -222,7 +222,7 @@
           <button class="btn btn-primary mr-2" data-dismiss="modal" (click)="saveCdaParkingData()" *ngIf="showSubmit"
             [disabled]="isdisableSubmitButton">Submit</button>
           <button class="btn btn-warning" (click)="updateCdaParkingDataApi()" *ngIf="showUpdate"
-            [disabled]="isdisableUpdateButton">Update</button>
+            [disabled]="isdisableUpdateButton" data-dismiss="modal">Update</button>
         </div>
       </div>
       <!-- /.modal-content -->
