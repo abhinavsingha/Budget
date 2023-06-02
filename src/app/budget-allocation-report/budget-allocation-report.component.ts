@@ -59,7 +59,7 @@ export class BudgetAllocationReportComponent implements OnInit {
     allocationType2:new FormControl(),
   });
   entry: any;
-  private unitId: any;
+  unitId: any;
   showDate: boolean=false;
 
   ngOnInit(): void {
