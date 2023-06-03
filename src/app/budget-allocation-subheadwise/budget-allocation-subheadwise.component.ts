@@ -625,8 +625,9 @@ export class BudgetAllocationSubheadwiseComponent {
             );
             this.cdaDetail=result['response'].cdaParkingTrans;
             for(let cda of this.cdaDetail){
-              cda.totalParkingAmount=parseFloat(cda.totalParkingAmount)*parseFloat(cda.amountType.amount)/parseFloat(this.amountUnit.amount)
-              cda.remainingCdaAmount=parseFloat(cda.remainingCdaAmount)*parseFloat(cda.amountType.amount)/parseFloat(this.amountUnit.amount)
+              cda.totalParkingAmount=parseFloat(cda.totalParkingAmount)*parseFloat(cda.amountType.amount)/parseFloat(this.amountUnit.amount);
+              cda.remainingCdaAmount=parseFloat(cda.remainingCdaAmount)*parseFloat(cda.amountType.amount)/parseFloat(this.amountUnit.amount);
+              cda.amountType=this.amountUnit;
             }
             this.formdata.patchValue({
               fundAvailable: parseFloat(result['response'].fundAvailable),
@@ -679,6 +680,11 @@ export class BudgetAllocationSubheadwiseComponent {
     else{
       return;
     }
+    for(let cda of this.cdaDetail){
+      cda.totalParkingAmount=parseFloat(cda.totalParkingAmount)*parseFloat(cda.amountType.amount)/parseFloat(this.formdata.get('amountType')?.value.amount);
+      cda.remainingCdaAmount=parseFloat(cda.remainingCdaAmount)*parseFloat(cda.amountType.amount)/parseFloat(this.formdata.get('amountType')?.value.amount);
+      cda.amountType=this.formdata.get('amountType')?.value;
+    }
     for (let i = 0; i < this.subHeadWiseUnitList.length; i++) {
       if (this.subHeadWiseUnitList[i].amount != undefined) {
         this.subHeadWiseUnitList[i].amount = (
@@ -702,6 +708,7 @@ export class BudgetAllocationSubheadwiseComponent {
         this.formdata.get('amountType')?.value;
       // }
     }
+
   }
   updateInbox() {
     this.apiService.getApi(this.cons.api.updateInboxOutBox).subscribe({
@@ -765,9 +772,13 @@ currentIndex:any;
     for(let cda of this.cdaDetail){
       if(cda.amount!=undefined)
         sum=sum+parseFloat(cda.amount);
+      else{
+        cda.amount=0;
+      }
     //debugger;
     }
     if(sum==parseFloat(this.subHeadWiseUnitList[this.currentIndex].amount))
       this.amountEqual=true;
+    this.cdaWithdrawl();
   }
 }

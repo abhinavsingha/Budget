@@ -257,7 +257,7 @@
                   <tr *ngFor="let cda of cdaDetail">
                     <td>{{cda.ginNo.cdaName}}</td>
                     <td>{{cda.remainingCdaAmount}}</td>
-                    <td><input type="number" (change)="calcCdaTotal()" id="Allocationamount" class="form-control" placeholder="Please Enter Amount" [(ngModel)]="cda.amount"/></td>
+                    <td><input type="number"  id="Allocationamount" class="form-control" placeholder="Please Enter Amount" [(ngModel)]="cda.amount"/></td>
                   </tr>
 
                   </tbody>
@@ -275,7 +275,7 @@
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-          <button  type="button" data-dismiss="modal" class="btn btn-primary" (click)="cdaWithdrawl()">Submit</button>
+          <button  type="button" data-dismiss="modal" class="btn btn-primary" (click)="calcCdaTotal()">Submit</button>
         </div>
       </div>
       <!-- /.modal-content -->
