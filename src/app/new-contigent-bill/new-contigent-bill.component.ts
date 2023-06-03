@@ -1115,6 +1115,7 @@ export class NewContigentBillComponent implements OnInit {
             cbFilePath: undefined
           };
           this.cbList[i] = entry;
+          this.common.successAlert('Updated','Successfully Updated','');
         } else {
           Swal.fire('Cannot be updated');
         }
