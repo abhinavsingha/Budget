@@ -475,7 +475,7 @@ export class RevisionApprovalComponent {
       'AdditionalOrWithdrawal',
       'Revised'
     ];
-    const filename = this.type + '.csv';
+    const filename = 'RevisionAllocation.csv';
     this.generateCSV(tableData, columns, filename, column);
   }
   generateCSV(
