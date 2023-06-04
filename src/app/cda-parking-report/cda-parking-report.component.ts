@@ -89,6 +89,7 @@ export class CdaParkingReportComponent implements OnInit {
   disabled: boolean = true;
 
   formdata = new FormGroup({
+    reprtType:new FormControl('Select Report Type'),
     finYear: new FormControl(),
     majorHead: new FormControl(),
     cdas: new FormControl(),
@@ -489,5 +490,74 @@ export class CdaParkingReportComponent implements OnInit {
 
   getArr(key: string) {
     return(this.data[key]);
+  }
+
+  report(formdata:any) {
+    if(formdata.reprtType=='01')
+    this.downloadPdf(this.downloadPath,this.downloadFilename)
+    else if(formdata.reprtType=='02')
+    {
+      let submitJson:any;
+      if(formdata.reportType=='01'){
+        submitJson = {
+          financialYearId: formdata.finYear.serialNo,
+          cdaType: formdata.cdas.ginNo,
+          majorHead: formdata.majorHead.majorHead,
+          amountType: formdata.amountType.amountTypeId,
+          allocationTypeId: formdata.allocationType.allocTypeId,
+          subHeadType:formdata.subHeadType.subHeadTypeId,
+          budgetHeadId:formdata.subHead.budgetCodeId,
+          reportType:formdata.reportType,
+          minorHead:formdata.majorHead.minorHead,
+        };}
+      else if (formdata.reportType=='02'){
+        submitJson = {
+          financialYearId: formdata.finYear.serialNo,
+          cdaType: formdata.cdas.ginNo,
+          majorHead: formdata.majorHead.majorHead,
+          minorHead:formdata.majorHead.minorHead,
+          amountType: formdata.amountType.amountTypeId,
+          allocationTypeId: formdata.allocationType.allocTypeId,
+          subHeadType:formdata.subHeadType.subHeadTypeId,
+          unitId:formdata.unit.unit,
+          reportType:formdata.reportType
+        };
+      }
+      else{
+        submitJson = {
+          minorHead:formdata.majorHead.minorHead,
+          financialYearId: formdata.finYear.serialNo,
+          cdaType: formdata.cdas.ginNo,
+          majorHead: formdata.majorHead.majorHead,
+          amountType: formdata.amountType.amountTypeId,
+          allocationTypeId: formdata.allocationType.allocTypeId,
+          subHeadType:formdata.subHeadType.subHeadTypeId,
+        };
+      }
+      this.apiService
+        .postApi(this.cons.api.getCdaParkingReportDoc, submitJson)
+        .subscribe({
+          next: (v: object) => {
+            this.SpinnerService.hide();
+            let result: { [key: string]: any } = v;
+            if (result['message'] == 'success') {
+              this.data=result['response'].allCdaData;
+              this.head=this.data.head;
+              this.keys=this.objectKeys(this.data);
+              this.downloadPath=result['response'].path;
+              this.downloadFilename=result['response'].fileName;
+              this.downloadPdf(this.downloadPath,this.downloadFilename);
+            } else {
+              this.common.faliureAlert('Please try later', result['message'], '');
+            }
+          },
+          error: (e) => {
+            this.SpinnerService.hide();
+            console.error(e);
+            this.common.faliureAlert('Error', e['error']['message'], 'error');
+          },
+          complete: () => console.info('complete'),
+        });
+    }
   }
 }

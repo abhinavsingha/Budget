@@ -168,25 +168,24 @@
 
 
               </div>
-              <!--    <div class="row mt-2">-->
-              <!--      <div class="col-sm-12 col-md-5">-->
-              <!--        <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">-->
-              <!--        </div>-->
-              <!--      </div>-->
-              <!--      <div class="col-sm-12 col-md-7">-->
-              <!--        <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">-->
-              <!--          <pagination-controls class="pagination float-right" (pageChange)="p = $event"></pagination-controls>-->
-              <!--        </div>-->
-              <!--      </div>-->
-              <!--    </div>-->
             </div>
           </div>
         </div>
 
         <!-- /.card-body -->
-        <div class="card-footer">
+        <div class="card-footer" >
           <div class="row">
-            <button type="submit" class="btn btn-primary mr-2" (click)="downloadPdf(downloadPath,downloadFilename)"><i class="fas fa-download"></i> Download</button>
+            <div class="col-md-3">
+              <div class="form-group" [formGroup]="formdata" >
+            <select class="form-control select2bs4" style="width: 100%"
+                    id="reprtType" formControlName="reprtType"  placeholder="Select Report Type">
+              <option selected disabled value="Select Report Type">--Select Report Type--</option>
+              <option value="01">PDF Report</option>
+              <option value="02">DOCX Report</option>
+            </select>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary mr-2" (click)="report(formdata.value)"><i class="fas fa-download"></i> Download</button>
           </div>
         </div>
       </div>
