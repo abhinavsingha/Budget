@@ -393,13 +393,15 @@ export class CdaParkingReportComponent implements OnInit {
         allocationTypeId: formdata.allocationType.allocTypeId,
         subHeadType:formdata.subHeadType.subHeadTypeId,
         budgetHeadId:formdata.subHead.budgetCodeId,
-        reportType:formdata.reportType
+        reportType:formdata.reportType,
+        minorHead:formdata.majorHead.minorHead,
       };}
       else if (formdata.reportType=='02'){
       submitJson = {
         financialYearId: formdata.finYear.serialNo,
         cdaType: formdata.cdas.ginNo,
         majorHead: formdata.majorHead.majorHead,
+        minorHead:formdata.majorHead.minorHead,
         amountType: formdata.amountType.amountTypeId,
         allocationTypeId: formdata.allocationType.allocTypeId,
         subHeadType:formdata.subHeadType.subHeadTypeId,
@@ -409,6 +411,7 @@ export class CdaParkingReportComponent implements OnInit {
       }
       else{
       submitJson = {
+        minorHead:formdata.majorHead.minorHead,
         financialYearId: formdata.finYear.serialNo,
         cdaType: formdata.cdas.ginNo,
         majorHead: formdata.majorHead.majorHead,
