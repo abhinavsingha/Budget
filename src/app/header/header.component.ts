@@ -11,6 +11,8 @@ import Swal from 'sweetalert2';
 
 import { KeycloakService } from 'keycloak-angular';
 import { SharedService } from '../services/shared/shared.service';
+import * as FileSaver from "file-saver";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-header',
@@ -31,6 +33,8 @@ export class HeaderComponent {
   unitName: any;
 
   rank: any;
+  private path: any;
+  private filename: any;
 
   ngOnInit(): void {
     this.getDashBoardDta();
@@ -39,6 +43,7 @@ export class HeaderComponent {
   }
 
   constructor(
+    private http: HttpClient,
     private SpinnerService: NgxSpinnerService,
     private cons: ConstantsService,
     private apiService: ApiCallingServiceService,
@@ -193,5 +198,44 @@ export class HeaderComponent {
     this.router.navigate([
       '/https://icg.net.in/auth/realms/icgrms/protocol/openid-connect/logout?redirect_uri=https://icg.net.in/CGBMS/',
     ]);
+  }
+
+  downloadManual() {
+    this.SpinnerService.show();
+    this.apiService
+      .getApi(this.cons.api.getUserManual)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            this.path = result['response'].path;
+            this.filename = result['response'].filename;
+            this.downloadPdf(this.path,this.filename);
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
+
+
+  }
+  downloadPdf(pdfUrl: string, fileName: any): void {
+    this.http.get(pdfUrl, { responseType: 'blob' }).subscribe(
+      (blob: Blob) => {
+        this.SpinnerService.hide();
+        FileSaver.saveAs(blob, fileName);
+      },
+      (error) => {
+        this.SpinnerService.hide();
+        console.error('Failed to download PDF:', error);
+      }
+    );
   }
 }

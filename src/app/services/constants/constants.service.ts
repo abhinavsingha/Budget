@@ -230,6 +230,7 @@ export class ConstantsService {
     getRevisedAllocationReport: this.serviceUrl + 'reportController/getRevisedAllocationReport',
     getAllocationReportDoc: this.serviceUrl + 'reportController/getAllocationReportDoc',
     getCdaParkingReportDoc: this.serviceUrl + 'reportController/getCdaParkingReportDoc',
+    getUserManual: this.serviceUrl+ 'fileUpload/getUserManual'
 
 
   };

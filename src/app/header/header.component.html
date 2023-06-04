@@ -17,14 +17,21 @@
         <i class="fas fa-expand-arrows-alt"></i>
       </a>
     </li>
+    <li class="nav-item" (click)="downloadManual()">
+      <a class="nav-link" href="#" role="button">
+        <i class="nav-compact">User Manual</i>
+      </a>
+    </li>
     <!-- Notifications Dropdown Menu -->
     <li class="nav-item dropdown">
       <a class="nav-link userwrap" data-toggle="dropdown" href="#">
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel d-flex">
+
           <div class="info">
             <a href="#" class="d-block">{{name}}-{{rank}}</a>
           </div>
+
           <!-- <div class="image">
             <img src="assets/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
           </div> -->
@@ -33,6 +40,7 @@
       </a>
       <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
         <span class="dropdown-item dropdown-header">User Roles</span>
+
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" *ngFor="let role of roles" (click)="changeRole(role)">
           <i class="fas fa-user mr-2"></i> {{role.roleName}}
