@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import * as $ from 'jquery';
 import { ConstantsService } from '../services/constants/constants.service';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -71,10 +72,10 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     // ngOnInit(): void {
+    this.getDashBoardDta();
     this.getBudgetFinYear();
     this.getSubHeadsData();
     this.getCgUnitData();
-    this.getDashBoardDta();
     this.getinbox();
     this.getSubHeadType();
     this.getAllocationTypeData();
@@ -86,7 +87,8 @@ export class DashboardComponent implements OnInit {
     private cons: ConstantsService,
     private apiService: ApiCallingServiceService,
     private formBuilder: FormBuilder,
-    private common: CommonService
+    private common: CommonService,
+    private router: Router
   ) {}
   // vaibhav
 
@@ -108,14 +110,27 @@ export class DashboardComponent implements OnInit {
 
   getCgUnitData() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
-      let result: { [key: string]: any } = res;
-      if (result['message'] == 'success') {
-        this.allunits = result['response'];
+    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe({
+      next: (v: object) => {
         this.SpinnerService.hide();
-      } else {
-        this.common.faliureAlert('Please try later', result['message'], '');
-      }
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.allunits = result['response'];
+          this.SpinnerService.hide();
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+        debugger;
+        if (e['status'] == '401') {
+          this.redirectUri();
+        }
+      },
+      complete: () => console.info('complete'),
     });
   }
   getAllCgUnitData() {
@@ -133,14 +148,27 @@ export class DashboardComponent implements OnInit {
 
   getSubHeadsData() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getSubHeadsData).subscribe((res) => {
-      let result: { [key: string]: any } = res;
-      if (result['message'] == 'success') {
-        this.subHeads = result['response'];
+    this.apiService.getApi(this.cons.api.getSubHeadsData).subscribe({
+      next: (v: object) => {
         this.SpinnerService.hide();
-      } else {
-        this.common.faliureAlert('Please try later', result['message'], '');
-      }
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.subHeads = result['response'];
+          this.SpinnerService.hide();
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+        debugger;
+        if (e['status'] == '401') {
+          this.redirectUri();
+        }
+      },
+      complete: () => console.info('complete'),
     });
   }
 
@@ -153,10 +181,14 @@ export class DashboardComponent implements OnInit {
         let result: { [key: string]: any } = v;
 
         if (result['message'] == 'success') {
+          if (result['response'].userDetails.role[0].roleId == '113') {
+            this.redirectUri();
+          }
+          debugger;
           this.sharedService.dashboardData = result['response'];
           this.dasboardData = result['response']; // debugger;
-          this.sharedService.approve=result['response'].approved;
-          this.sharedService.archive=result['response'].archived;
+          this.sharedService.approve = result['response'].approved;
+          this.sharedService.archive = result['response'].archived;
 
           var roles = result['response'].userDetails.role[0].roleName;
           if (localStorage.getItem('user_role') != roles) {
@@ -207,8 +239,6 @@ export class DashboardComponent implements OnInit {
               this.unitWiseExpenditureList.push(dataEntry);
             }
           }
-
-          // console.log('DATA>>>>>>>' + this.dasboardData);
           this.draw();
           this.unitId = result['response'].userDetails.unitId;
           if (this.unitId == '001321') {
@@ -226,6 +256,13 @@ export class DashboardComponent implements OnInit {
       complete: () => console.info('complete'),
     });
   }
+
+  redirectUri() {
+    window.location.href =
+      'https://icg.net.in/auth/realms/icgrms/protocol/openid-connect/logout?redirect_uri=https://icg.net.in/CGBMS/';
+    return;
+  }
+
   getinbox() {
     this.SpinnerService.show();
 
@@ -237,12 +274,6 @@ export class DashboardComponent implements OnInit {
         if (result['message'] == 'success') {
           this.sharedService.inbox = result['response'].inbox;
           this.sharedService.outbox = result['response'].outBox;
-          // console.log(
-          //   'inbox' +
-          //     this.sharedService.inbox +
-          //     'outbox' +
-          //     this.sharedService.outbox
-          // );
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
@@ -250,7 +281,11 @@ export class DashboardComponent implements OnInit {
       error: (e) => {
         this.SpinnerService.hide();
         console.error(e);
-        this.common.faliureAlert('Error', e['error']['message'], 'error');
+        // this.common.faliureAlert('Error', e['error']['message'], 'error');
+        debugger;
+        if (e['status'] == '401') {
+          this.confirmRedirectModel();
+        }
       },
       complete: () => console.info('complete'),
     });
@@ -475,6 +510,22 @@ export class DashboardComponent implements OnInit {
     new Chart(chartItem2, config2);
   }
 
+  confirmRedirectModel() {
+    Swal.fire({
+      title: 'You are not authorized..!',
+      text: 'Please contact to System Admin.',
+      icon: 'warning',
+      // showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      // cancelButtonColor: '#d33',
+      confirmButtonText: 'Ok',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.redirectUri();
+      }
+    });
+  }
+
   confirmModel(data: any) {
     Swal.fire({
       title: 'Are you sure?',
@@ -620,6 +671,10 @@ export class DashboardComponent implements OnInit {
         this.SpinnerService.hide();
         console.error(e);
         this.common.faliureAlert('Error', e['error']['message'], 'error');
+        debugger;
+        if (e['status'] == '401') {
+          this.redirectUri();
+        }
       },
       complete: () => console.info('complete'),
     });

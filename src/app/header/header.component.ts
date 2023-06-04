@@ -33,18 +33,9 @@ export class HeaderComponent {
   rank: any;
 
   ngOnInit(): void {
+    this.getDashBoardDta();
     $.getScript('assets/js/adminlte.js');
     let nr = localStorage.getItem('userDetails');
-
-    // if (nr != null) {
-    //   this.userDetails = JSON.parse(nr);
-    //   this.name = this.userDetails.fullName;
-    //   this.roles = this.userDetails.role;
-    //   this.roleHeading = this.roles[0].roleName;
-    // }
-    // ;
-
-    this.getDashBoardDta();
   }
 
   constructor(
@@ -176,11 +167,11 @@ export class HeaderComponent {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
-            // this.userDetails = JSON.parse(nr);
-            // let userDetailsString: {} = result['response'].userDetails.;
-
-            this.name = result['response'].userDetails.fullName;
             this.roles = result['response'].userDetails.role;
+            if (this.roles[0].roleId == '113') {
+              this.redirectUri();
+            }
+            this.name = result['response'].userDetails.fullName;
             this.roleHeading = result['response'].userDetails.role[0].roleName;
             this.sharedService.roleHeading = this.roleHeading;
             this.unitName = result['response'].userDetails.unit;
@@ -196,5 +187,11 @@ export class HeaderComponent {
         },
         complete: () => console.info('complete'),
       });
+  }
+
+  redirectUri() {
+    this.router.navigate([
+      '/https://icg.net.in/auth/realms/icgrms/protocol/openid-connect/logout?redirect_uri=https://icg.net.in/CGBMS/',
+    ]);
   }
 }
