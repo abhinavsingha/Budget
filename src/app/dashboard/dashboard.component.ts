@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import * as $ from 'jquery';
 import { ConstantsService } from '../services/constants/constants.service';
@@ -72,13 +73,9 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     // ngOnInit(): void {
-    this.getDashBoardDta();
-    this.getBudgetFinYear();
-    this.getSubHeadsData();
-    this.getCgUnitData();
-    this.getinbox();
-    this.getSubHeadType();
-    this.getAllocationTypeData();
+
+    this.userExit();
+
     $.getScript('assets/main.js');
   }
   constructor(
@@ -88,7 +85,8 @@ export class DashboardComponent implements OnInit {
     private apiService: ApiCallingServiceService,
     private formBuilder: FormBuilder,
     private common: CommonService,
-    private router: Router
+    private router: Router,
+    private location: Location
   ) {}
   // vaibhav
 
@@ -105,6 +103,42 @@ export class DashboardComponent implements OnInit {
       } else {
         this.common.faliureAlert('Please try later', result['message'], '');
       }
+    });
+  }
+
+  userExit() {
+    this.SpinnerService.show();
+    this.apiService.getApi(this.cons.api.userExit).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        debugger;
+        if (result['message'] == 'success') {
+          if (result['response']) {
+            this.getDashBoardDta();
+            this.getBudgetFinYear();
+            this.getSubHeadsData();
+            this.getCgUnitData();
+            this.getinbox();
+            this.getSubHeadType();
+            this.getAllocationTypeData();
+          } else {
+            this.redirectUri();
+          }
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+        // debugger;
+        // if (e['status'] == '401') {
+        //   this.redirectUri();
+        // }
+      },
+      complete: () => console.info('complete'),
     });
   }
 
@@ -125,14 +159,15 @@ export class DashboardComponent implements OnInit {
         this.SpinnerService.hide();
         console.error(e);
         this.common.faliureAlert('Error', e['error']['message'], 'error');
-        debugger;
-        if (e['status'] == '401') {
-          this.redirectUri();
-        }
+        // debugger;
+        // if (e['status'] == '401') {
+        //   this.redirectUri();
+        // }
       },
       complete: () => console.info('complete'),
     });
   }
+
   getAllCgUnitData() {
     this.SpinnerService.show();
     this.apiService.getApi(this.cons.api.getAllCgUnitData).subscribe((res) => {
@@ -163,10 +198,10 @@ export class DashboardComponent implements OnInit {
         this.SpinnerService.hide();
         console.error(e);
         this.common.faliureAlert('Error', e['error']['message'], 'error');
-        debugger;
-        if (e['status'] == '401') {
-          this.redirectUri();
-        }
+        // debugger;
+        // if (e['status'] == '401') {
+        //   this.redirectUri();
+        // }
       },
       complete: () => console.info('complete'),
     });
@@ -181,9 +216,6 @@ export class DashboardComponent implements OnInit {
         let result: { [key: string]: any } = v;
 
         if (result['message'] == 'success') {
-          if (result['response'].userDetails.role[0].roleId == '113') {
-            this.redirectUri();
-          }
           debugger;
           this.sharedService.dashboardData = result['response'];
           this.dasboardData = result['response']; // debugger;
@@ -257,10 +289,20 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  redirectUri() {
-    window.location.href =
-      'https://icg.net.in/auth/realms/icgrms/protocol/openid-connect/logout?redirect_uri=https://icg.net.in/CGBMS/';
+  async redirectUri() {
+    this.common.warningAlert(
+      'Warning',
+      'You are not authorized to access this application...!',
+      'warning'
+    );
+    await this.waitWithAsync(2000); // Wait for 2 seconds
+
+    window.location.replace(this.cons.serverRedirectUrl);
     return;
+  }
+
+  async waitWithAsync(milliseconds: number): Promise<void> {
+    await new Promise<void>((resolve) => setTimeout(resolve, milliseconds));
   }
 
   getinbox() {
@@ -281,11 +323,7 @@ export class DashboardComponent implements OnInit {
       error: (e) => {
         this.SpinnerService.hide();
         console.error(e);
-        // this.common.faliureAlert('Error', e['error']['message'], 'error');
-        debugger;
-        if (e['status'] == '401') {
-          this.confirmRedirectModel();
-        }
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
       },
       complete: () => console.info('complete'),
     });
@@ -671,10 +709,10 @@ export class DashboardComponent implements OnInit {
         this.SpinnerService.hide();
         console.error(e);
         this.common.faliureAlert('Error', e['error']['message'], 'error');
-        debugger;
-        if (e['status'] == '401') {
-          this.redirectUri();
-        }
+        // debugger;
+        // if (e['status'] == '401') {
+        //   this.redirectUri();
+        // }
       },
       complete: () => console.info('complete'),
     });

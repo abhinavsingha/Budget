@@ -6,9 +6,14 @@ import { Injectable } from '@angular/core';
 export class ConstantsService {
   constructor() {}
 
-  serviceUrl = 'https://icg.net.in/cgbudget/'; //prod
-  // serviceUrl = 'http://488e-203-153-42-234.ngrok.io/'; //dev
-  // serviceUrl = 'http://192.168.1.131:1111/'; //dev
+  serverRedirectUrl =
+    'https://icg.net.in/auth/realms/icgrms/protocol/openid-connect/logout?redirect_uri=https://icg.net.in/CGBMS/'; //For Production Server
+  serviceUrl = 'https://icg.net.in/cgbudget/'; //prod server
+
+  // serverRedirectUrl =
+  //   'https://icg.net.in/auth/realms/icgrms/protocol/openid-connect/logout?redirect_uri=https://icg.net.in/BMS/'; //For UAT Server
+  // serviceUrl = 'https://icg.net.in/budget/'; //UAT server
+
   // serviceUrl = 'http://192.168.1.112:1111/'; //arvind system
   api = {
     getDataBudgetAllocation:
@@ -66,6 +71,8 @@ export class ConstantsService {
     getAllRole: this.serviceUrl + 'mangeRoleController/getAllRole',
 
     createUser: this.serviceUrl + 'mangeUser/createUser',
+
+    userExit: this.serviceUrl + 'mangeUser/userExit',
 
     budgetAllocationReport:
       this.serviceUrl + 'budgetAllocation/budgetAllocationReport',
@@ -227,11 +234,12 @@ export class ConstantsService {
       this.serviceUrl + 'budgetAllocation/getAllocationByFinYear',
 
     updateAllocation: this.serviceUrl + 'budgetAllocation/updateAllocation',
-    getRevisedAllocationReport: this.serviceUrl + 'reportController/getRevisedAllocationReport',
-    getAllocationReportDoc: this.serviceUrl + 'reportController/getAllocationReportDoc',
-    getCdaParkingReportDoc: this.serviceUrl + 'reportController/getCdaParkingReportDoc',
-    getUserManual: this.serviceUrl+ 'fileUpload/getUserManual'
-
-
+    getRevisedAllocationReport:
+      this.serviceUrl + 'reportController/getRevisedAllocationReport',
+    getAllocationReportDoc:
+      this.serviceUrl + 'reportController/getAllocationReportDoc',
+    getCdaParkingReportDoc:
+      this.serviceUrl + 'reportController/getCdaParkingReportDoc',
+    getUserManual: this.serviceUrl + 'fileUpload/getUserManual',
   };
 }

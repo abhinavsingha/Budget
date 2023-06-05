@@ -11,8 +11,8 @@ import Swal from 'sweetalert2';
 
 import { KeycloakService } from 'keycloak-angular';
 import { SharedService } from '../services/shared/shared.service';
-import * as FileSaver from "file-saver";
-import {HttpClient} from "@angular/common/http";
+import * as FileSaver from 'file-saver';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-header',
@@ -75,6 +75,8 @@ export class HeaderComponent {
       }
     });
   }
+
+  serverRedirectUrl = this.cons.serverRedirectUrl;
 
   finallySubmit(data: any) {
     // this.SpinnerService.show();
@@ -202,29 +204,25 @@ export class HeaderComponent {
 
   downloadManual() {
     this.SpinnerService.show();
-    this.apiService
-      .getApi(this.cons.api.getUserManual)
-      .subscribe({
-        next: (v: object) => {
-          this.SpinnerService.hide();
-          let result: { [key: string]: any } = v;
-          if (result['message'] == 'success') {
-            this.path = result['response'].path;
-            this.filename = result['response'].filename;
-            this.downloadPdf(this.path,this.filename);
-          } else {
-            this.common.faliureAlert('Please try later', result['message'], '');
-          }
-        },
-        error: (e) => {
-          this.SpinnerService.hide();
-          console.error(e);
-          this.common.faliureAlert('Error', e['error']['message'], 'error');
-        },
-        complete: () => console.info('complete'),
-      });
-
-
+    this.apiService.getApi(this.cons.api.getUserManual).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.path = result['response'].path;
+          this.filename = result['response'].filename;
+          this.downloadPdf(this.path, this.filename);
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
   }
   downloadPdf(pdfUrl: string, fileName: any): void {
     this.http.get(pdfUrl, { responseType: 'blob' }).subscribe(
