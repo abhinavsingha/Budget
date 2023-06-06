@@ -122,6 +122,16 @@
           </div>
           <!-- /.card-body -->
           <div class="card-footer">
+            <div class="col-md-3">
+              <div class="form-group" >
+                <select class="form-control select2bs4" style="width: 100%"
+                        id="reprttype" formControlName="reprtType"  >
+                  <option selected disabled value="Select Report Type">--Select Report Type--</option>
+                  <option value="01">PDF Report</option>
+                  <option value="02">DOCX Report</option>
+                </select>
+              </div>
+            </div>
             <div class="row">
               <button type="submit" class="btn btn-primary" (click)="downloadReport(formdata.value)"><i
                   class="fas fa-download"></i>

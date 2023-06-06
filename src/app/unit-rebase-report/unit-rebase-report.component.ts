@@ -36,6 +36,7 @@ export class UnitRebaseReportComponent {
     this.formdata = formBuilder.group({
       fromDate: ['', Validators.required],
       toDate: ['', Validators.required],
+      reprtType:new FormControl('Select Report Type')
     });
   }
 
@@ -47,9 +48,12 @@ export class UnitRebaseReportComponent {
     // var fromDateInMilliseconds = new Date(formdata.fromDate).getTime();
     this.SpinnerService.show();
     debugger;
+    let url=this.cons.api.getUnitRebaseReport;
+    if(formdata.reprtType=='02')
+      url=url+'Doc';
     this.apiService
       .getApi(
-        this.cons.api.getUnitRebaseReport +
+        url +
           '/' +
           formdata.fromDate +
           '/' +
