@@ -49,7 +49,7 @@
                   </ng-select>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label>Rupees in <span class="text-danger">*</span></label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [items]="amountType"
@@ -73,14 +73,14 @@
                   </select>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label>AllocationType <span class="text-danger">*</span></label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [items]="allocationType"
                              bindLabel="allocDesc" placeholder="Select Allocation Type" formControlName="allocationType"></ng-select>
                 </div>
               </div>
-              <div class="col-md-4" *ngIf="bere">
+              <div class="col-md-3" *ngIf="bere">
                 <div class="form-group">
                   <label>AllocationType for RE <span class="text-danger">*</span></label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [items]="allocationType"
@@ -118,20 +118,23 @@
                     bindLabel="subHeadDescr" placeholder="Select Sub Head" formControlName="subHead"></ng-select>
                 </div>
               </div>
-            </div>
-          </div>
-          <!-- /.card-body -->
-          <div class="card-footer">
-            <div class="col-md-3">
-              <div class="form-group" >
-                <select class="form-control select2bs4" style="width: 100%"
-                        id="reprttype" formControlName="reprtType"  >
-                  <option selected disabled value="Select Report Type">--Select Report Type--</option>
-                  <option value="01">PDF Report</option>
-                  <option value="02">DOCX Report</option>
-                </select>
+              <div class="col-md-3">
+                <div class="form-group" >
+                  <label>Report Format<span class="text-danger">*</span></label>
+                  <select class="form-control select2bs4" style="width: 100%"
+                          id="reprttype" formControlName="reprtType"  >
+                    <option selected disabled value="Select Report Type">--Select Report Format--</option>
+                    <option value="01">PDF Report</option>
+                    <option value="02">DOCX Report</option>
+                  </select>
+                </div>
               </div>
             </div>
+          </div>
+
+          <!-- /.card-body -->
+          <div class="card-footer">
+
             <div class="row">
               <button type="submit" class="btn btn-primary" (click)="downloadReport(formdata.value)"><i
                   class="fas fa-download"></i>
