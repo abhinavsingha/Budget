@@ -10,6 +10,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import * as FileSaver from 'file-saver';
 import { HttpClient } from '@angular/common/http';
 import {SharedService} from "../services/shared/shared.service";
+import * as Papa from "papaparse";
 
 class AllocationRepoList {
   financialYear: any;
@@ -608,43 +609,72 @@ export class BudgetAllocationReportComponent implements OnInit {
       let url=this.cons.api.getMainBEAllocationReport;
       if(formdata.reprtType=='02')
         url=url+'Doc';
-
-      this.apiService
-        .getApi(
-          url +
-          '/' +
-          formdata.finYear.serialNo +
-          '/' +
-          formdata.allocationType.allocTypeId+
-
-          '/' +
-          formdata.amountType.amountTypeId+'/'+formdata.toDate+'/'+formdata.fromDate
-        )
-        .subscribe({
-          next: (v: object) => {
-            this.SpinnerService.hide();
-            let result: { [key: string]: any } = v;
-            if (result['message'] == 'success') {
-              this.downloadPdf(
-                result['response'][0].path,
-                result['response'][0].fileName
-              );
+      else if(formdata.reprtType=='03')
+        url=url+'Excel';
+      if (formdata.reprtType=='03'){
+        this.apiService.getApi(url +'/'+formdata.finYear.serialNo +'/'+formdata.allocationType.allocTypeId+'/' +formdata.amountType.amountTypeId+'/'+formdata.toDate+'/'+formdata.fromDate)
+          .subscribe({
+            next: (v: object) => {
               this.SpinnerService.hide();
-            } else {
-              this.common.faliureAlert(
-                'Please try later',
-                result['message'],
-                ''
-              );
-            }
-          },
-          error: (e) => {
-            this.SpinnerService.hide();
-            console.error(e);
-            this.common.faliureAlert('Error', e['error']['message'], 'error');
-          },
-          complete: () => console.info('complete'),
-        });
+              let result: { [key: string]: any } = v;
+              if (result['message'] == 'success'){
+                this.generateFERCsv(result['response'])
+                this.SpinnerService.hide();
+              } else {
+                this.common.faliureAlert(
+                  'Please try later',
+                  result['message'],
+                  ''
+                );
+              }
+            },
+            error: (e) => {
+              this.SpinnerService.hide();
+              console.error(e);
+              this.common.faliureAlert('Error', e['error']['message'], 'error');
+            },
+            complete: () => console.info('complete'),
+          });
+      }
+      else{
+        this.apiService
+          .getApi(
+            url +
+            '/' +
+            formdata.finYear.serialNo +
+            '/' +
+            formdata.allocationType.allocTypeId+
+
+            '/' +
+            formdata.amountType.amountTypeId+'/'+formdata.toDate+'/'+formdata.fromDate
+          )
+          .subscribe({
+            next: (v: object) => {
+              this.SpinnerService.hide();
+              let result: { [key: string]: any } = v;
+              if (result['message'] == 'success') {
+                this.downloadPdf(
+                  result['response'][0].path,
+                  result['response'][0].fileName
+                );
+                this.SpinnerService.hide();
+              } else {
+                this.common.faliureAlert(
+                  'Please try later',
+                  result['message'],
+                  ''
+                );
+              }
+            },
+            error: (e) => {
+              this.SpinnerService.hide();
+              console.error(e);
+              this.common.faliureAlert('Error', e['error']['message'], 'error');
+            },
+            complete: () => console.info('complete'),
+          });
+      }
+
     }
     else if (formdata.reportType == '09'){
       if(formdata.toDate==undefined||formdata.fromDate==undefined){
@@ -779,6 +809,161 @@ export class BudgetAllocationReportComponent implements OnInit {
       this.showSubHead = false;
       this.showUnit = false;
       this.showDate=false;
+    }
+  }
+  prevSub='';
+  currentSub='';
+  generateFERCsv(response:any) {
+    // Example data and column names
+    let tableData = [];
+    let totalR = 0.0;
+    let totalA = 0.0;
+    // for (let i = 0; i < this.budgetDataList.length; i++) {
+    //   totalA =
+    //     totalA +
+    //     parseFloat(this.budgetDataList[i].allocationAmount) *
+    //     this.budgetDataList[i].amountUnit.amount;
+    //   // totalR=totalR+(parseFloat(this.budgetDataList[i].balanceAmount)*this.budgetDataList[i].remeningBalanceUnit.amount);
+    //   let table: any = {
+    //     Financial_Year: this.budgetDataList[i].finYear.finYear.replaceAll(
+    //       ',',
+    //       ' '
+    //     ),
+    //     To_Unit: this.budgetDataList[i].toUnit.descr.replaceAll(',', ' '),
+    //     From_Unit: this.budgetDataList[i].fromUnit.descr.replaceAll(',', ' '),
+    //     Subhead: this.budgetDataList[i].subHead.subHeadDescr.replaceAll(
+    //       ',',
+    //       ' '
+    //     ),
+    //     Type: this.budgetDataList[i].allocTypeId.allocType.replaceAll(',', ' '),
+    //     // Remaining_Amount: (parseFloat(this.budgetDataList[i].balanceAmount)*this.budgetDataList[i].remeningBalanceUnit.amount/this.budgetDataList[i].amountUnit.amount).toString(),
+    //     Allocated_Fund: this.budgetDataList[i].allocationAmount
+    //       .replaceAll(',', ' ')
+    //       .toString(),
+    //   };
+    //   tableData.push(table);
+    // }
+    // let table: TableData = {
+    //   Financial_Year: '',
+    //   To_Unit: '',
+    //   From_Unit: '',
+    //   Subhead: '',
+    //   Type: 'TOTAL',
+    //   Allocated_Fund: (
+    //     parseFloat(totalA.toFixed(4)) /
+    //     parseFloat(this.budgetDataList[0].amountUnit.amount)
+    //   ).toString(),
+    // };
+    // tableData.push(table);
+    let ferDetails = response[0].ferDetails;
+    // for(let row of ferDetails){
+    let allocTotal=0.0;
+    let billTotal=0.0;
+    let percentBillTotal=0.0;
+
+      for(let i=0;i<ferDetails.length;i++){
+        if(i>0){
+          if(this.prevSub!=ferDetails[i].subHead.replaceAll(',', ' ')){
+            tableData.push({
+              'REVENUE OBJECT HEAD':'',
+              'Allocation to ICG':'',
+              'Unit':'Total:',
+              'Allocation':allocTotal,
+              'Bill Submission':billTotal,
+              '% BillSubmission w.r.t.':percentBillTotal,
+              'CGDA Booking':'',
+              '% Bill Clearance w.r.t.':'',
+            });
+            allocTotal=0.0;
+            billTotal=0.0;
+            percentBillTotal=0.0;
+          }
+          else{
+            allocTotal=allocTotal+parseFloat(ferDetails[i].allocAmount);
+            billTotal=billTotal+parseFloat(ferDetails[i].billSubmission);
+            percentBillTotal=percentBillTotal+parseFloat(ferDetails[i].percentageBill);
+          }
+        }
+      tableData.push({
+        'REVENUE OBJECT HEAD':ferDetails[i].subHead.replaceAll(',', ' '),
+        'Allocation to ICG':ferDetails[i].icgAllocAmount.replaceAll(',', ' '),
+        'Unit':ferDetails[i].unitName.replaceAll(',', ' '),
+        'Allocation':ferDetails[i].allocAmount.replaceAll(',', ''),
+        'Bill Submission':ferDetails[i].billSubmission.replaceAll(',', ''),
+        '% BillSubmission w.r.t.':ferDetails[i].percentageBill.replaceAll(',', ''),
+        'CGDA Booking':ferDetails[i].cgdaBooking.replaceAll(',', ' '),
+        '% Bill Clearance w.r.t.':ferDetails[i].percentageBillClearnce.replaceAll(',', ' '),
+      });
+        this.prevSub=ferDetails[i].subHead.replaceAll(',', ' ');
+        allocTotal=allocTotal+parseFloat(ferDetails[i].allocAmount.replaceAll(',', ''));
+        billTotal=billTotal+parseFloat(ferDetails[i].billSubmission.replaceAll(',', ''));
+        percentBillTotal=percentBillTotal+parseFloat(ferDetails[i].percentageBill.replaceAll(',', ''));
+    }
+    const columns = [
+      'REVENUE OBJECT HEAD',
+      response[0].allocationType.replaceAll(',', ' ')+' '+response[0].finYear.replaceAll(',', ' ')+' Allocation to ICG (in'+response[0].amountIn+')',
+      'Unit',
+      response[0].allocationType.replaceAll(',', ' ')+' '+response[0].finYear.replaceAll(',', ' ')+' Allocation (in'+response[0].amountIn+')',
+      'Bill Submission Upto '+response[0].upToDate.replaceAll(',', ' '),
+      '% BillSubmission w.r.t. '+response[0].allocationType.replaceAll(',', ' ')+' '+response[0].finYear.replaceAll(',', ' '),
+      'CGDA Booking Upto '+response[0].upToDate.replaceAll(',', ' '),
+      '% Bill Clearance w.r.t. '+response[0].allocationType.replaceAll(',', ' ')+' '+response[0].finYear.replaceAll(',', ' '),
+    ];
+    const column = [
+      'REVENUE OBJECT HEAD',
+      'Allocation to ICG',
+      'Unit',
+      'Allocation',
+      'Bill Submission',
+      '% BillSubmission w.r.t.',
+      'CGDA Booking',
+      '% Bill Clearance w.r.t.',
+    ];
+    const filename = this.formdata.get('reportType')?.value + '.csv';
+
+    // Generate and download the CSV file
+    this.generateCSV(tableData, columns, filename, column);
+    // this.generateCSV([], columns, filename, column);
+  }
+  generateCSV(
+    data: any[],
+    columns: string[],
+    filename: string,
+    column: string[]
+  ) {
+    const csvData: any[][] = [];
+
+    // Add column names as the first row
+    csvData.push(columns);
+
+    // Add data rows
+    data.forEach((item) => {
+      const row: string[] = [];
+      column.forEach((colmn) => {
+        row.push(item[colmn]);
+      });
+      csvData.push(row);
+    });
+
+    // Convert the array to CSV using PapaParse
+    const csv = Papa.unparse(csvData);
+
+    // Create a CSV file download
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+
+    const link = document.createElement('a');
+    if (link.download !== undefined) {
+      // Browsers that support HTML5 download attribute
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', filename);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      // Fallback for unsupported browsers
+      alert('CSV download is not supported in this browser.');
     }
   }
 }
