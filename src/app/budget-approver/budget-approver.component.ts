@@ -498,6 +498,11 @@ export class BudgetApproverComponent implements OnInit {
     );
     for (var i = 0; i < unitIndex.length; i++) {
       if (unitIndex[i].amount != '' || unitIndex[i].amount != null) {
+        if(parseFloat(unitIndex[i].amount)<0){
+          this.common.faliureAlert('Invalid Amount','Amount cannot be less than zero','');
+          unitIndex[i].amount=undefined;
+          return;
+        }
         amount = amount + parseFloat(unitIndex[i].amount);
       }
     }

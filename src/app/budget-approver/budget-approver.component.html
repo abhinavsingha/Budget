@@ -193,7 +193,7 @@
                           [(ngModel)]="cdaParking.cdaParkingUnit">
                         </ng-select>
                       </td>
-                      <td><input type="number" class="form-control" id="Aallocationamount"
+                      <td><input type="number"  min="0" class="form-control" id="Aallocationamount"
                           placeholder="Please Enter Amount" [(ngModel)]="cdaParking.amount"
                           (keyup)="getCDAParkingAllocatedAmount()" /></td>
                       <td><button type="button" class="btn btn-danger"
