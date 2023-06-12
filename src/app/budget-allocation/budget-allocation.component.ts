@@ -950,7 +950,7 @@ export class BudgetAllocationComponent implements OnInit {
               }
 
               this.subHeadFilterDatas[i].amount = 0;
-              this.subHeadFilterDatas[i].amountUnit2 = undefined;
+              this.subHeadFilterDatas[i].amountUnit2 = this.formdata.get('amountType')?.value;
             }
           }
         } else {
@@ -1066,13 +1066,10 @@ export class BudgetAllocationComponent implements OnInit {
 
   setAmountType() {
     this.amountUnit = this.formdata.get('amountType')?.value.amountType;
+    this.amountUnits=this.formdata.get('amountType')?.value;
     for (let i = 0; i < this.subHeadFilterDatas.length; i++) {
       if (this.subHeadFilterDatas[i].amountUnit != null) {
-        for (
-          let j = 0;
-          j < this.subHeadFilterDatas[i].cdaParkingTrans.length;
-          j++
-        ) {
+        for (let j = 0;j < this.subHeadFilterDatas[i].cdaParkingTrans.length;j++) {
           this.subHeadFilterDatas[i].cdaParkingTrans[j].totalParkingAmount = (
             (parseFloat(
               this.subHeadFilterDatas[i].cdaParkingTrans[j].totalParkingAmount

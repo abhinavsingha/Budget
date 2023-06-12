@@ -816,47 +816,7 @@ export class BudgetAllocationReportComponent implements OnInit {
   generateFERCsv(response:any) {
     // Example data and column names
     let tableData = [];
-    let totalR = 0.0;
-    let totalA = 0.0;
-    // for (let i = 0; i < this.budgetDataList.length; i++) {
-    //   totalA =
-    //     totalA +
-    //     parseFloat(this.budgetDataList[i].allocationAmount) *
-    //     this.budgetDataList[i].amountUnit.amount;
-    //   // totalR=totalR+(parseFloat(this.budgetDataList[i].balanceAmount)*this.budgetDataList[i].remeningBalanceUnit.amount);
-    //   let table: any = {
-    //     Financial_Year: this.budgetDataList[i].finYear.finYear.replaceAll(
-    //       ',',
-    //       ' '
-    //     ),
-    //     To_Unit: this.budgetDataList[i].toUnit.descr.replaceAll(',', ' '),
-    //     From_Unit: this.budgetDataList[i].fromUnit.descr.replaceAll(',', ' '),
-    //     Subhead: this.budgetDataList[i].subHead.subHeadDescr.replaceAll(
-    //       ',',
-    //       ' '
-    //     ),
-    //     Type: this.budgetDataList[i].allocTypeId.allocType.replaceAll(',', ' '),
-    //     // Remaining_Amount: (parseFloat(this.budgetDataList[i].balanceAmount)*this.budgetDataList[i].remeningBalanceUnit.amount/this.budgetDataList[i].amountUnit.amount).toString(),
-    //     Allocated_Fund: this.budgetDataList[i].allocationAmount
-    //       .replaceAll(',', ' ')
-    //       .toString(),
-    //   };
-    //   tableData.push(table);
-    // }
-    // let table: TableData = {
-    //   Financial_Year: '',
-    //   To_Unit: '',
-    //   From_Unit: '',
-    //   Subhead: '',
-    //   Type: 'TOTAL',
-    //   Allocated_Fund: (
-    //     parseFloat(totalA.toFixed(4)) /
-    //     parseFloat(this.budgetDataList[0].amountUnit.amount)
-    //   ).toString(),
-    // };
-    // tableData.push(table);
     let ferDetails = response[0].ferDetails;
-    // for(let row of ferDetails){
     let allocTotal=0.0;
     let billTotal=0.0;
     let percentBillTotal=0.0;
@@ -919,7 +879,7 @@ export class BudgetAllocationReportComponent implements OnInit {
       'CGDA Booking',
       '% Bill Clearance w.r.t.',
     ];
-    const filename = this.formdata.get('reportType')?.value + '.csv';
+    const filename = 'ReportFER.csv';
 
     // Generate and download the CSV file
     this.generateCSV(tableData, columns, filename, column);

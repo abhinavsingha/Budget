@@ -30,57 +30,58 @@
           <h3 class="card-title">Budget Allocation Unit Wise</h3>
 
           <div class="card-tools">
-            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+            <button class="btn btn-tool" data-card-widget="collapse" type="button">
               <i class="fas fa-minus"></i>
             </button>
           </div>
         </div>
         <!-- /.card-header -->
         <div class="card-body">
-          <form [formGroup]="formdata" (ngSubmit)="showList(formdata.value)">
+          <form (ngSubmit)="showList(formdata.value)" [formGroup]="formdata">
             <div class="row">
               <div class="col-md-5">
                 <div class="row">
                   <div class="col-md-4">
                     <div class="form-group">
                       <label>Financial Year</label>
-                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="budgetFinYearsNew"
-                        bindLabel="finYear" placeholder="Select Financial Year" formControlName="finYearId"
-                        (change)="toUnitAndMajorHeadReset()">
+                      <ng-select (change)="toUnitAndMajorHeadReset()" [items]="budgetFinYearsNew" bindLabel="finYear"
+                                 class="form-control select2bs4" formControlName="finYearId" placeholder="Select Financial Year"
+                                 style="width: 100%">
                       </ng-select>
                     </div>
                   </div>
                   <div class="col-md-8">
                     <div class="form-group">
                       <label>To Unit</label>
-                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="allunitsNew"
-                        bindLabel="descr" appendTo="body" placeholder="Select To Unit" formControlName="unitId"
-                        (change)="majorHeadReset()">
+                      <ng-select (change)="majorHeadReset()" [items]="allunitsNew" appendTo="body"
+                                 bindLabel="descr" class="form-control select2bs4" formControlName="unitId" placeholder="Select To Unit"
+                                 style="width: 100%">
                       </ng-select>
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="form-group">
                       <label>Allocation Type</label>
-                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="allocationType"
-                                 [readonly]="true"   bindLabel="allocDesc" placeholder="Select Allocation Type" formControlName="allocationType">
+                      <ng-select [items]="allocationType" [readonly]="true" bindLabel="allocDesc"
+                                 class="form-control select2bs4" formControlName="allocationType" placeholder="Select Allocation Type"
+                                 style="width: 100%">
                       </ng-select>
                     </div>
                   </div>
                   <div class="col-md-8">
                     <div class="form-group">
                       <label>Subhead Type</label>
-                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeadType"
-                        bindLabel="subType" placeholder="Select Major Head" formControlName="subHeadType">
+                      <ng-select [items]="subHeadType" bindLabel="subType" class="form-control select2bs4"
+                                 formControlName="subHeadType" placeholder="Select Major Head" style="width: 100%">
                       </ng-select>
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="form-group">
                       <label>Major Head</label>
-                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="majorDataNew"
-                        bindLabel="majorHead" placeholder="Major Head" formControlName="majorHeadId"
-                        (change)="getAllSubHeadByFinYearMajorHeadAndUnit(formdata.value)">
+                      <ng-select (change)="getAllSubHeadByFinYearMajorHeadAndUnit(formdata.value)" [items]="majorDataNew" bindLabel="majorHead"
+                                 class="form-control select2bs4" formControlName="majorHeadId" placeholder="Major Head"
+                                 style="width: 100%">
                       </ng-select>
                     </div>
                   </div>
@@ -90,29 +91,30 @@
                       <!-- <ng-select class="form-control select2bs4" style="width: 100%" [items]="minorHead"
                         bindLabel="minorHead" (change)="getAvailableFund($event)" placeholder="Select Minor Head"
                         formControlName="unit"> -->
-                      <input type="text" class="form-control" id="minorHeadId" placeholder="Enter Minor Head"
-                        value="asdf" formControlName="minorHeadId" readonly />
+                      <input class="form-control" formControlName="minorHeadId" id="minorHeadId" placeholder="Enter Minor Head"
+                             readonly type="text" value="asdf"/>
                     </div>
                   </div>
 
                   <div class="col-md-4">
                     <div class="form-group">
                       <label>Rupees in<span class="text-danger"></span></label>
-                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="amountType"
-                        [(ngModel)]="amountUnits" (change)="setAmountType()" bindLabel="amountType"
-                        placeholder="Select Amount Unit" formControlName="amountType"></ng-select>
+                      <ng-select (change)="setAmountType()" [(ngModel)]="amountUnits" [items]="amountType"
+                                 bindLabel="amountType" class="form-control select2bs4" formControlName="amountType"
+                                 placeholder="Select Amount Unit" style="width: 100%"></ng-select>
                     </div>
                   </div>
                   <div class="col-md-8">
                     <div class="form-group">
                       <label>Remarks</label>
-                      <input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Remarks"
-                        formControlName="remarks" />
+                      <input class="form-control" formControlName="remarks" id="PrevAllocation" placeholder="Enter Remarks"
+                             type="text"/>
                     </div>
                   </div>
                   <div class="col-md-4">
-                    <button type="submit" class="btn btn-primary mr-2"
-                      (click)="saveFurtherTable(formdata.value)">Save</button>
+                    <button (click)="saveFurtherTable(formdata.value)" class="btn btn-primary mr-2"
+                            type="submit">Save
+                    </button>
                     <label style="opacity:0">.</label><br>
                   </div>
                 </div>
@@ -124,46 +126,47 @@
                 <div class="card-body table-responsive p-0" style="height:300px;">
                   <table class="table table-hover text-nowrap">
                     <thead>
-                      <tr>
-                        <th>Sr No</th>
-                        <th>Sub Head</th>
-                        <th>Fund Available</th>
-                        <th style="width:10%;">Amount <span style="font-size: 9px;">(in {{amountUnit}})</span></th>
-                        <!--                        <th>Amount Unit</th>-->
-                        <th>CDA Selection</th>
-                        <!-- <th>Action</th> -->
-                      </tr>
+                    <tr>
+                      <th>Sr No</th>
+                      <th>Sub Head</th>
+                      <th>Fund Available</th>
+                      <th style="width:10%;">Amount <span style="font-size: 9px;">(in {{amountUnit}})</span></th>
+                      <!--                        <th>Amount Unit</th>-->
+                      <th>CDA Selection</th>
+                      <!-- <th>Action</th> -->
+                    </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let subHeadData of subHeadFilterDatas; let i = index">
-                        <td>{{i+1}}</td>
-                        <td>
-                          {{subHeadData.subHeadDescr}}
-                        </td>
-                        <td>
-                          {{subHeadData.totalAmount}}
-                        </td>
-                        <td>
-                          <input type="number" [(ngModel)]="subHeadData.amount" [ngModelOptions]="{standalone: true}"
-                            id="subHeadDataAmount" placeholder="Please Enter Amount"
-                            (change)="allocatedAmount(i,formdata.value)" style="width:102px;" />
-                        </td>
-                        <td>
-                          <button *ngIf="subHeadData.cdaParkingTrans.length>1" type="submit"
-                            class="btn btn-warning mr-2" data-toggle="modal" data-target="#modal-lg"
-                            (click)="populateCda(subHeadData,i)">Select CDA</button>
-                        </td>
-                        <!-- <td>
-                          <button *ngIf="subHeadData.cdaParkingTrans.length>1  && !cdaAllocationbalance " type=" submit"
-                            class="btn btn-primary mr-2" (click)="addSubHeadValue(subHeadData, formdata.value, i)"
-                            disabled>Add</button>
-                          <button
-                            *ngIf="subHeadData.cdaParkingTrans.length<=1 || (subHeadData.cdaParkingTrans.length>1 && cdaAllocationbalance) "
-                            type=" submit" class="btn btn-primary mr-2"
-                            (click)="addSubHeadValue(subHeadData, formdata.value, i)">Add</button>
-                        </td> -->
-                        <!-- </div> -->
-                      </tr>
+                    <tr *ngFor="let subHeadData of subHeadFilterDatas; let i = index">
+                      <td>{{i + 1}}</td>
+                      <td>
+                        {{subHeadData.subHeadDescr}}
+                      </td>
+                      <td>
+                        {{subHeadData.totalAmount}}
+                      </td>
+                      <td>
+                        <input (change)="allocatedAmount(i,formdata.value)" [(ngModel)]="subHeadData.amount" [ngModelOptions]="{standalone: true}"
+                               id="subHeadDataAmount" placeholder="Please Enter Amount"
+                               style="width:102px;" type="number"/>
+                      </td>
+                      <td>
+                        <button (click)="populateCda(subHeadData,i)" *ngIf="subHeadData.cdaParkingTrans.length>1"
+                                class="btn btn-warning mr-2" data-target="#modal-lg" data-toggle="modal"
+                                type="button">Select CDA
+                        </button>
+                      </td>
+                      <!-- <td>
+                        <button *ngIf="subHeadData.cdaParkingTrans.length>1  && !cdaAllocationbalance " type=" submit"
+                          class="btn btn-primary mr-2" (click)="addSubHeadValue(subHeadData, formdata.value, i)"
+                          disabled>Add</button>
+                        <button
+                          *ngIf="subHeadData.cdaParkingTrans.length<=1 || (subHeadData.cdaParkingTrans.length>1 && cdaAllocationbalance) "
+                          type=" submit" class="btn btn-primary mr-2"
+                          (click)="addSubHeadValue(subHeadData, formdata.value, i)">Add</button>
+                      </td> -->
+                      <!-- </div> -->
+                    </tr>
                     </tbody>
                   </table>
                 </div>
@@ -183,36 +186,36 @@
               <div class="card-body table-responsive p-0">
                 <table class="table table-hover text-nowrap">
                   <thead>
-                    <tr>
-                      <th>Sr. No.</th>
-                      <th>F.Y.</th>
-                      <th>Unit</th>
-                      <th>Allocation Type</th>
-                      <th>Sub Head</th>
-                      <th>Amount (in {{amountUnit}})</th>
-                      <!-- <th>Remarks</th> -->
-                      <!-- <th>Action</th> -->
-                    </tr>
+                  <tr>
+                    <th>Sr. No.</th>
+                    <th>F.Y.</th>
+                    <th>Unit</th>
+                    <th>Allocation Type</th>
+                    <th>Sub Head</th>
+                    <th>Amount (in {{amountUnit}})</th>
+                    <!-- <th>Remarks</th> -->
+                    <!-- <th>Action</th> -->
+                  </tr>
                   </thead>
                   <tbody>
-                    <tr
-                      *ngFor="let newBudgetAllocation of tableData  | paginate :{itemsPerPage:25,currentPage:p}; let i = index">
+                  <tr
+                    *ngFor="let newBudgetAllocation of tableData  | paginate :{itemsPerPage:25,currentPage:p}; let i = index">
 
-                      <td>{{25 *(p-1)+i+1}}</td>
-                      <td>{{newBudgetAllocation.financialYear.finYear}}</td>
-                      <td>{{newBudgetAllocation.unitName.descr}}</td>
-                      <td>{{newBudgetAllocation.allocationType.allocDesc}}</td>
-                      <td>{{newBudgetAllocation.selectedSubHead.subHeadDescr}}</td>
-                      <td *ngIf="newBudgetAllocation.selectedSubHead.amount == undefined">
-                        0
-                      </td>
-                      <td *ngIf="newBudgetAllocation.selectedSubHead.amount != undefined">
-                        {{newBudgetAllocation.selectedSubHead.amount}}
-                      </td>
-                      <!-- <td>{{newBudgetAllocation.remarks}}</td> -->
-                      <!-- <button type=" submit" class="btn btn-danger mr-2"
-                        (click)="deleteRowFromTableData(newBudgetAllocation,i)">Delete</button> -->
-                    </tr>
+                    <td>{{25 * (p - 1) + i + 1}}</td>
+                    <td>{{newBudgetAllocation.financialYear.finYear}}</td>
+                    <td>{{newBudgetAllocation.unitName.descr}}</td>
+                    <td>{{newBudgetAllocation.allocationType.allocDesc}}</td>
+                    <td>{{newBudgetAllocation.selectedSubHead.subHeadDescr}}</td>
+                    <td *ngIf="newBudgetAllocation.selectedSubHead.amount == undefined">
+                      0
+                    </td>
+                    <td *ngIf="newBudgetAllocation.selectedSubHead.amount != undefined">
+                      {{newBudgetAllocation.selectedSubHead.amount}}
+                    </td>
+                    <!-- <td>{{newBudgetAllocation.remarks}}</td> -->
+                    <!-- <button type=" submit" class="btn btn-danger mr-2"
+                      (click)="deleteRowFromTableData(newBudgetAllocation,i)">Delete</button> -->
+                  </tr>
 
                   </tbody>
                 </table>
@@ -229,16 +232,15 @@
           </div>
 
 
-
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
           <div class="row">
-            <button type="submit" class="btn btn-primary mr-2"
-              (click)="saveBudgetDataFn(saveBudgetData.value)">Submit</button>
+            <button (click)="saveBudgetDataFn(saveBudgetData.value)" class="btn btn-primary mr-2"
+                    type="submit">Submit
+            </button>
           </div>
         </div>
-
 
 
       </div>
@@ -253,7 +255,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">CDA Selection</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button aria-label="Close" class="close" data-dismiss="modal" type="button">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -263,21 +265,21 @@
               <div class="card-body table-responsive p-0">
                 <table class="table table-hover text-nowrap">
                   <thead>
-                    <tr>
-                      <!--                      <th>Sr.No.</th>-->
-                      <th>CDA</th>
-                      <th>Amount (in {{amountUnit}})</th>
-                      <th>Withdrawl (in {{amountUnit}})</th>
-                    </tr>
+                  <tr>
+                    <!--                      <th>Sr.No.</th>-->
+                    <th>CDA</th>
+                    <th>Amount (in {{amountUnit}})</th>
+                    <th>Withdrawl (in {{amountUnit}})</th>
+                  </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let cda of cdaDetail">
-                      <td>{{cda.ginNo.cdaName}}</td>
-                      <td>{{cda.remainingCdaAmount}}</td>
-                      <td><input type="number" id="Allocationamount" class="form-control"
-                          placeholder="Please Enter Amount" [(ngModel)]="cda.amount" (change)="cdaWithdrawl(cda)" />
-                      </td>
-                    </tr>
+                  <tr *ngFor="let cda of cdaDetail">
+                    <td>{{cda.ginNo.cdaName}}</td>
+                    <td>{{cda.remainingCdaAmount}}</td>
+                    <td><input (change)="cdaWithdrawl(cda)" [(ngModel)]="cda.amount" class="form-control"
+                               id="Allocationamount" placeholder="Please Enter Amount" type="number"/>
+                    </td>
+                  </tr>
 
                   </tbody>
                 </table>
@@ -293,9 +295,10 @@
           </div>
         </div>
         <div class="modal-footer justify-content-between">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-          <button *ngIf="cdaAllocationbalance" type="button" data-dismiss="modal"
-            class="btn btn-primary">Submit</button>
+          <button class="btn btn-danger" data-dismiss="modal" type="button">Close</button>
+          <button *ngIf="cdaAllocationbalance" class="btn btn-primary" data-dismiss="modal"
+                  type="button">Submit
+          </button>
         </div>
       </div>
       <!-- /.modal-content -->
