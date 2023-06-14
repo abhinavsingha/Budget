@@ -258,7 +258,8 @@ export class ApprovedBudgetComponent implements OnInit {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
-            this.router.navigate(['/dashboard']);
+            // this.router.navigate(['/dashboard']);
+            this.router.navigateByUrl('/inbox');
             this.getDashBoardDta();
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');

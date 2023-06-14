@@ -450,6 +450,9 @@ export class BudgetApproverComponent implements OnInit {
                 cdaParkingList[i].ginNo;
               dummyMultipleCdaParkingData.amount =
                 cdaParkingList[i].totalParkingAmount;
+              dummyMultipleCdaParkingData.balance =
+                cdaParkingList[i].remainingCdaAmount;
+
               this.multipleCdaParking.push(dummyMultipleCdaParkingData);
             }
 

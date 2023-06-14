@@ -243,11 +243,11 @@ export class BudgetAllocationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.updateInbox();
     this.getBudgetFinYear();
     this.getCgUnitDataNew();
     this.getMajorDataNew();
     this.getUnitDatas();
-    // this.getAllocationTypeData();
     this.deleteDataByPid();
     this.getAmountType();
     this.sharedDashboardData();
@@ -602,6 +602,7 @@ export class BudgetAllocationComponent implements OnInit {
               'success'
             );
             this.updateInbox();
+            this.tableData=[];
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
@@ -1129,6 +1130,13 @@ export class BudgetAllocationComponent implements OnInit {
         if (result['message'] == 'success') {
           this.sharedService.inbox = result['response'].inbox;
           this.sharedService.outbox = result['response'].outBox;
+          this.formdata.patchValue({
+            allocationType: result['response'].allocationType,
+          });
+          this.formdata.get('finYearName')?.setValue(result['response'].budgetFinancialYear);
+
+
+
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
@@ -1190,6 +1198,7 @@ export class BudgetAllocationComponent implements OnInit {
   }
 
   saveFurtherTable(formDataValue: any) {
+    this.tableData=[];
     this.subHeadFilterDatas;
     // debugger;
     for (var i = 0; i < this.subHeadFilterDatas.length; i++) {

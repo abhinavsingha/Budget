@@ -63,7 +63,12 @@ export class BudgetAllocationReportComponent implements OnInit {
   entry: any;
   unitId: any;
   showDate: boolean=false;
-
+  showUnit: boolean = false;
+  showSubHead: boolean = false;
+  amountType: any;
+  bere: boolean=false;
+  prevSub='';
+  currentSub='';
   ngOnInit(): void {
     $.getScript('assets/js/adminlte.js');
     this.getDashBoardDta();
@@ -143,7 +148,6 @@ export class BudgetAllocationReportComponent implements OnInit {
       }
     });
   }
-
   getCgUnitData() {
     this.SpinnerService.show();
 
@@ -158,7 +162,6 @@ export class BudgetAllocationReportComponent implements OnInit {
       }
     });
   }
-
   majorDataNew() {
     this.SpinnerService.show();
     this.apiService.getApi(this.cons.api.getMajorData).subscribe((res) => {
@@ -171,7 +174,6 @@ export class BudgetAllocationReportComponent implements OnInit {
       }
     });
   }
-
   getSubHeadsData() {
     this.SpinnerService.show();
     this.apiService.getApi(this.cons.api.getSubHeadsData).subscribe((res) => {
@@ -184,7 +186,6 @@ export class BudgetAllocationReportComponent implements OnInit {
       }
     });
   }
-
   getAllocationType() {
     this.SpinnerService.show();
     this.apiService
@@ -199,7 +200,6 @@ export class BudgetAllocationReportComponent implements OnInit {
         }
       });
   }
-
   getAllocationReportRevised() {
     this.SpinnerService.show();
 
@@ -320,11 +320,9 @@ export class BudgetAllocationReportComponent implements OnInit {
         complete: () => console.info('complete'),
       });
   }
-
   draw() {
     throw new Error('Method not implemented.');
   }
-
   downloadReport(formdata: any) {
     this.SpinnerService.show();
     if (
@@ -364,6 +362,9 @@ export class BudgetAllocationReportComponent implements OnInit {
       let url=this.cons.api.getUnitWiseAllocationReport;
       if(formdata.reprtType=='02')
         url=url+'Doc'
+      else if(formdata.reprtType=='03'){
+        url=url+'Excel'
+      }
       // debugger;
       this.apiService
         .postApi(url, submitJson)
@@ -372,10 +373,16 @@ export class BudgetAllocationReportComponent implements OnInit {
             this.SpinnerService.hide();
             let result: { [key: string]: any } = v;
             if (result['message'] == 'success') {
+            if(formdata.reprtType=='03'){
+                this.generateUnitWiseCsv(result['response']);
+              }
+            else{
               this.downloadPdf(
                 result['response'][0].path,
                 result['response'][0].fileName
               );
+            }
+
             } else {
               this.common.faliureAlert(
                 'Please try later',
@@ -412,6 +419,9 @@ export class BudgetAllocationReportComponent implements OnInit {
       let url=this.cons.api.getSubHeadWiseAllocationReport;
       if(formdata.reprtType=='02')
         url=url+'Doc';
+      else if(formdata.reprtType=='03'){
+        url=url+'Excel'
+      }
       // debugger;
       this.apiService
         .postApi(url, submitJson)
@@ -420,10 +430,15 @@ export class BudgetAllocationReportComponent implements OnInit {
             this.SpinnerService.hide();
             let result: { [key: string]: any } = v;
             if (result['message'] == 'success') {
-              this.downloadPdf(
-                result['response'][0].path,
-                result['response'][0].fileName
-              );
+              if(formdata.reprtType=='03'){
+                this.generateSubHeadWiseCsv(result['response']);
+              }else{
+                this.downloadPdf(
+                  result['response'][0].path,
+                  result['response'][0].fileName
+                );
+              }
+
             } else {
               this.common.faliureAlert(
                 'Please try later',
@@ -445,6 +460,9 @@ export class BudgetAllocationReportComponent implements OnInit {
       let url=this.cons.api.getBEAllocationReport;
       if(formdata.reprtType=='02')
         url=url+'Doc';
+      else if(formdata.reprtType=='03'){
+        url=url+'Excel'
+      }
       this.apiService
         .getApi(
           url +
@@ -460,10 +478,16 @@ export class BudgetAllocationReportComponent implements OnInit {
             this.SpinnerService.hide();
             let result: { [key: string]: any } = v;
             if (result['message'] == 'success') {
-              this.downloadPdf(
-                result['response'][0].path,
-                result['response'][0].fileName
-              );
+              if(formdata.reprtType=='03'){
+                this.generateAllocationReport(result['response']);
+              }
+              else{
+                this.downloadPdf(
+                  result['response'][0].path,
+                  result['response'][0].fileName
+                );
+              }
+
             } else {
               this.common.faliureAlert(
                 'Please try later',
@@ -480,49 +504,14 @@ export class BudgetAllocationReportComponent implements OnInit {
           complete: () => console.info('complete'),
         });
     }
-    // else if (formdata.reportType == '02') {
-    //   //It is for RE report
-    //   debugger;
-    //   this.apiService
-    //     .getApi(
-    //       this.cons.api.getBEAllocationReport +
-    //         '/' +
-    //         formdata.finYear.serialNo +
-    //         '/ALL_102' +
-    //         '/' +
-    //         formdata.amountType.amountTypeId
-    //     )
-    //     .subscribe({
-    //       next: (v: object) => {
-    //         this.SpinnerService.hide();
-    //         let result: { [key: string]: any } = v;
-    //         if (result['message'] == 'success') {
-    //           this.downloadPdf(
-    //             result['response'][0].path,
-    //             result['response'][0].fileName
-    //           );
-    //         } else {
-    //           this.common.faliureAlert(
-    //             'Please try later',
-    //             result['message'],
-    //             ''
-    //           );
-    //         }
-    //       },
-    //       error: (e) => {
-    //         this.SpinnerService.hide();
-    //         console.error(e);
-    //         this.common.faliureAlert('Error', e['error']['message'], 'error');
-    //       },
-    //       complete: () => console.info('complete'),
-    //     });
-    // }
     else if (formdata.reportType == '05') {
       //It is for Revised BE report
       // debugger;
       let url=this.cons.api.getREAllocationReport;
       if(formdata.reprtType=='02')
         url=url+'Doc';
+      else if(formdata.reprtType=='03')
+        url=url+'Excel';
       this.apiService
         .getApi(
           url +
@@ -537,10 +526,16 @@ export class BudgetAllocationReportComponent implements OnInit {
             this.SpinnerService.hide();
             let result: { [key: string]: any } = v;
             if (result['message'] == 'success') {
-              this.downloadPdf(
-                result['response'][0].path,
-                result['response'][0].fileName
-              );
+              if(formdata.reprtType=='03'){
+                this.generateRevisionCsv(result['response']);
+              }
+              else{
+                this.downloadPdf(
+                  result['response'][0].path,
+                  result['response'][0].fileName
+                );
+              }
+
             } else {
               this.common.faliureAlert(
                 'Please try later',
@@ -560,8 +555,13 @@ export class BudgetAllocationReportComponent implements OnInit {
     else if (formdata.reportType == '07')
     {
       let url=this.cons.api.getBEREAllocationReport;
+
+
       if(formdata.reprtType=='02')
         url=url+'Doc';
+      else if(formdata.reprtType=='03'){
+        url=url+'Excel';
+      }
       //It is for Revised BE & RE report
       // debugger;
       this.apiService
@@ -579,11 +579,16 @@ export class BudgetAllocationReportComponent implements OnInit {
             this.SpinnerService.hide();
             let result: { [key: string]: any } = v;
             if (result['message'] == 'success') {
-              this.downloadPdf(
-                result['response'][0].path,
-                result['response'][0].fileName
-              );
-              this.SpinnerService.hide();
+              if(formdata.reprtType=='03'){
+                this.generateBERECsv(result['response']);
+              }
+              else{
+                this.downloadPdf(
+                  result['response'][0].path,
+                  result['response'][0].fileName
+                );
+                this.SpinnerService.hide();
+              }
             } else {
               this.common.faliureAlert(
                 'Please try later',
@@ -721,7 +726,6 @@ export class BudgetAllocationReportComponent implements OnInit {
         });
     }
       }
-
   downloadPdf(pdfUrl: string, fileName: any): void {
     this.http.get(pdfUrl, { responseType: 'blob' }).subscribe(
       (blob: Blob) => {
@@ -734,32 +738,6 @@ export class BudgetAllocationReportComponent implements OnInit {
       }
     );
   }
-
-  downloadBill(cb: any) {
-    // console.log(cb);
-    let json = {
-      authGroupId: cb.authGroupId,
-    };
-    this.SpinnerService.show();
-    this.apiService.postApi(this.cons.api.getCbRevisedReport, json).subscribe(
-      (results) => {
-        let result: { [key: string]: any } = results;
-        this.downloadPdf(
-          result['response'][0].path,
-          result['response'][0].fileName
-        );
-      },
-      (error) => {
-        console.error(error);
-        this.SpinnerService.hide();
-      }
-    );
-  }
-
-  showUnit: boolean = false;
-  showSubHead: boolean = false;
-  amountType: any;
-  bere: boolean=false;
   getAmountType() {
     this.apiService.getApi(this.cons.api.showAllAmountUnit).subscribe({
       next: (v: object) => {
@@ -811,8 +789,165 @@ export class BudgetAllocationReportComponent implements OnInit {
       this.showDate=false;
     }
   }
-  prevSub='';
-  currentSub='';
+  generateRevisionCsv(response:any) {
+    // Example data and column names
+    let tableData = [];
+    // let ferDetails = response[0].ferDetails;
+    let beallocTotal=0.0;
+    let reallocTotal=0.0;
+    let finalbeTotal=0.0;
+    let finalreTotal=0.0;
+    let finalAddTotal=0.0;
+    let addtotal=0.0;
+    for(let i=0;i<response.length;i++){
+      if(i>0){
+        if(this.prevSub!=response[i].budgetHead.replaceAll(',', ' ')){
+          tableData.push({
+            'REVENUE OBJECT HEAD':'',
+            'Unit':'TOTAL',
+            'Allocation':beallocTotal,
+            'Addition':addtotal,
+            'Revised':reallocTotal,
+          });
+          finalbeTotal=finalbeTotal+beallocTotal;
+          finalAddTotal=finalAddTotal+addtotal;
+          finalreTotal=finalreTotal+reallocTotal;
+          beallocTotal=0.0;
+          addtotal=0.0;
+          reallocTotal=0.0;
+        }
+        else{
+          beallocTotal=beallocTotal+parseFloat(response[i].allocationAmount);
+          addtotal=addtotal+parseFloat(response[i].additionalAmount);
+
+          reallocTotal=reallocTotal+parseFloat(response[i].totalAmount);
+        }
+      }
+      tableData.push({
+        'REVENUE OBJECT HEAD':response[i].budgetHead.replaceAll(',', ' '),
+        'Unit':response[i].unitName.replaceAll(',', ' '),
+        'Allocation':response[i].allocationAmount,
+        'Addition':response[i].additionalAmount,
+        'Revised':response[i].totalAmount,
+      });
+      this.prevSub=response[i].budgetHead.replaceAll(',', ' ');
+      beallocTotal=beallocTotal+parseFloat(response[i].allocationAmount.replaceAll(',', '').replaceAll('(+)','').replaceAll('(-)','-'));
+      addtotal=addtotal+parseFloat(response[i].additionalAmount.replaceAll(',', '').replaceAll('(+)','').replaceAll('(-)','-'));
+      reallocTotal=reallocTotal+parseFloat(response[i].totalAmount.replaceAll(',', '').replaceAll('(+)','').replaceAll('(-)','-'));
+      if(i==response.length-1){
+        tableData.push({
+          'REVENUE OBJECT HEAD':'',
+          'Unit':'TOTAL',
+          'Allocation':beallocTotal,
+          'Addition':addtotal,
+          'Revised':reallocTotal,
+        });
+        finalbeTotal=finalbeTotal+beallocTotal;
+        finalreTotal=finalreTotal+reallocTotal;
+        beallocTotal=0.0;
+        addtotal=0.0;
+        reallocTotal=0.0;
+        tableData.push( {
+          'REVENUE OBJECT HEAD':'',
+          'Unit':'GRAND TOTAL',
+          'Allocation':finalbeTotal,
+          'Addition':finalAddTotal,
+          'Revised':finalreTotal,
+        })
+      }
+    }
+    const columns = [
+      'REVENUE OBJECT HEAD',
+      'Unit',
+      response[0].allocationType+' '+response[0].finYear+ ' Allocation (in '+response[0].amountIn+')',
+      response[0].allocationType+' '+response[0].finYear+ ' Addition (in '+response[0].amountIn+')',
+      response[0].allocationType+' '+response[0].finYear+ ' Revised (in '+response[0].amountIn+')'
+    ];
+    const column = [
+      'REVENUE OBJECT HEAD',
+      'Unit',
+      'Allocation',
+      'Addition',
+      'Revised'
+    ];
+    const filename = 'BE&RE_Report.csv';
+    this.generateCSV(tableData, columns, filename, column);
+  }
+  generateBERECsv(response:any) {
+    // Example data and column names
+    let tableData = [];
+    // let ferDetails = response[0].ferDetails;
+    let beallocTotal=0.0;
+    let reallocTotal=0.0;
+    let finalbeTotal=0.0;
+    let finalreTotal=0.0;
+    for(let i=0;i<response.length;i++){
+      if(i>0){
+        if(this.prevSub!=response[i].budgetHead.replaceAll(',', ' ')){
+          tableData.push({
+            'REVENUE OBJECT HEAD':'',
+            'Unit':'TOTAL',
+            'Allocation':beallocTotal,
+            'allocation':reallocTotal,
+          });
+          finalbeTotal=finalbeTotal+beallocTotal;
+          finalreTotal=finalreTotal+reallocTotal;
+          beallocTotal=0.0;
+          reallocTotal=0.0;
+        }
+        else{
+          beallocTotal=beallocTotal+parseFloat(response[i].fistAllocationAmount);
+          reallocTotal=reallocTotal+parseFloat(response[i].secondAllocationAmount);
+        }
+      }
+      tableData.push({
+        'REVENUE OBJECT HEAD':response[i].budgetHead.replaceAll(',', ' '),
+        'Unit':response[i].unitName.replaceAll(',', ' '),
+        'Allocation':response[i].fistAllocationAmount,
+        'allocation':response[i].secondAllocationAmount,
+      });
+      this.prevSub=response[i].budgetHead.replaceAll(',', ' ');
+      beallocTotal=beallocTotal+parseFloat(response[i].fistAllocationAmount.replaceAll(',', ''));
+      reallocTotal=reallocTotal+parseFloat(response[i].secondAllocationAmount.replaceAll(',', ''));
+
+
+      if(i==response.length-1){
+        tableData.push({
+          'REVENUE OBJECT HEAD':'',
+          'Unit':'TOTAL',
+          'Allocation':beallocTotal,
+          'allocation':reallocTotal,
+        });
+        finalbeTotal=finalbeTotal+beallocTotal;
+        finalreTotal=finalreTotal+reallocTotal;
+        beallocTotal=0.0;
+        reallocTotal=0.0;
+        tableData.push( {
+          'REVENUE OBJECT HEAD':'',
+          'Unit':'GRAND TOTAL',
+          'Allocation':finalbeTotal,
+          'allocation':finalreTotal,
+      })
+      }
+    }
+    const columns = [
+      'REVENUE OBJECT HEAD',
+      'Unit',
+      response[0].fistAllocation+' '+response[0].finYear+' Allocation (in '+response[0].amountIn+')' ,
+      response[0].secondAllocation+' '+response[0].finYear+' allocation (in '+response[0].amountIn+')',
+    ];
+    const column = [
+      'REVENUE OBJECT HEAD',
+      'Unit',
+      'Allocation',
+      'allocation',
+    ];
+    const filename = 'BE&RE_Report.csv';
+
+    // Generate and download the CSV file
+    this.generateCSV(tableData, columns, filename, column);
+    // this.generateCSV([], columns, filename, column);
+  }
   generateFERCsv(response:any) {
     // Example data and column names
     let tableData = [];
@@ -858,6 +993,21 @@ export class BudgetAllocationReportComponent implements OnInit {
         allocTotal=allocTotal+parseFloat(ferDetails[i].allocAmount.replaceAll(',', ''));
         billTotal=billTotal+parseFloat(ferDetails[i].billSubmission.replaceAll(',', ''));
         percentBillTotal=percentBillTotal+parseFloat(ferDetails[i].percentageBill.replaceAll(',', ''));
+        if(i==ferDetails.length){
+          tableData.push({
+            'REVENUE OBJECT HEAD':'',
+            'Allocation to ICG':'',
+            'Unit':'Total:',
+            'Allocation':allocTotal,
+            'Bill Submission':billTotal,
+            '% BillSubmission w.r.t.':percentBillTotal,
+            'CGDA Booking':'',
+            '% Bill Clearance w.r.t.':'',
+          });
+          allocTotal=0.0;
+          billTotal=0.0;
+          percentBillTotal=0.0;
+        }
     }
     const columns = [
       'REVENUE OBJECT HEAD',
@@ -885,15 +1035,19 @@ export class BudgetAllocationReportComponent implements OnInit {
     this.generateCSV(tableData, columns, filename, column);
     // this.generateCSV([], columns, filename, column);
   }
-  generateCSV(
-    data: any[],
-    columns: string[],
-    filename: string,
-    column: string[]
-  ) {
+  generateCSV(data: any[], columns:string[], filename: string, column: string[]) {
     const csvData: any[][] = [];
-
     // Add column names as the first row
+    const headingRow: string[] = [];
+    if(this.formdata.get('reportType')?.value=='03'||this.formdata.get('reportType')?.value=='04'){
+      headingRow.push('');
+      headingRow.push('FINANCIAL YEAR:'+this.unitwiseYear);
+      headingRow.push('UNIT:'+this.unitwiseUnit);
+      headingRow.push('');
+      csvData.push(headingRow);
+    }
+
+
     csvData.push(columns);
 
     // Add data rows
@@ -925,5 +1079,141 @@ export class BudgetAllocationReportComponent implements OnInit {
       // Fallback for unsupported browsers
       alert('CSV download is not supported in this browser.');
     }
+  }
+  unitwiseUnit:any;
+  unitwiseYear:any;
+  private generateUnitWiseCsv(response: any) {
+    let beallocTotal=0.0;
+    let tableData = [];
+    this.unitwiseUnit=response[0].unitName;
+    this.unitwiseYear=response[0].finYear;
+    for(let i=0;i<response.length;i++){
+          beallocTotal=beallocTotal+parseFloat(response[i].allocationAmount);
+      tableData.push({
+        'SERIAL NO.':i+1,
+        'SUB HEAD':response[i].budgetHead,
+        'ALLOCATION TYPE':response[i].allocationType,
+        'ALLOCATION AMOUNT':response[i].allocationAmount});
+      beallocTotal=beallocTotal+parseFloat(response[i].allocationAmount.replaceAll(',', ''));
+      if(i==response.length-1){
+        tableData.push({
+          'SERIAL NO.':'',
+          'SUB HEAD':'',
+          'ALLOCATION TYPE':'Total',
+          'ALLOCATION AMOUNT':beallocTotal});
+      }
+    }
+    const columns = [
+      'SERIAL NO.',
+      'SUB HEAD',
+      'ALLOCATION TYPE',
+      'ALLOCATION AMOUNT (in '+response[0].amountIn+')'
+    ];
+    const column = [
+      'SERIAL NO.',
+      'SUB HEAD',
+      'ALLOCATION TYPE',
+      'ALLOCATION AMOUNT'
+    ];
+    const filename = 'UNIT_WISE_ALLOCATION_Report.csv';
+
+    // Generate and download the CSV file
+    this.generateCSV(tableData, columns, filename, column);
+
+  }
+  private generateSubHeadWiseCsv(response: any) {
+    let beallocTotal=0.0;
+    let tableData = [];
+    this.unitwiseUnit=response[0].budgetHead;
+    this.unitwiseYear=response[0].finYear;
+    for(let i=0;i<response.length;i++){
+      beallocTotal=beallocTotal+parseFloat(response[i].allocationAmount);
+      tableData.push({
+        'SERIAL NO.':i+1,
+        'UNIT':response[i].unitName,
+        'ALLOCATION TYPE':response[i].allocationType,
+        'ALLOCATION AMOUNT':response[i].allocationAmount});
+      beallocTotal=beallocTotal+parseFloat(response[i].allocationAmount.replaceAll(',', ''));
+      if(i==response.length-1){
+        tableData.push({
+          'SERIAL NO.':'',
+          'UNIT':'',
+          'ALLOCATION TYPE':'Total',
+          'ALLOCATION AMOUNT':beallocTotal});
+      }
+    }
+    const columns = [
+      'SERIAL NO.',
+      'UNIT',
+      'ALLOCATION TYPE',
+      'ALLOCATION AMOUNT (in '+response[0].amountIn+')'
+    ];
+    const column = [
+      'SERIAL NO.',
+      'UNIT',
+      'ALLOCATION TYPE',
+      'ALLOCATION AMOUNT'
+    ];
+    const filename = 'SUBHEAD_WISE_ALLOCATION_Report.csv';
+
+    // Generate and download the CSV file
+    this.generateCSV(tableData, columns, filename, column);
+
+  }
+
+  private generateAllocationReport(response: any) {
+// Example data and column names
+    let tableData = [];
+    let beallocTotal=0.0;
+    let finalbeTotal=0.0;
+    for(let i=0;i<response.length;i++){
+      if(i>0){
+        if(this.prevSub!=response[i].budgetHead.replaceAll(',', ' ')){
+          tableData.push({
+            'REVENUE OBJECT HEAD':'',
+            'Unit':'TOTAL',
+            'Allocation':beallocTotal,
+          });
+          finalbeTotal=finalbeTotal+beallocTotal;
+          beallocTotal=0.0;
+        }
+        else{
+          beallocTotal=beallocTotal+parseFloat(response[i].allocationAmount);
+        }
+      }
+      tableData.push({
+        'REVENUE OBJECT HEAD':response[i].budgetHead.replaceAll(',', ' '),
+        'Unit':response[i].unitName.replaceAll(',', ' '),
+        'Allocation':response[i].allocationAmount,
+      });
+      this.prevSub=response[i].budgetHead.replaceAll(',', ' ');
+      beallocTotal=beallocTotal+parseFloat(response[i].allocationAmount.replaceAll(',', '').replaceAll('(+)','').replaceAll('(-)','-'));
+      if(i==response.length-1){
+        tableData.push({
+          'REVENUE OBJECT HEAD':'',
+          'Unit':'TOTAL',
+          'Allocation':beallocTotal,
+        });
+        finalbeTotal=finalbeTotal+beallocTotal;
+        beallocTotal=0.0;
+        tableData.push( {
+          'REVENUE OBJECT HEAD':'',
+          'Unit':'GRAND TOTAL',
+          'Allocation':finalbeTotal,
+        })
+      }
+    }
+    const columns = [
+      'REVENUE OBJECT HEAD',
+      'Unit',
+      response[0].allocationType+' '+response[0].finYear+ ' Allocation (in '+response[0].amountIn+')',
+    ];
+    const column = [
+      'REVENUE OBJECT HEAD',
+      'Unit',
+      'Allocation',
+    ];
+    const filename = 'Allocation_Report.csv';
+    this.generateCSV(tableData, columns, filename, column);
   }
 }

@@ -181,7 +181,8 @@
                   <thead>
                     <tr>
                       <th>CDA</th>
-                      <th>Current</th>
+                      <th>Amount</th>
+                      <th>Remaining Amount</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -196,6 +197,7 @@
                       <td><input type="number"  min="0" class="form-control" id="Aallocationamount"
                           placeholder="Please Enter Amount" [(ngModel)]="cdaParking.amount"
                           (keyup)="getCDAParkingAllocatedAmount()" /></td>
+                      <td>{{cdaParking.balance}}</td>
                       <td><button type="button" class="btn btn-danger"
                           (click)="deleteFromMultipleCdaParking(i)">Delete</button></td>
                     </tr>

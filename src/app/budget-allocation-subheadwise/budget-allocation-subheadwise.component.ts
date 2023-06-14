@@ -65,6 +65,7 @@ export class BudgetAllocationSubheadwiseComponent {
     // this.getAllocationTypeData();
     // this.getNewEmptyEntries();
     // this.getUnitDatas();
+    this.updateInbox();
     this.uploadDocuments.push(new UploadDocuments());
     this.sharedDashboardData();
     $.getScript('assets/main.js');
@@ -229,7 +230,8 @@ export class BudgetAllocationSubheadwiseComponent {
   }
 
   saveFirstForm(formDataValue: any) {
-    // //debugger;
+    this.budgetAllocationArray=[];
+    debugger;
     if (
       formDataValue.finYear == null ||
       formDataValue.subHead == null ||
@@ -520,6 +522,7 @@ export class BudgetAllocationSubheadwiseComponent {
               'success'
             );
             this.updateInbox();
+            this.budgetAllocationArray=[];
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
@@ -623,6 +626,7 @@ export class BudgetAllocationSubheadwiseComponent {
             this.fundAvailableByFinYearAndUnitAndAllocationType = parseFloat(
               result['response'].fundAvailable
             );
+            this.balance=this.fundAvailableByFinYearAndUnitAndAllocationType;
             this.cdaDetail=result['response'].cdaParkingTrans;
             for(let cda of this.cdaDetail){
               cda.totalParkingAmount=parseFloat(cda.totalParkingAmount)*parseFloat(cda.amountType.amount)/parseFloat(this.amountUnit.amount);
@@ -667,6 +671,7 @@ export class BudgetAllocationSubheadwiseComponent {
     //   currentAllocation: amount,
     // });
     // this.getTotalAmount();
+    this.calcTotal();
   }
   amountUnit: any;
   displayUnit:string|undefined;
@@ -718,6 +723,11 @@ export class BudgetAllocationSubheadwiseComponent {
         if (result['message'] == 'success') {
           this.sharedService.inbox = result['response'].inbox;
           this.sharedService.outbox = result['response'].outBox;
+          this.formdata.patchValue({
+            allocationType: result['response'].allocationType,
+          });
+            this.formdata.get('finYear')?.setValue(result['response'].budgetFinancialYear);
+
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
@@ -780,5 +790,14 @@ currentIndex:any;
     if(sum==parseFloat(this.subHeadWiseUnitList[this.currentIndex].amount))
       this.amountEqual=true;
     this.cdaWithdrawl();
+  }
+  totalAlloc:any=0.0;
+  balance:any=0.0;
+  calcTotal() {
+    this.totalAlloc=0.0;
+    for(let entry of this.subHeadWiseUnitList){
+      this.totalAlloc=(parseFloat(entry.amount)+parseFloat(this.totalAlloc)).toFixed(4);
+    }
+    this.balance=(parseFloat(this.fundAvailableByFinYearAndUnitAndAllocationType)-(parseFloat(this.totalAlloc)*parseFloat(this.formdata.get('amountType')?.value.amount))).toFixed(4);
   }
 }
