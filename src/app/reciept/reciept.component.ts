@@ -548,8 +548,11 @@ export class RecieptComponent {
             this.autoSelectedAllocationType = null;
             this.subHeadList = [];
             this.uploadDocuments = [];
-            this.uploadDocuments.push(new UploadDocuments());
+            // this.uploadDocuments.push(new UploadDocuments());
             this.formdata.reset();
+            this.file=undefined;
+            this.formdata.get('finYear')?.setValue(this.sharedService.finYear);
+            this.getModData();
             this.common.successAlert('Success', 'Finally submitted', 'success');
             // this.formData.get('amountType2')?.setValue(this.defaultAmountType2);
             this.getBudgetRecipt();

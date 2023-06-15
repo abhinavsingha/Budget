@@ -97,21 +97,21 @@
                   </div>
                   <div class=" col-md-6">
                     <div class="form-group">
-                      <label>Available Fund</label>
+                      <label>Available Fund (INR)</label>
                       <input type="number" class="form-control" id="balance" placeholder="Fund Available"
                         formControlName="fundAvailable" readonly />
                     </div>
                   </div>
                   <div class=" col-md-6">
                     <div class="form-group">
-                      <label>Additional/Withdrawl</label>
+                      <label>Additional/Withdrawl (in {{amountUnit}})</label>
                       <input type="number" class="form-control" id="re" placeholder="0.00"
                         formControlName="reallocateFund" readonly />
                     </div>
                   </div>
                   <div class=" col-md-6">
                     <div class="form-group">
-                      <label>Balance Fund</label>
+                      <label>Balance Fund  (INR)</label>
                       <input type="number" class="form-control" id="PrevAllocation" placeholder="Balance Fund"
                         formControlName="balanceFund" readonly />
                     </div>
@@ -263,8 +263,8 @@
                   <tr>
                     <!--                    <th>S.No.</th>-->
                     <th>CDA Name</th>
-                    <th >Available Amount(INR)</th>
-                    <th >Withdrawl Amount(INR)</th>
+                    <th *ngIf="cdaDetails!=undefined">Available Amount({{cdaDetails[0].amountType.amountType}})</th>
+                    <th *ngIf="amountUnit!=undefined">Withdrawl Amount({{amountUnit}})</th>
 
                   </tr>
                   </thead>

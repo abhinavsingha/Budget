@@ -283,6 +283,7 @@ export class BudgetAllocationSubheadwiseComponent {
       this.formdata.value
     );
     // console.warn(this.formdata.value);
+    this.calcTotal();
   }
 
   showData(selectedUnitDataWithAmount: any, formDataValue: any) {
@@ -440,6 +441,7 @@ export class BudgetAllocationSubheadwiseComponent {
         this.budgetAllocationArray.splice(j, 1);
       }
     }
+    this.calcTotal();
   }
 
   saveBudgetDataFn() {
@@ -623,10 +625,8 @@ export class BudgetAllocationSubheadwiseComponent {
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
             this.subHeadData=result['response'];
-            this.fundAvailableByFinYearAndUnitAndAllocationType = parseFloat(
-              result['response'].fundAvailable
-            );
-            this.balance=this.fundAvailableByFinYearAndUnitAndAllocationType;
+            this.fundAvailableByFinYearAndUnitAndAllocationType = parseFloat(result['response'].fundAvailable);
+            this.balance=parseFloat(result['response'].fundAvailable).toFixed(4);
             this.cdaDetail=result['response'].cdaParkingTrans;
             for(let cda of this.cdaDetail){
               cda.totalParkingAmount=parseFloat(cda.totalParkingAmount)*parseFloat(cda.amountType.amount)/parseFloat(this.amountUnit.amount);
@@ -634,7 +634,7 @@ export class BudgetAllocationSubheadwiseComponent {
               cda.amountType=this.amountUnit;
             }
             this.formdata.patchValue({
-              fundAvailable: parseFloat(result['response'].fundAvailable),
+              fundAvailable: parseFloat(result['response'].fundAvailable).toFixed(4),
             });
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
@@ -761,6 +761,7 @@ export class BudgetAllocationSubheadwiseComponent {
           cdaParkingId:this.cdaDetail[i].cdaParkingId,
           cdaAmount:this.cdaDetail[i].amount
         });
+        this.cdaDetail[i].amount=undefined;
       }
     }
     this.subHeadWiseUnitList[this.currentIndex].cdaParkingId=cdaParkingId;
