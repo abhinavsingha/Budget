@@ -43,7 +43,7 @@
         <li class="nav-item"
           *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'|| userRole=='CB Verifier'|| userRole=='CB Creator'|| userRole=='CB Approver'">
           <a href="#" class="nav-link" [routerLink]="['/approved']" [routerLinkActive]="['active']">
-            <i class="fas fa-paper-plane nav-icon"></i>
+            <i class="fas fa-clipboard-check nav-icon"></i>
             <p>Approved
               <span *ngIf="sharedService.approve !== '0'"
                 class="right badge badge-danger">{{this.sharedService.approve}}</span>
@@ -53,7 +53,7 @@
         <li class="nav-item"
           *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'|| userRole=='CB Verifier'|| userRole=='CB Creator'|| userRole=='CB Approver'">
           <a href="#" class="nav-link" [routerLink]="['/archive']" [routerLinkActive]="['active']">
-            <i class="fas fa-paper-plane nav-icon"></i>
+            <i class="fas fa-archive nav-icon"></i>
             <p>Archive
               <span *ngIf="sharedService.archive !== '0'"
                 class="right badge badge-danger">{{this.sharedService.archive}}</span>
@@ -131,7 +131,7 @@
 
         <li class="nav-item drop-report" *ngIf=" userRole=='Budget Approver' || userRole=='Budget Manager'">
           <a class="nav-link" (click)="dropMenuReport()">
-            <i class="nav-icon fas fa-rupee-sign"></i>
+            <i class="nav-icon fas fa-file-chart-line"></i>
             <p>Report <i class="fas fa-angle-left right"></i></p>
           </a>
           <ul class="nav collapse2">
@@ -149,7 +149,7 @@
             </li>
             <li class="nav-item" *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'">
               <a href="#" class="nav-link" [routerLink]="['/unit-rebase-report']" [routerLinkActive]="['active']">
-                <i class="fas fa-ship nav-icon"></i>
+                <i class="fas fa-file-spreadsheet nav-icon"></i>
                 <p>Unit Rebase Report</p>
               </a>
 
@@ -183,7 +183,7 @@
         </li>
         <li class="nav-item" *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'">
           <a href="#" class="nav-link" [routerLink]="['/all-allocation']" [routerLinkActive]="['active']">
-            <i class="fas fa-ship nav-icon"></i>
+            <i class="far fa-coins nav-icon"></i>
             <p>All Allocation</p>
           </a>
         </li>
