@@ -426,7 +426,8 @@ export class ApprovedBudgetComponent implements OnInit {
           .replaceAll(',', ' ')
           .toString(),
       };
-      tableData.push(table);
+      if(parseFloat(this.budgetDataList[i].allocationAmount)!=0)
+        tableData.push(table);
     }
     let table: TableData = {
       Financial_Year: '',
