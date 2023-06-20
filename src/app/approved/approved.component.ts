@@ -18,6 +18,7 @@ class InboxList {
   unitName: string | undefined;
   groupId: string | undefined;
   status: string | undefined;
+  isCda:boolean=false;
 }
 
 
@@ -74,6 +75,9 @@ export class ApprovedComponent implements OnInit {
             else if(list[i].isBgOrCg=="CB"){
               isType='Contingent Bill';
             }
+            if(list[i].isCda==null){
+              list[i].isCda=true;
+            }
             const entry: InboxList = {
               serial: i + 1,
               isType: isType,
@@ -83,7 +87,7 @@ export class ApprovedComponent implements OnInit {
               status: list[i].status,
               unit_sub:list[i].type,
               type: list[i].isBgOrCg,
-
+              isCda: list[i].isCda
             };
             this.inboxList.push(entry);
           }

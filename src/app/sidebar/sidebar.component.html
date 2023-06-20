@@ -131,7 +131,7 @@
 
         <li class="nav-item drop-report" *ngIf=" userRole=='Budget Approver' || userRole=='Budget Manager'">
           <a class="nav-link" (click)="dropMenuReport()">
-            <i class="nav-icon fas fa-file-chart-line"></i>
+            <i class="fas fa-file nav-icon"></i>
             <p>Report <i class="fas fa-angle-left right"></i></p>
           </a>
           <ul class="nav collapse2">
@@ -149,7 +149,7 @@
             </li>
             <li class="nav-item" *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'">
               <a href="#" class="nav-link" [routerLink]="['/unit-rebase-report']" [routerLinkActive]="['active']">
-                <i class="fas fa-file-spreadsheet nav-icon"></i>
+                <i class="fas fa-file-pdf nav-icon"></i>
                 <p>Unit Rebase Report</p>
               </a>
 
@@ -183,7 +183,7 @@
         </li>
         <li class="nav-item" *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'">
           <a href="#" class="nav-link" [routerLink]="['/all-allocation']" [routerLinkActive]="['active']">
-            <i class="far fa-coins nav-icon"></i>
+            <i class="fas fa-coins nav-icon"></i>
             <p>All Allocation</p>
           </a>
         </li>
