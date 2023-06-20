@@ -46,6 +46,7 @@ export class BudgetApproverComponent implements OnInit {
   private amountUnitData: any;
   private currentIndex: number = 0;
   private authGroupId: any;
+  private isRevision: boolean=false;
 
   ngOnInit(): void {
     //debugger;
@@ -809,6 +810,50 @@ export class BudgetApproverComponent implements OnInit {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
       });
+  }
+
+  getreAllocationReport(data: any) {
+    debugger;
+
+
+
+    this.SpinnerService.show();
+    // //debugger;
+    let url=this.cons.api.getREAllocationReport+data;
+    this.apiService
+      .getApi(
+        url +
+        '/' +
+        this.budgetDataList[0].finYear.serialNo +'/'+
+        this.budgetDataList[0].allocTypeId.allocTypeId +
+        '/' +
+        this.budgetDataList[0].amountUnit.amountTypeId
+      )
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+              this.downloadPdf(
+                result['response'][0].path,
+                result['response'][0].fileName
+              );
+
+          } else {
+            this.common.faliureAlert(
+              'Please try later',
+              result['message'],
+              ''
+            );
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
   }getAllocationReportDocx(authGroupId: any) {
     this.SpinnerService.show();
     // //debugger;
@@ -845,11 +890,21 @@ export class BudgetApproverComponent implements OnInit {
     );
   }
   downloadReport(formdata:any) {
-    //debugger;
+    debugger;
 
     if(formdata.reportType=='02')
+      if(parseFloat(this.budgetDataList[0].revisedAmount)!=0)
+      {
+        this.getreAllocationReport('');
+      }
+    else
       this.getAllocationReport(this.authGroupId);
     else if(formdata.reportType=='03')
+      if(parseFloat(this.budgetDataList[0].revisedAmount)!=0)
+      {
+        this.getreAllocationReport('Doc');
+      }
+      else
       this.getAllocationReportDocx(this.authGroupId);
     else if(formdata.reportType=='01')
       this.downloadCsv();

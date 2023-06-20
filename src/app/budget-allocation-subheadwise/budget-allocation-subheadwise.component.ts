@@ -691,7 +691,7 @@ export class BudgetAllocationSubheadwiseComponent {
       cda.amountType=this.formdata.get('amountType')?.value;
     }
     for (let i = 0; i < this.subHeadWiseUnitList.length; i++) {
-      if (this.subHeadWiseUnitList[i].amount != undefined) {
+      if (this.subHeadWiseUnitList[i].amountUnit != undefined&&this.subHeadWiseUnitList[i].amount != undefined) {
         this.subHeadWiseUnitList[i].amount = (
           (this.subHeadWiseUnitList[i].amount *
             this.subHeadWiseUnitList[i].amountUnit.amount) /

@@ -816,12 +816,12 @@ export class BudgetAllocationReportComponent implements OnInit {
           addtotal=0.0;
           reallocTotal=0.0;
         }
-        else{
-          beallocTotal=beallocTotal+parseFloat(response[i].allocationAmount);
-          addtotal=addtotal+parseFloat(response[i].additionalAmount);
-
-          reallocTotal=reallocTotal+parseFloat(response[i].totalAmount);
-        }
+        // else{
+        //   beallocTotal=beallocTotal+parseFloat(response[i].allocationAmount);
+        //   addtotal=addtotal+parseFloat(response[i].additionalAmount);
+        //
+        //   reallocTotal=reallocTotal+parseFloat(response[i].totalAmount);
+        // }
       }
       tableData.push({
         'REVENUE OBJECT HEAD':response[i].budgetHead.replaceAll(',', ' '),
@@ -830,9 +830,14 @@ export class BudgetAllocationReportComponent implements OnInit {
         'Addition':response[i].additionalAmount,
         'Revised':response[i].totalAmount,
       });
+
+      response[i].additionalAmount=response[i].additionalAmount.replaceAll(',', '');
+      response[i].additionalAmount=response[i].additionalAmount.replaceAll('(+)','');
+      response[i].additionalAmount=response[i].additionalAmount.replaceAll('(-)','-');
+
       this.prevSub=response[i].budgetHead.replaceAll(',', ' ');
       beallocTotal=beallocTotal+parseFloat(response[i].allocationAmount.replaceAll(',', '').replaceAll('(+)','').replaceAll('(-)','-'));
-      addtotal=addtotal+parseFloat(response[i].additionalAmount.replaceAll(',', '').replaceAll('(+)','').replaceAll('(-)','-'));
+      addtotal=addtotal+parseFloat(response[i].additionalAmount);
       reallocTotal=reallocTotal+parseFloat(response[i].totalAmount.replaceAll(',', '').replaceAll('(+)','').replaceAll('(-)','-'));
       if(i==response.length-1){
         tableData.push({
@@ -870,7 +875,7 @@ export class BudgetAllocationReportComponent implements OnInit {
       'Addition',
       'Revised'
     ];
-    const filename = 'BE&RE_Report.csv';
+    const filename = 'Revision_Report.csv';
     this.generateCSV(tableData, columns, filename, column);
   }
   generateBERECsv(response:any) {
@@ -883,7 +888,7 @@ export class BudgetAllocationReportComponent implements OnInit {
     let finalreTotal=0.0;
     for(let i=0;i<response.length;i++){
       if(i>0){
-        if(this.prevSub!=response[i].budgetHead.replaceAll(',', ' ')){
+        if(this.prevSub!=response[i].budgetHead.replaceAll(',', ' ')&&response[i].budgetHead.replaceAll(',', ' ')!=''){
           tableData.push({
             'REVENUE OBJECT HEAD':'',
             'Unit':'TOTAL',
@@ -895,10 +900,10 @@ export class BudgetAllocationReportComponent implements OnInit {
           beallocTotal=0.0;
           reallocTotal=0.0;
         }
-        else{
-          beallocTotal=beallocTotal+parseFloat(response[i].fistAllocationAmount);
-          reallocTotal=reallocTotal+parseFloat(response[i].secondAllocationAmount);
-        }
+        // else{
+        //   beallocTotal=beallocTotal+parseFloat(response[i].fistAllocationAmount);
+        //   reallocTotal=reallocTotal+parseFloat(response[i].secondAllocationAmount);
+        // }
       }
       tableData.push({
         'REVENUE OBJECT HEAD':response[i].budgetHead.replaceAll(',', ' '),
@@ -955,7 +960,8 @@ export class BudgetAllocationReportComponent implements OnInit {
     let allocTotal=0.0;
     let billTotal=0.0;
     let percentBillTotal=0.0;
-
+    let grandAllocTotal=0.0;
+    let grandBillTotal=0.0;
       for(let i=0;i<ferDetails.length;i++){
         if(i>0){
           if(this.prevSub!=ferDetails[i].subHead.replaceAll(',', ' ')){
@@ -969,15 +975,19 @@ export class BudgetAllocationReportComponent implements OnInit {
               'CGDA Booking':'',
               '% Bill Clearance w.r.t.':'',
             });
+            grandAllocTotal=grandAllocTotal+allocTotal;
+            grandBillTotal=grandBillTotal+billTotal;
             allocTotal=0.0;
             billTotal=0.0;
             percentBillTotal=0.0;
+
           }
-          else{
-            allocTotal=allocTotal+parseFloat(ferDetails[i].allocAmount);
-            billTotal=billTotal+parseFloat(ferDetails[i].billSubmission);
-            percentBillTotal=percentBillTotal+parseFloat(ferDetails[i].percentageBill);
-          }
+          // else{
+          //   allocTotal=allocTotal+parseFloat(ferDetails[i].allocAmount);
+          //   console.log(allocTotal+'+'+parseFloat(ferDetails[i].allocAmount));
+          //   billTotal=billTotal+parseFloat(ferDetails[i].billSubmission);
+          //   percentBillTotal=percentBillTotal+parseFloat(ferDetails[i].percentageBill);
+          // }
         }
       tableData.push({
         'REVENUE OBJECT HEAD':ferDetails[i].subHead.replaceAll(',', ' '),
@@ -993,7 +1003,7 @@ export class BudgetAllocationReportComponent implements OnInit {
         allocTotal=allocTotal+parseFloat(ferDetails[i].allocAmount.replaceAll(',', ''));
         billTotal=billTotal+parseFloat(ferDetails[i].billSubmission.replaceAll(',', ''));
         percentBillTotal=percentBillTotal+parseFloat(ferDetails[i].percentageBill.replaceAll(',', ''));
-        if(i==ferDetails.length){
+        if(i==ferDetails.length-1){
           tableData.push({
             'REVENUE OBJECT HEAD':'',
             'Allocation to ICG':'',
@@ -1004,9 +1014,21 @@ export class BudgetAllocationReportComponent implements OnInit {
             'CGDA Booking':'',
             '% Bill Clearance w.r.t.':'',
           });
+          grandAllocTotal=grandAllocTotal+allocTotal;
+          grandBillTotal=grandBillTotal+billTotal;
           allocTotal=0.0;
           billTotal=0.0;
           percentBillTotal=0.0;
+          tableData.push({
+            'REVENUE OBJECT HEAD':'',
+            'Allocation to ICG':'',
+            'Unit':'Grand Total:',
+            'Allocation':grandAllocTotal,
+            'Bill Submission':grandBillTotal,
+            '% BillSubmission w.r.t.':'',
+            'CGDA Booking':'',
+            '% Bill Clearance w.r.t.':'',
+          });
         }
     }
     const columns = [
@@ -1127,7 +1149,7 @@ export class BudgetAllocationReportComponent implements OnInit {
     this.unitwiseUnit=response[0].budgetHead;
     this.unitwiseYear=response[0].finYear;
     for(let i=0;i<response.length;i++){
-      beallocTotal=beallocTotal+parseFloat(response[i].allocationAmount);
+      // beallocTotal=beallocTotal+parseFloat(response[i].allocationAmount);
       tableData.push({
         'SERIAL NO.':i+1,
         'UNIT':response[i].unitName,
@@ -1168,7 +1190,7 @@ export class BudgetAllocationReportComponent implements OnInit {
     let finalbeTotal=0.0;
     for(let i=0;i<response.length;i++){
       if(i>0){
-        if(this.prevSub!=response[i].budgetHead.replaceAll(',', ' ')){
+        if(this.prevSub!=response[i].budgetHead.replaceAll(',', ' ')&&response[i].budgetHead.replaceAll(',', ' ')!=''){
           tableData.push({
             'REVENUE OBJECT HEAD':'',
             'Unit':'TOTAL',
@@ -1177,9 +1199,9 @@ export class BudgetAllocationReportComponent implements OnInit {
           finalbeTotal=finalbeTotal+beallocTotal;
           beallocTotal=0.0;
         }
-        else{
-          beallocTotal=beallocTotal+parseFloat(response[i].allocationAmount);
-        }
+        // else{
+        //   beallocTotal=beallocTotal+parseFloat(response[i].allocationAmount);
+        // }
       }
       tableData.push({
         'REVENUE OBJECT HEAD':response[i].budgetHead.replaceAll(',', ' '),
