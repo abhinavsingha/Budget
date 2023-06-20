@@ -113,64 +113,52 @@
           <!-- /.card -->
         </section>
         <!-- Left col -->
-        <section class="col-lg-6 connectedSortable">
-          <!-- Custom tabs (Charts with tabs)-->
+        <!-- <section class="col-lg-6 connectedSortable">
           <div class="card">
             <div class="card-header">
               <h3 class="card-title">
                 <i class="fas fa-chart-pie mr-1"></i>
                 Subhead Wise Expenditure
               </h3>
-              <!-- card tools -->
               <div class="card-tools">
                 <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
                   <i class="fas fa-minus"></i>
                 </button>
               </div>
-              <!-- /.card-tools -->
-            </div><!-- /.card-header -->
+            </div>
             <div class="card-body">
               <div class="tab-content p-0">
-                <!-- Morris chart - Sales -->
                 <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;">
                   <canvas id="my-chart" height="300" style="height: 300px;"></canvas>
                 </div>
               </div>
-            </div><!-- /.card-body -->
+            </div>
           </div>
-          <!-- /.card -->
-          <!-- /.card -->
-        </section>
+        </section> -->
         <!-- /.Left col -->
         <!-- right col (We are only adding the ID to make the widgets sortable)-->
-        <section class="col-lg-6 connectedSortable">
-          <!-- Custom tabs (Charts with tabs)-->
+        <!-- <section class="col-lg-6 connectedSortable">
           <div class="card">
             <div class="card-header">
               <h3 class="card-title">
                 <i class="fas fa-chart-pie mr-1"></i>
                 Unit Wise Expenditure
               </h3>
-              <!-- card tools -->
               <div class="card-tools">
                 <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
                   <i class="fas fa-minus"></i>
                 </button>
               </div>
-              <!-- /.card-tools -->
-            </div><!-- /.card-header -->
+            </div>
             <div class="card-body">
               <div class="tab-content p-0">
-                <!-- Morris chart - Sales -->
                 <div class="chart tab-pane active" id="revenue-chart2" style="position: relative; height: 300px;">
                   <canvas id="my-chart2" height="300" style="height: 300px;"></canvas>
                 </div>
               </div>
-            </div><!-- /.card-body -->
+            </div>
           </div>
-          <!-- /.card -->
-          <!-- /.card -->
-        </section>
+        </section> -->
         <!-- right col -->
         <section class="col-lg-12 connectedSortable">
           <div class="card">
@@ -222,45 +210,12 @@
                       <div class="row mt-2">
                         <div class="col-sm-12 col-md-5">
                           <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
-                            Showing 1 to 10 of 57 entries
                           </div>
                         </div>
                         <div class="col-sm-12 col-md-7">
                           <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
-                            <ul class="pagination float-right">
-                              <li class="paginate_button page-item previous  " id="example2_previous">
-                                <a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0"
-                                  class="page-link">Previous</a>
-                              </li>
-                              <li class="paginate_button page-item active">
-                                <a href="#" aria-controls="example2" data-dt-idx="1" tabindex="0"
-                                  class="page-link">1</a>
-                              </li>
-                              <li class="paginate_button page-item">
-                                <a href="#" aria-controls="example2" data-dt-idx="2" tabindex="0"
-                                  class="page-link">2</a>
-                              </li>
-                              <li class="paginate_button page-item">
-                                <a href="#" aria-controls="example2" data-dt-idx="3" tabindex="0"
-                                  class="page-link">3</a>
-                              </li>
-                              <li class="paginate_button page-item">
-                                <a href="#" aria-controls="example2" data-dt-idx="4" tabindex="0"
-                                  class="page-link">4</a>
-                              </li>
-                              <li class="paginate_button page-item">
-                                <a href="#" aria-controls="example2" data-dt-idx="5" tabindex="0"
-                                  class="page-link">5</a>
-                              </li>
-                              <li class="paginate_button page-item">
-                                <a href="#" aria-controls="example2" data-dt-idx="6" tabindex="0"
-                                  class="page-link">6</a>
-                              </li>
-                              <li class="paginate_button page-item next" id="example2_next">
-                                <a href="#" aria-controls="example2" data-dt-idx="7" tabindex="0"
-                                  class="page-link">Next</a>
-                              </li>
-                            </ul>
+                            <pagination-controls class="pagination float-right"
+                              (pageChange)="p = $event"></pagination-controls>
                           </div>
                         </div>
                       </div>
