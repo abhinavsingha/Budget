@@ -497,6 +497,8 @@ export class RecieptComponent {
     }
 
     this.submitJson = {
+      majorMinerHead:this.formdata.get('majorHead')?.value.majorHead,
+      subHeadType:this.formdata.get('subHeadType')?.value.subType,
       budgetFinancialYearId: this.selectedFinYear,
       allocationType: this.formdata.get('allocType')?.value,
       amountTypeId: this.formdata.get('amountType')?.value.amountTypeId,

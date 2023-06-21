@@ -118,7 +118,7 @@ export class DashboardComponent implements OnInit {
             this.getDashBoardDta();
             this.getBudgetFinYear();
             this.getSubHeadsData();
-            this.getCgUnitData();
+            // this.getCgUnitData();
             this.getinbox();
             this.getSubHeadType();
             this.getAllocationTypeData();
@@ -221,7 +221,12 @@ export class DashboardComponent implements OnInit {
           this.dasboardData = result['response']; // debugger;
           this.sharedService.approve = result['response'].approved;
           this.sharedService.archive = result['response'].archived;
-
+          if(result['response'].userDetails.unitId=='001321')
+          {
+            this.getAllCgUnitData();
+          }
+          else
+            this.getCgUnitData();
           var roles = result['response'].userDetails.role[0].roleName;
           if (localStorage.getItem('user_role') != roles) {
             window.location.reload();
