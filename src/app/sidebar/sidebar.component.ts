@@ -96,6 +96,10 @@ export class SidebarComponent {
             this.userRole = result['response'].userDetails.role[0].roleName;
             this.inbox = result['response'].inbox;
             this.outbox = result['response'].outBox;
+            this.sharedService.inbox=result['response'].inbox;
+            this.sharedService.outbox=result['response'].outbox;
+            this.sharedService.archive=result['response'].archive;
+            this.sharedService.approve=result['response'].approve;
             // this.sharedService.inbox = result['response'].inbox;
             // this.sharedService.outbox = result['response'].outBox;
             this.unitName = result['response'].userDetails.unit;

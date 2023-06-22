@@ -507,6 +507,8 @@ export class RevisionComponent {
         {
           this.common.faliureAlert('CDA amount mismatch','CDA amount does not match revision amount','');
           this.tabledata=[];
+          for(let entry of this.budgetRevisionUnitList2)
+            entry.isSelected=false;
           return;
         }
         debugger;

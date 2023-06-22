@@ -775,6 +775,15 @@ export class BudgetAllocationSubheadwiseComponent {
 currentIndex:any;
   addCda(subHeadWiseUnit: any, i: number) {
     this.currentIndex=i;
+    console.log(this.subHeadWiseUnitList[i].cdaParkingId);
+    if(this.subHeadWiseUnitList[i].cdaParkingId.length!=0){
+      for(let cda of this.cdaDetail){
+        for(let cda2 of this.subHeadWiseUnitList[i].cdaParkingId){
+          if(cda2.cdaParkingId==cda.cdaParkingId)
+            cda.amount=cda2.cdaAmount;
+        }
+      }
+    }
   }
   amountEqual:boolean=false;
   calcCdaTotal() {

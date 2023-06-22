@@ -183,6 +183,10 @@ export class HeaderComponent {
             this.sharedService.roleHeading = this.roleHeading;
             this.unitName = result['response'].userDetails.unit;
             this.rank = result['response'].userDetails.rank;
+            this.sharedService.inbox=result['response'].inbox;
+            this.sharedService.outbox=result['response'].outbox;
+            this.sharedService.archive=result['response'].archive;
+            this.sharedService.approve=result['response'].approve;
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }

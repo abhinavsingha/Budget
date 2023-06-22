@@ -143,7 +143,8 @@
 
                       <td>
                         <div class="form-group">
-                          <span [(ngModel)]="subHeadWiseUnit.unit">{{subHeadWiseUnit.unit.descr}}</span>
+<!--                          <span [(ngModel)]="subHeadWiseUnit.unit">{{subHeadWiseUnit.unit.descr}}</span>-->
+                          <input type="text" class="form-control" id="qwe" placeholder="Unit Name" [(ngModel)]="subHeadWiseUnit.unit.descr" (change)="allocatedAmount(i)" [readOnly]="true"  />
                         </div>
                       </td>
                       <td><input type="number" class="form-control" id="Aallocationamount"
