@@ -28,6 +28,8 @@ export class SidebarComponent {
 
   ngOnInit(): void {
     $.getScript('assets/js/adminlte.js');
+    $('.collapse').hide();
+    $('.collapse2').hide();
     // this.userRole = localStorage.getItem('user_role');
     // console.log('Role of user == ' + this.userRole);
     // if (!localStorage.getItem('foo')) {
@@ -39,8 +41,7 @@ export class SidebarComponent {
     // }
     this.getDashBoardDta();
     $.getScript('assets/plugins/bootstrap/js/bootstrap.bundle.min.js');
-    $('.collapse').hide();
-    $('.collapse2').hide();
+    
   }
 
   constructor(
@@ -66,6 +67,7 @@ export class SidebarComponent {
   }
 
   dropMenuReport() {
+    
     if ($('.collapse2').hasClass('show')) {
       $('.collapse2').removeClass('show');
       $('.drop-report').removeClass('menu-open');

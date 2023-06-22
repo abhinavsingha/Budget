@@ -61,7 +61,7 @@
           </a>
         </li>
         <li class="nav-item drop-budget" *ngIf="userRole=='Budget Manager'">
-          <a href="#" class="nav-link" (click)="dropMenu()">
+          <a class="nav-link" (click)="dropMenu()">
             <i class="nav-icon fas fa-rupee-sign"></i>
             <p>
               Budget
@@ -184,7 +184,7 @@
         <li class="nav-item" *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'">
           <a href="#" class="nav-link" [routerLink]="['/all-allocation']" [routerLinkActive]="['active']">
             <i class="fas fa-coins nav-icon"></i>
-            <p>All Allocation</p>
+            <p>All Allocation Types</p>
           </a>
         </li>
 

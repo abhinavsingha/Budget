@@ -112,7 +112,7 @@ export class DashboardComponent implements OnInit {
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
-        debugger;
+        
         if (result['message'] == 'success') {
           if (result['response']) {
             this.getDashBoardDta();
@@ -133,7 +133,7 @@ export class DashboardComponent implements OnInit {
         this.SpinnerService.hide();
         console.error(e);
         this.common.faliureAlert('Error', e['error']['message'], 'error');
-        // debugger;
+        // 
         // if (e['status'] == '401') {
         //   this.redirectUri();
         // }
@@ -159,7 +159,7 @@ export class DashboardComponent implements OnInit {
         this.SpinnerService.hide();
         console.error(e);
         this.common.faliureAlert('Error', e['error']['message'], 'error');
-        // debugger;
+        // 
         // if (e['status'] == '401') {
         //   this.redirectUri();
         // }
@@ -198,7 +198,7 @@ export class DashboardComponent implements OnInit {
         this.SpinnerService.hide();
         console.error(e);
         this.common.faliureAlert('Error', e['error']['message'], 'error');
-        // debugger;
+        // 
         // if (e['status'] == '401') {
         //   this.redirectUri();
         // }
@@ -216,9 +216,9 @@ export class DashboardComponent implements OnInit {
         let result: { [key: string]: any } = v;
 
         if (result['message'] == 'success') {
-          debugger;
+          
           this.sharedService.dashboardData = result['response'];
-          this.dasboardData = result['response']; // debugger;
+          this.dasboardData = result['response']; // 
           this.sharedService.approve = result['response'].approved;
           this.sharedService.archive = result['response'].archived;
           if(result['response'].userDetails.unitId=='001321')
@@ -654,7 +654,7 @@ export class DashboardComponent implements OnInit {
   }
   getTableData(formDataValue: any) {
     this.SpinnerService.show();
-    debugger;
+    
     this.apiService
       .getApi(
         this.cons.api
@@ -714,7 +714,7 @@ export class DashboardComponent implements OnInit {
         this.SpinnerService.hide();
         console.error(e);
         this.common.faliureAlert('Error', e['error']['message'], 'error');
-        // debugger;
+        // 
         // if (e['status'] == '401') {
         //   this.redirectUri();
         // }
