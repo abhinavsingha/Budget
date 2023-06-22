@@ -63,7 +63,7 @@ export class BudgetApproverComponent implements OnInit {
       this.type = localStorage.getItem('type');
 
       if (this.type == 'Budget Receipt') {
-        //debugger;
+        debugger;
         this.getAllGroupIdAndUnitId(this.sharedService.sharedValue);
       } else {
         this.getAlGroupId(localStorage.getItem('group_id'));
@@ -514,6 +514,8 @@ export class BudgetApproverComponent implements OnInit {
     this.balancedRemaingCdaParkingAmount = (
       this.totalAmountToAllocateCDAParking - amount
     ).toFixed(4);
+    if(this.balancedRemaingCdaParkingAmount == '-0.0000')
+      this.balancedRemaingCdaParkingAmount == '0.0000';
     if (
       this.balancedRemaingCdaParkingAmount == '0' ||
       this.balancedRemaingCdaParkingAmount == '0.0000' ||
@@ -732,6 +734,12 @@ export class BudgetApproverComponent implements OnInit {
         Allocated_Fund: this.budgetDataList[i].allocationAmount
           .replaceAll(',', ' ')
           .toString(),
+        Additional_Or_Withdrawal:this.budgetDataList[i].revisedAmount
+          .replaceAll(',', ' ')
+          .toString(),
+        Revised_Amount:(parseFloat(this.budgetDataList[i].allocationAmount
+          .replaceAll(',', ' '))+parseFloat(this.budgetDataList[i].revisedAmount
+          .replaceAll(',', ' '))).toString(),
       };
       if(parseFloat(this.budgetDataList[i].allocationAmount)!=0)
         tableData.push(table);
@@ -747,7 +755,11 @@ export class BudgetApproverComponent implements OnInit {
         parseFloat(this.budgetDataList[0].amountUnit.amount)
       ).toString(),
     };
-    tableData.push(table);
+    //Ashish ne kaha total hata do so hata diya
+    // tableData.push(table);
+
+
+
     // const data = [
     //   { name: 'John', age: 30, city: 'New York' },
     //   { name: 'Jane', age: 25, city: 'San Francisco' },
@@ -760,6 +772,8 @@ export class BudgetApproverComponent implements OnInit {
       'Subhead',
       'Type',
       'Allocated_Fund' + ' in ' + this.budgetDataList[0].amountUnit.amountType,
+      'Additional_Or_Withdrawal' + ' in ' + this.budgetDataList[0].amountUnit.amountType,
+      'Revised_Amount' + ' in ' + this.budgetDataList[0].amountUnit.amountType,
     ];
     const column = [
       'Financial_Year',
@@ -768,6 +782,8 @@ export class BudgetApproverComponent implements OnInit {
       'Subhead',
       'Type',
       'Allocated_Fund',
+      'Additional_Or_Withdrawal',
+      'Revised_Amount'
     ];
     const filename = this.type + '.csv';
 
@@ -821,24 +837,16 @@ export class BudgetApproverComponent implements OnInit {
     // //debugger;
     let url=this.cons.api.getREAllocationReport+data;
     this.apiService
-      .getApi(
-        url +
-        '/' +
-        this.budgetDataList[0].finYear.serialNo +'/'+
-        this.budgetDataList[0].allocTypeId.allocTypeId +
-        '/' +
-        this.budgetDataList[0].amountUnit.amountTypeId
-      )
+      .getApi(this.cons.api.getRevisedAllocationReport+'/'+localStorage.getItem('group_id'))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
-              this.downloadPdf(
-                result['response'][0].path,
-                result['response'][0].fileName
-              );
-
+            this.downloadPdf(
+              result['response'][0].path,
+              result['response'][0].fileName
+            );
           } else {
             this.common.faliureAlert(
               'Please try later',
