@@ -65,7 +65,7 @@
                             <td>{{li.createDate}}</td>
                             <td>{{li.unit_sub}}</td>
                             <td>{{li.status}}</td>
-                            <td><button type="submit" class="btn btn-warning mr-2" (click)="redirect(li)"> <i
+                            <td><button type="submit" class="btn btn-primary mr-2" (click)="redirect(li)"> <i
                               class="fas fa-eye"></i> View</button>
                               <button *ngIf="li.status== 'Fully Approved'||li.isType=='Budget Reciept'" type="button" class="btn btn-primary mr-2" (click)="getAuthDoc(li)">Auth Doc</button>
                             </td>
