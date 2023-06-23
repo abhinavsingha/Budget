@@ -49,6 +49,7 @@ export class BudgetAllocationReportComponent implements OnInit {
   // AllRepoRevData: any;
 
   formdata = new FormGroup({
+    allocStatus:new FormControl('Select Allocation Status'),
     finYear: new FormControl(),
     toUnit: new FormControl(),
     subHead: new FormControl(),
@@ -471,7 +472,8 @@ export class BudgetAllocationReportComponent implements OnInit {
             '/'+
           formdata.allocationType.allocTypeId +
             '/' +
-            formdata.amountType.amountTypeId
+            formdata.amountType.amountTypeId +'/' +
+          formdata.allocStatus
         )
         .subscribe({
           next: (v: object) => {
@@ -760,29 +762,41 @@ export class BudgetAllocationReportComponent implements OnInit {
       complete: () => console.info('complete'),
     });
   }
+  showAllocStatus:boolean=false;
   selectReportType(data: any) {
     if (data.reportType == '03') {
       this.showUnit = true;
       this.showSubHead = false;
       this.showDate=false;
       this.bere=false;
-    } else if (data.reportType == '04') {
+      this.showAllocStatus=false;
+    } else if (data.reportType == '01') {
+      this.showSubHead = false;
+      this.showUnit = false;
+      this.showDate=false;
+      this.bere=false;
+      this.showAllocStatus=true;
+    }else if (data.reportType == '04') {
       this.showSubHead = true;
       this.showUnit = false;
       this.showDate=false;
       this.bere=false;
+      this.showAllocStatus=false;
     }else if (data.reportType == '07') {
       this.showSubHead = false;
       this.showUnit = false;
       this.showDate=false;
       this.bere=true;
+      this.showAllocStatus=false;
     }
     else if (data.reportType == '08'||data.reportType == '09') {
       this.showSubHead = false;
       this.showUnit = false;
       this.showDate=true;
       this.bere=false;
+      this.showAllocStatus=false;
     } else {
+      this.showAllocStatus=false;
       this.bere=false;
       this.showSubHead = false;
       this.showUnit = false;

@@ -80,6 +80,17 @@
                              bindLabel="allocDesc" placeholder="Select Allocation Type" formControlName="allocationType"></ng-select>
                 </div>
               </div>
+              <div class="col-md-3" *ngIf="showAllocStatus">
+                <div class="form-group" >
+                  <label>Allocation Status<span class="text-danger">*</span></label>
+                  <select class="form-control select2bs4" style="width: 100%"
+                          id="allocStatus" formControlName="allocStatus"  >
+                    <option selected disabled value="Select Report Type">--Select Report Format--</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Approved">Approved</option>
+                  </select>
+                </div>
+              </div>
               <div class="col-md-3" *ngIf="bere">
                 <div class="form-group">
                   <label>AllocationType for RE <span class="text-danger">*</span></label>
