@@ -23,6 +23,7 @@ class InboxList {
   unitName: string | undefined;
   groupId: string | undefined;
   status: string | undefined;
+  isCda:any;
 }
 
 import {
@@ -81,6 +82,7 @@ export class InboxComponent implements OnInit {
 
   redirect(li: InboxList) {
     debugger;
+    localStorage.setItem('isInboxOrOutbox', 'inbox');
     if (li.groupId != null || li.groupId != undefined) {
       localStorage.setItem('group_id', li.groupId);
     }
@@ -113,11 +115,15 @@ export class InboxComponent implements OnInit {
         this.router.navigate(['/budget-approval']);
       }
       // window.location.href = '/budget-approval';
-    } else if (li.isType == 'Budget Receipt') {
+    }
+    else if (li.isType == 'Budget Receipt') {
+      debugger;
+      this.sharedService.sharedValue = li.groupId;
       this.router.navigate(['/budget-approval']);
       this.sharedService.redirectedFrom = 'inbox';
       // window.location.href = '/budget-approval';
-    }else if(li.isType == 'Budget Revision'){
+    }
+    else if(li.isType == 'Budget Revision'){
       if(li.status=='Fully Approved')
         this.sharedService.status=true;
       this.router.navigate(['/revision-approval']);
@@ -148,6 +154,7 @@ export class InboxComponent implements OnInit {
               isType='Contingent Bill';
             }
             const entry: InboxList = {
+              isCda:list[i].isCda,
               serial: i + 1,
               isType: isType,
               createDate: this.convertEpochToDateTime(list[i].createdOn),
