@@ -23,7 +23,8 @@ export class SidebarComponent {
   inbox: any;
 
   outbox: any;
-
+  archive: any;
+  approve: any;
   unitName: any;
 
   ngOnInit(): void {
@@ -39,8 +40,9 @@ export class SidebarComponent {
     //   localStorage.removeItem('foo');
     //   localStorage.setItem('user_role', 'Admin');
     // }
-    this.getDashBoardDta();
+    
     $.getScript('assets/plugins/bootstrap/js/bootstrap.bundle.min.js');
+    this.getDashBoardDta();
     
   }
 
@@ -98,14 +100,17 @@ export class SidebarComponent {
             this.userRole = result['response'].userDetails.role[0].roleName;
             this.inbox = result['response'].inbox;
             this.outbox = result['response'].outBox;
-            this.sharedService.inbox=result['response'].inbox;
-            this.sharedService.outbox=result['response'].outbox;
-            this.sharedService.archive=result['response'].archive;
-            this.sharedService.approve=result['response'].approve;
+            this.archive = result['response'].archived;
+            this.approve = result['response'].approved;
+            this.sharedService.inbox=this.inbox;
+            this.sharedService.outbox=this.outbox;
+            this.sharedService.archive=this.archive;
+            this.sharedService.approve=this.approve;
             // this.sharedService.inbox = result['response'].inbox;
             // this.sharedService.outbox = result['response'].outBox;
             this.unitName = result['response'].userDetails.unit;
             this.unitId = result['response'].userDetails.unitId;
+            debugger;
             localStorage.setItem(
               'userCurrentUnit',
               result['response'].userDetails.unitId
