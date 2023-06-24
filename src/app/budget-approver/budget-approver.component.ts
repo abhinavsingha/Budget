@@ -496,7 +496,7 @@ export class BudgetApproverComponent implements OnInit {
   isdisableSubmitButton: boolean = true;
   isdisableUpdateButton: boolean = true;
   getCDAParkingAllocatedAmount() {
-    var amount = 0;
+    var amount:any = 0;
     var unitIndex = this.multipleCdaParking.filter(
       (data) => data.amount != null
     );
@@ -507,12 +507,12 @@ export class BudgetApproverComponent implements OnInit {
           unitIndex[i].amount=undefined;
           return;
         }
-        amount = amount + parseFloat(unitIndex[i].amount);
+        amount = parseFloat(amount) + parseFloat(unitIndex[i].amount);
       }
     }
     //debugger;
     this.balancedRemaingCdaParkingAmount = (
-      this.totalAmountToAllocateCDAParking - amount
+      parseFloat(this.totalAmountToAllocateCDAParking) - parseFloat(amount)
     ).toFixed(4);
     if(this.balancedRemaingCdaParkingAmount == '-0.0000')
       this.balancedRemaingCdaParkingAmount == '0.0000';
@@ -899,22 +899,62 @@ export class BudgetApproverComponent implements OnInit {
   }
   downloadReport(formdata:any) {
     debugger;
+    if(this.type=='Budget Receipt'){
+      this.getRecieptReport('');
+    }
+    else{
+      if(formdata.reportType=='02'){
+        if(parseFloat(this.budgetDataList[0].revisedAmount)!=0)
+        {
+          this.getreAllocationReport('');
+        }
+        else
+          this.getAllocationReport(this.authGroupId);
+      }
+      else if(formdata.reportType=='03')
+        if(parseFloat(this.budgetDataList[0].revisedAmount)!=0)
+        {
+          this.getreAllocationReport('Doc');
+        }
+        else
+          this.getAllocationReportDocx(this.authGroupId);
+      else if(formdata.reportType=='01')
+        this.downloadCsv();
+    }
 
-    if(formdata.reportType=='02')
-      if(parseFloat(this.budgetDataList[0].revisedAmount)!=0)
-      {
-        this.getreAllocationReport('');
-      }
-    else
-      this.getAllocationReport(this.authGroupId);
-    else if(formdata.reportType=='03')
-      if(parseFloat(this.budgetDataList[0].revisedAmount)!=0)
-      {
-        this.getreAllocationReport('Doc');
-      }
-      else
-      this.getAllocationReportDocx(this.authGroupId);
-    else if(formdata.reportType=='01')
-      this.downloadCsv();
+  }
+
+  private getRecieptReport(data: string) {
+    this.SpinnerService.show();
+    // //debugger;
+    let url=this.cons.api.getREAllocationReport+data;
+    this.apiService
+      .getApi(this.cons.api.getReceiptReport+'/'+localStorage.getItem('group_id'))
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            this.downloadPdf(
+              result['response'][0].path,
+              result['response'][0].fileName
+            );
+          } else {
+            this.common.faliureAlert(
+              'Please try later',
+              result['message'],
+              ''
+            );
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
+
+
   }
 }

@@ -941,15 +941,9 @@ export class BudgetAllocationComponent implements OnInit {
           if (this.subHeadFilterDatas != undefined) {
             for (let i = 0; i < this.subHeadFilterDatas.length; i++) {
               if (this.subHeadFilterDatas[i].amountUnit != null) {
-                this.subHeadFilterDatas[i].totalAmount = (
-                  (this.subHeadFilterDatas[i].totalAmount *
-                    this.subHeadFilterDatas[i].amountUnit.amount) /
-                  formdataValue.amountType.amount
-                ).toFixed(4);
-                this.subHeadFilterDatas[i].amountUnit =
-                  formdataValue.amountType;
+                this.subHeadFilterDatas[i].totalAmount = ((this.subHeadFilterDatas[i].totalAmount * this.subHeadFilterDatas[i].amountUnit.amount) /formdataValue.amountType.amount).toFixed(4);
+                this.subHeadFilterDatas[i].amountUnit = formdataValue.amountType;
               }
-
               this.subHeadFilterDatas[i].amount = 0;
               this.subHeadFilterDatas[i].amountUnit2 = this.formdata.get('amountType')?.value;
             }
@@ -1162,21 +1156,21 @@ export class BudgetAllocationComponent implements OnInit {
     }
     this.index = i;
     this.cdaDetail = subHeadData.cdaParkingTrans;
-
     for (let j = 0; j < this.cdaDetail.length; j++) {
       this.cdaDetail[j].totalParkingAmount =
-        (parseFloat(this.cdaDetail[j].totalParkingAmount) *
+        ((parseFloat(this.cdaDetail[j].totalParkingAmount) *
           parseFloat(this.subHeadFilterDatas[i].amountUnit.amount)) /
-        parseFloat(this.amountUnits.amount);
-      this.cdaDetail[j].remainingCdaAmount =
+        parseFloat(this.amountUnits.amount)).toFixed(4);
+      this.cdaDetail[j].remainingCdaAmount =(
         (parseFloat(this.cdaDetail[j].remainingCdaAmount) *
           parseFloat(this.subHeadFilterDatas[i].amountUnit.amount)) /
-        parseFloat(this.amountUnits.amount);
+        parseFloat(this.amountUnits.amount)).toFixed(4);
     }
     // console.log(subHeadData);
   }
   cdaAllocationbalance: boolean = false;
   cdaWithdrawl(cda: any) {
+    cda.amount=cda.amount.toFixed(4);
     this.cdaAllocationbalance = false;
     if (cda.amount > cda.remainingCdaAmount) {
       this.common.warningAlert(
