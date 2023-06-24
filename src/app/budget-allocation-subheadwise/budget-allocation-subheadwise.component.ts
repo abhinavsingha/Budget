@@ -761,7 +761,7 @@ export class BudgetAllocationSubheadwiseComponent {
       if(this.cdaDetail[i].amount!=undefined){
         cdaParkingId.push({
           cdaParkingId:this.cdaDetail[i].cdaParkingId,
-          cdaAmount:this.cdaDetail[i].amount.toFixed(4)
+          cdaAmount:parseFloat(this.cdaDetail[i].amount).toFixed(4)
         });
         this.cdaDetail[i].amount=undefined;
       }
@@ -784,6 +784,11 @@ currentIndex:any;
           if(cda2.cdaParkingId==cda.cdaParkingId)
             cda.amount=parseFloat(cda2.cdaAmount).toFixed(4);
         }
+      }
+    }
+    else{
+      for(let cda of this.cdaDetail){
+            cda.amount=0;
       }
     }
   }
@@ -811,5 +816,9 @@ currentIndex:any;
       this.totalAlloc=(parseFloat(entry.amount)+parseFloat(this.totalAlloc)).toFixed(4);
     }
     this.balance=(parseFloat(this.fundAvailableByFinYearAndUnitAndAllocationType)-(parseFloat(this.totalAlloc)*parseFloat(this.formdata.get('amountType')?.value.amount))).toFixed(4);
+  }
+
+  addDecimal(cda: any) {
+    cda.amount=cda.amount.toFixed(4);
   }
 }

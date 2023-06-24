@@ -688,8 +688,8 @@ export class BudgetAllocationReportComponent implements OnInit {
 
     }
     else if (formdata.reportType == '09'){
-      if(formdata.toDate==undefined||formdata.fromDate==undefined){
-        Swal.fire("Please enter to and from date");
+      if(formdata.allocationType==undefined||formdata.allocationType2==undefined||formdata.allocationType3==undefined){
+        Swal.fire("Please enter allocation types");
         return;
       }
       let url=this.cons.api.getMAAllocationReport;
@@ -703,6 +703,47 @@ export class BudgetAllocationReportComponent implements OnInit {
           formdata.allocationType.allocTypeId+'/' +
           formdata.allocationType2.allocTypeId+'/' +
           formdata.allocationType3.allocTypeId+ '/' +
+          formdata.amountType.amountTypeId)
+        .subscribe({
+          next: (v: object) => {
+            this.SpinnerService.hide();
+            let result: { [key: string]: any } = v;
+            if (result['message'] == 'success') {
+              this.downloadPdf(
+                result['response'][0].path,
+                result['response'][0].fileName
+              );
+              this.SpinnerService.hide();
+            } else {
+              this.common.faliureAlert(
+                'Please try later',
+                result['message'],
+                ''
+              );
+            }
+          },
+          error: (e) => {
+            this.SpinnerService.hide();
+            console.error(e);
+            this.common.faliureAlert('Error', e['error']['message'], 'error');
+          },
+          complete: () => console.info('complete'),
+        });
+    }
+    else if (formdata.reportType == '10'){
+      // if(formdata.toDate==undefined||formdata.fromDate==undefined){
+      //   Swal.fire("Please enter to and from date");
+      //   return;
+      // }
+      let url=this.cons.api.getConsolidateReceiptReport;
+      if(formdata.reprtType=='02')
+        url=url+'Doc';
+
+      this.apiService
+        .getApi(
+          url + '/' +
+          formdata.finYear.serialNo + '/' +
+          formdata.allocationType.allocTypeId+'/' +
           formdata.amountType.amountTypeId)
         .subscribe({
           next: (v: object) => {

@@ -6,15 +6,15 @@ import { Injectable } from '@angular/core';
 export class ConstantsService {
   constructor() {}
 
-  // serverRedirectUrl =
-    // 'https://icg.net.in/auth/realms/icgrms/protocol/openid-connect/logout?redirect_uri=https://icg.net.in/CGBMS/'; //For Production Server
-  serviceUrl = 'https://icg.net.in/budget/'; //prod server
+  // serverRedirectUrl = 'https://icg.net.in/auth/realms/icgrms/protocol/openid-connect/logout?redirect_uri=https://icg.net.in/CGBMS/'; //For Production Server
+  // serviceUrl = 'https://icg.net.in/cgbudget/'; //prod server
 
   serverRedirectUrl =
     'https://icg.net.in/auth/realms/icgrms/protocol/openid-connect/logout?redirect_uri=https://icg.net.in/BMS/'; //For UAT Server
-  // serviceUrl = 'https://icg.net.in/budget/'; //UAT server
+  serviceUrl = 'https://icg.net.in/budget/'; //UAT server
 
-  // serviceUrl = 'http://192.168.1.112:1111/'; //arvind system
+  // serviceUrl = 'http://192.168.1.131:3000/'; //arvind system
+  //  serviceUrl = 'http://192.168.1.112:1111/'; //arvind system
   api = {
     getDataBudgetAllocation:
       this.serviceUrl + 'budgetAllocation/getDataBudgetAllocation',
@@ -240,6 +240,9 @@ export class ConstantsService {
       this.serviceUrl + 'reportController/getAllocationReportDoc',
     getCdaParkingReportDoc:
       this.serviceUrl + 'reportController/getCdaParkingReportDoc',
-    getUserManual: this.serviceUrl + 'fileUpload/getUserManual',
+    getUserManual: this.serviceUrl + 'fileUpload/getUserManual', getReceiptReport: this.serviceUrl +'reportController/getReceiptReport',
+    getMAAllocationReport: this.serviceUrl +'reportController/getMAAllocationReport', getConsolidateReceiptReport: this.serviceUrl +'reportController/getConsolidateReceiptReport'
+
+
   };
 }

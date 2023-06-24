@@ -900,7 +900,10 @@ export class BudgetApproverComponent implements OnInit {
   downloadReport(formdata:any) {
     debugger;
     if(this.type=='Budget Receipt'){
-      this.getRecieptReport('');
+      if(formdata.reportType=='03')
+        this.getRecieptReport('Doc');
+      else
+        this.getRecieptReport('');
     }
     else{
       if(formdata.reportType=='02'){
@@ -927,9 +930,9 @@ export class BudgetApproverComponent implements OnInit {
   private getRecieptReport(data: string) {
     this.SpinnerService.show();
     // //debugger;
-    let url=this.cons.api.getREAllocationReport+data;
+    let url=this.cons.api.getReceiptReport+data;
     this.apiService
-      .getApi(this.cons.api.getReceiptReport+'/'+localStorage.getItem('group_id'))
+      .getApi(url+'/'+localStorage.getItem('group_id'))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
