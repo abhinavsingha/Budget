@@ -1124,6 +1124,8 @@ export class BudgetAllocationComponent implements OnInit {
         if (result['message'] == 'success') {
           this.sharedService.inbox = result['response'].inbox;
           this.sharedService.outbox = result['response'].outBox;
+          this.sharedService.archive = result['response'].archived;
+          this.sharedService.approve = result['response'].approved;
           this.formdata.patchValue({
             allocationType: result['response'].allocationType,
           });

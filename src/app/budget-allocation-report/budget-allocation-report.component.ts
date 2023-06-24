@@ -59,6 +59,7 @@ export class BudgetAllocationReportComponent implements OnInit {
     fromDate:new FormControl(),
     allocationType:new FormControl(),
     allocationType2:new FormControl(),
+    allocationType3:new FormControl(),
     reprtType:new FormControl('Select Report Type'),
   });
   entry: any;
@@ -70,6 +71,7 @@ export class BudgetAllocationReportComponent implements OnInit {
   bere: boolean=false;
   prevSub='';
   currentSub='';
+  ma: boolean=false;
   ngOnInit(): void {
     $.getScript('assets/js/adminlte.js');
     this.getDashBoardDta();
@@ -399,7 +401,8 @@ export class BudgetAllocationReportComponent implements OnInit {
           },
           complete: () => console.info('complete'),
         });
-    } else if (formdata.reportType == '04') {
+    }
+    else if (formdata.reportType == '04') {
 
       // It is for Subhead Wise
       if (formdata.subHead == null || formdata.subHead == undefined) {
@@ -455,7 +458,8 @@ export class BudgetAllocationReportComponent implements OnInit {
           },
           complete: () => console.info('complete'),
         });
-    } else if (formdata.reportType == '01') {
+    }
+    else if (formdata.reportType == '01') {
       //It is for BE report
       // debugger;
       let url=this.cons.api.getBEAllocationReport;
@@ -554,8 +558,7 @@ export class BudgetAllocationReportComponent implements OnInit {
           complete: () => console.info('complete'),
         });
     }
-    else if (formdata.reportType == '07')
-    {
+    else if (formdata.reportType == '07') {
       let url=this.cons.api.getBEREAllocationReport;
 
 
@@ -606,7 +609,8 @@ export class BudgetAllocationReportComponent implements OnInit {
           },
           complete: () => console.info('complete'),
         });
-    }else if (formdata.reportType == '08'){
+    }
+    else if (formdata.reportType == '08'){
 
       if(formdata.toDate==undefined||formdata.fromDate==undefined){
         Swal.fire("Please enter to and from date");
@@ -688,19 +692,18 @@ export class BudgetAllocationReportComponent implements OnInit {
         Swal.fire("Please enter to and from date");
         return;
       }
-      let url=this.cons.api.getMainBEAllocationReport;
+      let url=this.cons.api.getMAAllocationReport;
       if(formdata.reprtType=='02')
         url=url+'Doc';
 
       this.apiService
         .getApi(
-          url +
-          '/' +
-          formdata.finYear.serialNo +
-          '/ALL_102' +
-          '/' +
-          formdata.amountType.amountTypeId+'/'+formdata.toDate+'/'+formdata.fromDate
-        )
+          url + '/' +
+          formdata.finYear.serialNo + '/' +
+          formdata.allocationType.allocTypeId+'/' +
+          formdata.allocationType2.allocTypeId+'/' +
+          formdata.allocationType3.allocTypeId+ '/' +
+          formdata.amountType.amountTypeId)
         .subscribe({
           next: (v: object) => {
             this.SpinnerService.hide();
@@ -769,35 +772,50 @@ export class BudgetAllocationReportComponent implements OnInit {
       this.showSubHead = false;
       this.showDate=false;
       this.bere=false;
+      this.ma=false;
       this.showAllocStatus=false;
     } else if (data.reportType == '01') {
       this.showSubHead = false;
       this.showUnit = false;
       this.showDate=false;
       this.bere=false;
+      this.ma=false;
       this.showAllocStatus=true;
     }else if (data.reportType == '04') {
       this.showSubHead = true;
       this.showUnit = false;
       this.showDate=false;
       this.bere=false;
+      this.ma=false;
       this.showAllocStatus=false;
     }else if (data.reportType == '07') {
       this.showSubHead = false;
       this.showUnit = false;
       this.showDate=false;
       this.bere=true;
+      this.ma=false;
       this.showAllocStatus=false;
     }
-    else if (data.reportType == '08'||data.reportType == '09') {
+    else if (data.reportType == '08') {
       this.showSubHead = false;
       this.showUnit = false;
-      this.showDate=true;
-      this.bere=false;
+      this.showDate = true;
+      this.bere = false;
+      this.ma=false;
+      this.showAllocStatus = false;
+    }
+    else if (data.reportType == '09') {
+      this.showSubHead = false;
+      this.showUnit = false;
+      this.showDate=false;
+      this.bere=true;
+      this.ma=true;
       this.showAllocStatus=false;
-    } else {
+    }
+    else {
       this.showAllocStatus=false;
       this.bere=false;
+      this.ma=false;
       this.showSubHead = false;
       this.showUnit = false;
       this.showDate=false;

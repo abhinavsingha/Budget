@@ -723,6 +723,8 @@ export class BudgetAllocationSubheadwiseComponent {
         if (result['message'] == 'success') {
           this.sharedService.inbox = result['response'].inbox;
           this.sharedService.outbox = result['response'].outBox;
+          this.sharedService.approve=result['response'].approved;
+          this.sharedService.archive=result['response'].archived;
           this.formdata.patchValue({
             allocationType: result['response'].allocationType,
           });

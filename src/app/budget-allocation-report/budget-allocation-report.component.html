@@ -68,7 +68,10 @@
                     <option value="05">Revision Report</option>
 <!--                    <option value="06">Revised RE</option>-->
                     <option value="07">BE & RE</option>
+                    <option value="07">MA</option>
                     <option value="08" *ngIf="unitId=='001321'">FER Report</option>
+                    <option value="09" >MA</option>
+
 <!--                    <option value="09">FER RE Report</option>-->
                   </select>
                 </div>
@@ -96,6 +99,13 @@
                   <label>AllocationType for RE <span class="text-danger">*</span></label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [items]="allocationType"
                              bindLabel="allocDesc" placeholder="Select Allocation Type" formControlName="allocationType2"></ng-select>
+                </div>
+              </div>
+              <div class="col-md-3" *ngIf="ma">
+                <div class="form-group">
+                  <label>AllocationType for MA <span class="text-danger">*</span></label>
+                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="allocationType"
+                             bindLabel="allocDesc" placeholder="Select Allocation Type" formControlName="allocationType3"></ng-select>
                 </div>
               </div>
 
