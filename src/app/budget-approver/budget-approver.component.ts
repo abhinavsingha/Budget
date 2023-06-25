@@ -298,17 +298,18 @@ export class BudgetApproverComponent implements OnInit {
 
   deleteFromMultipleCdaParking(index: any) {
     this.multipleCdaParking.splice(index, 1);
-    var amount = 0;
+    var amount:any = 0;
     var unitIndex = this.multipleCdaParking.filter(
       (data) => data.amount != null
     );
     for (var i = 0; i < unitIndex.length; i++) {
       if (unitIndex[i].amount != '' || unitIndex[i].amount != null) {
-        amount = amount + parseFloat(unitIndex[i].amount);
+        amount = parseFloat(amount) + parseFloat(unitIndex[i].amount);
       }
     }
+    amount=amount.toFixed(4);
     this.balancedRemaingCdaParkingAmount = (
-      this.totalAmountToAllocateCDAParking - amount
+      parseFloat(this.totalAmountToAllocateCDAParking) - parseFloat(amount)
     ).toFixed(4);
     if (
       this.balancedRemaingCdaParkingAmount == '0' ||
@@ -457,17 +458,18 @@ export class BudgetApproverComponent implements OnInit {
               this.multipleCdaParking.push(dummyMultipleCdaParkingData);
             }
 
-            var amount = 0;
+            var amount:any = 0;
             var unitIndex = this.multipleCdaParking.filter(
               (data) => data.amount != null
             );
             for (var i = 0; i < unitIndex.length; i++) {
               if (unitIndex[i].amount != '' || unitIndex[i].amount != null) {
-                amount = amount + parseFloat(unitIndex[i].amount);
+                amount = Number(amount) + Number(unitIndex[i].amount);
               }
             }
+            amount=amount.toFixed(4);
             this.balancedRemaingCdaParkingAmount = (
-              this.totalAmountToAllocateCDAParking - amount
+              parseFloat(this.totalAmountToAllocateCDAParking) - parseFloat(amount)
             ).toFixed(4);
             if (
               this.balancedRemaingCdaParkingAmount == '0' ||
@@ -511,6 +513,7 @@ export class BudgetApproverComponent implements OnInit {
       }
     }
     //debugger;
+    amount=amount.toFixed(4);
     this.balancedRemaingCdaParkingAmount = (
       parseFloat(this.totalAmountToAllocateCDAParking) - parseFloat(amount)
     ).toFixed(4);
@@ -588,6 +591,8 @@ export class BudgetApproverComponent implements OnInit {
         if (result['message'] == 'success') {
           this.sharedService.inbox = result['response'].inbox;
           this.sharedService.outbox = result['response'].outBox;
+          this.sharedService.approve = result['response'].approved;
+          this.sharedService.archive = result['response'].archived;
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
@@ -706,7 +711,75 @@ export class BudgetApproverComponent implements OnInit {
       alert('CSV download is not supported in this browser.');
     }
   }
+  downloadAllocationCsv() {
+    // Example data and column names
+    let tableData = [];
+    let totalR = 0.0;
+    let totalA = 0.0;
+    for (let i = 0; i < this.budgetDataList.length; i++) {
+      totalA =
+        totalA +
+        parseFloat(this.budgetDataList[i].allocationAmount) *
+        this.budgetDataList[i].amountUnit.amount;
+      // totalR=totalR+(parseFloat(this.budgetDataList[i].balanceAmount)*this.budgetDataList[i].remeningBalanceUnit.amount);
+      let table: any = {
+        Financial_Year: this.budgetDataList[i].finYear.finYear.replaceAll(
+          ',',
+          ' '
+        ),
+        To_Unit: this.budgetDataList[i].toUnit.descr.replaceAll(',', ' '),
+        From_Unit: this.budgetDataList[i].fromUnit.descr.replaceAll(',', ' '),
+        Subhead: this.budgetDataList[i].subHead.subHeadDescr.replaceAll(
+          ',',
+          ' '
+        ),
+        Type: this.budgetDataList[i].allocTypeId.allocType.replaceAll(',', ' '),
+        // Remaining_Amount: (parseFloat(this.budgetDataList[i].balanceAmount)*this.budgetDataList[i].remeningBalanceUnit.amount/this.budgetDataList[i].amountUnit.amount).toString(),
+        Allocated_Fund: this.budgetDataList[i].allocationAmount
+          .replaceAll(',', ' ')
+          .toString(),
+      };
+      if(parseFloat(this.budgetDataList[i].allocationAmount)!=0)
+        tableData.push(table);
+    }
+    let table: TableData = {
+      Financial_Year: '',
+      To_Unit: '',
+      From_Unit: '',
+      Subhead: '',
+      Type: 'TOTAL',
+      Allocated_Fund: (
+        parseFloat(totalA.toFixed(4)) /
+        parseFloat(this.budgetDataList[0].amountUnit.amount)
+      ).toString(),
+    };
+    tableData.push(table);
+    // const data = [
+    //   { name: 'John', age: 30, city: 'New York' },
+    //   { name: 'Jane', age: 25, city: 'San Francisco' },
+    //   { name: 'Bob', age: 35, city: 'Chicago' },
+    // ];
+    const columns = [
+      'Financial_Year',
+      'To_Unit',
+      'From_Unit',
+      'Subhead',
+      'Type',
+      'Allocated_Fund' + ' in ' + this.budgetDataList[0].amountUnit.amountType,
+    ];
+    const column = [
+      'Financial_Year',
+      'To_Unit',
+      'From_Unit',
+      'Subhead',
+      'Type',
+      'Allocated_Fund',
+    ];
+    const filename = this.type + '.csv';
 
+    // Generate and download the CSV file
+    this.generateCSV(tableData, columns, filename, column);
+  }
   downloadCsv() {
     // Example data and column names
     let tableData = [];
@@ -902,6 +975,12 @@ export class BudgetApproverComponent implements OnInit {
     if(this.type=='Budget Receipt'){
       if(formdata.reportType=='03')
         this.getRecieptReport('Doc');
+      else if(formdata.reportType=='01'){
+        if(parseFloat(this.budgetDataList[0].revisedAmount)!=0)
+          this.downloadCsv();
+        else
+          this.downloadAllocationCsv();
+      }
       else
         this.getRecieptReport('');
     }
@@ -911,6 +990,7 @@ export class BudgetApproverComponent implements OnInit {
         {
           this.getreAllocationReport('');
         }
+
         else
           this.getAllocationReport(this.authGroupId);
       }
@@ -922,7 +1002,14 @@ export class BudgetApproverComponent implements OnInit {
         else
           this.getAllocationReportDocx(this.authGroupId);
       else if(formdata.reportType=='01')
-        this.downloadCsv();
+      {
+        if(parseFloat(this.budgetDataList[0].revisedAmount)!=0)
+          this.downloadCsv();
+        else
+          this.downloadAllocationCsv();
+
+      }
+
     }
 
   }

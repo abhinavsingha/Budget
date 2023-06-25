@@ -79,7 +79,7 @@ export class BudgetAllocationReportComponent implements OnInit {
     this.getCgUnitData();
     this.majorDataNew();
     this.getSubHeadsData();
-    this.getAllocationType();
+    // this.getAllocationType();
     this.getAmountType();
     this.allocationType=this.sharedService.getAllocationTypeData();
     // debugger;
@@ -189,10 +189,10 @@ export class BudgetAllocationReportComponent implements OnInit {
       }
     });
   }
-  getAllocationType() {
+  getAllocationType(formdata:any) {
     this.SpinnerService.show();
     this.apiService
-      .getApi(this.cons.api.getAllocationTypeData)
+      .getApi(this.cons.api.getAllocationTypeData+formdata.finYear.serialNo)
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
