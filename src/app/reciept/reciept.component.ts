@@ -67,7 +67,7 @@ export class RecieptComponent {
     this.getSubHeadType();
     this.getModData();
     this.outboxResponse=this.sharedService.inboxOutbox();
-    debugger;
+    // debugger;
   }
 
   constructor(
@@ -169,13 +169,13 @@ export class RecieptComponent {
   }
 
   getBudgetRecipt() {
-    debugger;
+    // debugger;
     this.SpinnerService.show();
     this.apiService.getApi(this.cons.api.getBudgetRecipt).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.finalTableData = result['response'].budgetResponseist;
-        debugger;
+        // debugger;
         if(this.defaultAmountType==null&&this.defaultAmountType2!=null)
          this.defaultAmountType=this.defaultAmountType2;
         if (this.defaultAmountType2 != undefined) {
@@ -204,7 +204,7 @@ export class RecieptComponent {
 
         let result: { [key: string]: any } = v;
         if (result['message'] == 'success') {
-          debugger;
+          // debugger;
           this.allocationTypeList = result['response'];
 
           for (var i = 0; i < this.allocationTypeList.length; i++) {
@@ -276,17 +276,19 @@ export class RecieptComponent {
   }
   file: any;
 
-  onChangeFile(event: any) {
+  onChangeFile(event: any,i:number) {
     if (event.target.files.length > 0) {
       this.file = event.target.files[0];
-      debugger;
+      // debugger;
       $.getScript('assets/js/adminlte.js');
+      this.uploadDocuments[i].filepath=this.file.name;
     }
   }
   uploadFileResponse: any;
   uploadFile(index: any) {
     const formData = new FormData();
     formData.append('file', this.file);
+
 
     this.SpinnerService.show();
 
@@ -320,6 +322,7 @@ export class RecieptComponent {
       },
       complete: () => console.info('complete'),
     });
+    debugger;
   }
   viewFile(file: string) {
     this.apiService.getApi(this.cons.api.fileDownload + file).subscribe(
@@ -391,7 +394,7 @@ export class RecieptComponent {
                 }
               }
             }
-          debugger;
+          // debugger;
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
@@ -621,7 +624,7 @@ export class RecieptComponent {
     let selectedAllocationType = data.allocTypeId.allocType;
 
     this.autoSelectedAllocationType = data.allocTypeId.allocType;
-    debugger;
+    // debugger;
 
     let submitJson = {
       majorHeadId: data.subHead.majorHead,
@@ -715,6 +718,7 @@ export class RecieptComponent {
           let newUploadDocuments = new UploadDocuments();
           newUploadDocuments.authUnit = result['response'];
           this.uploadDocuments.push(newUploadDocuments);
+          debugger;
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
@@ -743,7 +747,7 @@ export class RecieptComponent {
   }
 
   setAmountType2(formData: any) {
-    debugger;
+    // debugger;
     for (let i = 0; i < this.finalTableData.length; i++) {
       this.finalTableData[i].allocationAmount = (
         (this.finalTableData[i].allocationAmount *
@@ -758,7 +762,7 @@ export class RecieptComponent {
 
   updateRecieptByInlineEditing(data: any, index: any) {
     this.finalTableData.forEach((element) => {
-      debugger;
+      // debugger;
       element.isEdit = false;
     });
     data.isEdit = true;
