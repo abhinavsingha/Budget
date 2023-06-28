@@ -169,6 +169,7 @@ export class InboxComponent implements OnInit {
               type: list[i].type
             };
             this.inboxList.push(entry);
+            debugger;
           }
         }
       } else {

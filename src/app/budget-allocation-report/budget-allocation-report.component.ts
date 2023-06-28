@@ -750,10 +750,16 @@ export class BudgetAllocationReportComponent implements OnInit {
             this.SpinnerService.hide();
             let result: { [key: string]: any } = v;
             if (result['message'] == 'success') {
-              this.downloadPdf(
-                result['response'][0].path,
-                result['response'][0].fileName
-              );
+              if(formdata.reprtType=='03'){
+                this.generateReceiptCSV(result['response']);
+              }
+              else{
+                this.downloadPdf(
+                  result['response'][0].path,
+                  result['response'][0].fileName
+                );
+              }
+
               this.SpinnerService.hide();
             } else {
               this.common.faliureAlert(
@@ -1309,6 +1315,92 @@ export class BudgetAllocationReportComponent implements OnInit {
       'Allocation',
     ];
     const filename = 'Allocation_Report.csv';
+    this.generateCSV(tableData, columns, filename, column);
+  }
+
+  private generateReceiptCSV(response: any) {
+    let tableData = [];
+    let beallocTotal=0.0;
+    let finalbeTotal=0.0;
+    if(response[0].reciptRespone[2037]!=undefined)
+
+      for(let i=0;i<response[0].reciptRespone[2037].length;i++) {
+      let sum=0.0;
+      if(i==0){
+        tableData.push( {
+          'MAJORHEAD':'2037',
+          'DETAILED HEAD':'REVENUE',
+          'ALLOCATION ':'',
+        });
+        tableData.push( {
+          'MAJORHEAD':'',
+          'DETAILED HEAD':response[0].reciptRespone[2037][i].budgetHead.subHeadDescr,
+          'ALLOCATION ':response[0].reciptRespone[2037][i].amount,
+        });
+        sum=sum+parseFloat(response[0].reciptRespone[2037][i].amount);
+      }
+      else{
+        tableData.push( {
+          'MAJORHEAD':'',
+          'DETAILED HEAD':response[0].reciptRespone[2037][i].budgetHead.subHeadDescr,
+          'ALLOCATION ':response[0].reciptRespone[2037][i].amount,
+        });
+        sum=sum+parseFloat(response[0].reciptRespone[2037][i].amount);
+
+      }
+        if(i==response[0].reciptRespone[2037].length-1){
+          tableData.push( {
+            'MAJORHEAD':'',
+            'DETAILED HEAD':'Grand Total(REVENUE)',
+            'ALLOCATION ':sum,
+          });
+        }
+    }
+    if(response[0].reciptRespone[4047]!=undefined)
+    for(let i=0;i<response[0].reciptRespone[4047].length;i++) {
+      let sum=0.0;
+      if(i==0){
+        tableData.push( {
+          'MAJORHEAD':'4047',
+          'DETAILED HEAD':'CAPITAL',
+          'ALLOCATION ':'',
+        });
+        tableData.push( {
+          'MAJORHEAD':'',
+          'DETAILED HEAD':response[0].reciptRespone[4047][i].budgetHead.subHeadDescr,
+          'ALLOCATION ':response[0].reciptRespone[4047][i].amount,
+        });
+        sum=sum+parseFloat(response[0].reciptRespone[4047][i].amount);
+      }
+      else{
+        tableData.push( {
+          'MAJORHEAD':'',
+          'DETAILED HEAD':response[0].reciptRespone[4047][i].budgetHead.subHeadDescr,
+          'ALLOCATION ':response[0].reciptRespone[4047][i].amount,
+        });
+        sum=sum+parseFloat(response[0].reciptRespone[4047][i].amount);
+
+      }
+      if(i==response[0].reciptRespone[4047].length-1){
+        tableData.push( {
+          'MAJORHEAD':'',
+          'DETAILED HEAD':'Grand Total(CAPITAL)',
+          'ALLOCATION ':sum,
+        });
+      }
+    }
+    const columns = [
+      'MAJORHEAD',
+      'DETAILED HEAD',
+      response[0].type + ' (' + response[0].finYear + ') Allocation (in '+response[0].amountType+')',
+    ];
+    const column = [
+      'MAJORHEAD',
+      'DETAILED HEAD',
+      'ALLOCATION ',
+    ];
+
+    const filename = 'Receipt_Report.csv';
     this.generateCSV(tableData, columns, filename, column);
   }
 }
