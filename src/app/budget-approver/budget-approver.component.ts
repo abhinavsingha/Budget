@@ -935,7 +935,8 @@ export class BudgetApproverComponent implements OnInit {
         },
         complete: () => console.info('complete'),
       });
-  }getAllocationReportDocx(authGroupId: any) {
+  }
+  getAllocationReportDocx(authGroupId: any) {
     this.SpinnerService.show();
     // //debugger;
     this.apiService
@@ -973,8 +974,18 @@ export class BudgetApproverComponent implements OnInit {
   downloadReport(formdata:any) {
     debugger;
     if(this.type=='Budget Receipt'){
-      if(formdata.reportType=='03')
-        this.getRecieptReport('Doc');
+
+      if(formdata.reportType=='03'){
+        if(parseFloat(this.budgetDataList[0].revisedAmount)!=0)
+        {
+          this.getreAllocationReport('Doc');
+        }
+        else{
+          this.getRecieptReport('Doc');
+        }
+
+      }
+
       else if(formdata.reportType=='01'){
         if(parseFloat(this.budgetDataList[0].revisedAmount)!=0)
           this.downloadCsv();
@@ -982,7 +993,15 @@ export class BudgetApproverComponent implements OnInit {
           this.downloadAllocationCsv();
       }
       else
-        this.getRecieptReport('');
+      {
+        if(parseFloat(this.budgetDataList[0].revisedAmount)!=0)
+        {
+          this.getreAllocationReport('');
+        }
+        else
+          this.getRecieptReport('');
+      }
+
     }
     else{
       if(formdata.reportType=='02'){

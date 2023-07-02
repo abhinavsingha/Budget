@@ -181,15 +181,12 @@
             <p>Unit Rebase</p>
           </a>
         </li>
-        <li class="nav-item" *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'">
+        <li class="nav-item" *ngIf="(userRole=='Budget Manager' || userRole=='Budget Approver')&&unitId=='001321'">
           <a href="#" class="nav-link" [routerLink]="['/all-allocation']" [routerLinkActive]="['active']">
             <i class="fas fa-coins nav-icon"></i>
             <p>All Allocation Types</p>
           </a>
         </li>
-
-
-
       </ul>
     </nav>
     <!-- /.sidebar-menu -->

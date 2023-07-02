@@ -45,7 +45,7 @@
                 <div class="form-group">
                   <label>Financial Year <span class="text-danger">*</span></label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [items]="budgetFinYears"
-                    bindLabel="finYear" placeholder="Select Financial Year" formControlName="finYear">
+                    bindLabel="finYear" (change)="getAllocationType(formdata.value)" placeholder="Select Financial Year" formControlName="finYear">
                   </ng-select>
                 </div>
               </div>

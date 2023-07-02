@@ -115,6 +115,8 @@ export class CdaParkingReportComponent implements OnInit {
   keys: string[]=[];
   downloadFilename: string = '';
   downloadPath: any;
+  private downloadPathDOC: any;
+  private downloadFilenameDOC: any;
 
   ngOnInit(): void {
     $.getScript('assets/js/adminlte.js');
@@ -494,6 +496,7 @@ export class CdaParkingReportComponent implements OnInit {
   }
 
   report(formdata:any) {
+    debugger;
     if(formdata.reprtType=='01')
     this.downloadPdf(this.downloadPath,this.downloadFilename)
     else if(formdata.reprtType=='02')
@@ -545,9 +548,9 @@ export class CdaParkingReportComponent implements OnInit {
               this.data=result['response'].allCdaData;
               this.head=this.data.head;
               this.keys=this.objectKeys(this.data);
-              this.downloadPath=result['response'].path;
-              this.downloadFilename=result['response'].fileName;
-              this.downloadPdf(this.downloadPath,this.downloadFilename);
+              this.downloadPathDOC=result['response'].path;
+              this.downloadFilenameDOC=result['response'].fileName;
+              this.downloadPdf(this.downloadPathDOC,this.downloadFilenameDOC);
             } else {
               this.common.faliureAlert('Please try later', result['message'], '');
             }
