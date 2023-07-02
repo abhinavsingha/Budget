@@ -468,6 +468,7 @@ export class CdaParkingReportComponent implements OnInit {
   }
   showSubhead:boolean=false;
   showUnit:boolean=false;
+  showReportType: boolean=true;
   show(formdata:any) {
     debugger;
     this.showSubhead=false;
@@ -559,5 +560,12 @@ export class CdaParkingReportComponent implements OnInit {
           complete: () => console.info('complete'),
         });
     }
+  }
+
+  checkCda(formData: any) {
+    if(formData.cdas.ginNo=='112233'||formData.cdas.ginNo=='112244')
+      this.showReportType=false;
+    else
+      this.showReportType=true;
   }
 }
