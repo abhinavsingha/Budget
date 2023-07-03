@@ -244,6 +244,14 @@ export class BudgetAllocationSubheadwiseComponent {
       );
       return;
     }
+    else if(this.balance<0){
+      this.common.faliureAlert(
+        'Allocation Exceeds available balance',
+        'Fund available cannot be less than zero. Allocation total more than available fund.',
+        ''
+      );
+      return;
+    }
 
     for (let i = 0; i < this.subHeadWiseUnitList.length; i++) {
       this.amount = this.amount + parseFloat(this.subHeadWiseUnitList[i].amount);
@@ -816,6 +824,7 @@ currentIndex:any;
       this.totalAlloc=(parseFloat(entry.amount)+parseFloat(this.totalAlloc)).toFixed(4);
     }
     this.balance=(parseFloat(this.fundAvailableByFinYearAndUnitAndAllocationType)-(parseFloat(this.totalAlloc)*parseFloat(this.formdata.get('amountType')?.value.amount))).toFixed(4);
+    debugger;
   }
 
   addDecimal(cda: any) {

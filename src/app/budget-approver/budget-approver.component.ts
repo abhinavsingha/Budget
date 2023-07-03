@@ -422,7 +422,12 @@ export class BudgetApproverComponent implements OnInit {
     this.amountUnit = budgetData.amountUnit.amountType;
     this.multipleCdaParking = [];
     this.multipleCdaParking.push(new MultiCdaParking());
-    this.totalAmountToAllocateCDAParking = budgetData.allocationAmount;
+    // this.totalAmountToAllocateCDAParking = budgetData.allocationAmount;
+    if(budgetData.revisedAmount!=undefined)
+      this.totalAmountToAllocateCDAParking = (parseFloat(budgetData.allocationAmount)+parseFloat(budgetData.revisedAmount)).toFixed(4);
+    else
+      this.totalAmountToAllocateCDAParking = budgetData.allocationAmount;
+
     this.balancedRemaingCdaParkingAmount = '0.0000';
     this.isdisableSubmitButton = true;
     this.isdisableUpdateButton = true;
