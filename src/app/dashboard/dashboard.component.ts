@@ -47,6 +47,7 @@ export class DashboardComponent implements OnInit {
 
   p: number = 1;
   length: number = 0;
+  userAuthorised:boolean=false;
 
   formdata = new FormGroup({
     finYear: new FormControl(),
@@ -112,9 +113,10 @@ export class DashboardComponent implements OnInit {
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
-        
+
         if (result['message'] == 'success') {
           if (result['response']) {
+            this.userAuthorised=true;
             this.getDashBoardDta();
             this.getBudgetFinYear();
             this.getSubHeadsData();
@@ -133,10 +135,7 @@ export class DashboardComponent implements OnInit {
         this.SpinnerService.hide();
         console.error(e);
         this.common.faliureAlert('Error', e['error']['message'], 'error');
-        // 
-        // if (e['status'] == '401') {
-        //   this.redirectUri();
-        // }
+
       },
       complete: () => console.info('complete'),
     });
@@ -159,10 +158,7 @@ export class DashboardComponent implements OnInit {
         this.SpinnerService.hide();
         console.error(e);
         this.common.faliureAlert('Error', e['error']['message'], 'error');
-        // 
-        // if (e['status'] == '401') {
-        //   this.redirectUri();
-        // }
+
       },
       complete: () => console.info('complete'),
     });
@@ -198,10 +194,6 @@ export class DashboardComponent implements OnInit {
         this.SpinnerService.hide();
         console.error(e);
         this.common.faliureAlert('Error', e['error']['message'], 'error');
-        // 
-        // if (e['status'] == '401') {
-        //   this.redirectUri();
-        // }
       },
       complete: () => console.info('complete'),
     });
@@ -216,9 +208,9 @@ export class DashboardComponent implements OnInit {
         let result: { [key: string]: any } = v;
 
         if (result['message'] == 'success') {
-          
+
           this.sharedService.dashboardData = result['response'];
-          this.dasboardData = result['response']; // 
+          this.dasboardData = result['response']; //
           this.sharedService.approve = result['response'].approved;
           this.sharedService.archive = result['response'].archived;
           if(result['response'].userDetails.unitId=='001321')
@@ -654,7 +646,7 @@ export class DashboardComponent implements OnInit {
   }
   getTableData(formDataValue: any) {
     this.SpinnerService.show();
-    
+
     this.apiService
       .getApi(
         this.cons.api
@@ -714,7 +706,7 @@ export class DashboardComponent implements OnInit {
         this.SpinnerService.hide();
         console.error(e);
         this.common.faliureAlert('Error', e['error']['message'], 'error');
-        // 
+        //
         // if (e['status'] == '401') {
         //   this.redirectUri();
         // }
