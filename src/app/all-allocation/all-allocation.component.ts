@@ -36,6 +36,7 @@ export class AllAllocationComponent implements OnInit {
     private sharedService: SharedService
   ) {}
   ngOnInit(): void {
+    this.sharedService.updateInbox();
     this.getFinancialYear();
   }
   getAllocationTypeData(formdata:any) {

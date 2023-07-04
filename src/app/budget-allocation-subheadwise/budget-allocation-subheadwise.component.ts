@@ -58,6 +58,7 @@ export class BudgetAllocationSubheadwiseComponent {
   private subHeadData: any;
 
   ngOnInit(): void {
+    this.sharedService.updateInbox();
     this.getAmountType();
     // this.getBudgetFinYear();
     this.getSubHeadsData();

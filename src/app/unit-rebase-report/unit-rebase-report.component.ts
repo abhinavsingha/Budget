@@ -44,6 +44,7 @@ export class UnitRebaseReportComponent {
   }
 
   ngOnInit(): void {
+    this.sharedService.updateInbox();
     $.getScript('assets/js/adminlte.js');
   }
 

@@ -49,6 +49,7 @@ export class BudgetApproverComponent implements OnInit {
   private isRevision: boolean=false;
 
   ngOnInit(): void {
+    this.sharedService.updateInbox();
     //debugger;
     if (
       localStorage.getItem('isInboxOrOutbox') != null ||

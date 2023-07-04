@@ -73,4 +73,28 @@ export class SharedService {
     });
     return this.allocationType;
   }
+  updateInbox(){
+    this.apiService
+      .getApi(this.cons.api.updateInboxOutBox)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            this.inbox = result['response'].inbox;
+            this.outbox = result['response'].outBox;
+            this.approve=result['response'].approved;
+            this.archive=result['response'].archived;
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
+  }
 }

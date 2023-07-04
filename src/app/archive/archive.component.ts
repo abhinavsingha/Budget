@@ -45,6 +45,7 @@ export class ArchiveComponent implements OnInit {
     this.isShow=true;
   }
   ngOnInit(): void {
+    this.sharedService.updateInbox();
    this.getApproved();
 
   }

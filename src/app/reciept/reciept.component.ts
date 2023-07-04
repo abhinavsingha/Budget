@@ -57,6 +57,7 @@ export class RecieptComponent {
   outboxResponse: any;
 
   ngOnInit(): void {
+    this.sharedService.updateInbox();
     $.getScript('./assets/js/adminlte.js');
     this.getAmountType();
     this.getBudgetFinYear();

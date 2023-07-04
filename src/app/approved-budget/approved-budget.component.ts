@@ -59,6 +59,7 @@ export class ApprovedBudgetComponent implements OnInit {
     private router: Router
   ) {}
   ngOnInit(): void {
+    this.sharedService.updateInbox();
     // this.getCgUnitData();
     if (
       localStorage.getItem('isInboxOrOutbox') != null ||

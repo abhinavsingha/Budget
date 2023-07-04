@@ -105,6 +105,7 @@ export class ContigentBillApproverComponent implements OnInit {
   });
   subHeadType:any;
   ngOnInit(): void {
+    this.sharedService.updateInbox();
     $.getScript('assets/js/adminlte.js');
     this.getContingentBill();
     this.getMajorHead();

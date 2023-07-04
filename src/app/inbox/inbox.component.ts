@@ -50,6 +50,7 @@ export class InboxComponent implements OnInit {
   // inboxList: any[] = [];
 
   ngOnInit(): void {
+    this.sharedService.updateInbox();
     localStorage.setItem('isInboxOrOutbox', 'Inbox');
     this.userRole = localStorage.getItem('user_role');
     if (this.userRole == 'sys_Admin') {

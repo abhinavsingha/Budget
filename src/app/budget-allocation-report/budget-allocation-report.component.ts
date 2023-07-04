@@ -73,6 +73,7 @@ export class BudgetAllocationReportComponent implements OnInit {
   currentSub='';
   ma: boolean=false;
   ngOnInit(): void {
+    this.sharedService.updateInbox();
     $.getScript('assets/js/adminlte.js');
     this.getDashBoardDta();
     this.getBudgetFinYear();

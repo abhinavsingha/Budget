@@ -6,6 +6,7 @@ import { CommonService } from '../services/common/common.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { bootstrapApplication } from '@angular/platform-browser';
+import {SharedService} from "../services/shared/shared.service";
 class CdaSubRequest {
   allocationTypeID: any;
   ginNo: any;
@@ -82,9 +83,11 @@ export class CdaParkingComponent implements OnInit {
     private apiService: ApiCallingServiceService,
     private cons: ConstantsService,
     private SpinnerService: NgxSpinnerService,
-    private common: CommonService
+    private common: CommonService,
+    private sharedService: SharedService
   ) {}
   ngOnInit(): void {
+    this.sharedService.updateInbox();
     $.getScript('assets/js/adminlte.js');
     // this.SpinnerService.show();
     // const postdata={

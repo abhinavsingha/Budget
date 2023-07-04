@@ -107,6 +107,7 @@ export class CbVerificationComponent {
     returnRemarks: new FormControl(),
   });
   ngOnInit(): void {
+    this.sharedService.updateInbox();
     $.getScript('assets/js/adminlte.js');
     this.getContingentBill();
     this.getMajorHead();

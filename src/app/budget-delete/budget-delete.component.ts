@@ -28,6 +28,7 @@ export class BudgetDeleteComponent {
   });
 
   ngOnInit(): void {
+
     this.getBudgetFinYear();
     this.getCgUnitData();
     $.getScript('assets/main.js');

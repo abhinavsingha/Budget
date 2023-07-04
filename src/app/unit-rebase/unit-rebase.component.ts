@@ -12,6 +12,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import {SharedService} from "../services/shared/shared.service";
 
 @Component({
   selector: 'app-unit-rebase',
@@ -51,6 +52,7 @@ export class UnitRebaseComponent {
   private dasboardData: any;
 
   ngOnInit(): void {
+    this.sharedService.updateInbox();
     $.getScript('assets/js/adminlte.js');
     this.getBudgetFinYear();
     this.getCgUnitData();
@@ -65,7 +67,8 @@ export class UnitRebaseComponent {
     private cons: ConstantsService,
     private apiService: ApiCallingServiceService,
     private formBuilder: FormBuilder,
-    private common: CommonService
+    private common: CommonService,
+    private sharedService: SharedService
   ) {
     this.formdata = formBuilder.group({
       finYear: [null, Validators.required],

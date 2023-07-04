@@ -61,6 +61,7 @@ export class RevisionApprovalComponent {
   filename:string='Select Document';
   oldBudgetDataLists: any;
   ngOnInit(): void {
+    this.sharedService.updateInbox();
     if (
       localStorage.getItem('isInboxOrOutbox') != null ||
       localStorage.getItem('isInboxOrOutbox') != undefined

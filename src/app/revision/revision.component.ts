@@ -100,6 +100,7 @@ export class RevisionComponent {
     private common: CommonService
   ) {}
   ngOnInit(): void {
+    this.sharedService.updateInbox();
     $.getScript('assets/js/adminlte.js');
     this.getBudgetFinYear();
     this.getCgUnitData();

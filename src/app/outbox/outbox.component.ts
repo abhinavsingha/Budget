@@ -46,6 +46,7 @@ export class OutboxComponent implements OnInit {
   p: number = 1;
 
   ngOnInit(): void {
+    this.sharedService.updateInbox();
     localStorage.setItem('isInboxOrOutbox', 'Outbox');
 
     this.userRole = localStorage.getItem('user_role');

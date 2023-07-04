@@ -178,6 +178,7 @@ export class NewContigentBillComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.sharedService.updateInbox();
     $.getScript('assets/js/adminlte.js');
     this.getMajorHead();
     this.getFinancialYear();

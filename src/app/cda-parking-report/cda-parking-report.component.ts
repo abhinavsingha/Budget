@@ -119,6 +119,7 @@ export class CdaParkingReportComponent implements OnInit {
   private downloadFilenameDOC: any;
 
   ngOnInit(): void {
+    this.sharedService.updateInbox();
     $.getScript('assets/js/adminlte.js');
     this.getBudgetFinYear();
     this.getSubHeadsData();
