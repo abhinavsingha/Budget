@@ -120,6 +120,19 @@ export class OutboxComponent implements OnInit {
     else if(li.isType == 'Budget Revision'){
       this.router.navigate(['/revision-approval']);
     }
+    else if(li.isType == 'Budget Receipt'){
+      debugger;
+
+
+      localStorage.setItem('isInboxOrOutbox','approved');
+      this.sharedService.redirectedFrom='approved';
+      localStorage.setItem('type',li.isType);
+      // localStorage.setItem('group_id',li.groupId);
+      this.sharedService.sharedValue = li.groupId;
+
+      this.sharedService.redirectedFrom = 'approved';
+      this.router.navigate(['/budget-approval']);
+    }
   }
 
   private outboxlist() {
@@ -184,6 +197,8 @@ export class OutboxComponent implements OnInit {
     if(li.isType=='Budget Allocation')
       isType='BG';
     else if(li.isType=='Budget Revision')
+      isType='BR'
+    else if(li.isType=='Budget Receipt')
       isType='BR'
     else
       isType='CB'

@@ -50,6 +50,8 @@ export class DashboardComponent implements OnInit {
   userAuthorised:boolean=false;
 
   formdata = new FormGroup({
+    majorHead:new FormControl(),
+    rupeeUnit:new FormControl(),
     finYear: new FormControl(),
     subHead: new FormControl(),
     unit: new FormControl(),
@@ -71,6 +73,10 @@ export class DashboardComponent implements OnInit {
   private unitId: any;
   subHeadType: any;
   tableData: any;
+  amountType :any;
+  amountUnits :any;
+  amountUnit :any;
+   subHeadsResponse: any;
 
   ngOnInit(): void {
     // ngOnInit(): void {
@@ -117,6 +123,7 @@ export class DashboardComponent implements OnInit {
         if (result['message'] == 'success') {
           if (result['response']) {
             this.userAuthorised=true;
+            this.getMajorDataNew();
             this.getDashBoardDta();
             this.getBudgetFinYear();
             this.getSubHeadsData();
@@ -124,6 +131,7 @@ export class DashboardComponent implements OnInit {
             this.getinbox();
             this.getSubHeadType();
             this.getAllocationTypeData();
+            this.getAmountType();
           } else {
             this.redirectUri();
           }
@@ -140,7 +148,28 @@ export class DashboardComponent implements OnInit {
       complete: () => console.info('complete'),
     });
   }
-
+  getAmountType() {
+    this.SpinnerService.show();
+    this.apiService.getApi(this.cons.api.showAllAmountUnit).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.amountType = result['response'];
+          this.amountUnits = this.amountType[0];
+          this.amountUnit = this.amountUnits.amountType;
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
+  }
   getCgUnitData() {
     this.SpinnerService.show();
     this.apiService.getApi(this.cons.api.getCgUnitData).subscribe({
@@ -645,6 +674,7 @@ export class DashboardComponent implements OnInit {
     });
   }
   getTableData(formDataValue: any) {
+
     this.SpinnerService.show();
 
     this.apiService
@@ -689,6 +719,29 @@ export class DashboardComponent implements OnInit {
   }
 
   allocationType: any[] = [];
+  majorDataNew: any[] = [];
+  getMajorDataNew() {
+    this.SpinnerService.show();
+    this.apiService.getApi(this.cons.api.getMajorData).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.majorDataNew = result['response'].subHead;
+          this.SpinnerService.hide();
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
+  }
+
   getAllocationTypeData() {
     this.SpinnerService.show();
     this.apiService.getApi(this.cons.api.getAllocationTypeData).subscribe({
@@ -714,6 +767,40 @@ export class DashboardComponent implements OnInit {
       complete: () => console.info('complete'),
     });
   }
+  getSubHead(formdata: any) {
+    this.SpinnerService.show();
+    let json={
+      majorHead:formdata.majorHead.majorHead,
+      budgetHeadType:formdata.subHeadType.subHeadTypeId
+    };
+    let url =this.cons.api.getAllSubHeadByMajorHead;
+    this.apiService.postApi(url,json).subscribe(
+      (results) => {
+        let result: { [key: string]: any } = results;
+        this.subHeads = result['response'];
+        this.SpinnerService.hide();
+      },
+      (error) => {
+        console.error(error);
+        this.SpinnerService.hide();
+      }
+    );
+  }
 
-  
+  getSubheadWiseTableData(formdata: any) {
+debugger;
+    let url =this.cons.api.getDashBordSubHeadwiseExpenditure+'/'+formdata.subHead.budgetCodeId+'/'+formdata.finYear.serialNo+'/'+formdata.allocationType.allocationTypeId+'/'+this.amountUnits.amountTypeId;
+    this.apiService.getApi(url).subscribe(
+      (results) => {
+        let result: { [key: string]: any } = results;
+        this.subHeadsResponse = result['response'];
+        this.SpinnerService.hide();
+      },
+      (error) => {
+        console.error(error);
+        this.SpinnerService.hide();
+      }
+    );
+
+  }
 }

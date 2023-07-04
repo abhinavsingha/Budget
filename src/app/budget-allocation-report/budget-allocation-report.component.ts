@@ -58,6 +58,8 @@ export class BudgetAllocationReportComponent implements OnInit {
     toDate: new FormControl(),
     fromDate:new FormControl(),
     allocationType:new FormControl(),
+    subHeadType:new FormControl(),
+    majorHead:new FormControl(),
     allocationType2:new FormControl(),
     allocationType3:new FormControl(),
     reprtType:new FormControl('Select Report Type'),
@@ -80,6 +82,7 @@ export class BudgetAllocationReportComponent implements OnInit {
     this.getCgUnitData();
     this.majorDataNew();
     this.getSubHeadsData();
+    this.getSubHeadType();
     // this.getAllocationType();
     this.getAmountType();
     // this.allocationType=this.sharedService.getAllocationTypeData();
@@ -329,6 +332,27 @@ export class BudgetAllocationReportComponent implements OnInit {
   draw() {
     throw new Error('Method not implemented.');
   }
+  getMajorDataNew() {
+    this.SpinnerService.show();
+    this.apiService.getApi(this.cons.api.getMajorData).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.majorDataNew = result['response'].subHead;
+          this.SpinnerService.hide();
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
+  }
   downloadReport(formdata: any) {
     this.SpinnerService.show();
     if (
@@ -388,6 +412,64 @@ export class BudgetAllocationReportComponent implements OnInit {
                 result['response'][0].fileName
               );
             }
+
+            } else {
+              this.common.faliureAlert(
+                'Please try later',
+                result['message'],
+                ''
+              );
+            }
+          },
+          error: (e) => {
+            this.SpinnerService.hide();
+            console.error(e);
+            this.common.faliureAlert('Error', e['error']['message'], 'error');
+          },
+          complete: () => console.info('complete'),
+        });
+    }
+    else if(formdata.reportType == '11'){
+      // if (formdata.subHeadType == null || formdata.subHeadType == undefined) {
+      //   this.common.warningAlert(
+      //     'Please try later',
+      //     'Please Select all mandatory data.',
+      //     ''
+      //   );
+      //   this.SpinnerService.hide();
+      //   return;
+      // }
+      let submitJson = {
+        financialYearId: formdata.finYear.serialNo,
+        subHeadType: formdata.subHeadType.subHeadTypeId,
+        amountType: formdata.amountType.amountTypeId,
+        allocationTypeId:formdata.allocationType.allocTypeId,
+        majorHead:formdata.majorHead.majorHead,
+        minorHead:formdata.majorHead.minorHead,
+        cdaType:1
+      };
+      let url=this.cons.api.getReservedFund;
+      if(formdata.reprtType=='02')
+        url=url+'Doc';
+      else if(formdata.reprtType=='03'){
+        url=url+'Excel'
+      }
+      // debugger;
+      this.apiService
+        .postApi(url, submitJson)
+        .subscribe({
+          next: (v: object) => {
+            this.SpinnerService.hide();
+            let result: { [key: string]: any } = v;
+            if (result['message'] == 'success') {
+              if(formdata.reprtType=='03'){
+               console.log(result['response']);
+              }else{
+                this.downloadPdf(
+                  result['response'].path,
+                  result['response'].fileName
+                );
+              }
 
             } else {
               this.common.faliureAlert(
@@ -816,6 +898,7 @@ export class BudgetAllocationReportComponent implements OnInit {
     });
   }
   showAllocStatus:boolean=false;
+  showSubHeadType:boolean=false;
   selectReportType(data: any) {
     if (data.reportType == '03') {
       this.showUnit = true;
@@ -824,7 +907,18 @@ export class BudgetAllocationReportComponent implements OnInit {
       this.bere=false;
       this.ma=false;
       this.showAllocStatus=false;
-    } else if (data.reportType == '01') {
+      this.showSubHeadType = false;
+    } else if(data.reportType == '11'){
+      this.showSubHeadType = true;
+      this.showSubHead = false;
+      this.showUnit = false;
+      this.showDate=false;
+      this.bere=false;
+      this.ma=false;
+      this.showAllocStatus=false;
+    }
+    else if (data.reportType == '01') {
+      this.showSubHeadType = false;
       this.showSubHead = false;
       this.showUnit = false;
       this.showDate=false;
@@ -833,6 +927,7 @@ export class BudgetAllocationReportComponent implements OnInit {
       this.showAllocStatus=true;
     }else if (data.reportType == '04') {
       this.showSubHead = true;
+      this.showSubHeadType = false;
       this.showUnit = false;
       this.showDate=false;
       this.bere=false;
@@ -841,6 +936,7 @@ export class BudgetAllocationReportComponent implements OnInit {
     }else if (data.reportType == '07') {
       this.showSubHead = false;
       this.showUnit = false;
+      this.showSubHeadType = false;
       this.showDate=false;
       this.bere=true;
       this.ma=false;
@@ -849,6 +945,7 @@ export class BudgetAllocationReportComponent implements OnInit {
     else if (data.reportType == '08') {
       this.showSubHead = false;
       this.showUnit = false;
+      this.showSubHeadType = false;
       this.showDate = true;
       this.bere = false;
       this.ma=false;
@@ -858,6 +955,7 @@ export class BudgetAllocationReportComponent implements OnInit {
       this.showSubHead = false;
       this.showUnit = false;
       this.showDate=false;
+      this.showSubHeadType = false;
       this.bere=true;
       this.ma=true;
       this.showAllocStatus=false;
@@ -867,9 +965,30 @@ export class BudgetAllocationReportComponent implements OnInit {
       this.bere=false;
       this.ma=false;
       this.showSubHead = false;
+      this.showSubHeadType = false;
       this.showUnit = false;
       this.showDate=false;
     }
+  }
+  getSubHeadType() {
+    this.apiService.getApi(this.cons.api.getSubHeadType).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+
+        if (result['message'] == 'success') {
+          this.subHeadType = result['response'];
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
   }
   generateRevisionCsv(response:any) {
     // Example data and column names
@@ -1186,6 +1305,7 @@ export class BudgetAllocationReportComponent implements OnInit {
   }
   unitwiseUnit:any;
   unitwiseYear:any;
+  subHeadType: any;
   private generateUnitWiseCsv(response: any) {
     let beallocTotal=0.0;
     let tableData = [];

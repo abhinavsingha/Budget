@@ -59,7 +59,7 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let li of inboxList| paginate :{itemsPerPage:20,currentPage:p}; let i = index"
-                    id="htmlData" (click)="redirect(li)">
+                    id="htmlData" >
                     <td>{{20 *(p-1)+i+1}}</td>
                     <td>{{li.isType}}</td>
                     <td>{{li.createDate}}</td>
