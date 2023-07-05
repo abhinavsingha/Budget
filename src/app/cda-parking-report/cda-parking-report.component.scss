@@ -8,7 +8,20 @@ tr:first-child {
   background: #fff;
   font-weight: 600;
 }
-
+tr td:first-child {
+  position: sticky;
+  top: 77px;
+  left: -1px;
+  background: #fff;
+}
+tr:first-child td{
+  top: 0px;
+}
 .table-responsive{
   height: 400px;
+}
+
+.table-hover tbody tr:hover td{
+  color: #ffffff;
+  background-color: #0069d9;
 }
