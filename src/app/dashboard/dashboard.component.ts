@@ -688,7 +688,7 @@ export class DashboardComponent implements OnInit {
           '/' +
           formDataValue.subHeadType.subHeadTypeId +
           '/' +
-          formDataValue.allocationType.allocTypeId
+          formDataValue.allocationType.allocTypeId +'/'+ this.amountUnits.amountTypeId
       )
       .subscribe({
         next: (v: object) => {
