@@ -2,3 +2,13 @@
 .table td, .table th {
   border: 1px solid #e5e7ea;
 }
+tr:first-child {
+  position: sticky;
+  top: -1px;
+  background: #fff;
+  font-weight: 600;
+}
+
+.table-responsive{
+  height: 400px;
+}
