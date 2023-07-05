@@ -568,7 +568,7 @@ export class CdaParkingReportComponent implements OnInit {
 
   checkCda(formData: any) {
     if(formData.cdas.ginNo=='112233'||formData.cdas.ginNo=='112244')
-      this.showReportType=false;
+      this.showReportType=true;
     else
       this.showReportType=true;
   }

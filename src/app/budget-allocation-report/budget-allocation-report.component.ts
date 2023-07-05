@@ -445,8 +445,7 @@ export class BudgetAllocationReportComponent implements OnInit {
         amountType: formdata.amountType.amountTypeId,
         allocationTypeId:formdata.allocationType.allocTypeId,
         majorHead:formdata.majorHead.majorHead,
-        minorHead:formdata.majorHead.minorHead,
-        cdaType:1
+        minorHead:formdata.majorHead.minorHead
       };
       let url=this.cons.api.getReservedFund;
       if(formdata.reprtType=='02')

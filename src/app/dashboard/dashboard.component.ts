@@ -788,9 +788,15 @@ export class DashboardComponent implements OnInit {
   }
 
   getSubheadWiseTableData(formdata: any) {
-debugger;
-    let url =this.cons.api.getDashBordSubHeadwiseExpenditure+'/'+formdata.subHead.budgetCodeId+'/'+formdata.finYear.serialNo+'/'+formdata.allocationType.allocationTypeId+'/'+this.amountUnits.amountTypeId;
-    this.apiService.getApi(url).subscribe(
+    let json={
+      subHeadId:formdata.subHead.budgetCodeId,
+      finYearId:formdata.finYear.serialNo,
+      allocationTypeId:formdata.allocationType.allocTypeId,
+      amounttypeId:this.amountUnits.amountTypeId
+    }
+    let url =this.cons.api.getDashBordSubHeadwiseExpenditure;
+    debugger;
+    this.apiService.postApi(url,json).subscribe(
       (results) => {
         let result: { [key: string]: any } = results;
         this.subHeadsResponse = result['response'];
