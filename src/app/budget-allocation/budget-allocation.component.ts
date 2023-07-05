@@ -1172,6 +1172,7 @@ export class BudgetAllocationComponent implements OnInit {
   }
   cdaAllocationbalance: boolean = false;
   cdaWithdrawl(cda: any) {
+    debugger;
     cda.amount=cda.amount.toFixed(4);
     this.cdaAllocationbalance = false;
     if (parseFloat(cda.amount) > parseFloat(cda.remainingCdaAmount)) {
@@ -1185,12 +1186,12 @@ export class BudgetAllocationComponent implements OnInit {
       return;
     }
 
-    let sum = 0.0;
+    let sum:any = 0.0;
     for (let cdaData of this.cdaDetail) {
       if (cdaData.amount != undefined)
-        sum = cdaData.amount + sum;
+        sum = parseFloat(cdaData.amount) + parseFloat(sum);
     }
-    if (sum == this.subHeadFilterDatas[this.index].amount)
+    if (parseFloat(sum.toFixed(4)) === parseFloat(this.subHeadFilterDatas[this.index].amount))
       this.cdaAllocationbalance = true;
     // console.log(sum);
   }
