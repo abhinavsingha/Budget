@@ -80,7 +80,7 @@ export class BudgetAllocationSubheadwiseComponent {
     private formBuilder: FormBuilder,
     private common: CommonService
   ) {}
-
+  cdalist:any[]=[];
   getNewEmptyEntries() {
     for(let unit of this.allunits){
       let entry:SubHeadWiseUnitList= {
@@ -641,6 +641,7 @@ export class BudgetAllocationSubheadwiseComponent {
               cda.totalParkingAmount=(parseFloat(cda.totalParkingAmount)*parseFloat(cda.amountType.amount)/parseFloat(this.amountUnit.amount)).toFixed(4);
               cda.remainingCdaAmount=(parseFloat(cda.remainingCdaAmount)*parseFloat(cda.amountType.amount)/parseFloat(this.amountUnit.amount)).toFixed(4);
               cda.amountType=this.amountUnit;
+              this.cdalist.push({sum:0});
             }
             this.formdata.patchValue({
               fundAvailable: parseFloat(result['response'].fundAvailable).toFixed(4),
@@ -772,16 +773,38 @@ export class BudgetAllocationSubheadwiseComponent {
           cdaParkingId:this.cdaDetail[i].cdaParkingId,
           cdaAmount:parseFloat(this.cdaDetail[i].amount).toFixed(4)
         });
+        // debugger;
+
+
+
+
+        // this.cdaDetail[i].remainingCdaAmount=(parseFloat(this.cdaDetail[i].remainingCdaAmount)-parseFloat(this.cdaDetail[i].amount)).toFixed(4);
         this.cdaDetail[i].amount=undefined;
       }
     }
     this.subHeadWiseUnitList[this.currentIndex].cdaParkingId=cdaParkingId;
+    for(let entry of this.subHeadWiseUnitList){
+      if(entry.cdaParkingId!=undefined){
+        for(let i=0;i<entry.cdaParkingId.length;i++){
+          this.cdalist[i].sum=0;
+        }
+      }
+    }
+    for(let entry of this.subHeadWiseUnitList){
+      if(entry.cdaParkingId!=undefined){
+        for(let i=0;i<entry.cdaParkingId.length;i++){
+          this.cdalist[i].sum=parseFloat(entry.cdaParkingId[i].cdaAmount)+this.cdalist[i].sum;
+        }
+      }
+    }
+    debugger;
+
     this.cdaDetail=this.subHeadData.cdaParkingTrans;
     for(let cda of this.cdaDetail){
       cda.totalParkingAmount=(parseFloat(cda.totalParkingAmount)*parseFloat(cda.amountType.amount)/parseFloat(this.amountUnit.amount)).toFixed(4)
       cda.remainingCdaAmount=(parseFloat(cda.remainingCdaAmount)*parseFloat(cda.amountType.amount)/parseFloat(this.amountUnit.amount)).toFixed(4)
     }
-    //debugger;
+    this.updateRemainingCda();
   }
 currentIndex:any;
   addCda(subHeadWiseUnit: any, i: number) {
@@ -828,7 +851,24 @@ currentIndex:any;
     debugger;
   }
 
-  addDecimal(cda: any) {
+  addDecimal(cda: any,i:number) {
     cda.amount=cda.amount.toFixed(4);
+    if(cda.amount>(cda.remainingCdaAmount-this.cdalist[i].sum))
+    {
+      this.common.warningAlert('Cannot withdraw more than balance','Amount Greater than CDA Amount','');
+      cda.amount=(0.0).toFixed(4);
+    }
+
+    // for(let entry of this.subHeadWiseUnitList){
+    //   debugger;
+    //   if(entry.cdaParkingId!=undefined){
+    //     for(let i=0;i<entry.cdaParkingId.length;i++){
+    //       this.cdalist[i].sum=parseFloat(entry.cdaParkingId[i].cdaAmount)+this.cdalist[i].sum;
+    //     }
+    //   }
+    // }
+  }
+  updateRemainingCda() {
+    debugger;
   }
 }

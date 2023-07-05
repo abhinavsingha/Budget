@@ -248,10 +248,10 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr *ngFor="let cda of cdaDetail">
+                  <tr *ngFor="let cda of cdaDetail; let i = index">
                     <td>{{cda.ginNo.cdaName}}</td>
-                    <td>{{cda.remainingCdaAmount}}</td>
-                    <td><input type="number"  id="Allocationamount" class="form-control" placeholder="Please Enter Amount" (change)="addDecimal(cda)" [(ngModel)]="cda.amount"/></td>
+                    <td>{{cda.remainingCdaAmount - cdalist[i].sum}}</td>
+                    <td><input type="number"  id="Allocationamount" class="form-control" placeholder="Please Enter Amount" (change)="addDecimal(cda,i)" [(ngModel)]="cda.amount"/></td>
                   </tr>
 
                   </tbody>

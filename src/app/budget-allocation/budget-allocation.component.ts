@@ -1069,14 +1069,14 @@ export class BudgetAllocationComponent implements OnInit {
             (parseFloat(
               this.subHeadFilterDatas[i].cdaParkingTrans[j].totalParkingAmount
             ) *
-              parseFloat(this.subHeadFilterDatas[i].amountUnit.amount)) /
+              parseFloat(this.subHeadFilterDatas[i].cdaParkingTrans[j].amountType.amount)) /
             parseFloat(this.formdata.get('amountType')?.value.amount)
           ).toFixed(4);
           this.subHeadFilterDatas[i].cdaParkingTrans[j].remainingCdaAmount = (
             (parseFloat(
               this.subHeadFilterDatas[i].cdaParkingTrans[j].remainingCdaAmount
             ) *
-              parseFloat(this.subHeadFilterDatas[i].amountUnit.amount)) /
+              parseFloat(this.subHeadFilterDatas[i].cdaParkingTrans[j].amountType.amount)) /
             parseFloat(this.formdata.get('amountType')?.value.amount)
           ).toFixed(4);
         }
@@ -1186,7 +1186,8 @@ export class BudgetAllocationComponent implements OnInit {
 
     let sum = 0.0;
     for (let cdaData of this.cdaDetail) {
-      if (cdaData.amount != undefined) sum = cdaData.amount + sum;
+      if (cdaData.amount != undefined)
+        sum = cdaData.amount + sum;
     }
     if (sum == this.subHeadFilterDatas[this.index].amount)
       this.cdaAllocationbalance = true;
