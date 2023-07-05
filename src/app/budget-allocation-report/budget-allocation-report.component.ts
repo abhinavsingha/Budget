@@ -451,7 +451,7 @@ export class BudgetAllocationReportComponent implements OnInit {
       if(formdata.reprtType=='02')
         url=url+'Doc';
       else if(formdata.reprtType=='03'){
-        url=url+'Excel'
+        url=url+'Doc';
       }
       // debugger;
       this.apiService
@@ -462,6 +462,7 @@ export class BudgetAllocationReportComponent implements OnInit {
             let result: { [key: string]: any } = v;
             if (result['message'] == 'success') {
               if(formdata.reprtType=='03'){
+                this.generateReserveCSV(result['response'],formdata);
                console.log(result['response']);
               }else{
                 this.downloadPdf(
@@ -1442,75 +1443,83 @@ export class BudgetAllocationReportComponent implements OnInit {
 
   private generateReceiptCSV(response: any) {
     let tableData = [];
-    let beallocTotal=0.0;
-    let finalbeTotal=0.0;
-    if(response[0].reciptRespone[2037]!=undefined)
+    let Total = 0.0;
+    if (response[0].reciptRespone[2037] != undefined){
+      let sum = 0.0;
+      for (let i = 0; i < response[0].reciptRespone[2037].length; i++) {
 
-      for(let i=0;i<response[0].reciptRespone[2037].length;i++) {
-      let sum=0.0;
-      if(i==0){
-        tableData.push( {
-          'MAJORHEAD':'2037',
-          'DETAILED HEAD':'REVENUE',
-          'ALLOCATION ':'',
-        });
-        tableData.push( {
-          'MAJORHEAD':'',
-          'DETAILED HEAD':response[0].reciptRespone[2037][i].budgetHead.subHeadDescr,
-          'ALLOCATION ':response[0].reciptRespone[2037][i].amount,
-        });
-        sum=sum+parseFloat(response[0].reciptRespone[2037][i].amount);
-      }
-      else{
-        tableData.push( {
-          'MAJORHEAD':'',
-          'DETAILED HEAD':response[0].reciptRespone[2037][i].budgetHead.subHeadDescr,
-          'ALLOCATION ':response[0].reciptRespone[2037][i].amount,
-        });
-        sum=sum+parseFloat(response[0].reciptRespone[2037][i].amount);
+        if (i == 0) {
+          tableData.push({
+            'MAJORHEAD': '2037',
+            'DETAILED HEAD': 'REVENUE',
+            'ALLOCATION ': '',
+          });
+          tableData.push({
+            'MAJORHEAD': '',
+            'DETAILED HEAD': response[0].reciptRespone[2037][i].budgetHead.subHeadDescr,
+            'ALLOCATION ': response[0].reciptRespone[2037][i].amount,
+          });
+          sum = sum + parseFloat(response[0].reciptRespone[2037][i].amount);
+        } else {
+          tableData.push({
+            'MAJORHEAD': '',
+            'DETAILED HEAD': response[0].reciptRespone[2037][i].budgetHead.subHeadDescr,
+            'ALLOCATION ': response[0].reciptRespone[2037][i].amount,
+          });
+          sum = sum + parseFloat(response[0].reciptRespone[2037][i].amount);
 
-      }
-        if(i==response[0].reciptRespone[2037].length-1){
-          tableData.push( {
-            'MAJORHEAD':'',
-            'DETAILED HEAD':'Grand Total(REVENUE)',
-            'ALLOCATION ':sum,
+        }
+        if (i == response[0].reciptRespone[2037].length - 1) {
+          Total=Total+sum;
+          tableData.push({
+            'MAJORHEAD': '',
+            'DETAILED HEAD': 'Total(REVENUE)',
+            'ALLOCATION ': sum,
           });
         }
-    }
-    if(response[0].reciptRespone[4047]!=undefined)
-    for(let i=0;i<response[0].reciptRespone[4047].length;i++) {
-      let sum=0.0;
-      if(i==0){
-        tableData.push( {
-          'MAJORHEAD':'4047',
-          'DETAILED HEAD':'CAPITAL',
-          'ALLOCATION ':'',
-        });
-        tableData.push( {
-          'MAJORHEAD':'',
-          'DETAILED HEAD':response[0].reciptRespone[4047][i].budgetHead.subHeadDescr,
-          'ALLOCATION ':response[0].reciptRespone[4047][i].amount,
-        });
-        sum=sum+parseFloat(response[0].reciptRespone[4047][i].amount);
       }
-      else{
-        tableData.push( {
-          'MAJORHEAD':'',
-          'DETAILED HEAD':response[0].reciptRespone[4047][i].budgetHead.subHeadDescr,
-          'ALLOCATION ':response[0].reciptRespone[4047][i].amount,
+    }
+
+    if (response[0].reciptRespone[4047] != undefined){
+      let sum1 = 0.0;
+    for (let i = 0; i < response[0].reciptRespone[4047].length; i++) {
+
+      if (i == 0) {
+        tableData.push({
+          'MAJORHEAD': '4047',
+          'DETAILED HEAD': 'CAPITAL',
+          'ALLOCATION ': '',
         });
-        sum=sum+parseFloat(response[0].reciptRespone[4047][i].amount);
+        tableData.push({
+          'MAJORHEAD': '',
+          'DETAILED HEAD': response[0].reciptRespone[4047][i].budgetHead.subHeadDescr,
+          'ALLOCATION ': response[0].reciptRespone[4047][i].amount,
+        });
+        sum1 = sum1 + parseFloat(response[0].reciptRespone[4047][i].amount);
+      } else {
+        tableData.push({
+          'MAJORHEAD': '',
+          'DETAILED HEAD': response[0].reciptRespone[4047][i].budgetHead.subHeadDescr,
+          'ALLOCATION ': response[0].reciptRespone[4047][i].amount,
+        });
+        sum1 = sum1 + parseFloat(response[0].reciptRespone[4047][i].amount);
 
       }
-      if(i==response[0].reciptRespone[4047].length-1){
-        tableData.push( {
-          'MAJORHEAD':'',
-          'DETAILED HEAD':'Grand Total(CAPITAL)',
-          'ALLOCATION ':sum,
+      if (i == response[0].reciptRespone[4047].length - 1) {
+        Total=Total+sum1;
+        tableData.push({
+          'MAJORHEAD': '',
+          'DETAILED HEAD': 'Total(CAPITAL)',
+          'ALLOCATION ': sum1,
         });
       }
     }
+  }
+    tableData.push({
+      'MAJORHEAD': '',
+      'DETAILED HEAD': 'Grand Total',
+      'ALLOCATION ': Total,
+    });
     const columns = [
       'MAJORHEAD',
       'DETAILED HEAD',
@@ -1523,6 +1532,100 @@ export class BudgetAllocationReportComponent implements OnInit {
     ];
 
     const filename = 'Receipt_Report.csv';
+    this.generateCSV(tableData, columns, filename, column);
+  }
+
+  private generateReserveCSV(response: any,formdata:any) {
+
+    let tableData = [];
+    let beallocTotal=0.0;
+    let finalbeTotal=0.0;
+    let keys = Object.keys(response.allCdaData);
+    console.log(keys);
+    let i=0;
+    debugger;
+    let sum=0;
+    let sumA=0
+    for(let key of keys){
+      console.log(response.allCdaData[key]);
+      i++;
+
+      tableData.push({
+            'S.No':i,
+            'Financial Year':formdata.finYear.finYear,
+            'Major/Minor/Subhead':formdata.majorHead.majorHead+'/'+formdata.majorHead.minorHead,
+            'Allocation Type':formdata.allocationType.allocType,
+            'Subhead':key,
+            'Allocation Amount':response.allCdaData[key][0].name,
+            'Reserve Fund':response.allCdaData[key][0].allocationAmount
+              });
+      sum=sum+parseFloat(response.allCdaData[key][0].allocationAmount);
+      sumA=sumA+parseFloat(response.allCdaData[key][0].name);
+    }
+    i++;
+    tableData.push({
+      'S.No':i,
+      'Financial Year':'',
+      'Major/Minor/Subhead':'',
+      'Allocation Type':'',
+      'Subhead':'GRAND TOTAL',
+      'Allocation Amount':sumA,
+      'Reserve Fund':sum
+    });
+
+    // for(let i=0;i<response.allCdaData.length;i++){
+    //   tableData.push({
+    //     'S.No':i+1,
+    //     'Financial Year':formdata.finYear.finYear,
+    //     'Major/Minor/Subhead':formdata.majorHead.majorHead+'/'+formdata.majorHead.minorHead,
+    //     'Allocation Type':formdata.allocationType.allocType,
+    //     'Subhead':'',
+    //     'Allocation Amount':,
+    //     'Reserve Fund'
+    //       });
+    //       finalbeTotal=finalbeTotal+beallocTotal;
+    //       beallocTotal=0.0;
+    //   tableData.push({
+    //     'REVENUE OBJECT HEAD':response[i].budgetHead.replaceAll(',', ' '),
+    //     'Unit':response[i].unitName.replaceAll(',', ' '),
+    //     'Allocation':response[i].allocationAmount,
+    //   });
+    //   this.prevSub=response[i].budgetHead.replaceAll(',', ' ');
+    //   beallocTotal=beallocTotal+parseFloat(response[i].allocationAmount.replaceAll(',', '').replaceAll('(+)','').replaceAll('(-)','-'));
+    //   if(i==response.length-1){
+    //     tableData.push({
+    //       'REVENUE OBJECT HEAD':'',
+    //       'Unit':'TOTAL',
+    //       'Allocation':beallocTotal,
+    //     });
+    //     finalbeTotal=finalbeTotal+beallocTotal;
+    //     beallocTotal=0.0;
+    //     tableData.push( {
+    //       'REVENUE OBJECT HEAD':'',
+    //       'Unit':'GRAND TOTAL',
+    //       'Allocation':finalbeTotal,
+    //     })
+    //   }
+    // }
+    const columns = [
+      'S.No',
+      'Financial Year',
+      'Major/Minor/Subhead',
+      'Allocation Type',
+      'Subhead',
+      'Allocation Amount'+' (In '+formdata.amountType.amountType+')',
+      'Reserve Fund'+ ' (In '+formdata.amountType.amountType+')'
+    ];
+    const column = [
+      'S.No',
+      'Financial Year',
+      'Major/Minor/Subhead',
+      'Allocation Type',
+      'Subhead',
+      'Allocation Amount',
+      'Reserve Fund'
+    ];
+    const filename = 'ReserveReport.csv';
     this.generateCSV(tableData, columns, filename, column);
   }
 }

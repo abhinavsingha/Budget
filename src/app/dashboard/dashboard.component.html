@@ -199,7 +199,7 @@
             </div>
             <div class="card-body">
               <div class="tab-content p-0">
-                <div class="chart tab-pane active" id="revenue-chart3" style="position: relative;">
+                <div class="chart tab-pane active" id="revenue-chrt3" style="position: relative;">
                   <div class="row">
                     <div class="col-sm-12">
                       <div class="card-body table-responsive p-0">
@@ -226,7 +226,7 @@
                               <td>{{entry.budgetHead.subHeadDescr}}</td>
                               <td>{{entry.allocatedAmount}}</td>
                               <td>{{entry.expenditureAmount}}</td>
-                              <td>{{entry.allocatedAmount-entry.expenditureAmount}}</td>
+                              <td>{{entry.balAmount}}</td>
                               <td>{{entry.lastCBDate}}</td>
                               <td>{{entry.perAmount}} %</td>
                             </tr>
@@ -235,11 +235,11 @@
                       </div>
                       <div class="row mt-2">
                         <div class="col-sm-12 col-md-5">
-                          <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
+                          <div class="dataTables_info" id="exmple2_info" role="status" aria-live="polite">
                           </div>
                         </div>
                         <div class="col-sm-12 col-md-7">
-                          <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                          <div class="dataTables_paginate paging_simple_numbers" id="exmple2_paginate">
                             <pagination-controls class="pagination float-right"
                               (pageChange)="p = $event"></pagination-controls>
                           </div>
@@ -287,14 +287,14 @@
                           </thead>
                           <tbody>
                             <tr
-                              *ngFor="let entry of subHeadsResponse| paginate :{itemsPerPage:15,currentPage:p} ; let i = index">
-                              <td>{{15 *(p-1)+i+1}}</td>
+                              *ngFor="let entry of subHeadsResponse| paginate :{itemsPerPage:15,currentPage:q} ; let i = index">
+                              <td>{{15 *(q-1)+i+1}}</td>
                               <td>{{entry.unitName}}</td>
                               <td>{{entry.finYear}}</td>
 <!--                              <td>{{entry.budgetHead.subHeadDescr}}</td>-->
                               <td>{{entry.allocatedAmount}}</td>
                               <td>{{entry.expenditureAmount}}</td>
-                              <td>{{entry.allocatedAmount-entry.expenditureAmount}}</td>
+                              <td>{{entry.balAmount}}</td>
                               <td>{{entry.lastCBDate}}</td>
                               <td>{{entry.perAmount}} %</td>
                             </tr>
@@ -308,8 +308,12 @@
                         </div>
                         <div class="col-sm-12 col-md-7">
                           <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
-                            <pagination-controls class="pagination float-right"
-                              (pageChange)="p = $event"></pagination-controls>
+<!--                            <ngx-pagination-->
+<!--                              (pageChange)="onPageChange2($event)">-->
+<!--                            </ngx-pagination>-->
+
+<pagination-controls class="pagination float-right"
+                              (pageChange)="q = $event"></pagination-controls>
                           </div>
                         </div>
                       </div>

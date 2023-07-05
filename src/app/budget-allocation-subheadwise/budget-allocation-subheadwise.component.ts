@@ -853,8 +853,9 @@ currentIndex:any;
 
   addDecimal(cda: any,i:number) {
     cda.amount=cda.amount.toFixed(4);
-    if(cda.amount>(cda.remainingCdaAmount-this.cdalist[i].sum))
+    if(cda.amount>(Number((cda.remainingCdaAmount-this.cdalist[i].sum).toFixed(4))))
     {
+      console.log(Number((cda.remainingCdaAmount-this.cdalist[i].sum).toFixed(4)));
       this.common.warningAlert('Cannot withdraw more than balance','Amount Greater than CDA Amount','');
       cda.amount=(0.0).toFixed(4);
     }

@@ -32,6 +32,13 @@ class UnitWiseExpenditureList {
 })
 export class DashboardComponent implements OnInit {
   // vaibhav
+
+  totalItems2: number=0;
+  currentPage2 = 1;
+  pageSize2 = 10;
+
+
+
   budgetFinYears: any[] = [];
   Units: any[] = [];
   subHeads: any[] = [];
@@ -44,7 +51,7 @@ export class DashboardComponent implements OnInit {
   budgetListData: any[] = [];
 
   submitted = false;
-
+  q:number=1;
   p: number = 1;
   length: number = 0;
   userAuthorised:boolean=false;
@@ -808,5 +815,9 @@ export class DashboardComponent implements OnInit {
       }
     );
 
+  }
+
+  onPageChange2(event: any) {
+    this.q = event.page;
   }
 }
