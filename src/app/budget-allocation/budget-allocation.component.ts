@@ -1174,7 +1174,8 @@ export class BudgetAllocationComponent implements OnInit {
   cdaWithdrawl(cda: any) {
     cda.amount=cda.amount.toFixed(4);
     this.cdaAllocationbalance = false;
-    if (cda.amount > cda.remainingCdaAmount) {
+    if (parseFloat(cda.amount) > parseFloat(cda.remainingCdaAmount)) {
+      debugger;
       this.common.warningAlert(
         'Amount Exceeds Balance',
         'Cannot withdraw more than balance.',
