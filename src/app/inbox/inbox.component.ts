@@ -24,6 +24,7 @@ class InboxList {
   groupId: string | undefined;
   status: string | undefined;
   isCda:any;
+  isRevision: any;
 }
 
 import {
@@ -83,6 +84,7 @@ export class InboxComponent implements OnInit {
 
   redirect(li: InboxList) {
     debugger;
+    this.sharedService.isRevision=li.isRevision;
     localStorage.setItem('isInboxOrOutbox', 'inbox');
     if (li.groupId != null || li.groupId != undefined) {
       localStorage.setItem('group_id', li.groupId);
@@ -167,7 +169,8 @@ export class InboxComponent implements OnInit {
               unitName: list[i].toUnit.descr,
               groupId: list[i].groupId,
               status: list[i].status,
-              type: list[i].type
+              type: list[i].type,
+              isRevision:list[i].isRevision
             };
             this.inboxList.push(entry);
             debugger;

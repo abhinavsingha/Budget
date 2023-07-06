@@ -65,7 +65,13 @@ export class BudgetApproverComponent implements OnInit {
 
       if (this.type == 'Budget Receipt') {
         debugger;
-        this.getAllGroupIdAndUnitId(this.sharedService.sharedValue);
+        if(this.sharedService.isRevision=='1')
+        {
+          this.getAllGroupIdAndUnitIdRevisionCase(this.sharedService.sharedValue)
+        }
+        else {
+          this.getAllGroupIdAndUnitId(this.sharedService.sharedValue);
+        }
       } else {
         this.getAlGroupId(localStorage.getItem('group_id'));
       }
@@ -1071,5 +1077,29 @@ export class BudgetApproverComponent implements OnInit {
       });
 
 
+  }
+
+  private getAllGroupIdAndUnitIdRevisionCase(sharedValue: string | undefined) {
+    this.SpinnerService.show();
+    this.apiService
+      .getApi(this.cons.api.getAllGroupIdAndUnitIdRevisionCase + '/' + sharedValue)
+      .subscribe((res) => {
+        let result: { [key: string]: any } = res;
+        if (result['message'] == 'success') {
+          //debugger;
+          this.budgetDataList = result['response'].budgetResponseist;
+          for (let i = 0; i < this.budgetDataList.length; i++) {
+            if (this.budgetDataList[i].balanceAmount != undefined) {
+              this.budgetDataList[i].balanceAmount = parseFloat(
+                this.budgetDataList[i].balanceAmount
+              ).toFixed(4);
+            }
+          }
+          this.SpinnerService.hide();
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      });
+    this.sharedService.isRevision=0;
   }
 }

@@ -23,6 +23,7 @@ class InboxList {
   groupId: string | undefined;
   status: string | undefined;
   isType:string | undefined;
+  isRevision: any;
 }
 
 import {
@@ -86,6 +87,7 @@ export class OutboxComponent implements OnInit {
     if (li.isType != null || li.isType != undefined) {
       localStorage.setItem('type', li.isType);
     }
+    this.sharedService.isRevision=li.isRevision;
 
     if (li.isType == 'Contingent Bill') {
       this.sharedService.sharedValue = li.groupId;
@@ -112,24 +114,17 @@ export class OutboxComponent implements OnInit {
       }
       // this.sharedService.redirectedFrom = 'inbox';
       // window.location.href = '/budget-approval';
-    } else if (li.isType == 'Budget Allocation') {
-      this.router.navigate(['/budget-approval']);
-      // this.sharedService.redirectedFrom = 'inbox';
-      // window.location.href = '/budget-approval';
     }
     else if(li.isType == 'Budget Revision'){
       this.router.navigate(['/revision-approval']);
     }
     else if(li.isType == 'Budget Receipt'){
       debugger;
-
-
       localStorage.setItem('isInboxOrOutbox','approved');
       this.sharedService.redirectedFrom='approved';
       localStorage.setItem('type',li.isType);
       // localStorage.setItem('group_id',li.groupId);
       this.sharedService.sharedValue = li.groupId;
-
       this.sharedService.redirectedFrom = 'approved';
       this.router.navigate(['/budget-approval']);
     }
@@ -169,7 +164,8 @@ export class OutboxComponent implements OnInit {
               unitName: list[i].toUnit.descr,
               groupId: list[i].groupId,
               status: list[i].status,
-              type: list[i].type
+              type: list[i].type,
+              isRevision: list[i].isRevision
             };
             this.inboxList.push(entry);
           }

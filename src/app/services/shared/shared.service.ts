@@ -21,6 +21,7 @@ export class SharedService {
   public allocationType: any;
   public approve: any;
   public archive: any;
+  public isRevision: any;
   constructor(
     private router: Router,
     private http: HttpClient,

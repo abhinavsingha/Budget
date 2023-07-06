@@ -19,6 +19,7 @@ class InboxList {
   groupId: string | undefined;
   status: string | undefined;
   isCda:boolean=false;
+  isRevision:any;
 }
 
 
@@ -86,9 +87,10 @@ export class ApprovedComponent implements OnInit {
               unitName: list[i].toUnit.descr,
               groupId: list[i].groupId,
               status: list[i].status,
-              unit_sub:list[i].type,
+              unit_sub: list[i].type,
               type: list[i].isBgOrCg,
-              isCda: list[i].isCda
+              isCda: list[i].isCda,
+              isRevision: list[i].isRevision
             };
             this.inboxList.push(entry);
           }
@@ -102,6 +104,7 @@ export class ApprovedComponent implements OnInit {
 
   redirect(entry: any) {
     // debugger;
+    this.sharedService.isRevision=entry.isRevision;
     localStorage.setItem('isInboxOrOutbox','approved');
     this.sharedService.redirectedFrom='approved';
     localStorage.setItem('type',entry.isType);
