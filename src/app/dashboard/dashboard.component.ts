@@ -695,7 +695,7 @@ export class DashboardComponent implements OnInit {
           '/' +
           formDataValue.subHeadType.subHeadTypeId +
           '/' +
-          formDataValue.allocationType.allocTypeId +'/'+ this.amountUnits.amountTypeId
+          formDataValue.allocationType.allocTypeId +'/'+ formDataValue.rupeeUnit.amountTypeId
       )
       .subscribe({
         next: (v: object) => {
@@ -799,7 +799,7 @@ export class DashboardComponent implements OnInit {
       subHeadId:formdata.subHead.budgetCodeId,
       finYearId:formdata.finYear.serialNo,
       allocationTypeId:formdata.allocationType.allocTypeId,
-      amounttypeId:this.amountUnits.amountTypeId
+      amounttypeId:formdata.rupeeUnit.amountTypeId
     }
     let url =this.cons.api.getDashBordSubHeadwiseExpenditure;
     debugger;

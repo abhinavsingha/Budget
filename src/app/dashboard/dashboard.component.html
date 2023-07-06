@@ -109,7 +109,7 @@
                           </div>
                         </div>
                         <div class="col-md-3">
-                          <div class="form-group">
+                          <div class="form-group" [formGroup]="formdata">
                             <label>Rupees in<span class="text-danger"></span></label>
                             <ng-select bindLabel="amountType" class="form-control select2bs4"  [(ngModel)]="amountUnits" [items]="amountType" formControlName="rupeeUnit"
                                        placeholder="Select Amount Unit" style="width: 100%" appendTo="body"></ng-select>
