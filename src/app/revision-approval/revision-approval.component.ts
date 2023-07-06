@@ -364,7 +364,7 @@ export class RevisionApprovalComponent {
       authGroupId: localStorage.getItem('group_id'),
     };
     this.apiService
-      .postApi(this.cons.api.saveAuthData, newSubmitJson)
+      .postApi(this.cons.api.saveAuthDataRevision, newSubmitJson)
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
