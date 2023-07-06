@@ -38,7 +38,7 @@
         <!-- /.card-header -->
         <div class="card-body">
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
               <form [formGroup]="formdata">
                 <div class="row">
                   <div class="col-md-6">
@@ -139,8 +139,8 @@
                 </div>
               </form>
             </div>
-            <div class="col-md-6">
-              <div class="card-body table-responsive p-0" style="height: 400px;">
+            <div class="col-md-8">
+              <div class="card-body table-responsive p-0" style="height: 367px;">
                 <table class="table table-hover text-nowrap" style="height: 400px;">
                   <thead>
                     <tr>
@@ -164,7 +164,7 @@
                     <td *ngIf="!subHeadWiseUnit.isSelected">{{subHeadWiseUnit.manipulate2}}</td>
                   </tr>
                   </tbody>
-                  <tfoot>
+                  <tfoot class="tfoot">
                   <tr>
                     <td>Total (in {{amountUnit}})</td>
                     <td>{{totalManipulate}}</td>
