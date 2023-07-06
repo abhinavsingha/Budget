@@ -704,14 +704,14 @@ export class DashboardComponent implements OnInit {
 
           if (result['message'] == 'success') {
             this.tableData = result['response'];
-            for (let i = 0; i < this.tableData.length; i++) {
-              this.tableData[i].allocatedAmount = parseFloat(
-                this.tableData[i].allocatedAmount
-              ).toFixed(4);
-              this.tableData[i].expenditureAmount = parseFloat(
-                this.tableData[i].expenditureAmount
-              ).toFixed(4);
-            }
+            // for (let i = 0; i < this.tableData.length; i++) {
+            //   this.tableData[i].allocatedAmount = parseFloat(
+            //     this.tableData[i].allocatedAmount
+            //   ).toFixed(4);
+            //   this.tableData[i].expenditureAmount = parseFloat(
+            //     this.tableData[i].expenditureAmount
+            //   ).toFixed(4);
+            // }
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
