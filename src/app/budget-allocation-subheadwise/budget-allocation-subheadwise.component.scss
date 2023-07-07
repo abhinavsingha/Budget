@@ -2,8 +2,8 @@ col-width{
   width: 200px;
 }
 .tfoot{
-  position: absolute;
-    bottom: 34px;
+  position: sticky;
+    bottom: -1px;
     background-color: #f6f9fc;
     width: 97%;
     border: 1px solid #dee2e6;

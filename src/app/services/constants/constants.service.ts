@@ -8,7 +8,7 @@ export class ConstantsService {
 
   serverRedirectUrl = 'https://icg.net.in/auth/realms/icgrms/protocol/openid-connect/logout?redirect_uri=https://icg.net.in/'; //For Production Server
   serviceUrl = 'https://icg.net.in/cgbudget/'; //prod server
-  // serviceUrl = 'https://icg.net.in/budget/'; //UAT server
+  // serviceUrl = 'https://icg.net.in/cgbudget/'; //UAT server
   // serviceUrl = 'http://172.20.10.05:1111/'; //arvind system
   //  serviceUrl = 'http://192.168.1.112:1111/'; //arvind system
   api = {
