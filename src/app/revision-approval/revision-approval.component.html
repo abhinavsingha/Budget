@@ -158,7 +158,7 @@
                   </div>
                 </div>
               </div>
-              <div *ngIf="status && userRole=='Budget Manager' && !sharedService.status && sharedService.redirectedFrom!='approved';" class="row">
+              <div *ngIf="!status && userRole=='Budget Manager' && !sharedService.status ;" class="row">
 <!--              <div  class="row">-->
               <div class="col-md-4">
                   <div class="form-group">
@@ -213,7 +213,7 @@
                 </div>
 
               </div>
-              <div class="col-md-4" *ngIf="status && userRole=='Budget Manager' && !sharedService.status && sharedService.redirectedFrom!='approved';" class="row">
+              <div class="col-md-4" *ngIf="!status && userRole=='Budget Manager' && !sharedService.status && sharedService.redirectedFrom!='approved';" class="row">
                 <div class="row" [formGroup]="formdata">
                   <button class="btn btn-primary mr-2" type="button" (click)="save(formdata.value)">Submit</button>
                 </div>

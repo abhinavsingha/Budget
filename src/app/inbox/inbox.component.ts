@@ -129,6 +129,7 @@ export class InboxComponent implements OnInit {
     else if(li.isType == 'Budget Revision'){
       if(li.status=='Fully Approved')
         this.sharedService.status=true;
+      // this.sharedService.redirectedFrom!='approved';
       this.router.navigate(['/revision-approval']);
     }
   }
