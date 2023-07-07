@@ -1556,8 +1556,8 @@ export class BudgetAllocationReportComponent implements OnInit {
             'Major/Minor/Subhead':formdata.majorHead.majorHead+'/'+formdata.majorHead.minorHead,
             'Allocation Type':formdata.allocationType.allocType,
             'Subhead':key,
-            'Allocation Amount':response.allCdaData[key][0].name,
-            'Reserve Fund':response.allCdaData[key][0].allocationAmount
+            'Reserve Fund':response.allCdaData[key][0].name,
+            'Allocation Amount':response.allCdaData[key][0].allocationAmount
               });
       sum=sum+parseFloat(response.allCdaData[key][0].allocationAmount);
       sumA=sumA+parseFloat(response.allCdaData[key][0].name);
@@ -1569,8 +1569,8 @@ export class BudgetAllocationReportComponent implements OnInit {
       'Major/Minor/Subhead':'',
       'Allocation Type':'',
       'Subhead':'GRAND TOTAL',
-      'Allocation Amount':sumA,
-      'Reserve Fund':sum
+      'Reserve Fund':sumA,
+      'Allocation Amount':sum
     });
 
     // for(let i=0;i<response.allCdaData.length;i++){

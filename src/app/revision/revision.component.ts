@@ -635,7 +635,15 @@ export class RevisionComponent {
       this.common.faliureAlert('No entry found','Add atlest one entry','');
       return;
     }
+    // let revisionType=2;
     for (let i = 0; i < this.tabledata.length; i++) {
+      // if(this.tabledata[i].unit.unit==this.unitId){
+      //   debugger;
+      //   if(parseFloat(this.tabledata[i].revisedAmount)>0)
+      //     revisionType=2;
+      //   else if(parseFloat(this.tabledata[i].revisedAmount)<0)
+      //     revisionType=1;
+      // }
       let cdapark:any[]=[]
       for(let cda of this.tabledata[i].cdaDetails){
         const cdaP={
@@ -664,9 +672,10 @@ export class RevisionComponent {
       requestJson.push(entry);
     }
     const req = {
+      // revisionType:revisionType,
       budgetRequest: requestJson,
     };
-    //debugger;
+    debugger;
     this.apiService
       .postApi(this.cons.api.saveBudgetRevisionData, req)
       .subscribe({
