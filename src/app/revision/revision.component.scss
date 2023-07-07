@@ -6,10 +6,13 @@ label{
     font-size: 13px !important;
 }
 .tfoot{
-    position: absolute;
-      bottom: 15px;
+    position: sticky;
+      bottom: -1px;
       background-color: #f6f9fc;
       width: 97.8%;
       border: 1px solid #dee2e6;
       border-radius: 0 0px 5px 5px;
+  }
+  .opacity{
+    opacity: 0;
   }
