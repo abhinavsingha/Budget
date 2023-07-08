@@ -158,7 +158,7 @@
                   </div>
                 </div>
               </div>
-              <div *ngIf="!status && userRole=='Budget Manager' && !sharedService.status ;" class="row">
+              <div *ngIf="!status && userRole=='Budget Manager' && !sharedService.status && sharedService.revisionStatus=='Approved' ;" class="row">
 <!--              <div  class="row">-->
               <div class="col-md-4">
                   <div class="form-group">
@@ -213,7 +213,7 @@
                 </div>
 
               </div>
-              <div class="col-md-4" *ngIf="!status && userRole=='Budget Manager' && !sharedService.status && sharedService.redirectedFrom!='approved';" class="row">
+              <div class="col-md-4" *ngIf="!status && userRole=='Budget Manager' && !sharedService.status && sharedService.redirectedFrom!='approved' && sharedService.revisionStatus=='Approved';" class="row">
                 <div class="row" [formGroup]="formdata">
                   <button class="btn btn-primary mr-2" type="button" (click)="save(formdata.value)">Submit</button>
                 </div>
@@ -234,7 +234,7 @@
 <!--                />-->
 <!--              </div>-->
 <!--            </div>-->
-            <div class="row" *ngIf="!status && userRole=='Budget Approver';">
+            <div class="row" *ngIf="!status && userRole=='Budget Approver'&&sharedService.revisionStatus=='Pending';">
               <button type="submit" class="btn btn-primary mr-2 "  (click)="approveForm(formdata.value)"> <i class="fas fa-check"></i>
                 Approve</button>
               <button type="submit" class="btn btn-danger mr-2"  (click)="returnFormFinally(formdata.value)"><i class="fas fa-arrow-return"></i> Return</button>

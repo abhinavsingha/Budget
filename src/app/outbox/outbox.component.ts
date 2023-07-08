@@ -116,6 +116,7 @@ export class OutboxComponent implements OnInit {
       // window.location.href = '/budget-approval';
     }
     else if(li.isType == 'Budget Revision'){
+      this.sharedService.revisionStatus=li.status;
       this.router.navigate(['/revision-approval']);
     }
     else if(li.isType == 'Budget Receipt'){

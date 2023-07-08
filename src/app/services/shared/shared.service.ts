@@ -22,6 +22,7 @@ export class SharedService {
   public approve: any;
   public archive: any;
   public isRevision: any;
+  public revisionStatus:any;
   constructor(
     private router: Router,
     private http: HttpClient,

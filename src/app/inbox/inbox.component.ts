@@ -127,6 +127,7 @@ export class InboxComponent implements OnInit {
       // window.location.href = '/budget-approval';
     }
     else if(li.isType == 'Budget Revision'){
+      this.sharedService.revisionStatus=li.status;
       if(li.status=='Fully Approved')
         this.sharedService.status=true;
       // this.sharedService.redirectedFrom!='approved';
