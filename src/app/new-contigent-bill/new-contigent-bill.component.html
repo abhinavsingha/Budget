@@ -145,7 +145,7 @@
                 <div class="form-group">
                   <label>CB Date</label>
                   <input class="form-control" formControlName="cbDate" id="cbDate" placeholder="Enter Date" type="date"
-                    (change)="checkDate()" />
+                    (change)="checkDate('cbDate','CB Date')" />
                 </div>
               </div>
               <div class="col-md-3">
@@ -165,7 +165,7 @@
               <div class="col-md-3">
                 <div class="form-group">
                   <label>Sanction Date</label>
-                  <input class="form-control" formControlName="date" id="date" placeholder="Enter Date" type="date" />
+                  <input class="form-control" formControlName="date" id="date" placeholder="Enter Date" type="date" (change)="checkDate('date','Sanction Date')"/>
                 </div>
               </div>
               <div class="col-md-3">
@@ -205,7 +205,7 @@
                 <div class="form-group">
                   <label>Invoice Date</label>
                   <input class="form-control" formControlName="invoiceDate" id="invoiceDate"
-                    placeholder="Enter Invoice Date" type="date" />
+                    placeholder="Enter Invoice Date" type="date" (change)="checkDate('invoiceDate','Invoice Date')"/>
                 </div>
               </div>
               <div class="col-md-3">
@@ -238,7 +238,7 @@
                 <div class="form-group">
                   <label>File Date</label>
                   <input class="form-control" formControlName="fileDate" id="fileDate" placeholder="Enter Invoice Date"
-                    type="date" />
+                    type="date" (change)="checkDate('fileDate', 'File Date')"/>
                 </div>
               </div>
               <div class="col-md-3">

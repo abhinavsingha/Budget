@@ -387,7 +387,8 @@ export class BudgetAllocationReportComponent implements OnInit {
         finYearId: formdata.finYear.serialNo,
         unitId: formdata.toUnit.unit,
         amountTypeId: formdata.amountType.amountTypeId,
-        allocationTypeId:formdata.allocationType.allocTypeId
+        allocationTypeId:formdata.allocationType.allocTypeId,
+        majorHd:formdata.majorHead.majorHead
       };
       let url=this.cons.api.getUnitWiseAllocationReport;
       if(formdata.reprtType=='02')
@@ -562,7 +563,7 @@ export class BudgetAllocationReportComponent implements OnInit {
           formdata.allocationType.allocTypeId +
             '/' +
             formdata.amountType.amountTypeId +'/' +
-          formdata.allocStatus
+          formdata.allocStatus+'/'+formdata.majorHead.majorHead
         )
         .subscribe({
           next: (v: object) => {
@@ -610,7 +611,7 @@ export class BudgetAllocationReportComponent implements OnInit {
             formdata.finYear.serialNo +'/'+
           formdata.allocationType.allocTypeId +
             '/' +
-            formdata.amountType.amountTypeId
+            formdata.amountType.amountTypeId+'/'+formdata.majorHead.majorHead
         )
         .subscribe({
           next: (v: object) => {
@@ -662,7 +663,7 @@ export class BudgetAllocationReportComponent implements OnInit {
             '/' +formdata.allocationType.allocTypeId+
             '/' +formdata.allocationType2.allocTypeId+
           '/'+
-            formdata.amountType.amountTypeId
+            formdata.amountType.amountTypeId+'/'+formdata.majorHead.majorHead
         )
         .subscribe({
           next: (v: object) => {
@@ -708,7 +709,7 @@ export class BudgetAllocationReportComponent implements OnInit {
       else if(formdata.reprtType=='03')
         url=url+'Excel';
       if (formdata.reprtType=='03'){
-        this.apiService.getApi(url +'/'+formdata.finYear.serialNo +'/'+formdata.allocationType.allocTypeId+'/' +formdata.amountType.amountTypeId+'/'+formdata.toDate+'/'+formdata.fromDate)
+        this.apiService.getApi(url +'/'+formdata.finYear.serialNo +'/'+formdata.allocationType.allocTypeId+'/' +formdata.amountType.amountTypeId+'/'+formdata.toDate+'/'+formdata.fromDate+'/'+formdata.majorHead.majorHead)
           .subscribe({
             next: (v: object) => {
               this.SpinnerService.hide();
@@ -742,7 +743,7 @@ export class BudgetAllocationReportComponent implements OnInit {
             formdata.allocationType.allocTypeId+
 
             '/' +
-            formdata.amountType.amountTypeId+'/'+formdata.toDate+'/'+formdata.fromDate
+            formdata.amountType.amountTypeId+'/'+formdata.toDate+'/'+formdata.fromDate+'/'+formdata.majorHead.majorHead
           )
           .subscribe({
             next: (v: object) => {
@@ -788,7 +789,7 @@ export class BudgetAllocationReportComponent implements OnInit {
           formdata.allocationType.allocTypeId+'/' +
           formdata.allocationType2.allocTypeId+'/' +
           formdata.allocationType3.allocTypeId+ '/' +
-          formdata.amountType.amountTypeId)
+          formdata.amountType.amountTypeId+'/'+formdata.majorHead.majorHead)
         .subscribe({
           next: (v: object) => {
             this.SpinnerService.hide();
@@ -1000,9 +1001,10 @@ export class BudgetAllocationReportComponent implements OnInit {
     let finalreTotal=0.0;
     let finalAddTotal=0.0;
     let addtotal=0.0;
+    let grandRE=0.0;
     for(let i=0;i<response.length;i++){
       if(i>0){
-        if(this.prevSub!=response[i].budgetHead.replaceAll(',', ' ')){
+        if(this.prevSub!=response[i].budgetHead.replaceAll(',', ' ')&&response[i].budgetHead.replaceAll(',', ' ')!=''){
           tableData.push({
             'REVENUE OBJECT HEAD':'',
             'Unit':'TOTAL',
@@ -1016,6 +1018,7 @@ export class BudgetAllocationReportComponent implements OnInit {
           beallocTotal=0.0;
           addtotal=0.0;
           reallocTotal=0.0;
+
         }
         // else{
         //   beallocTotal=beallocTotal+parseFloat(response[i].allocationAmount);
@@ -1050,6 +1053,7 @@ export class BudgetAllocationReportComponent implements OnInit {
         });
         finalbeTotal=finalbeTotal+beallocTotal;
         finalreTotal=finalreTotal+reallocTotal;
+        finalAddTotal=finalAddTotal+addtotal;
         beallocTotal=0.0;
         addtotal=0.0;
         reallocTotal=0.0;
@@ -1451,7 +1455,7 @@ export class BudgetAllocationReportComponent implements OnInit {
         if (i == 0) {
           tableData.push({
             'MAJORHEAD': '2037',
-            'DETAILED HEAD': 'REVENUE',
+            'DETAILED HEAD': 'REVENUE OBJECT HEAD',
             'ALLOCATION ': '',
           });
           tableData.push({
@@ -1487,7 +1491,7 @@ export class BudgetAllocationReportComponent implements OnInit {
       if (i == 0) {
         tableData.push({
           'MAJORHEAD': '4047',
-          'DETAILED HEAD': 'CAPITAL',
+          'DETAILED HEAD': 'CAPITAL DETAILED HEAD',
           'ALLOCATION ': '',
         });
         tableData.push({
@@ -1573,40 +1577,6 @@ export class BudgetAllocationReportComponent implements OnInit {
       'Allocation Amount':sum
     });
 
-    // for(let i=0;i<response.allCdaData.length;i++){
-    //   tableData.push({
-    //     'S.No':i+1,
-    //     'Financial Year':formdata.finYear.finYear,
-    //     'Major/Minor/Subhead':formdata.majorHead.majorHead+'/'+formdata.majorHead.minorHead,
-    //     'Allocation Type':formdata.allocationType.allocType,
-    //     'Subhead':'',
-    //     'Allocation Amount':,
-    //     'Reserve Fund'
-    //       });
-    //       finalbeTotal=finalbeTotal+beallocTotal;
-    //       beallocTotal=0.0;
-    //   tableData.push({
-    //     'REVENUE OBJECT HEAD':response[i].budgetHead.replaceAll(',', ' '),
-    //     'Unit':response[i].unitName.replaceAll(',', ' '),
-    //     'Allocation':response[i].allocationAmount,
-    //   });
-    //   this.prevSub=response[i].budgetHead.replaceAll(',', ' ');
-    //   beallocTotal=beallocTotal+parseFloat(response[i].allocationAmount.replaceAll(',', '').replaceAll('(+)','').replaceAll('(-)','-'));
-    //   if(i==response.length-1){
-    //     tableData.push({
-    //       'REVENUE OBJECT HEAD':'',
-    //       'Unit':'TOTAL',
-    //       'Allocation':beallocTotal,
-    //     });
-    //     finalbeTotal=finalbeTotal+beallocTotal;
-    //     beallocTotal=0.0;
-    //     tableData.push( {
-    //       'REVENUE OBJECT HEAD':'',
-    //       'Unit':'GRAND TOTAL',
-    //       'Allocation':finalbeTotal,
-    //     })
-    //   }
-    // }
     const columns = [
       'S.No',
       'Financial Year',

@@ -242,7 +242,8 @@ export class ConstantsService {
     getDashBordSubHeadwiseExpenditure: this.serviceUrl+'dashBoard/getDashBordSubHeadwiseExpenditure',
     getReservedFund: this.serviceUrl+'reportController/getReservedFund',
     saveAuthDataRevision: this.serviceUrl+'budgetAllocation/saveAuthDataRevision',
-    getAllGroupIdAndUnitIdRevisionCase: this.serviceUrl+'budgetAllocation/getAllGroupIdAndUnitIdRevisionCase'
+    getAllGroupIdAndUnitIdRevisionCase: this.serviceUrl+'budgetAllocation/getAllGroupIdAndUnitIdRevisionCase',
+    getMaxSectionNumber: this.serviceUrl+'contingentBillController/getMaxSectionNumber'
 
 
   };

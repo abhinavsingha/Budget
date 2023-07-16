@@ -435,7 +435,10 @@ export class RevisionApprovalComponent {
     let tableData=[];
     let totalR=0.0;
     let totalA=0.0;
+    let totalRE=0.0;
     for(let i=0;i<this.budgetDataLists.length;i++){
+      if(parseFloat(this.budgetDataLists[i].revisedAmount.replaceAll(',',' '))==0||this.budgetDataLists[i].toUnit.unit==this.userUnitId)
+        continue;
       let table:any= {
         Financial_Year: this.budgetDataLists[i].finYear.finYear.replaceAll(',',' '),
         Unit: this.budgetDataLists[i].toUnit.descr.replaceAll(',',' '),
@@ -447,6 +450,7 @@ export class RevisionApprovalComponent {
       }
       totalA=totalA+parseFloat(this.budgetDataLists[i].allocationAmount);
       totalR=totalR+(parseFloat(this.budgetDataLists[i].allocationAmount)+parseFloat(this.budgetDataLists[i].revisedAmount));
+      totalRE=totalRE+(parseFloat(this.budgetDataLists[i].revisedAmount)+parseFloat(this.budgetDataLists[i].revisedAmount));
       tableData.push(table);
     }
     let table:any= {
@@ -455,7 +459,7 @@ export class RevisionApprovalComponent {
       Subhead: '',
       Type: 'Total',
       Allocated_Fund: totalA,
-      AdditionalOrWithdrawal: '',
+      AdditionalOrWithdrawal: totalRE,
       Revised:totalR
     }
     tableData.push(table);

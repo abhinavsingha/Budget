@@ -831,4 +831,19 @@ export class RecieptComponent {
       });
   }
 
+  // checkDate(formdate:string,field:string) {
+  //   const date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+  //   const cbDate = this.datePipe.transform(
+  //     new Date(this.formdata.get(formdate)?.value),
+  //     'yyyy-MM-dd'
+  //   );
+  //   if (cbDate != null && date != null) {
+  //     if (cbDate > date) {
+  //       Swal.fire(field+' cannot be a future date');
+  //       this.formdata.get(formdate)?.reset();
+  //       // console.log('date= ' + this.formdata.get('cbDate')?.value);
+  //     }
+  //   }
+  // }
+
 }

@@ -14,6 +14,7 @@ import * as $ from 'jquery';
 // import { UploadDocuments } from '../model/upload-documents';
 
 class newCb {
+  sanction:any;
   gst:any;
   cbFilePath:any;
   label: string = '';
@@ -82,6 +83,7 @@ class submitCb {
   invoiceDate: any;
   authList: authList[] | undefined;
   contingentBilId: any;
+  sectionNumber:any;
 }
 
 class authList {
@@ -165,7 +167,7 @@ export class NewContigentBillComponent implements OnInit {
   FundAllotted: any;
   label: string = 'Choose File';
   cdaData: any;
-
+  private sanctionCount:number=0;
   constructor(
     public sharedService: SharedService,
     private router: Router,
@@ -186,6 +188,7 @@ export class NewContigentBillComponent implements OnInit {
     this.getCBData();
     this.getDashBoardDta();
     this.getSubHeadType();
+    this.getSanctionNumber();
   }
 
   addToList() {
@@ -243,6 +246,7 @@ export class NewContigentBillComponent implements OnInit {
         cbDate: this.formdata.get('cbDate')?.value,
         // remarks: this.formdata.get('remarks')?.value,
         authority: this.formdata.get('authority')?.value,
+        sanction: this.formdata.get('authority')?.value,
         authorityUnit: this.unitName,
         date: this.formdata.get('date')?.value,
         firmName: this.formdata.get('firmName')?.value,
@@ -289,6 +293,8 @@ export class NewContigentBillComponent implements OnInit {
         this.browseFileInput=undefined;
 
         this.common.successAlert('Success', 'Data Added Successfully','success');
+        this.sanctionCount++;
+        this.formdata.get('authority')?.setValue(this.sanctionCount);
       } else {
         Swal.fire(
           'Duplicate Entry. Select Update to update previously entered CB'
@@ -555,6 +561,7 @@ export class NewContigentBillComponent implements OnInit {
               ),
               // remarks: getCbList[i].remarks,
               authority: getCbList[i].authoritiesList[0].authority,
+              sanction: getCbList[i].authoritiesList[0].authority,
               authorityUnit: getCbList[i].authoritiesList[0].authUnit,
               date: this.datePipe.transform(
                 new Date(getCbList[i].authoritiesList[0].authDate),
@@ -1006,6 +1013,7 @@ export class NewContigentBillComponent implements OnInit {
             }
             debugger;
             const updateCb: submitCb = {
+              sectionNumber: this.cbList[i].authority,
               gst:this.formdata.get('gst')?.value,
               cdaParkingId:cdatabledata,
               allocationTypeId: this.allocation.allocTypeId,
@@ -1092,6 +1100,7 @@ export class NewContigentBillComponent implements OnInit {
             cbNo: this.formdata.get('cbNo')?.value,
             cbDate: this.formdata.get('cbDate')?.value,
             authority: this.formdata.get('authority')?.value,
+            sanction: this.formdata.get('authority')?.value,
             authorityUnit: this.unitName,
             date: this.formdata.get('date')?.value,
             firmName: this.formdata.get('firmName')?.value,
@@ -1117,6 +1126,7 @@ export class NewContigentBillComponent implements OnInit {
           };
           this.cbList[i] = entry;
           this.common.successAlert('Updated','Successfully Updated','');
+          this.formdata.get('authority')?.setValue(this.sanctionCount);
         } else {
           Swal.fire('Cannot be updated');
         }
@@ -1162,6 +1172,7 @@ export class NewContigentBillComponent implements OnInit {
           cdatabledata.push(x);
         }
         const cb: submitCb = {
+          sectionNumber:this.cbList[i].authority,
           oldCbId:undefined,
           gst:this.cbList[i].gst,
           cdaParkingId:cdatabledata,
@@ -1376,16 +1387,16 @@ export class NewContigentBillComponent implements OnInit {
   }
   subHeadType: any;
 
-  checkDate() {
+  checkDate(formdate:string,field:string) {
     const date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     const cbDate = this.datePipe.transform(
-      new Date(this.formdata.get('cbDate')?.value),
+      new Date(this.formdata.get(formdate)?.value),
       'yyyy-MM-dd'
     );
     if (cbDate != null && date != null) {
       if (cbDate > date) {
-        Swal.fire('Cbdate cannot be a future date');
-        this.formdata.get('cbDate')?.reset();
+        Swal.fire(field+' cannot be a future date');
+        this.formdata.get(formdate)?.reset();
         // console.log('date= ' + this.formdata.get('cbDate')?.value);
       }
     }
@@ -1477,5 +1488,28 @@ export class NewContigentBillComponent implements OnInit {
     }
     if(sum==parseFloat(this.formdata.get('amount')?.value))
       this.amountEqualCda=true;
+  }
+
+  private getSanctionNumber() {
+    this.apiService.getApi(this.cons.api.getMaxSectionNumber).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.sanctionCount=Number(result['response'].sectionNumber);
+          this.formdata.get('authority')?.setValue(this.sanctionCount);
+
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
+    debugger;
   }
 }
