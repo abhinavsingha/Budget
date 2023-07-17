@@ -365,7 +365,7 @@ export class NewContigentBillComponent implements OnInit {
           }
           this.cdaData=result['response'].cdaParkingTrans;
           for(let cda of this.cdaData){
-            cda.remainingCdaAmount=parseFloat(cda.remainingCdaAmount)*parseFloat(this.FundAllotted.amountUnit.amount);
+            cda.remainingCdaAmount=Number((parseFloat(cda.remainingCdaAmount)*parseFloat(this.FundAllotted.amountUnit.amount)).toFixed(4));
           }
 
         } else {
