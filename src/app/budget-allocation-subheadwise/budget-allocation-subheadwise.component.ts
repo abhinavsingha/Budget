@@ -565,6 +565,9 @@ export class BudgetAllocationSubheadwiseComponent {
               result['response']['msg'],
               'success'
             );
+            this.sharedService.reject=false;
+            this.sharedService.allocationData=[];
+            this.sharedService.msgId=undefined;
             this.updateInbox();
             this.budgetAllocationArray=[];
           } else {

@@ -232,9 +232,14 @@
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
-          <div class="row">
+          <div class="row" *ngIf="!sharedService.reject">
             <button (click)="saveBudgetDataFn(saveBudgetData.value)" class="btn btn-primary mr-2"
                     type="submit">Submit
+            </button>
+          </div>
+          <div class="row" *ngIf="sharedService.reject">
+            <button (click)="updateBudgetDataFn(saveBudgetData.value)" class="btn btn-primary mr-2"
+                    type="submit">Update
             </button>
           </div>
         </div>
