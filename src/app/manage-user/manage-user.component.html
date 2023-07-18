@@ -34,20 +34,21 @@
         <div class="card-body">
           <form [formGroup]="formdata">
             <div class="row">
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Units</label>
-                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="allunits" bindLabel="descr"
-                    (change)="getUserInfo($event)" appendTo="body" placeholder="Select To Unit" formControlName="unit">
-                  </ng-select>
-                </div>
-              </div>
+
               <div class="col-md-4">
                 <div class="form-group">
                   <label>CG P.No.</label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [disabled]="true" [items]="allUsers"
                     bindLabel="pno" appendTo="body" placeholder="Select CG P.No." (change)="setOtherValues($event)"
                     formControlName="pno"></ng-select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Units</label>
+                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="allunits" bindLabel="descr"
+                              appendTo="body" placeholder="Select To Unit" formControlName="unit">
+                  </ng-select>
                 </div>
               </div>
               <div class="col-md-4">
@@ -73,7 +74,7 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label>From Date</label>
-                  <input type="date" class="form-control" id="Date" placeholder="Enter From Date"
+                  <input type="date" class="form-control" id="Date1" placeholder="Enter From Date"
                     formControlName="fromDate" />
                 </div>
               </div>

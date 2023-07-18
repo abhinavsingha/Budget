@@ -68,6 +68,7 @@ export class ManageUserComponent {
     this.getCgUnitDataWithPurposeCode();
     // this.getDashBoardDta();
     $.getScript('assets/js/adminlte.js');
+    this.getUserInfo();
   }
 
   constructor(
@@ -125,11 +126,12 @@ export class ManageUserComponent {
     });
   }
 
-  getUserInfo(event: any) {
+  getUserInfo() {
+    debugger;
     this.SpinnerService.show();
-    if (event.unit == '001321') {
+    // if (event.unit == '001321') {
       this.apiService
-        .getApi('https://icg.net.in/cghrdata/getAllData/getALlDBudgetPno/1026')
+        .getApi('https://icg.net.in/cghrdata/getAllData/getAllUserInfo')
         .subscribe((res) => {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = res;
@@ -145,35 +147,36 @@ export class ManageUserComponent {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
         });
-    } else {
-      let submitJson = {
-        unitId: event.unit,
-        userName: '',
-      };
-      this.apiService.postApi(this.cons.api.getUserInfo, submitJson).subscribe({
-        next: (v: object) => {
-          this.SpinnerService.hide();
-          let result: { [key: string]: any } = v;
-          if (result['message'] == 'success') {
-            this.allUsers = [];
-            this.formdata.patchValue({
-              pno: undefined,
-              userName: undefined,
-              rank: undefined,
-            });
-            this.allUsers = result['response'];
-          } else {
-            this.common.faliureAlert('Please try later', result['message'], '');
-          }
-        },
-        error: (e) => {
-          this.SpinnerService.hide();
-          console.error(e);
-          this.common.faliureAlert('Error', e['error']['message'], 'error');
-        },
-        complete: () => console.info('complete'),
-      });
-    }
+    // }
+    // else {
+    //   let submitJson = {
+    //     unitId: event.unit,
+    //     userName: '',
+    //   };
+    //   this.apiService.postApi(this.cons.api.getUserInfo, submitJson).subscribe({
+    //     next: (v: object) => {
+    //       this.SpinnerService.hide();
+    //       let result: { [key: string]: any } = v;
+    //       if (result['message'] == 'success') {
+    //         this.allUsers = [];
+    //         this.formdata.patchValue({
+    //           pno: undefined,
+    //           userName: undefined,
+    //           rank: undefined,
+    //         });
+    //         this.allUsers = result['response'];
+    //       } else {
+    //         this.common.faliureAlert('Please try later', result['message'], '');
+    //       }
+    //     },
+    //     error: (e) => {
+    //       this.SpinnerService.hide();
+    //       console.error(e);
+    //       this.common.faliureAlert('Error', e['error']['message'], 'error');
+    //     },
+    //     complete: () => console.info('complete'),
+    //   });
+    // }
   }
 
   getCgUnitDataWithPurposeCode() {
