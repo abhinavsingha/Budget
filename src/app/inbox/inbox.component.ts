@@ -25,6 +25,7 @@ class InboxList {
   status: string | undefined;
   isCda:any;
   isRevision: any;
+  mangeInboxId:any;
 }
 
 import {
@@ -109,18 +110,24 @@ export class InboxComponent implements OnInit {
     }
     else if (li.isType == 'Budget Allocation') {
       if (li.status == 'Approved') {
+        this.sharedService.reject=false;
         this.router.navigate(['/budget-approved']);
       } else if (li.status == 'Fully Approved') {
+        this.sharedService.reject=false;
         this.router.navigate(['/budget-approval']);
       } else if (li.status == 'Pending') {
+        this.sharedService.reject=false;
         this.router.navigate(['/budget-approval']);
       } else if (li.status == 'Rejected') {
+        this.sharedService.msgId=li.mangeInboxId;
+        this.sharedService.reject=true;
         this.router.navigate(['/budget-approval']);
       }
       // window.location.href = '/budget-approval';
     }
     else if (li.isType == 'Budget Receipt') {
       debugger;
+      this.sharedService.reject=false;
       this.sharedService.sharedValue = li.groupId;
       this.router.navigate(['/budget-approval']);
       this.sharedService.redirectedFrom = 'inbox';
@@ -159,6 +166,7 @@ export class InboxComponent implements OnInit {
               isType='Contingent Bill';
             }
             const entry: InboxList = {
+              mangeInboxId:list[i].mangeInboxId,
               isCda:list[i].isCda,
               serial: i + 1,
               isType: isType,

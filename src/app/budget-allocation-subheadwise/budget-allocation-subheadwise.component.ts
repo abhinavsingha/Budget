@@ -61,8 +61,19 @@ export class BudgetAllocationSubheadwiseComponent {
     this.sharedService.updateInbox();
     this.getAmountType();
     // this.getBudgetFinYear();
-    this.getSubHeadsData();
-    this.getCgUnitData();
+    if(!this.sharedService.reject) {
+      this.getSubHeadsData();
+      this.getCgUnitData();
+    }
+    else{
+      this.subHeads.push(this.sharedService.allocationData[0].subHead);
+      this.formdata.get('subHead')?.setValue(this.subHeads[0]);
+      // debugger;
+      for(let li of this.sharedService.allocationData){
+        this.allunits.push(li.toUnit);
+      }
+    }
+
     // this.getAllocationTypeData();
     // this.getNewEmptyEntries();
     // this.getUnitDatas();
@@ -73,7 +84,7 @@ export class BudgetAllocationSubheadwiseComponent {
   }
 
   constructor(
-    private sharedService: SharedService,
+    public sharedService: SharedService,
     private SpinnerService: NgxSpinnerService,
     private cons: ConstantsService,
     private apiService: ApiCallingServiceService,
@@ -82,17 +93,35 @@ export class BudgetAllocationSubheadwiseComponent {
   ) {}
   cdalist:any[]=[];
   getNewEmptyEntries() {
+    let count=0;
     for(let unit of this.allunits){
-      let entry:SubHeadWiseUnitList= {
-        id: undefined,
-        unit: unit,
-        amount: 0.0000,
-        isSelected: true,
-        amountUnit: undefined,
-        cdaParkingId: []
+      let entry:SubHeadWiseUnitList;
+      if(this.sharedService.reject){
+        entry= {
+          id: undefined,
+          unit: unit,
+          amount: Number(parseFloat(this.sharedService.allocationData[count].allocationAmount)*parseFloat(this.sharedService.allocationData[count].amountUnit.amount)/parseFloat(this.amountUnit.amount)).toFixed(4),
+          isSelected: true,
+          amountUnit: undefined,
+          cdaParkingId: []
+        }
       }
+      else{
+        entry= {
+          id: undefined,
+          unit: unit,
+          amount: 0.0000,
+          isSelected: true,
+          amountUnit: undefined,
+          cdaParkingId: []
+        }
+      }
+
       this.subHeadWiseUnitList.push(entry);
+      count++;
     }
+    this.calcTotal();
+
     // this.subHeadWiseUnitList.push(new SubHeadWiseUnitList());
     // this.subHeadWiseUnitList.push(new SubHeadWiseUnitList());
     // this.subHeadWiseUnitList.push(new SubHeadWiseUnitList());
@@ -373,6 +402,8 @@ export class BudgetAllocationSubheadwiseComponent {
           this.amountTypeas = result['response'];
           this.amountUnit = this.amountTypeas[1];
           this.displayUnit=this.amountUnit.amountType;
+          if(this.sharedService.reject)
+            this.getNewEmptyEntries();
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
@@ -514,9 +545,11 @@ export class BudgetAllocationSubheadwiseComponent {
     // var newSubmitJson = this.submitJson;
     var newSubmitJson = data;
     // console.log(JSON.stringify(newSubmitJson) + ' =submitJson for save budget');
-
+    let url=this.cons.api.saveBudgetAllocationSubHeadWise;
+    if(this.sharedService.reject)
+      url=this.cons.api.saveBudgetAllocationSubHeadWiseEdit;
     this.apiService
-      .postApi(this.cons.api.saveBudgetAllocationSubHeadWise, newSubmitJson)
+      .postApi(url, newSubmitJson)
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -580,10 +613,13 @@ export class BudgetAllocationSubheadwiseComponent {
     this.formdata.patchValue({
       allocationType: this.sharedService.dashboardData.allocationType,
     });
-
+    this.formdata.get('allocationType')?.setValue(this.sharedService.dashboardData.allocationType);
     if(this.sharedService.finYear!=undefined)
       this.formdata.get('finYear')?.setValue(this.sharedService.finYear);
 
+    if(this.sharedService.reject){
+      this.getFundAvailableBuFinYearAndSubHeadAndAllocationType(this.formdata.value,this.subHeads[0]);
+    }
   }
   cdaDetail:any[]=[];
   getFundAvailableBuFinYearAndSubHeadAndAllocationType(
@@ -595,14 +631,14 @@ export class BudgetAllocationSubheadwiseComponent {
       majorHead: subhead.majorHead,
       minorHead: subhead.minorHead,
     });
-
+    debugger;
     if (data.allocationType == null || data.allocationType == undefined) {
       this.formdata.patchValue({
         fundAvailable: '',
       });
       return;
     }
-
+    debugger;
     if (data.subHead == null || data.subHead == undefined) {
       this.common.warningAlert(
         'Warning',
@@ -611,7 +647,7 @@ export class BudgetAllocationSubheadwiseComponent {
       );
       return;
     }
-
+    debugger;
     this.SpinnerService.show();
     // var newSubmitJson = this.submitJson;
     // var newSubmitJson = data;
@@ -871,5 +907,37 @@ currentIndex:any;
   }
   updateRemainingCda() {
     debugger;
+  }
+
+  updateBudgetDataFn() {
+    this.budgetAllocationArray;
+    this.uploadDocuments;
+
+    // let authRequestsList: any[] = [];
+    let budgetRequest: any[] = [];
+    debugger;
+    for (var i = 0; i < this.budgetAllocationArray.length; i++) {
+      budgetRequest.push({
+        transactionId:this.sharedService.allocationData[i].transactionId,
+        budgetFinanciaYearId:
+        this.budgetAllocationArray[i].financialYear.serialNo,
+        toUnitId: this.budgetAllocationArray[i].unitName.unit,
+        subHeadId: this.budgetAllocationArray[i].subHeadName.budgetCodeId,
+        amount: this.budgetAllocationArray[i].amount,
+        remark: this.budgetAllocationArray[i].remarks,
+        allocationTypeId:
+        this.budgetAllocationArray[i].allocationType.allocTypeId,
+        amountTypeId: this.budgetAllocationArray[i].amountType.amountTypeId,
+        cdaParkingId:this.budgetAllocationArray[i].cdaParkingId,
+      });
+    }
+    this.submitJson = {
+      // authRequests: authRequestsList,
+      msgId:this.sharedService.msgId,
+      budgetRequest: budgetRequest,
+    };
+
+    this.confirmModel(this.submitJson);
+
   }
 }

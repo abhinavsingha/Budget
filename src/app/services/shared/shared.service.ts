@@ -23,6 +23,9 @@ export class SharedService {
   public archive: any;
   public isRevision: any;
   public revisionStatus:any;
+  public reject: boolean=false;
+  public allocationData: any[]=[];
+  public msgId: any;
   constructor(
     private router: Router,
     private http: HttpClient,

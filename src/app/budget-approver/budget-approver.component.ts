@@ -1103,4 +1103,15 @@ export class BudgetApproverComponent implements OnInit {
       });
     this.sharedService.isRevision=0;
   }
+  editReturnedAllocation(value: any) {
+    debugger;
+  this.sharedService.allocationData=this.budgetDataList;
+    if (this.budgetDataList[0].isTYpe == 'S'||this.budgetDataList[0].isTYpe == 's') {
+      this.router.navigate(['/budget-allocation-subheadwise']);
+
+    }
+  else if(this.budgetDataList[0].isTYpe == 'U'||this.budgetDataList[0].isTYpe == 'u'){
+    this.router.navigate(['/budget-allocation']);
+  }
+  }
 }

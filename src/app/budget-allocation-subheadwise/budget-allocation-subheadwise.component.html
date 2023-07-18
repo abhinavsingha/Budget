@@ -217,7 +217,13 @@
         <!-- /.card-body -->
         <div class="card-footer">
           <div class="row">
-            <button type="submit" class="btn btn-primary mr-2" (click)="saveBudgetDataFn()">Submit</button>
+            <div *ngIf="!sharedService.reject">
+              <button type="submit" class="btn btn-primary mr-2" (click)="saveBudgetDataFn()">Submit</button>
+            </div>
+            <div *ngIf="sharedService.reject">
+              <button type="submit" class="btn btn-primary mr-2" (click)="updateBudgetDataFn()">Update</button>
+            </div>
+
           </div>
         </div>
       </div>

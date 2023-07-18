@@ -158,6 +158,11 @@
             <button type="submit" class="btn btn-danger" (click)="returnForm(formdata.value)">Return</button>
           </div>
         </div>
+        <div class=" card-footer">
+          <div class="row" *ngIf="sharedService.reject">
+            <button type="submit" class="btn btn-primary mr-2" (click)="editReturnedAllocation(formdata.value)">Edit</button>
+          </div>
+        </div>
       </div>
       <!-- /.row -->
     </div>
