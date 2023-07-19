@@ -159,7 +159,7 @@
           </div>
         </div>
         <div class=" card-footer">
-          <div class="row" *ngIf="sharedService.reject">
+          <div class="row" *ngIf="sharedService.reject && userRole=='Budget Manager'">
             <button type="submit" class="btn btn-primary mr-2" (click)="editReturnedAllocation(formdata.value)">Edit</button>
           </div>
         </div>

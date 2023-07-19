@@ -580,9 +580,12 @@ export class BudgetAllocationComponent implements OnInit {
   finallySubmit(data: any) {
     this.SpinnerService.show();
     var newSubmitJson = data;
+    let url=this.cons.api.saveBudgetAllocationUnitWise;
+    if(this.sharedService.reject)
+      url=url+'Edit';
     // console.log(JSON.stringify(newSubmitJson) + ' =submitJson for save budget');
     this.apiService
-      .postApi(this.cons.api.saveBudgetAllocationUnitWise, newSubmitJson)
+      .postApi(url, newSubmitJson)
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -602,6 +605,9 @@ export class BudgetAllocationComponent implements OnInit {
               'success'
             );
             this.updateInbox();
+            this.sharedService.reject=false;
+            this.sharedService.allocationData=[];
+            this.sharedService.msgId=undefined;
             this.tableData=[];
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
