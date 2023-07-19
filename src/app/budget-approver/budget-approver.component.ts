@@ -776,7 +776,7 @@ export class BudgetApproverComponent implements OnInit {
       'Financial_Year',
       'To_Unit',
       'From_Unit',
-      'Subhead',
+      'Object Head',
       'Type',
       'Allocated_Fund' + ' in ' + this.budgetDataList[0].amountUnit.amountType,
     ];
