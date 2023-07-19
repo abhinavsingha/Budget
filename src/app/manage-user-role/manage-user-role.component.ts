@@ -134,12 +134,11 @@ export class ManageUserRoleComponent {
 
   unitID: any = '';
 
-  getUserInfo(event: any) {
-    this.SpinnerService.show();
+  getUserInfo() {
 
-    if (event.unitId == '001321') {
+
       this.apiService
-        .getApi('https://icg.net.in/cghrdata/getAllData/getALlDBudgetPno/1026')
+        .getApi('https://icg.net.in/cghrdata/getAllData/getAllUserInfo')
         .subscribe((res) => {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = res;
@@ -155,36 +154,7 @@ export class ManageUserRoleComponent {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
         });
-    } else {
-      this.unitID = event.unitId;
-      let submitJson = {
-        unitId: event.unitId,
-        userName: '',
-      };
-      this.apiService.postApi(this.cons.api.getUserInfo, submitJson).subscribe({
-        next: (v: object) => {
-          this.SpinnerService.hide();
-          let result: { [key: string]: any } = v;
-          if (result['message'] == 'success') {
-            this.allUsers = [];
-            this.formdata.patchValue({
-              pno: undefined,
-              userName: undefined,
-              rank: undefined,
-            });
-            this.allUsers = result['response'];
-          } else {
-            this.common.faliureAlert('Please try later', result['message'], '');
-          }
-        },
-        error: (e) => {
-          this.SpinnerService.hide();
-          console.error(e);
-          this.common.faliureAlert('Error', e['error']['message'], 'error');
-        },
-        complete: () => console.info('complete'),
-      });
-    }
+
   }
 
   getCgUnitDataWithPurposeCode() {
@@ -346,7 +316,7 @@ export class ManageUserRoleComponent {
             this.currentUserUnitNameNew = result['response'].userDetails.unit;
 
             // this.userRole = result['response'].userDetails.unitId;
-            this.getUserInfo(result['response'].userDetails);
+            this.getUserInfo();
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }

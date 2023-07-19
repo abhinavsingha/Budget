@@ -423,6 +423,7 @@ export class RevisionComponent {
   tabledata: tableData[] = [];
   masterChecked: boolean = false;
   saveDataToTable() {
+    this.showSubmit=true;
     const alloc = {
       allocationType: this.formdata.get('allocationType')?.value.allocDesc,
       allocationTypeId: this.formdata.get('allocationType')?.value.allocTypeId,
@@ -629,7 +630,9 @@ export class RevisionComponent {
         }
       });
   }
+  showSubmit:boolean=true;
   saveRevisionData() {
+    this.showSubmit=false;
     const requestJson: revision[] = [];
     if(this.tabledata.length==0){
       this.common.faliureAlert('No entry found','Add atlest one entry','');
@@ -676,33 +679,38 @@ export class RevisionComponent {
       budgetRequest: requestJson,
     };
     debugger;
-    this.apiService
-      .postApi(this.cons.api.saveBudgetRevisionData, req)
-      .subscribe({
-        next: (v: object) => {
-          this.SpinnerService.hide();
-          let result: { [key: string]: any } = v;
 
-          if (result['message'] == 'success') {
-            // this.newSubcList = [];
+      this.apiService
+        .postApi(this.cons.api.saveBudgetRevisionData, req)
+        .subscribe({
+          next: (v: object) => {
+            this.SpinnerService.hide();
+            let result: { [key: string]: any } = v;
 
-            this.common.successAlert(
-              'Success',
-              result['response']['msg'],
-              'success'
-            );
-            this.updateInbox();
-          } else {
-            this.common.faliureAlert('Please try later', result['message'], '');
-          }
-        },
-        error: (e) => {
-          this.SpinnerService.hide();
-          console.error(e);
-          this.common.faliureAlert('Error', e['error']['message'], 'error');
-        },
-        complete: () => console.log("done"),
-      });
+            if (result['message'] == 'success') {
+              // this.newSubcList = [];
+
+              this.common.successAlert(
+                'Success',
+                result['response']['msg'],
+                'success'
+              );
+              this.updateInbox();
+            } else {
+              this.common.faliureAlert('Please try later', result['message'], '');
+              this.showSubmit=true;
+            }
+          },
+          error: (e) => {
+            this.SpinnerService.hide();
+            this.showSubmit=true;
+            console.error(e);
+            this.common.faliureAlert('Error', e['error']['message'], 'error');
+          },
+          complete: () => console.log("done"),
+        });
+
+
   }
   updateInbox(){
     this.apiService
