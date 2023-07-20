@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 import * as FileSaver from "file-saver";
 import {HttpClient} from "@angular/common/http";
 import * as Papa from "papaparse";
+import Swal from "sweetalert2";
+import {DatePipe} from "@angular/common";
 class TableData {
   Financial_Year: any;
   To_Unit: any;
@@ -56,7 +58,8 @@ export class ApprovedBudgetComponent implements OnInit {
     private formBuilder: FormBuilder,
     private common: CommonService,
     public sharedService: SharedService,
-    private router: Router
+    private router: Router,
+    private datePipe: DatePipe
   ) {}
   ngOnInit(): void {
     this.sharedService.updateInbox();
@@ -467,5 +470,19 @@ export class ApprovedBudgetComponent implements OnInit {
 
     // Generate and download the CSV file
     this.generateCSV(tableData, columns, filename, column);
+  }
+  checkDate(formdata:any,field:string) {
+    const date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    const cbDate = this.datePipe.transform(
+      new Date(formdata.date),
+      'yyyy-MM-dd'
+    );
+    if (cbDate != null && date != null) {
+      if (cbDate > date) {
+        Swal.fire('Date cannot be a future date');
+        this.formdata.get(field)?.reset();
+        // console.log('date= ' + this.formdata.get('cbDate')?.value);
+      }
+    }
   }
 }

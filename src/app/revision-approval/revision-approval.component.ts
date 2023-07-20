@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 import * as FileSaver from "file-saver";
 import {HttpClient} from "@angular/common/http";
 import * as Papa from "papaparse";
+import {DatePipe} from "@angular/common";
 @Component({
   selector: 'app-revision-approval',
   templateUrl: './revision-approval.component.html',
@@ -33,6 +34,7 @@ export class RevisionApprovalComponent {
     private router: Router,
     public sharedService: SharedService,
     private http: HttpClient,
+    private datePipe: DatePipe
   ) {}
   isInboxAndOutbox: any;
   type:any;
@@ -544,6 +546,33 @@ export class RevisionApprovalComponent {
               result['response'][0].fileName
             );
             // console.log(result['response']);
+          }else if(result['message'] =='PENDING RECORD NOT FOUND'){
+            this.apiService.getApi(this.cons.api.getRevisedAllocationAprReport+'/'+localStorage.getItem('group_id'))
+              .subscribe({
+                next: (v: object) => {
+                  this.SpinnerService.hide();
+                  let result: { [key: string]: any } = v;
+                  if (result['message'] == 'success') {
+                    this.downloadPdf(
+                      result['response'][0].path,
+                      result['response'][0].fileName
+                    );
+                  } else {
+                    this.common.faliureAlert(
+                      'Please try later',
+                      result['message'],
+                      ''
+                    );
+                  }
+                },
+                error: (e) => {
+                  this.SpinnerService.hide();
+                  console.error(e);
+                  this.common.faliureAlert('Error', e['error']['message'], 'error');
+                },
+                complete: () => console.info('complete'),
+              });
+
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
@@ -567,5 +596,19 @@ export class RevisionApprovalComponent {
         console.error('Failed to download PDF:', error);
       }
     );
+  }
+  checkDate(formdata:any,field:string) {
+    const date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    const cbDate = this.datePipe.transform(
+      new Date(formdata.authDate),
+      'yyyy-MM-dd'
+    );
+    if (cbDate != null && date != null) {
+      if (cbDate > date) {
+        Swal.fire('Date cannot be a future date');
+        this.formdata.get(field)?.reset();
+        // console.log('date= ' + this.formdata.get('cbDate')?.value);
+      }
+    }
   }
 }

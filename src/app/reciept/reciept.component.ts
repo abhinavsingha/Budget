@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 import { UploadDocuments } from '../model/upload-documents';
 import { elements } from 'chart.js';
 import {SharedService} from "../services/shared/shared.service";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-reciept',
@@ -77,7 +78,8 @@ export class RecieptComponent {
     private cons: ConstantsService,
     private apiService: ApiCallingServiceService,
     private formBuilder: FormBuilder,
-    private common: CommonService
+    private common: CommonService,
+    private datePipe: DatePipe
   ) {}
 
   getBudgetFinYear() {
@@ -831,19 +833,19 @@ export class RecieptComponent {
       });
   }
 
-  // checkDate(formdate:string,field:string) {
-  //   const date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-  //   const cbDate = this.datePipe.transform(
-  //     new Date(this.formdata.get(formdate)?.value),
-  //     'yyyy-MM-dd'
-  //   );
-  //   if (cbDate != null && date != null) {
-  //     if (cbDate > date) {
-  //       Swal.fire(field+' cannot be a future date');
-  //       this.formdata.get(formdate)?.reset();
-  //       // console.log('date= ' + this.formdata.get('cbDate')?.value);
-  //     }
-  //   }
-  // }
+  checkDate(i:number) {
+    const date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    const cbDate = this.datePipe.transform(
+      new Date(this.uploadDocuments[i].authorityData),
+      'yyyy-MM-dd'
+    );
+    if (cbDate != null && date != null) {
+      if (cbDate > date) {
+        Swal.fire('Authority Date cannot be a future date');
+        this.uploadDocuments[i].authorityData=undefined;
+        // console.log('date= ' + this.formdata.get('cbDate')?.value);
+      }
+    }
+  }
 
 }

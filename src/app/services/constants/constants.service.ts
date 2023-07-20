@@ -232,6 +232,8 @@ export class ConstantsService {
     updateAllocation: this.serviceUrl + 'budgetAllocation/updateAllocation',
     getRevisedAllocationReport:
       this.serviceUrl + 'reportController/getRevisedAllocationReport',
+    getRevisedAllocationAprReport:
+      this.serviceUrl + 'reportController/getRevisedAllocationAprReport',
     getAllocationReportDoc:
       this.serviceUrl + 'reportController/getAllocationReportDoc',
     getCdaParkingReportDoc:
@@ -244,7 +246,8 @@ export class ConstantsService {
     saveAuthDataRevision: this.serviceUrl+'budgetAllocation/saveAuthDataRevision',
     getAllGroupIdAndUnitIdRevisionCase: this.serviceUrl+'budgetAllocation/getAllGroupIdAndUnitIdRevisionCase',
     getMaxSectionNumber: this.serviceUrl+'contingentBillController/getMaxSectionNumber',
-    saveBudgetAllocationSubHeadWiseEdit: this.serviceUrl+'budgetAllocation/saveBudgetAllocationSubHeadWiseEdit'
+    saveBudgetAllocationSubHeadWiseEdit: this.serviceUrl+'budgetAllocation/saveBudgetAllocationSubHeadWiseEdit',
+    getReceiptReportRevision: this.serviceUrl+'reportController/getReceiptReportRevision'
 
 
   };
