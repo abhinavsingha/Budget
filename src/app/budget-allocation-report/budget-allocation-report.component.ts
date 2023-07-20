@@ -1066,13 +1066,25 @@ export class BudgetAllocationReportComponent implements OnInit {
         })
       }
     }
-    const columns = [
-      'REVENUE OBJECT HEAD',
-      'Unit',
-      response[0].allocationType+' '+response[0].finYear+ ' Allocation (in '+response[0].amountIn+')',
-      response[0].allocationType+' '+response[0].finYear+ ' Addition (in '+response[0].amountIn+')',
-      response[0].allocationType+' '+response[0].finYear+ ' Revised (in '+response[0].amountIn+')'
-    ];
+    let columns;
+    if(this.formdata.get('majorHead')?.value.majorHead=='2037') {
+      columns = [
+        'DETAILED OBJECT HEAD',
+        'Unit',
+        response[0].allocationType+' '+response[0].finYear+ ' Allocation (in '+response[0].amountIn+')',
+        response[0].allocationType+' '+response[0].finYear+ ' Addition (in '+response[0].amountIn+')',
+        response[0].allocationType+' '+response[0].finYear+ ' Revised (in '+response[0].amountIn+')'
+      ];
+    }else{
+      columns = [
+        'DETAILED CAPITAL HEAD',
+        'Unit',
+        response[0].allocationType+' '+response[0].finYear+ ' Allocation (in '+response[0].amountIn+')',
+        response[0].allocationType+' '+response[0].finYear+ ' Addition (in '+response[0].amountIn+')',
+        response[0].allocationType+' '+response[0].finYear+ ' Revised (in '+response[0].amountIn+')'
+      ];
+    }
+
     const column = [
       'REVENUE OBJECT HEAD',
       'Unit',
@@ -1236,16 +1248,41 @@ export class BudgetAllocationReportComponent implements OnInit {
           });
         }
     }
-    const columns = [
-      'REVENUE OBJECT HEAD',
-      response[0].allocationType.replaceAll(',', ' ')+' '+response[0].finYear.replaceAll(',', ' ')+' Allocation to ICG (in'+response[0].amountIn+')',
-      'Unit',
-      response[0].allocationType.replaceAll(',', ' ')+' '+response[0].finYear.replaceAll(',', ' ')+' Allocation (in'+response[0].amountIn+')',
-      'Bill Submission Upto '+response[0].upToDate.replaceAll(',', ' '),
-      '% BillSubmission w.r.t. '+response[0].allocationType.replaceAll(',', ' ')+' '+response[0].finYear.replaceAll(',', ' '),
-      'CGDA Booking Upto '+response[0].upToDate.replaceAll(',', ' '),
-      '% Bill Clearance w.r.t. '+response[0].allocationType.replaceAll(',', ' ')+' '+response[0].finYear.replaceAll(',', ' '),
-    ];
+      let columns;
+    if(this.formdata.get('majorHead')?.value.majorHead=='2037') {
+      columns = [
+        'DETAILED OBJECT HEAD',
+        response[0].allocationType.replaceAll(',', ' ')+' '+response[0].finYear.replaceAll(',', ' ')+' Allocation to ICG (in'+response[0].amountIn+')',
+        'Unit',
+        response[0].allocationType.replaceAll(',', ' ')+' '+response[0].finYear.replaceAll(',', ' ')+' Allocation (in'+response[0].amountIn+')',
+        'Bill Submission Upto '+response[0].upToDate.replaceAll(',', ' '),
+        '% BillSubmission w.r.t. '+response[0].allocationType.replaceAll(',', ' ')+' '+response[0].finYear.replaceAll(',', ' '),
+        'CGDA Booking Upto '+response[0].upToDate.replaceAll(',', ' '),
+        '% Bill Clearance w.r.t. '+response[0].allocationType.replaceAll(',', ' ')+' '+response[0].finYear.replaceAll(',', ' '),
+      ];
+    }else{
+      columns = [
+        'DETAILED CAPITAL HEAD',
+        response[0].allocationType.replaceAll(',', ' ')+' '+response[0].finYear.replaceAll(',', ' ')+' Allocation to ICG (in'+response[0].amountIn+')',
+        'Unit',
+        response[0].allocationType.replaceAll(',', ' ')+' '+response[0].finYear.replaceAll(',', ' ')+' Allocation (in'+response[0].amountIn+')',
+        'Bill Submission Upto '+response[0].upToDate.replaceAll(',', ' '),
+        '% BillSubmission w.r.t. '+response[0].allocationType.replaceAll(',', ' ')+' '+response[0].finYear.replaceAll(',', ' '),
+        'CGDA Booking Upto '+response[0].upToDate.replaceAll(',', ' '),
+        '% Bill Clearance w.r.t. '+response[0].allocationType.replaceAll(',', ' ')+' '+response[0].finYear.replaceAll(',', ' '),
+      ];
+    }
+
+    // const columns = [
+    //   'REVENUE OBJECT HEAD',
+    //   response[0].allocationType.replaceAll(',', ' ')+' '+response[0].finYear.replaceAll(',', ' ')+' Allocation to ICG (in'+response[0].amountIn+')',
+    //   'Unit',
+    //   response[0].allocationType.replaceAll(',', ' ')+' '+response[0].finYear.replaceAll(',', ' ')+' Allocation (in'+response[0].amountIn+')',
+    //   'Bill Submission Upto '+response[0].upToDate.replaceAll(',', ' '),
+    //   '% BillSubmission w.r.t. '+response[0].allocationType.replaceAll(',', ' ')+' '+response[0].finYear.replaceAll(',', ' '),
+    //   'CGDA Booking Upto '+response[0].upToDate.replaceAll(',', ' '),
+    //   '% Bill Clearance w.r.t. '+response[0].allocationType.replaceAll(',', ' ')+' '+response[0].finYear.replaceAll(',', ' '),
+    // ];
     const column = [
       'REVENUE OBJECT HEAD',
       'Allocation to ICG',
@@ -1266,12 +1303,27 @@ export class BudgetAllocationReportComponent implements OnInit {
     const csvData: any[][] = [];
     // Add column names as the first row
     const headingRow: string[] = [];
-    if(this.formdata.get('reportType')?.value=='03'||this.formdata.get('reportType')?.value=='04'){
+    if(this.formdata.get('reportType')?.value=='03'){
       headingRow.push('');
       headingRow.push('FINANCIAL YEAR:'+this.unitwiseYear);
       headingRow.push('UNIT:'+this.unitwiseUnit);
       headingRow.push('');
       csvData.push(headingRow);
+    }else if(this.formdata.get('reportType')?.value=='04'){
+      if(this.formdata.get('subHead')?.value.majorHead=='2037'){
+        headingRow.push('');
+        headingRow.push('FINANCIAL YEAR:'+this.unitwiseYear);
+        headingRow.push('DETAILED OBJECT HEAD:'+this.unitwiseUnit);
+        headingRow.push('');
+        csvData.push(headingRow);
+      }else{
+        headingRow.push('');
+        headingRow.push('FINANCIAL YEAR:'+this.unitwiseYear);
+        headingRow.push('DETAILED CAPITAL HEAD:'+this.unitwiseUnit);
+        headingRow.push('');
+        csvData.push(headingRow);
+      }
+
     }
 
 
@@ -1331,12 +1383,24 @@ export class BudgetAllocationReportComponent implements OnInit {
           'ALLOCATION AMOUNT':beallocTotal});
       }
     }
-    const columns = [
-      'SERIAL NO.',
-      'SUB HEAD',
-      'ALLOCATION TYPE',
-      'ALLOCATION AMOUNT (in '+response[0].amountIn+')'
-    ];
+    let columns;
+    if(this.formdata.get('majorHead')?.value.majorHead=='2037'){
+      columns = [
+        'SERIAL NO.',
+        'DETAILED OBJECT HEAD',
+        'ALLOCATION TYPE',
+        'ALLOCATION AMOUNT (in '+response[0].amountIn+')'
+      ];
+    }
+    else{
+      columns = [
+        'SERIAL NO.',
+        'DETAILED CAPITAL HEAD',
+        'ALLOCATION TYPE',
+        'ALLOCATION AMOUNT (in '+response[0].amountIn+')'
+      ];
+    }
+
     const column = [
       'SERIAL NO.',
       'SUB HEAD',
@@ -1431,11 +1495,21 @@ export class BudgetAllocationReportComponent implements OnInit {
         })
       }
     }
-    const columns = [
-      'REVENUE OBJECT HEAD',
-      'Unit',
-      response[0].allocationType+' '+response[0].finYear+ ' Allocation (in '+response[0].amountIn+')',
-    ];
+    let columns;
+    if(this.formdata.get('majorHead')?.value.majorHead=='2037'){
+      columns = [
+        'DETAILED OBJECT HEAD',
+        'Unit',
+        response[0].allocationType+' '+response[0].finYear+ ' Allocation (in '+response[0].amountIn+')',
+      ];
+    }
+    else {
+      columns = [
+        'DETAILED CAPITAL HEAD',
+        'Unit',
+        response[0].allocationType+' '+response[0].finYear+ ' Allocation (in '+response[0].amountIn+')',
+      ];
+    }
     const column = [
       'REVENUE OBJECT HEAD',
       'Unit',
@@ -1454,7 +1528,8 @@ export class BudgetAllocationReportComponent implements OnInit {
 
         if (i == 0) {
           tableData.push({
-            'MAJORHEAD': '2037',
+            'MAJORHEAD': '2037\n' +
+              '00.102.06 ',
             'DETAILED HEAD': 'REVENUE OBJECT HEAD',
             'ALLOCATION ': '',
           });
@@ -1576,16 +1651,36 @@ export class BudgetAllocationReportComponent implements OnInit {
       'Reserve Fund':sumA,
       'Allocation Amount':sum
     });
-
-    const columns = [
-      'S.No',
-      'Financial Year',
-      'Major/Minor/Subhead',
-      'Allocation Type',
-      'Subhead',
-      'Allocation Amount'+' (In '+formdata.amountType.amountType+')',
-      'Reserve Fund'+ ' (In '+formdata.amountType.amountType+')'
-    ];
+    let columns;
+    if(this.formdata.get('majorHead')?.value.majorHead=='2037'){
+      columns = [
+        'S.No',
+        'Financial Year',
+        'Major/Minor/Subhead',
+        'Allocation Type',
+        'Detailed Object Head',
+        'Allocation Amount'+' (In '+formdata.amountType.amountType+')',
+        'Reserve Fund'+ ' (In '+formdata.amountType.amountType+')'];    }
+    else{
+      columns = [
+        'S.No',
+        'Financial Year',
+        'Major/Minor/Subhead',
+        'Allocation Type',
+        'Detailed Capital Head',
+        'Allocation Amount'+' (In '+formdata.amountType.amountType+')',
+        'Reserve Fund'+ ' (In '+formdata.amountType.amountType+')'
+      ];
+    }
+    // const columns = [
+    //   'S.No',
+    //   'Financial Year',
+    //   'Major/Minor/Subhead',
+    //   'Allocation Type',
+    //   'Subhead',
+    //   'Allocation Amount'+' (In '+formdata.amountType.amountType+')',
+    //   'Reserve Fund'+ ' (In '+formdata.amountType.amountType+')'
+    // ];
     const column = [
       'S.No',
       'Financial Year',

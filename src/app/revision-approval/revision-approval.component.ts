@@ -436,6 +436,7 @@ export class RevisionApprovalComponent {
     let totalR=0.0;
     let totalA=0.0;
     let totalRE=0.0;
+    debugger;
     for(let i=0;i<this.budgetDataLists.length;i++){
       if(parseFloat(this.budgetDataLists[i].revisedAmount.replaceAll(',',' '))==0||this.budgetDataLists[i].toUnit.unit==this.userUnitId)
         continue;
@@ -450,7 +451,7 @@ export class RevisionApprovalComponent {
       }
       totalA=totalA+parseFloat(this.budgetDataLists[i].allocationAmount);
       totalR=totalR+(parseFloat(this.budgetDataLists[i].allocationAmount)+parseFloat(this.budgetDataLists[i].revisedAmount));
-      totalRE=totalRE+(parseFloat(this.budgetDataLists[i].revisedAmount)+parseFloat(this.budgetDataLists[i].revisedAmount));
+      totalRE=totalRE+(parseFloat(this.budgetDataLists[i].revisedAmount));
       tableData.push(table);
     }
     let table:any= {

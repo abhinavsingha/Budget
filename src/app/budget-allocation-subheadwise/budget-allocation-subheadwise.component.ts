@@ -61,6 +61,7 @@ export class BudgetAllocationSubheadwiseComponent {
     this.sharedService.updateInbox();
     this.getAmountType();
     // this.getBudgetFinYear();
+    debugger;
     if(!this.sharedService.reject) {
       this.getSubHeadsData();
       this.getCgUnitData();
@@ -882,11 +883,13 @@ currentIndex:any;
   totalAlloc:any=0.0;
   balance:any=0.0;
   calcTotal() {
+    debugger;
     this.totalAlloc=0.0;
     for(let entry of this.subHeadWiseUnitList){
       this.totalAlloc=(parseFloat(entry.amount)+parseFloat(this.totalAlloc)).toFixed(4);
     }
-    this.balance=(parseFloat(this.fundAvailableByFinYearAndUnitAndAllocationType)-(parseFloat(this.totalAlloc)*parseFloat(this.formdata.get('amountType')?.value.amount))).toFixed(4);
+    if(this.fundAvailableByFinYearAndUnitAndAllocationType!=undefined)
+      this.balance=(parseFloat(this.fundAvailableByFinYearAndUnitAndAllocationType)-(parseFloat(this.totalAlloc)*parseFloat(this.formdata.get('amountType')?.value.amount))).toFixed(4);
     debugger;
   }
 

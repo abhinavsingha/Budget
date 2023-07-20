@@ -432,7 +432,7 @@ export class BudgetApproverComponent implements OnInit {
     this.multipleCdaParking.push(new MultiCdaParking());
     // this.totalAmountToAllocateCDAParking = budgetData.allocationAmount;
     if(budgetData.revisedAmount!=undefined)
-      this.totalAmountToAllocateCDAParking = (parseFloat(budgetData.allocationAmount)+parseFloat(budgetData.revisedAmount)).toFixed(4);
+      this.totalAmountToAllocateCDAParking = (parseFloat(budgetData.allocationAmount)).toFixed(4);
     else
       this.totalAmountToAllocateCDAParking = budgetData.allocationAmount;
 
@@ -772,14 +772,28 @@ export class BudgetApproverComponent implements OnInit {
     //   { name: 'Jane', age: 25, city: 'San Francisco' },
     //   { name: 'Bob', age: 35, city: 'Chicago' },
     // ];
-    const columns = [
-      'Financial_Year',
-      'To_Unit',
-      'From_Unit',
-      'Object Head',
-      'Type',
-      'Allocated_Fund' + ' in ' + this.budgetDataList[0].amountUnit.amountType,
-    ];
+    let columns;
+    if(this.budgetDataList[0].subHead.majorHead=='2037'){
+      columns = [
+        'Financial_Year',
+        'To_Unit',
+        'From_Unit',
+        'Object Head',
+        'Type',
+        'Allocated_Fund' + ' in ' + this.budgetDataList[0].amountUnit.amountType,
+      ];
+    }
+    else{
+      columns = [
+        'Financial_Year',
+        'To_Unit',
+        'From_Unit',
+        'Detailed Head',
+        'Type',
+        'Allocated_Fund' + ' in ' + this.budgetDataList[0].amountUnit.amountType,
+      ];
+    }
+
     const column = [
       'Financial_Year',
       'To_Unit',
@@ -817,15 +831,13 @@ export class BudgetApproverComponent implements OnInit {
         ),
         Type: this.budgetDataList[i].allocTypeId.allocType.replaceAll(',', ' '),
         // Remaining_Amount: (parseFloat(this.budgetDataList[i].balanceAmount)*this.budgetDataList[i].remeningBalanceUnit.amount/this.budgetDataList[i].amountUnit.amount).toString(),
-        Allocated_Fund: this.budgetDataList[i].allocationAmount
+        Allocated_Fund: parseFloat(this.budgetDataList[i].allocationAmount
           .replaceAll(',', ' ')
-          .toString(),
+          .toString())-parseFloat(this.budgetDataList[i].revisedAmount.replaceAll(',', ' ').toString()),
         Additional_Or_Withdrawal:this.budgetDataList[i].revisedAmount
           .replaceAll(',', ' ')
           .toString(),
-        Revised_Amount:(parseFloat(this.budgetDataList[i].allocationAmount
-          .replaceAll(',', ' '))+parseFloat(this.budgetDataList[i].revisedAmount
-          .replaceAll(',', ' '))).toString(),
+        Revised_Amount:this.budgetDataList[i].allocationAmount,
       };
       if(parseFloat(this.budgetDataList[i].allocationAmount)!=0)
         tableData.push(table);
@@ -851,16 +863,41 @@ export class BudgetApproverComponent implements OnInit {
     //   { name: 'Jane', age: 25, city: 'San Francisco' },
     //   { name: 'Bob', age: 35, city: 'Chicago' },
     // ];
-    const columns = [
-      'Financial_Year',
-      'To_Unit',
-      'From_Unit',
-      'Subhead',
-      'Type',
-      'Allocated_Fund' + ' in ' + this.budgetDataList[0].amountUnit.amountType,
-      'Additional_Or_Withdrawal' + ' in ' + this.budgetDataList[0].amountUnit.amountType,
-      'Revised_Amount' + ' in ' + this.budgetDataList[0].amountUnit.amountType,
-    ];
+    let columns;
+    if(this.budgetDataList[0].subHead.majorHead=='2037'){
+       columns = [
+        'Financial_Year',
+        'To_Unit',
+        'From_Unit',
+        'Object Head',
+        'Type',
+        'Allocated_Fund' + ' in ' + this.budgetDataList[0].amountUnit.amountType,
+        'Additional_Or_Withdrawal' + ' in ' + this.budgetDataList[0].amountUnit.amountType,
+        'Revised_Amount' + ' in ' + this.budgetDataList[0].amountUnit.amountType,
+      ];
+    }
+    else{
+       columns = [
+        'Financial_Year',
+        'To_Unit',
+        'From_Unit',
+        'Detailed Head',
+        'Type',
+        'Allocated_Fund' + ' in ' + this.budgetDataList[0].amountUnit.amountType,
+        'Additional_Or_Withdrawal' + ' in ' + this.budgetDataList[0].amountUnit.amountType,
+        'Revised_Amount' + ' in ' + this.budgetDataList[0].amountUnit.amountType,
+      ];
+    }
+    // const columns = [
+    //   'Financial_Year',
+    //   'To_Unit',
+    //   'From_Unit',
+    //   'Subhead',
+    //   'Type',
+    //   'Allocated_Fund' + ' in ' + this.budgetDataList[0].amountUnit.amountType,
+    //   'Additional_Or_Withdrawal' + ' in ' + this.budgetDataList[0].amountUnit.amountType,
+    //   'Revised_Amount' + ' in ' + this.budgetDataList[0].amountUnit.amountType,
+    // ];
     const column = [
       'Financial_Year',
       'To_Unit',
@@ -922,8 +959,10 @@ export class BudgetApproverComponent implements OnInit {
     this.SpinnerService.show();
     // //debugger;
     let url=this.cons.api.getREAllocationReport+data;
-    this.apiService
-      .getApi(this.cons.api.getRevisedAllocationReport+'/'+localStorage.getItem('group_id'))
+    // let url=this.cons.api.getReceiptReportRevision+data;
+    // this.apiService
+    //   .getApi(url+'/'+localStorage.getItem('group_id'))
+      this.apiService.getApi(this.cons.api.getRevisedAllocationReport+'/'+localStorage.getItem('group_id'))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
