@@ -972,6 +972,9 @@ export class NewContigentBillComponent implements OnInit {
           this.cbList[i].status == 'Rejected'
         ) {
 
+
+
+
           this.cbList[i].progressiveAmount=this.formdata.get('progressive')?.value;
           this.cbList[i].budgetAllocated =
             this.formdata.get('budgetAllocated')?.value;
@@ -1002,14 +1005,19 @@ export class NewContigentBillComponent implements OnInit {
             authorityId: this.cbList[i].authorityId,
             remarks: this.cbList[i].returnRemarks,
           };
+          let sum=0;
             let cdatabledata=[];
             for(let cda of this.cdaData){
               const x={
                 cdaParkingId:cda.cdaParkingId,
                 cdaAmount:cda.amount
               }
+              sum=sum+Number(cda.amount);
               if(cda.amount!=undefined||cda.amount>0)
               cdatabledata.push(x);
+            }
+            if(sum!=parseFloat(this.cbList[i].amount)){
+              this.common.warningAlert('CDA Amount Mismatch','CDA amount not equal to CB amount','');
             }
             debugger;
             const updateCb: submitCb = {
@@ -1041,6 +1049,7 @@ export class NewContigentBillComponent implements OnInit {
               oldCbId:this.cbList[i].cbId
             };
             let updateList = [updateCb];
+            debugger;
             this.apiService
               .postApi(this.cons.api.updateContingentBill, updateList)
               .subscribe({

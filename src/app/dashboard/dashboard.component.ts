@@ -712,6 +712,15 @@ export class DashboardComponent implements OnInit {
             //     this.tableData[i].expenditureAmount
             //   ).toFixed(4);
             // }
+            this.totalUAllocated=0;
+            this.totalUBalance=0;
+            this.totalUExpenditure=0;
+            for(let li of this.tableData){
+              this.totalUAllocated=Number(parseFloat(li.allocatedAmount)+parseFloat(this.totalUAllocated)).toFixed(4);
+              this.totalUExpenditure=Number(parseFloat(li.expenditureAmount)+parseFloat(this.totalUExpenditure)).toFixed(4);
+              this.totalUBalance=Number(parseFloat(li.balAmount)+parseFloat(this.totalUBalance)).toFixed(4);
+            }
+            this.totalUExpenditurePer=Number(parseFloat(this.totalUExpenditure)*100/parseFloat(this.totalUAllocated)).toFixed(4);
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
@@ -727,6 +736,14 @@ export class DashboardComponent implements OnInit {
 
   allocationType: any[] = [];
   majorDataNew: any[] = [];
+  totalUAllocated: any;
+  totalUExpenditure: any;
+  totalUBalance: any;
+  totalUExpenditurePer: any;
+  totalSAllocated: any;
+  totalSExpenditure: any;
+  totalSBalance: any;
+  totalSExpenditurePer: any;
   getMajorDataNew() {
     this.SpinnerService.show();
     this.apiService.getApi(this.cons.api.getMajorData).subscribe({
@@ -807,6 +824,16 @@ export class DashboardComponent implements OnInit {
       (results) => {
         let result: { [key: string]: any } = results;
         this.subHeadsResponse = result['response'];
+        this.totalSAllocated=0;
+        this.totalSBalance=0;
+        this.totalSExpenditure=0;
+        for(let li of this.subHeadsResponse){
+          this.totalSAllocated=Number(parseFloat(li.allocatedAmount)+parseFloat(this.totalSAllocated)).toFixed(4);
+          this.totalSExpenditure=Number(parseFloat(li.expenditureAmount)+parseFloat(this.totalSExpenditure)).toFixed(4);
+          this.totalSBalance=Number(parseFloat(li.balAmount)+parseFloat(this.totalSBalance)).toFixed(4);
+        }
+        this.totalSExpenditurePer=Number(parseFloat(this.totalSExpenditure)*100/parseFloat(this.totalSAllocated)).toFixed(4);
+
         this.SpinnerService.hide();
       },
       (error) => {

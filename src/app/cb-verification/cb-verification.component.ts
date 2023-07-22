@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 
 
 interface cb {
+  // authDetail:any;
   cdaParkingId:any;
   authGroupId: any;
   onAccountOf: any;
@@ -84,6 +85,8 @@ export class CbVerificationComponent {
   cbList: cb[] = [];
   disabled: boolean = true;
   formdata = new FormGroup({
+    onAccOf:new FormControl(),
+    authDetail:new FormControl(),
     balance:new FormControl(),
     progressive:new FormControl(),
     budgetAllocated: new FormControl(),
@@ -343,6 +346,8 @@ export class CbVerificationComponent {
         }
       }
     }
+    this.formdata.get('onAccOf')?.setValue(cbEntry.onAccountOf)
+    this.formdata.get('authDetail')?.setValue(cbEntry.authorityDetails)
     this.formdata.get('amount')?.setValue(cbEntry.amount);
     this.formdata.get('cbNo')?.setValue(cbEntry.cbNo);
     this.formdata.get('cbDate')?.setValue(cbEntry.cbDate);

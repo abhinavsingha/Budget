@@ -191,7 +191,7 @@
                   <tbody>
                     <tr
                       *ngFor="let budgetAllocation of budgetAllocationArray  | paginate :{itemsPerPage:10,currentPage:p}; let i = index">
-                      <td><input class="form-check-input" type="checkbox" id="check1" name="option1"
+                      <td><input [disabled]="true" class="form-check-input" type="checkbox" id="check1" name="option1"
                                  [(ngModel)]="budgetAllocation.isChecked" [ngModelOptions]="{standalone: true}" (click)="tableCheckBoxClicked(((p-1)*10)+i)"></td>
                       <td>{{budgetAllocation.financialYear.finYear}}</td>
                       <td>{{budgetAllocation.unitName.descr}}</td>

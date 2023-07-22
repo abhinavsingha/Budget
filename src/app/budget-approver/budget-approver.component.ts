@@ -958,11 +958,11 @@ export class BudgetApproverComponent implements OnInit {
 
     this.SpinnerService.show();
     // //debugger;
-    let url=this.cons.api.getREAllocationReport+data;
+    let url=this.cons.api.getRevisedAllocationReport+data;
     // let url=this.cons.api.getReceiptReportRevision+data;
     // this.apiService
     //   .getApi(url+'/'+localStorage.getItem('group_id'))
-      this.apiService.getApi(this.cons.api.getRevisedAllocationReport+'/'+localStorage.getItem('group_id'))
+      this.apiService.getApi(url+'/'+localStorage.getItem('group_id'))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -973,7 +973,7 @@ export class BudgetApproverComponent implements OnInit {
               result['response'][0].fileName
             );
           }else if(result['message'] =='PENDING RECORD NOT FOUND'){
-            this.apiService.getApi(this.cons.api.getRevisedAllocationAprReport+'/'+localStorage.getItem('group_id'))
+            this.apiService.getApi(this.cons.api.getRevisedAllocationAprReport+data+'/'+localStorage.getItem('group_id'))
               .subscribe({
                 next: (v: object) => {
                   this.SpinnerService.hide();

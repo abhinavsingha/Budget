@@ -81,6 +81,9 @@ export class ContigentBillApproverComponent implements OnInit {
   cbList: cb[] = [];
   disabled: boolean = true;
   formdata = new FormGroup({
+
+    authDetail:new FormControl(),
+    onAccOf:new FormControl(),
     balance:new FormControl(),
     progressive:new FormControl(),
     budgetAllocated: new FormControl(),
@@ -364,6 +367,8 @@ export class ContigentBillApproverComponent implements OnInit {
       }
     }
 
+    this.formdata.get('onAccOf')?.setValue(cbEntry.onAccountOf);
+    this.formdata.get('authDetail')?.setValue(cbEntry.authorityDetails);
     this.formdata.get('amount')?.setValue(cbEntry.amount);
     this.getBudgetAllotted();
 
