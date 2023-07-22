@@ -169,6 +169,7 @@ export class NewContigentBillComponent implements OnInit {
   cdaData: any;
   private sanctionCount:number=0;
   showUpdate: boolean=false;
+  showSave: boolean=true;
   constructor(
     public sharedService: SharedService,
     private router: Router,
@@ -294,7 +295,7 @@ export class NewContigentBillComponent implements OnInit {
         this.browseFileInput=undefined;
 
         this.common.successAlert('Success', 'Data Added Successfully','success');
-        this.showUpdate=true;
+        // this.showUpdate=true;
         this.sanctionCount++;
         this.formdata.get('authority')?.setValue(this.sanctionCount);
       } else {
@@ -593,14 +594,13 @@ export class NewContigentBillComponent implements OnInit {
               label: '',
               cbFilePath: getCbList[i].cbFilePath
             };
-            if (entry.status == 'Approved') this.approvedPresent = true;
+            if (entry.status == 'Approved')
+              this.approvedPresent = true;
+            else if(entry.status=='Pending'||entry.status=='Rejected')
+              // this.showUpdate=true;
             this.cbList.push(entry);
           }
-          if(this.cbList.length<1){
-            this.showUpdate=false;
-          }
-          else
-            this.showUpdate=true;
+
           //     this.SpinnerService.hide();
           //   },
           //   (error) => {
@@ -618,6 +618,8 @@ export class NewContigentBillComponent implements OnInit {
   }
 
   setSubHead() {
+    this.showSave=true;
+    this.showUpdate=false;
     this.SpinnerService.show();
     this.formdata.get('minorHead')?.setValue(this.majorHead);
     this.SpinnerService.show();
@@ -752,7 +754,8 @@ export class NewContigentBillComponent implements OnInit {
   }
   cdaDatacb:any;
   updateFormdata(cbEntry: newCb) {
-
+    this.showUpdate=true;
+    this.showSave=false;
     debugger;
     // console.log('cbentry' + cbEntry);
     for (let i = 0; i < this.majorHeadData.length; i++) {
@@ -982,10 +985,6 @@ export class NewContigentBillComponent implements OnInit {
           this.cbList[i].status == 'Pending' ||
           this.cbList[i].status == 'Rejected'
         ) {
-
-
-
-
           this.cbList[i].progressiveAmount=this.formdata.get('progressive')?.value;
           this.cbList[i].budgetAllocated =
             this.formdata.get('budgetAllocated')?.value;
@@ -1029,6 +1028,7 @@ export class NewContigentBillComponent implements OnInit {
             }
             if(sum!=parseFloat(this.cbList[i].amount)){
               this.common.warningAlert('CDA Amount Mismatch','CDA amount not equal to CB amount','');
+              return;
             }
             debugger;
             const updateCb: submitCb = {
@@ -1073,6 +1073,8 @@ export class NewContigentBillComponent implements OnInit {
                       result['response']['msg'],
                       'success'
                     );
+                    this.showUpdate=false;
+                    this.showSave=true;
                     // console.log(result['response']);
                     this.SpinnerService.hide();
                   } else {
@@ -1093,13 +1095,20 @@ export class NewContigentBillComponent implements OnInit {
         }
         else if (this.cbList[i].status == 'Pending for Submission') {
           let cdatabledata=[];
+          let sum:any=0;
           for(let cda of this.cdaData){
             const x={
               cdaParkingId:cda.cdaParkingId,
               cdaAmount:cda.amount
             }
-            if(cda.amount!=undefined||cda.amount>0)
-            cdatabledata.push(x);
+            if(cda.amount!=undefined||cda.amount>0) {
+              cdatabledata.push(x);
+              sum=Number((parseFloat(cda.amount)+parseFloat(sum))).toFixed(4);
+            }
+          }
+          if(parseFloat(sum)!=parseFloat(this.formdata.get('amount')?.value)){
+            this.common.warningAlert('CDA Amount Mismatch','CDA amount not equal to CB amount','');
+            return;
           }
           let entry: newCb = {
             gst:this.formdata.get('gst')?.value,
@@ -1146,6 +1155,8 @@ export class NewContigentBillComponent implements OnInit {
           };
           this.cbList[i] = entry;
           this.common.successAlert('Updated','Successfully Updated','');
+          this.showSave=true;
+          this.showUpdate=false;
           this.formdata.get('authority')?.setValue(this.sanctionCount);
         } else {
           Swal.fire('Cannot be updated');

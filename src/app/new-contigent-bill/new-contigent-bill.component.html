@@ -269,7 +269,7 @@
               <div class="col-md-3">
                 <label style="opacity: 0;">.</label><br>
                 <button *ngIf="showUpdate" (click)="updateList()" class="btn btn-primary mr-2" type="button">Update CB</button>
-                <button (click)="addToList()" class="btn btn-primary" type="button">Save CB</button>
+                <button *ngIf="showSave" (click)="addToList()" class="btn btn-primary" type="button">Save CB</button>
                 <!--                <button type="submit" class="btn btn-primary" (click)="dummydata()"></button>-->
               </div>
               <!-- /.col -->

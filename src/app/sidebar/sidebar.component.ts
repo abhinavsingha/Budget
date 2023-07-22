@@ -101,6 +101,7 @@ export class SidebarComponent {
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
             this.userRole = result['response'].userDetails.role[0].roleName;
+            this.sharedService.userRole=this.userRole;
             this.inbox = result['response'].inbox;
             this.outbox = result['response'].outBox;
             this.archive = result['response'].archived;

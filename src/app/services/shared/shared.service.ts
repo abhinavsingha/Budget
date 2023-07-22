@@ -26,6 +26,7 @@ export class SharedService {
   public reject: boolean=false;
   public allocationData: any[]=[];
   public msgId: any;
+  public userRole: any;
   constructor(
     private router: Router,
     private http: HttpClient,

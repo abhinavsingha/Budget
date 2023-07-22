@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import * as $ from 'jquery';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ApiCallingServiceService } from '../services/api-calling/api-calling-service.service';
@@ -13,6 +13,7 @@ import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 
 interface cb {
+  label:string;
   gst:any;
   cdaParkingId:any;
   authGroupId: any;
@@ -61,6 +62,7 @@ class updateRequest {
   styleUrls: ['./contigent-bill-approver.component.scss'],
 })
 export class ContigentBillApproverComponent implements OnInit {
+  @ViewChild('uploadFileInput') uploadFileInput: any;
   p: number = 1;
   finYearData: any;
   unitData: any;
@@ -72,6 +74,7 @@ export class ContigentBillApproverComponent implements OnInit {
   expenditure: any;
   private FundAllotted: any;
   constructor(
+
     private http: HttpClient,
     private apiService: ApiCallingServiceService,
     private cons: ConstantsService,
@@ -117,6 +120,87 @@ export class ContigentBillApproverComponent implements OnInit {
     returnRemarks: new FormControl(),
   });
   subHeadType:any;
+  formData = new FormGroup({
+    uploadFile: new FormControl(),
+  });
+  setLabel(formValue: any, i: any) {
+    this.cbList[i].label = formValue.uploadFile;
+  }
+  docId: any;
+  uploadBill(cb: any) {
+    const file: File = this.uploadFileInput.nativeElement.files[0];
+    // console.log(file);
+    const formData = new FormData();
+    // console.log(this.formdata.get('file')?.value);
+    formData.append('file', file);
+    this.SpinnerService.show();
+    this.apiService.postApi(this.cons.api.fileUpload, formData).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+
+        if (result['message'] == 'success') {
+          this.common.successAlert(
+            'Success',
+            result['response']['msg'],
+            'success'
+          );
+          this.docId = result['response'].uploadDocId;
+          let json = {
+            docId: result['response'].uploadDocId,
+            groupId: cb.authGroupId,
+          };
+          this.apiService
+            .postApi(this.cons.api.updateFinalStatus, json)
+            .subscribe({
+              next: (v: object) => {
+                this.SpinnerService.hide();
+                let result: { [key: string]: any } = v;
+
+                if (result['message'] == 'success') {
+                  this.common.successAlert(
+                    'Success',
+                    result['response']['msg'],
+                    'success'
+                  );
+                  this.updateInbox();
+                  this.SpinnerService.hide();
+                } else {
+                  this.common.faliureAlert(
+                    'Please try later',
+                    result['message'],
+                    ''
+                  );
+                  this.SpinnerService.hide();
+                }
+              },
+              error: (e) => {
+                this.SpinnerService.hide();
+                console.error(e);
+                this.common.faliureAlert(
+                  'Error',
+                  e['error']['message'],
+                  'error'
+                );
+              },
+              complete: () => this.SpinnerService.hide(),
+            });
+
+          this.SpinnerService.hide();
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+          this.SpinnerService.hide();
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => this.SpinnerService.hide(),
+    });
+  }
+
   ngOnInit(): void {
     this.sharedService.updateInbox();
     $.getScript('assets/js/adminlte.js');
@@ -193,6 +277,7 @@ export class ContigentBillApproverComponent implements OnInit {
              cdaData.push(cdaItr);
            }
            const entry: cb = {
+             label:'',
              gst:getCbList[i].gst,
              cdaParkingId:cdaData,
             authGroupId: getCbList[i].authoritiesList[0].authGroupId,
