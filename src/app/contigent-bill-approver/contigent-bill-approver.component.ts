@@ -10,6 +10,7 @@ import { SharedService } from '../services/shared/shared.service';
 import Swal from 'sweetalert2';
 import * as FileSaver from "file-saver";
 import {HttpClient} from "@angular/common/http";
+import {Router} from "@angular/router";
 
 interface cb {
   gst:any;
@@ -76,6 +77,7 @@ export class ContigentBillApproverComponent implements OnInit {
     private cons: ConstantsService,
     private SpinnerService: NgxSpinnerService,
     private common: CommonService,
+    private router: Router,
     private datePipe: DatePipe,
     public sharedService: SharedService
   ) {}
@@ -494,7 +496,7 @@ export class ContigentBillApproverComponent implements OnInit {
           console.error(e);
           this.common.faliureAlert('Error', e['error']['message'], 'error');
         },
-        complete: () => this.getContingentBill(),
+        complete: () => this.router.navigate(['/inbox']),
       });
     this.cbList = [];
     this.getContingentBill();
@@ -562,7 +564,7 @@ export class ContigentBillApproverComponent implements OnInit {
           console.error(e);
           this.common.faliureAlert('Error', e['error']['message'], 'error');
         },
-        complete: () => this.getContingentBill(),
+        complete: () => this.router.navigate(['/inbox']),
       });
   }
   updateInbox(){

@@ -10,6 +10,7 @@ import * as $ from "jquery";
 import Swal from "sweetalert2";
 import * as FileSaver from "file-saver";
 import {HttpClient} from "@angular/common/http";
+import {Router} from "@angular/router";
 
 
 interface cb {
@@ -82,6 +83,7 @@ export class CbVerificationComponent {
     private SpinnerService: NgxSpinnerService,
     private common: CommonService,
     private datePipe: DatePipe,
+    private router: Router,
     public sharedService: SharedService
   ) {}
   selectedCb: any;
@@ -447,7 +449,7 @@ export class CbVerificationComponent {
           console.error(e);
           this.common.faliureAlert('Error', e['error']['message'], 'error');
         },
-        complete: () => this.getContingentBill(),
+        complete: () => this.router.navigate(['/inbox']),
       });
     // }
     // }
@@ -513,7 +515,7 @@ export class CbVerificationComponent {
           console.error(e);
           this.common.faliureAlert('Error', e['error']['message'], 'error');
         },
-        complete: () => this.getContingentBill(),
+        complete: () => this.router.navigate(['/inbox']),
       });
     // }
     // }

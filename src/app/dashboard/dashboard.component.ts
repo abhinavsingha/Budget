@@ -247,8 +247,10 @@ export class DashboardComponent implements OnInit {
 
           this.sharedService.dashboardData = result['response'];
           this.dasboardData = result['response']; //
-          this.sharedService.approve = result['response'].approved;
+          this.sharedService.inbox = result['response'].inbox;
+          this.sharedService.outbox = result['response'].outBox;
           this.sharedService.archive = result['response'].archived;
+          this.sharedService.approve = result['response'].approved;
           if(result['response'].userDetails.unitId=='001321')
           {
             this.getAllCgUnitData();
@@ -372,6 +374,10 @@ export class DashboardComponent implements OnInit {
 
         if (result['message'] == 'success') {
           this.dasboardData = result['response'];
+          this.sharedService.inbox = result['response'].inbox;
+          this.sharedService.outbox = result['response'].outBox;
+          this.sharedService.archive = result['response'].archived;
+          this.sharedService.approve = result['response'].approved;
           for (
             let i = 0;
             i < this.dasboardData.unitWiseExpenditureList.length;
@@ -622,8 +628,13 @@ export class DashboardComponent implements OnInit {
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
+
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
+            this.sharedService.inbox = result['response'].inbox;
+            this.sharedService.outbox = result['response'].outBox;
+            this.sharedService.archive = result['response'].archived;
+            this.sharedService.approve = result['response'].approved;
             this.common.successAlert(
               'Success',
               result['response']['msg'],

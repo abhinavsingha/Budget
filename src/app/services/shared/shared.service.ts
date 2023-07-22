@@ -90,6 +90,7 @@ export class SharedService {
             this.outbox = result['response'].outBox;
             this.approve=result['response'].approved;
             this.archive=result['response'].archived;
+            // console.log(result['response']);
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
@@ -99,7 +100,7 @@ export class SharedService {
           console.error(e);
           this.common.faliureAlert('Error', e['error']['message'], 'error');
         },
-        complete: () => console.info('complete'),
+        complete: () => console.info('complete update inbox'),
       });
   }
 }

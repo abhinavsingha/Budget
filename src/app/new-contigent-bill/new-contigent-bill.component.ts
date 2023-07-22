@@ -507,6 +507,10 @@ export class NewContigentBillComponent implements OnInit {
           this.formdata.get('unit')?.setValue(this.unitName);
           this.formdata.get('authorityUnit')?.setValue(this.unitName);
           this.allocation = this.dasboardData.allocationType;
+          this.sharedService.inbox = result['response'].inbox;
+          this.sharedService.outbox = result['response'].outBox;
+          this.sharedService.archive = result['response'].archived;
+          this.sharedService.approve = result['response'].approved;
           // console.log('DATA>>>>>>>' + this.dasboardData);
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');

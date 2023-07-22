@@ -604,6 +604,7 @@ export class RevisionComponent {
     }
     this.totalManipulate2=0.0;
     for (let i = 0; i < this.budgetRevisionUnitList2.length; i++) {
+      if (!this.budgetRevisionUnitList2[i].isSelected)
       this.totalManipulate2=(parseFloat(this.totalManipulate2)+parseFloat(this.budgetRevisionUnitList2[i].manipulate2)).toFixed(4);
     }
   }
@@ -749,6 +750,10 @@ export class RevisionComponent {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
         if (result['message'] == 'success') {
+          this.sharedService.inbox = result['response'].inbox;
+          this.sharedService.outbox = result['response'].outBox;
+          this.sharedService.archive = result['response'].archived;
+          this.sharedService.approve = result['response'].approved;
           this.dasboardData = result['response'];
           this.formdata.get('allocationType')?.setValue(this.dasboardData.allocationType);
           // console.log('DATA>>>>>>>' + this.dasboardData);

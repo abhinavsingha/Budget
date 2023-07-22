@@ -132,6 +132,8 @@ export class RevisionApprovalComponent {
             this.userUnitId=result['response'].userDetails.unitId;
             this.sharedService.inbox = result['response'].inbox;
             this.sharedService.outbox = result['response'].outBox;
+            this.sharedService.archive = result['response'].archived;
+            this.sharedService.approve = result['response'].approved;
             this.getCgUnitData();
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');

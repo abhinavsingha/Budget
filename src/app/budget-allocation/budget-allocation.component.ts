@@ -500,8 +500,10 @@ export class BudgetAllocationComponent implements OnInit {
         let result: { [key: string]: any } = v;
         if (result['message'] == 'success') {
           this.sharedService.dashboardData = result['response'];
-          this.sharedService.approve=result['response'].approved;
-          this.sharedService.archive=result['response'].archived;
+          this.sharedService.inbox = result['response'].inbox;
+          this.sharedService.outbox = result['response'].outBox;
+          this.sharedService.archive = result['response'].archived;
+          this.sharedService.approve = result['response'].approved;
           localStorage.setItem(
             'defautAllocationType',
             result['response'].allocationType.allocType

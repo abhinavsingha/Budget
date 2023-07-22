@@ -28,16 +28,22 @@
           *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'|| userRole=='CB Verifier'|| userRole=='CB Creator'|| userRole=='CB Approver'">
           <a href="#" class="nav-link" [routerLink]="['/inbox']" [routerLinkActive]="['active']">
             <i class="fas fa-inbox nav-icon"></i>
-            <p>Inbox<span *ngIf="sharedService.inbox !== '0'"
-                class="right badge badge-danger">{{this.sharedService.inbox}}</span></p>
+            <p>Inbox<span *ngIf="sharedService.inbox !== '0'&&sharedService.inbox !== undefined"
+                class="right badge badge-danger">{{this.sharedService.inbox}}</span>
+              <span *ngIf="inbox !== '0'&&sharedService.inbox == undefined"
+                    class="right badge badge-danger">{{inbox}}</span>
+            </p>
           </a>
         </li>
         <li class="nav-item"
           *ngIf="userRole=='Budget Manager' || userRole=='Budget Approver'|| userRole=='CB Verifier'|| userRole=='CB Creator'|| userRole=='CB Approver'">
           <a href="#" class="nav-link" [routerLink]="['/outbox']" [routerLinkActive]="['active']">
             <i class="fas fa-paper-plane nav-icon"></i>
-            <p>Outbox<span *ngIf="sharedService.outbox !== '0'"
-                class="right badge badge-danger">{{this.sharedService.outbox}}</span></p>
+            <p>Outbox<span *ngIf="sharedService.outbox !== '0'&&sharedService.outbox !== undefined"
+                class="right badge badge-danger">{{this.sharedService.outbox}}</span>
+              <span *ngIf="outbox !== '0'&&sharedService.outbox == undefined"
+                    class="right badge badge-danger">{{outbox}}</span>
+            </p>
           </a>
         </li>
         <li class="nav-item"
@@ -45,8 +51,10 @@
           <a href="#" class="nav-link" [routerLink]="['/approved']" [routerLinkActive]="['active']">
             <i class="fas fa-clipboard-check nav-icon"></i>
             <p>Approved
-              <span *ngIf="sharedService.approve !== '0'"
+              <span *ngIf="sharedService.approve !== '0'&&sharedService.approve!=undefined"
                 class="right badge badge-danger">{{this.sharedService.approve}}</span>
+              <span *ngIf="approve !== '0'&&sharedService.approve==undefined"
+                    class="right badge badge-danger">{{approve}}</span>
             </p>
           </a>
         </li>
@@ -55,8 +63,10 @@
           <a href="#" class="nav-link" [routerLink]="['/archive']" [routerLinkActive]="['active']">
             <i class="fas fa-archive nav-icon"></i>
             <p>Archive
-              <span *ngIf="sharedService.archive !== '0'"
+              <span *ngIf="sharedService.archive !== '0'&&sharedService.archive!=undefined"
                 class="right badge badge-danger">{{this.sharedService.archive}}</span>
+              <span *ngIf="archive !== '0'&&sharedService.archive==undefined"
+                    class="right badge badge-danger">{{archive}}</span>
             </p>
           </a>
         </li>

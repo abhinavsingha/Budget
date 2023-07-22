@@ -40,10 +40,13 @@ export class SidebarComponent {
     //   localStorage.removeItem('foo');
     //   localStorage.setItem('user_role', 'Admin');
     // }
-    
+
     $.getScript('assets/plugins/bootstrap/js/bootstrap.bundle.min.js');
     this.getDashBoardDta();
-    
+    if(this.sharedService.inbox==undefined||this.sharedService.outbox==undefined||this.sharedService.approve==undefined||this.sharedService.archive==undefined){
+      this.sharedService.updateInbox();
+    }
+
   }
 
   constructor(
@@ -69,7 +72,7 @@ export class SidebarComponent {
   }
 
   dropMenuReport() {
-    
+
     if ($('.collapse2').hasClass('show')) {
       $('.collapse2').removeClass('show');
       $('.drop-report').removeClass('menu-open');
@@ -106,11 +109,11 @@ export class SidebarComponent {
             this.sharedService.outbox=this.outbox;
             this.sharedService.archive=this.archive;
             this.sharedService.approve=this.approve;
-            // this.sharedService.inbox = result['response'].inbox;
-            // this.sharedService.outbox = result['response'].outBox;
+            this.sharedService.inbox = result['response'].inbox;
+            this.sharedService.outbox = result['response'].outBox;
             this.unitName = result['response'].userDetails.unit;
             this.unitId = result['response'].userDetails.unitId;
-            debugger;
+
             localStorage.setItem(
               'userCurrentUnit',
               result['response'].userDetails.unitId

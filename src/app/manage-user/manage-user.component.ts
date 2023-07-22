@@ -333,6 +333,7 @@ export class ManageUserComponent {
             this.name = result['response'].userDetails.fullName;
             this.roles = result['response'].userDetails.role;
             this.roleHeading = result['response'].userDetails.role[0].roleName;
+
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
