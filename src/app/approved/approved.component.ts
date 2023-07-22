@@ -7,6 +7,7 @@ import {CommonService} from "../services/common/common.service";
 import {Router} from "@angular/router";
 import {DatePipe, Location} from "@angular/common";
 import {SharedService} from "../services/shared/shared.service";
+import { FilterPipe} from "../filter.pipe";
 
 class InboxList {
   unit_sub:any;
@@ -54,6 +55,7 @@ export class ApprovedComponent implements OnInit {
   }
 
   p: number = 1;
+  searchKey: string='';
 
   private getApproved() {
     this.SpinnerService.show();
@@ -181,5 +183,9 @@ export class ApprovedComponent implements OnInit {
     const seconds = ('0' + date.getSeconds()).slice(-2);
 
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  }
+
+  search() {
+
   }
 }

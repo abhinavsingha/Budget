@@ -168,6 +168,7 @@ export class NewContigentBillComponent implements OnInit {
   label: string = 'Choose File';
   cdaData: any;
   private sanctionCount:number=0;
+  showUpdate: boolean=false;
   constructor(
     public sharedService: SharedService,
     private router: Router,
@@ -293,6 +294,7 @@ export class NewContigentBillComponent implements OnInit {
         this.browseFileInput=undefined;
 
         this.common.successAlert('Success', 'Data Added Successfully','success');
+        this.showUpdate=true;
         this.sanctionCount++;
         this.formdata.get('authority')?.setValue(this.sanctionCount);
       } else {
@@ -590,6 +592,11 @@ export class NewContigentBillComponent implements OnInit {
             if (entry.status == 'Approved') this.approvedPresent = true;
             this.cbList.push(entry);
           }
+          if(this.cbList.length<1){
+            this.showUpdate=false;
+          }
+          else
+            this.showUpdate=true;
           //     this.SpinnerService.hide();
           //   },
           //   (error) => {
@@ -1497,6 +1504,8 @@ export class NewContigentBillComponent implements OnInit {
     }
     if(sum==parseFloat(this.formdata.get('amount')?.value))
       this.amountEqualCda=true;
+    else
+      this.amountEqualCda=false;
   }
 
   private getSanctionNumber() {

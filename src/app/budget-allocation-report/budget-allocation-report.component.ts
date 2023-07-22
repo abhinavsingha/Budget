@@ -907,11 +907,13 @@ export class BudgetAllocationReportComponent implements OnInit {
       this.showDate=false;
       this.bere=false;
       this.ma=false;
+      this.showmajorHead=true;
       this.showAllocStatus=false;
       this.showSubHeadType = false;
     } else if(data.reportType == '11'){
       this.showSubHeadType = true;
       this.showSubHead = false;
+      this.showmajorHead=true;
       this.showUnit = false;
       this.showDate=false;
       this.bere=false;
@@ -922,6 +924,7 @@ export class BudgetAllocationReportComponent implements OnInit {
       this.showSubHeadType = false;
       this.showSubHead = false;
       this.showUnit = false;
+      this.showmajorHead=true;
       this.showDate=false;
       this.bere=false;
       this.ma=false;
@@ -930,6 +933,7 @@ export class BudgetAllocationReportComponent implements OnInit {
       this.showSubHead = true;
       this.showSubHeadType = false;
       this.showUnit = false;
+      this.showmajorHead=true;
       this.showDate=false;
       this.bere=false;
       this.ma=false;
@@ -940,6 +944,7 @@ export class BudgetAllocationReportComponent implements OnInit {
       this.showSubHeadType = false;
       this.showDate=false;
       this.bere=true;
+      this.showmajorHead=true;
       this.ma=false;
       this.showAllocStatus=false;
     }
@@ -947,6 +952,7 @@ export class BudgetAllocationReportComponent implements OnInit {
       this.showSubHead = false;
       this.showUnit = false;
       this.showSubHeadType = false;
+      this.showmajorHead=true;
       this.showDate = true;
       this.bere = false;
       this.ma=false;
@@ -956,15 +962,26 @@ export class BudgetAllocationReportComponent implements OnInit {
       this.showSubHead = false;
       this.showUnit = false;
       this.showDate=false;
+      this.showmajorHead=true;
       this.showSubHeadType = false;
       this.bere=true;
       this.ma=true;
       this.showAllocStatus=false;
+    } else if(data.reportType == '10') {
+      this.showAllocStatus=false;
+      this.bere=false;
+      this.ma=false;
+      this.showmajorHead=false;
+      this.showSubHead = false;
+      this.showSubHeadType = false;
+      this.showUnit = false;
+      this.showDate=false;
     }
     else {
       this.showAllocStatus=false;
       this.bere=false;
       this.ma=false;
+      this.showmajorHead=true;
       this.showSubHead = false;
       this.showSubHeadType = false;
       this.showUnit = false;
@@ -1362,6 +1379,7 @@ export class BudgetAllocationReportComponent implements OnInit {
   unitwiseUnit:any;
   unitwiseYear:any;
   subHeadType: any;
+  showmajorHead: boolean=true;
   private generateUnitWiseCsv(response: any) {
     let beallocTotal=0.0;
     let tableData = [];

@@ -696,6 +696,12 @@ export class RevisionComponent {
                 'success'
               );
               this.updateInbox();
+              const delayMilliseconds = 3000;
+
+              setTimeout(() => {
+                // Reload the page
+                window.location.reload();
+              }, delayMilliseconds);
             } else {
               this.common.faliureAlert('Please try later', result['message'], '');
               this.showSubmit=true;

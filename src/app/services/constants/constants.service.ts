@@ -7,8 +7,8 @@ export class ConstantsService {
   constructor() {}
 
   serverRedirectUrl = 'https://icg.net.in/auth/realms/icgrms/protocol/openid-connect/logout?redirect_uri=https://icg.net.in/'; //For Production Server
-  // serviceUrl = 'https://icg.net.in/budget/'; //prod server
-  serviceUrl = 'https://icg.net.in/cgbudget/'; //UAT server
+  serviceUrl = 'https://icg.net.in/budget/'; //prod server
+  // serviceUrl = 'https://icg.net.in/cgbudget/'; //UAT server
   // serviceUrl = 'http://172.20.10.05:1111/';
   //  serviceUrl = 'http://192.168.1.113:1111/';
   api = {
@@ -247,7 +247,8 @@ export class ConstantsService {
     getAllGroupIdAndUnitIdRevisionCase: this.serviceUrl+'budgetAllocation/getAllGroupIdAndUnitIdRevisionCase',
     getMaxSectionNumber: this.serviceUrl+'contingentBillController/getMaxSectionNumber',
     saveBudgetAllocationSubHeadWiseEdit: this.serviceUrl+'budgetAllocation/saveBudgetAllocationSubHeadWiseEdit',
-    getReceiptReportRevision: this.serviceUrl+'reportController/getReceiptReportRevision'
+    getReceiptReportRevision: this.serviceUrl+'reportController/getReceiptReportRevision',
+    getContingentBillAll: this.serviceUrl+'reportController/getContingentBillAll'
 
 
   };

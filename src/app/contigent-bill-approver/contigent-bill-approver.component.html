@@ -43,32 +43,34 @@
                 <div class="card-body table-responsive p-0">
                   <table class="table table-hover text-nowrap">
                     <thead>
-                      <tr>
-                        <th>Sr. No.</th>
-                        <th>F.Y.</th>
-                        <th>CB Unit</th>
-                        <th>Sub Head</th>
-                        <th>CB No.</th>
-                        <th>Amount</th>
-                        <th>CB Date</th>
-                        <th>Status</th>
-                        <th></th>
-                      </tr>
+                    <tr>
+                      <th>Sr. No.</th>
+                      <th>F.Y.</th>
+                      <th>CB Unit</th>
+                      <th>Sub Head</th>
+                      <th>CB No.</th>
+                      <th>Amount</th>
+                      <th>CB Date</th>
+                      <th>Status</th>
+                      <th></th>
+                      <th></th>
+                    </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let cb of cbList | paginate :{itemsPerPage:10,currentPage:p}; let i = index">
-                        <!-- <td><input type="checkbox" value="{{cb.cbNo}}" (change)="getCheckedRows(cb.cbNo)"></td> -->
-                        <td>{{10 *(p-1)+i+1}}</td>
-                        <td>{{cb.finYearName}}</td>
-                        <td>{{cb.unit}}</td>
-                        <td>{{cb.subHead}}</td>
-                        <td>{{cb.cbNo}}</td>
-                        <td>{{cb.amount}}</td>
-                        <td>{{cb.cbDate}}</td>
-                        <td>{{cb.status}}</td>
-                        <td><button type="button" class="btn btn-primary" (click)="updateFormdata(cb)">View</button>
-                        </td>
-                      </tr>
+                    <tr *ngFor="let cb of cbList | paginate :{itemsPerPage:10,currentPage:p}; let i = index">
+                      <!-- <td><input type="checkbox" value="{{cb.cbNo}}" (change)="getCheckedRows(cb.cbNo)"></td> -->
+                      <td>{{10 *(p-1)+i+1}}</td>
+                      <td>{{cb.finYearName}}</td>
+                      <td>{{cb.unit}}</td>
+                      <td>{{cb.subHead}}</td>
+                      <td>{{cb.cbNo}}</td>
+                      <td>{{cb.amount}}</td>
+                      <td>{{cb.cbDate}}</td>
+                      <td>{{cb.status}}</td>
+                      <td><button type="button" class="btn btn-primary" (click)="updateFormdata(cb)">View</button>
+                      </td>
+                      <td><button type="button" class="btn btn-danger" (click)="downloadBill(cb)" >Download Bill</button></td>
+                    </tr>
                     </tbody>
                   </table>
                 </div>
@@ -81,7 +83,7 @@
                   <div class="col-sm-12 col-md-7">
                     <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
                       <pagination-controls class="pagination float-right"
-                        (pageChange)="p = $event"></pagination-controls>
+                                           (pageChange)="p = $event"></pagination-controls>
                     </div>
                   </div>
                 </div>
@@ -92,7 +94,7 @@
                 <div class="form-group">
                   <label>Financial Year</label>
                   <ng-select [readonly]="true" class="form-control select2bs4" style="width: 100%" [items]="finYearData"
-                    bindLabel="finYear" placeholder="Select Financial Year" formControlName="finYearName">
+                             bindLabel="finYear" placeholder="Select Financial Year" formControlName="finYearName">
                   </ng-select>
                 </div>
               </div>
@@ -100,17 +102,24 @@
                 <div class="form-group">
                   <label>Major Head</label>
                   <ng-select [readonly]="true" name="majorHead" [(ngModel)]="majorHead" class="form-control select2bs4"
-                    style="width: 100%" [items]="majorHeadData" bindLabel="majorHead" placeholder="Select Major Head"
-                    formControlName="majorHead">
+                             style="width: 100%" [items]="majorHeadData" bindLabel="majorHead" placeholder="Select Major Head"
+                             formControlName="majorHead">
                   </ng-select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Sub Head Type</label>
+                  <input type="text" class="form-control" id="subheadtype" placeholder="Sub Head Type"
+                         formControlName="sHT" readonly/>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Sub Head</label>
                   <ng-select [readonly]="true" name="subHead" class="form-control select2bs4" style="width: 100%"
-                    [items]="subHeadData" bindLabel="subHeadDescr" placeholder="Select Sub Head"
-                    formControlName="subHead">
+                             [items]="subHeadData" bindLabel="subHeadDescr" placeholder="Select Sub Head"
+                             formControlName="subHead">
                   </ng-select>
                 </div>
               </div>
@@ -125,8 +134,8 @@
                 <div class="form-group">
                   <label>Minor Head</label>
                   <ng-select [readonly]="true" name="MinorHead" class="form-control select2bs4" style="width: 100%"
-                    [items]="minorHeadData" bindLabel="minorHead" placeholder="Select Minor Head"
-                    formControlName="minorHead">
+                             [items]="minorHeadData" bindLabel="minorHead" placeholder="Select Minor Head"
+                             formControlName="minorHead">
                   </ng-select>
                 </div>
               </div>
@@ -134,7 +143,7 @@
                 <div class="form-group">
                   <label>Budget Alloted</label>
                   <input formControlName="budgetAllocated" type="number" class="form-control" id="budgetAllotted"
-                    readonly />
+                         readonly />
                 </div>
               </div>
               <div class=" col-md-4 row">
@@ -149,13 +158,19 @@
                   <button  class="btn btn-warning " type="button" data-toggle="modal" data-target="#modal-lg">Withdraw Amount</button>
                 </div>
               </div>
-<!--              <div class="col-md-4">-->
-<!--                <div class="form-group">-->
-<!--                  <label>CB Amount</label>-->
-<!--                  <input type="number" class="form-control" id="Amount" placeholder="Enter Amount"-->
-<!--                    formControlName="amount"  />-->
-<!--                </div>-->
-<!--              </div>-->
+              <!--              <div class="col-md-4">-->
+              <!--                <div class="form-group">-->
+              <!--                  <label>CB Amount</label>-->
+              <!--                  <input type="number" class="form-control" id="Amount" placeholder="Enter Amount"-->
+              <!--                    formControlName="amount"  />-->
+              <!--                </div>-->
+              <!--              </div>-->
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>GST</label>
+                  <input type="number" class="form-control" id="gst" formControlName="gst" readonly />
+                </div>
+              </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Proggressive Expenditure Including This Bill</label>
@@ -172,21 +187,14 @@
                 <div class="form-group">
                   <label>CB No.</label>
                   <input type="text" class="form-control" id="PrevAllocation" placeholder="Enter CB Number"
-                    formControlName="cbNo" readonly />
+                         formControlName="cbNo" readonly />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>CB Date</label>
                   <input type="date" class="form-control" id="cbDate" placeholder="Enter Date" formControlName="cbDate"
-                    readonly />
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Remarks</label>
-                  <input type="text" class="form-control" id="remarks" placeholder="Enter Remarks"
-                    formControlName="remarks" readonly />
+                         readonly />
                 </div>
               </div>
               <div class="col-md-4">
@@ -200,14 +208,14 @@
                 <div class="form-group">
                   <label>Sanction</label>
                   <input type="text" readonly class="form-control" id="authority" placeholder="Enter Remarks"
-                    formControlName="authority" />
+                         formControlName="authority" />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Sanction Date</label>
                   <input type="date" readonly class="form-control" id="date" placeholder="Enter Date"
-                    formControlName="date" />
+                         formControlName="date" />
                 </div>
               </div>
               <div class="col-md-4">
@@ -216,7 +224,7 @@
                   <div class="input-group">
                     <div class="custom-file">
                       <input type="text" class="form-control" id="File" placeholder="FileName" formControlName="file"
-                        readonly />
+                             readonly />
                       <!--                            <input type="file" class="custom-file-input" id="InputFile" readonly formControlName="file" >-->
                       <!--                          <label class="custom-file-label" for="File">C://klkjdfkl/doc.pdf</label>-->
                     </div>
@@ -230,21 +238,21 @@
                 <div class="form-group">
                   <label>Firm Name</label>
                   <input type="text" class="form-control" readonly id="FirmName" placeholder="Enter Firm Name"
-                    formControlName="firmName" />
+                         formControlName="firmName" />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Invoice Number</label>
                   <input type="text" class="form-control" readonly id="invoiceNo" placeholder="Enter Invoice Number"
-                    formControlName="invoiceNo" />
+                         formControlName="invoiceNo" />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Invoice Date</label>
                   <input type="date" class="form-control" readonly id="invoiceDate" placeholder="Enter Invoice Date"
-                    formControlName="invoiceDate" />
+                         formControlName="invoiceDate" />
                 </div>
               </div>
 
@@ -254,7 +262,7 @@
                   <div class="input-group">
                     <div class="custom-file">
                       <input type="text" class="form-control" id="invoice" placeholder="FileName"
-                        formControlName="invoiceFile" readonly />
+                             formControlName="invoiceFile" readonly />
                       <!--                            <input type="text" readonly class="form-control" id="invoice" formControlName="invoiceFile">-->
                       <!--                          <label class="custom-file-label" placeholder="InvoiceFile" for="invoice"></label>-->
                     </div>
@@ -265,26 +273,39 @@
                 </div>
               </div>
 
-
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>File Number</label>
+                  <input type="text" class="form-control" readonly id="FirmName" placeholder="Enter Firm Name"
+                         formControlName="fileNo" />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>File Date</label>
+                  <input type="date" class="form-control" readonly id="FirmName" placeholder="Enter Firm Name"
+                         formControlName="fileDate" />
+                </div>
+              </div>
               <div class="col-md-4" *ngIf="sharedService.redirectedFrom === 'inbox'&&  sharedService.roleHeading != 'CB Creator'">
                 <div class="form-group">
                   <label>Return Remarks</label>
                   <input type="text" class="form-control" id="ReturnRemarks" placeholder="Return Remarks"
-                    formControlName="returnRemarks" />
+                         formControlName="returnRemarks" />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>On Account Of</label>
                   <textarea class="form-control" formControlName="onAccOf" id="onAccOf"
-                            type="text"></textarea>
+                            type="text" readonly></textarea>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Authority Detail</label>
                   <textarea class="form-control" formControlName="authDetail" id="authDetail"
-                            type="text"></textarea>
+                            type="text" readonly></textarea>
                 </div>
               </div>
               <!-- /.col -->

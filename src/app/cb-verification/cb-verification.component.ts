@@ -8,10 +8,12 @@ import {SharedService} from "../services/shared/shared.service";
 import {FormControl, FormGroup} from "@angular/forms";
 import * as $ from "jquery";
 import Swal from "sweetalert2";
+import * as FileSaver from "file-saver";
+import {HttpClient} from "@angular/common/http";
 
 
 interface cb {
-  // authDetail:any;
+  gst:any;
   cdaParkingId:any;
   authGroupId: any;
   onAccountOf: any;
@@ -74,6 +76,7 @@ export class CbVerificationComponent {
   private unitId: any;
   cdaData: any;
   constructor(
+    private http: HttpClient,
     private apiService: ApiCallingServiceService,
     private cons: ConstantsService,
     private SpinnerService: NgxSpinnerService,
@@ -85,6 +88,7 @@ export class CbVerificationComponent {
   cbList: cb[] = [];
   disabled: boolean = true;
   formdata = new FormGroup({
+    sHT:new FormControl(),
     onAccOf:new FormControl(),
     authDetail:new FormControl(),
     balance:new FormControl(),
@@ -108,6 +112,9 @@ export class CbVerificationComponent {
     invoiceDate: new FormControl(),
     invoiceFile: new FormControl(),
     returnRemarks: new FormControl(),
+    fileNo: new FormControl(),
+    fileDate: new FormControl(),
+    gst: new FormControl(),
   });
   ngOnInit(): void {
     this.sharedService.updateInbox();
@@ -141,6 +148,7 @@ export class CbVerificationComponent {
               cdaData.push(cdaItr);
             }
             const entry: cb = {
+              gst:getCbList[i].gst,
               cdaParkingId:cdaData,
               authGroupId: getCbList[i].authoritiesList[0].authGroupId,
               onAccountOf: getCbList[i].onAccountOf,
@@ -346,6 +354,12 @@ export class CbVerificationComponent {
         }
       }
     }
+    if(cbEntry.budgetHeadID.subHeadTypeId=='01'){
+      this.formdata.get('sHT')?.setValue('Charged');
+    }
+    else if(cbEntry.budgetHeadID.subHeadTypeId=='02'){
+      this.formdata.get('sHT')?.setValue('Voted');
+    }
     this.formdata.get('onAccOf')?.setValue(cbEntry.onAccountOf)
     this.formdata.get('authDetail')?.setValue(cbEntry.authorityDetails)
     this.formdata.get('amount')?.setValue(cbEntry.amount);
@@ -359,6 +373,9 @@ export class CbVerificationComponent {
     this.formdata.get('invoiceDate')?.setValue(cbEntry.invoiceDate);
     this.formdata.get('invoiceFile')?.setValue(cbEntry.invoiceFile);
     this.formdata.get('returnRemarks')?.setValue(cbEntry.returnRemarks);
+    this.formdata.get('gst')?.setValue(cbEntry.gst);
+    this.formdata.get('fileNo')?.setValue(cbEntry.fileNo);
+    this.formdata.get('fileDate')?.setValue(cbEntry.fileDate);
     for (let i = 0; i < this.minorHeadData.length; i++) {
       if (this.minorHeadData[i].minorHead == cbEntry.minorHead) {
         this.formdata.get('minorHead')?.setValue(this.minorHeadData[i]);
@@ -584,5 +601,37 @@ export class CbVerificationComponent {
       },
       complete: () => console.info('complete'),
     });
+  }
+  downloadBill(cb: any) {
+    // console.log(cb);
+    let json = {
+      cbId: cb.contingentBilId,
+    };
+    this.SpinnerService.show();
+    this.apiService
+      .postApi(this.cons.api.getContingentBillAll, json)
+      .subscribe(
+        (results) => {
+          let result: { [key: string]: any } = results;
+          this.downloadPdf(result['response'][0].path,result['response'][0].fileName);
+        },
+        (error) => {
+          console.error(error);
+          this.SpinnerService.hide();
+        }
+      );
+  }
+  downloadPdf(pdfUrl: string,filename:string): void {
+    this.http.get(pdfUrl, { responseType: 'blob' }).subscribe(
+      (blob: Blob) => {
+        //   this.http.get('https://icg.net.in/bmsreport/1681376372803.pdf', { responseType: 'blob' }).subscribe((blob: Blob) => {
+        this.SpinnerService.hide();
+        FileSaver.saveAs(blob, filename);
+      },
+      (error) => {
+        this.SpinnerService.hide();
+        console.error('Failed to download PDF:', error);
+      }
+    );
   }
 }
