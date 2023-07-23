@@ -173,8 +173,8 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Authority Unit</label>
-                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="allunits" bindLabel="descr"
-                    appendTo="body" placeholder="Select Authority Unit" formControlName="authUnit">
+                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="unitData" bindLabel="descr"
+                    appendTo="body" placeholder="Select Authority Unit" formControlName="authUnit" [readonly]="true">
                   </ng-select>
                 </div>
               </div>

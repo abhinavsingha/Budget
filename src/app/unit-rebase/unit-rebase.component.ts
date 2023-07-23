@@ -50,6 +50,7 @@ export class UnitRebaseComponent {
     toUnitRHQ: new FormControl(),
   });
   private dasboardData: any;
+   unitData: any;
 
   ngOnInit(): void {
     this.sharedService.updateInbox();
@@ -95,6 +96,7 @@ export class UnitRebaseComponent {
           this.sharedService.outbox = result['response'].outBox;
           this.sharedService.archive = result['response'].archived;
           this.sharedService.approve = result['response'].approved;
+          this.getaCgUnitData();
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
@@ -429,5 +431,26 @@ export class UnitRebaseComponent {
       toUnitDHQ: data.dhqName,
       toUnitRHQ: data.rhqId,
     });
+  }
+  getaCgUnitData() {
+    this.SpinnerService.show();
+    var comboJson = null;
+    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe(
+      (res) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = res;
+        this.unitData = result['response'];
+        for(let unit of this.unitData){
+          if(this.dasboardData.userDetails.unitId==unit.unit){
+            this.formdataForToStation.get('authUnit')?.setValue(unit);
+            debugger;
+          }
+        }
+      },
+      (error) => {
+        console.error(error);
+        this.SpinnerService.hide();
+      }
+    );
   }
 }

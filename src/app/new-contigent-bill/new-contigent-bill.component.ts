@@ -533,7 +533,7 @@ export class NewContigentBillComponent implements OnInit {
         let result: { [key: string]: any } = res;
         // console.log(result['response']);
         let getCbList = result['response'];
-
+        debugger;
         for (let i = 0; i < getCbList.length; i++) {
           if(getCbList[i].authoritiesList.length>0) {
             let cdaData=[];
@@ -596,7 +596,7 @@ export class NewContigentBillComponent implements OnInit {
             };
             if (entry.status == 'Approved')
               this.approvedPresent = true;
-            else if(entry.status=='Pending'||entry.status=='Rejected')
+            // else if(entry.status=='Pending'||entry.status=='Rejected')
               // this.showUpdate=true;
             this.cbList.push(entry);
           }
