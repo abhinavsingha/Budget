@@ -119,6 +119,8 @@ export class DashboardComponent implements OnInit {
       }
     });
   }
+  unitwiseUnit='';
+  subheadwiseUnit='';
 
   userExit() {
     this.SpinnerService.show();
@@ -726,12 +728,15 @@ export class DashboardComponent implements OnInit {
             this.totalUAllocated=0;
             this.totalUBalance=0;
             this.totalUExpenditure=0;
+            this.totalUExpenditurePer=0;
             for(let li of this.tableData){
               this.totalUAllocated=Number(parseFloat(li.allocatedAmount)+parseFloat(this.totalUAllocated)).toFixed(4);
               this.totalUExpenditure=Number(parseFloat(li.expenditureAmount)+parseFloat(this.totalUExpenditure)).toFixed(4);
               this.totalUBalance=Number(parseFloat(li.balAmount)+parseFloat(this.totalUBalance)).toFixed(4);
             }
-            this.totalUExpenditurePer=Number(parseFloat(this.totalUExpenditure)*100/parseFloat(this.totalUAllocated)).toFixed(4);
+            this.unitwiseUnit=this.tableData[0].amountIn;
+            if(Number(this.totalUAllocated)!=0)
+              this.totalUExpenditurePer=Number(parseFloat(this.totalUExpenditure)*100/parseFloat(this.totalUAllocated)).toFixed(4);
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
@@ -838,12 +843,15 @@ export class DashboardComponent implements OnInit {
         this.totalSAllocated=0;
         this.totalSBalance=0;
         this.totalSExpenditure=0;
+        this.totalSExpenditurePer=0;
         for(let li of this.subHeadsResponse){
           this.totalSAllocated=Number(parseFloat(li.allocatedAmount)+parseFloat(this.totalSAllocated)).toFixed(4);
           this.totalSExpenditure=Number(parseFloat(li.expenditureAmount)+parseFloat(this.totalSExpenditure)).toFixed(4);
           this.totalSBalance=Number(parseFloat(li.balAmount)+parseFloat(this.totalSBalance)).toFixed(4);
         }
-        this.totalSExpenditurePer=Number(parseFloat(this.totalSExpenditure)*100/parseFloat(this.totalSAllocated)).toFixed(4);
+        this.subheadwiseUnit=this.subHeadsResponse[0].amountIn;
+        if(parseFloat(this.totalSAllocated)!=0)
+          this.totalSExpenditurePer=Number(parseFloat(this.totalSExpenditure)*100/parseFloat(this.totalSAllocated)).toFixed(4);
 
         this.SpinnerService.hide();
       },

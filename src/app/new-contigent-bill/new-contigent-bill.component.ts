@@ -1381,7 +1381,7 @@ export class NewContigentBillComponent implements OnInit {
         console.error(e);
         this.common.faliureAlert('Error', e['error']['message'], 'error');
       },
-      complete: () => this.SpinnerService.hide(),
+      complete: () => window.location.reload(),
     });
   }
 
