@@ -708,7 +708,7 @@ export class DashboardComponent implements OnInit {
           '/' +
           formDataValue.subHeadType.subHeadTypeId +
           '/' +
-          formDataValue.allocationType.allocTypeId +'/'+ formDataValue.rupeeUnit.amountTypeId
+          formDataValue.allocationType.allocTypeId +'/'+ formDataValue.rupeeUnit.amountTypeId+'/'+formDataValue.majorHead.majorHead
       )
       .subscribe({
         next: (v: object) => {
@@ -716,7 +716,7 @@ export class DashboardComponent implements OnInit {
           let result: { [key: string]: any } = v;
 
           if (result['message'] == 'success') {
-            this.tableData = result['response'];
+            this.tableData = result['response'][0].grTotalObjResp;
             // for (let i = 0; i < this.tableData.length; i++) {
             //   this.tableData[i].allocatedAmount = parseFloat(
             //     this.tableData[i].allocatedAmount
@@ -725,18 +725,18 @@ export class DashboardComponent implements OnInit {
             //     this.tableData[i].expenditureAmount
             //   ).toFixed(4);
             // }
-            this.totalUAllocated=0;
-            this.totalUBalance=0;
-            this.totalUExpenditure=0;
-            this.totalUExpenditurePer=0;
-            for(let li of this.tableData){
-              this.totalUAllocated=Number(parseFloat(li.allocatedAmount)+parseFloat(this.totalUAllocated)).toFixed(4);
-              this.totalUExpenditure=Number(parseFloat(li.expenditureAmount)+parseFloat(this.totalUExpenditure)).toFixed(4);
-              this.totalUBalance=Number(parseFloat(li.balAmount)+parseFloat(this.totalUBalance)).toFixed(4);
-            }
-            this.unitwiseUnit=this.tableData[0].amountIn;
-            if(Number(this.totalUAllocated)!=0)
-              this.totalUExpenditurePer=Number(parseFloat(this.totalUExpenditure)*100/parseFloat(this.totalUAllocated)).toFixed(4);
+            this.totalUAllocated=result['response'][0].sumAlloc;
+            this.totalUBalance=result['response'][0].sumBal;
+            this.totalUExpenditure=result['response'][0].sumExp;
+            this.totalUExpenditurePer=result['response'][0].perBal;
+            // for(let li of this.tableData){
+            //   this.totalUAllocated=Number(parseFloat(li.allocatedAmount)+parseFloat(this.totalUAllocated)).toFixed(4);
+            //   this.totalUExpenditure=Number(parseFloat(li.expenditureAmount)+parseFloat(this.totalUExpenditure)).toFixed(4);
+            //   this.totalUBalance=Number(parseFloat(li.balAmount)+parseFloat(this.totalUBalance)).toFixed(4);
+            // }
+            // this.unitwiseUnit=this.tableData[0].amountIn;
+            // if(Number(this.totalUAllocated)!=0)
+            //   this.totalUExpenditurePer=Number(parseFloat(this.totalUExpenditure)*100/parseFloat(this.totalUAllocated)).toFixed(4);
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
@@ -839,19 +839,19 @@ export class DashboardComponent implements OnInit {
     this.apiService.postApi(url,json).subscribe(
       (results) => {
         let result: { [key: string]: any } = results;
-        this.subHeadsResponse = result['response'];
-        this.totalSAllocated=0;
-        this.totalSBalance=0;
-        this.totalSExpenditure=0;
-        this.totalSExpenditurePer=0;
-        for(let li of this.subHeadsResponse){
-          this.totalSAllocated=Number(parseFloat(li.allocatedAmount)+parseFloat(this.totalSAllocated)).toFixed(4);
-          this.totalSExpenditure=Number(parseFloat(li.expenditureAmount)+parseFloat(this.totalSExpenditure)).toFixed(4);
-          this.totalSBalance=Number(parseFloat(li.balAmount)+parseFloat(this.totalSBalance)).toFixed(4);
-        }
-        this.subheadwiseUnit=this.subHeadsResponse[0].amountIn;
-        if(parseFloat(this.totalSAllocated)!=0)
-          this.totalSExpenditurePer=Number(parseFloat(this.totalSExpenditure)*100/parseFloat(this.totalSAllocated)).toFixed(4);
+        this.subHeadsResponse = result['response'][0].grTotalObj;
+        this.totalSAllocated=result['response'][0].sumAlloc;
+        this.totalSBalance=result['response'][0].sumBal;
+        this.totalSExpenditure=result['response'][0].sumExp;
+        this.totalSExpenditurePer=result['response'][0].perBal;
+        // for(let li of this.subHeadsResponse){
+        //   this.totalSAllocated=Number(parseFloat(li.allocatedAmount)+parseFloat(this.totalSAllocated)).toFixed(4);
+        //   this.totalSExpenditure=Number(parseFloat(li.expenditureAmount)+parseFloat(this.totalSExpenditure)).toFixed(4);
+        //   this.totalSBalance=Number(parseFloat(li.balAmount)+parseFloat(this.totalSBalance)).toFixed(4);
+        // }
+        // this.subheadwiseUnit=this.subHeadsResponse[0].amountIn;
+        // if(parseFloat(this.totalSAllocated)!=0)
+        //   this.totalSExpenditurePer=Number(parseFloat(this.totalSExpenditure)*100/parseFloat(this.totalSAllocated)).toFixed(4);
 
         this.SpinnerService.hide();
       },

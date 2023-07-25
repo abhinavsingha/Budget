@@ -26,6 +26,7 @@ import { ApprovedComponent } from './approved/approved.component';
 import { ArchiveComponent } from './archive/archive.component';
 import { AllAllocationComponent } from './all-allocation/all-allocation.component';
 import { UnitRebaseReportComponent } from './unit-rebase-report/unit-rebase-report.component';
+import {ApprovedRebaseComponent} from "./approved-rebase/approved-rebase.component";
 // import {ViewFormComponent} from "./view-form/view-form.component";
 
 const routes: Routes = [
@@ -84,6 +85,7 @@ const routes: Routes = [
   },
   { path: 'cda-parking-report', component: CdaParkingReportComponent },
   { path: 'budget-approved', component: ApprovedBudgetComponent },
+  { path: 'budget-rebase', component: ApprovedRebaseComponent },
   { path: 'manage-user-role', component: ManageUserRoleComponent },
   { path: 'all-allocation', component: AllAllocationComponent },
   { path: 'archive', component: ArchiveComponent },

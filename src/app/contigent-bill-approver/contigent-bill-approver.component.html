@@ -54,7 +54,7 @@
                       <th>Status</th>
                       <th></th>
                       <th></th>
-<!--                      <th *ngIf="sharedService.userRole=='CB Creator'">Ink Sign</th>-->
+                      <th *ngIf="sharedService.userRole=='CB Creator' &&sharedService.redirectedFrom=='inbox'">Ink Sign</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -71,27 +71,27 @@
                       <td><button type="button" class="btn btn-primary" (click)="updateFormdata(cb)">View</button>
                       </td>
                       <td><button type="button" class="btn btn-danger" (click)="downloadBill(cb)" >Download Bill</button></td>
-<!--                      <td ><form>-->
-<!--                        <div class="form-group">-->
-<!--                          <div *ngIf="cb.status === 'Approved' && sharedService.userRole=='CB Creator'" class="input-group">-->
-<!--                            <div [formGroup]="formData" class="custom-file">-->
-<!--                              <input #uploadFileInput class="custom-file-input" (change)="setLabel(formData.value,i)"-->
-<!--                                     formControlName="uploadFile" id="uploadFile" type="file">-->
-<!--                              <label class="custom-file-label" for="invoice"-->
-<!--                                     *ngIf="cb.label!=''">{{cb.label}}</label>-->
-<!--                              <label class="custom-file-label" for="invoice" *ngIf="cb.label==''">Choose-->
-<!--                                File</label>-->
-<!--                            </div>-->
-<!--                            <div class="input-group-append">-->
-<!--                                  <span (click)="uploadBill(cb)" class="input-group-text"-->
-<!--                                        style="cursor: pointer">Upload</span>-->
-<!--                            </div>-->
-<!--                            <div class="input-group-append" *ngIf="docId!=undefined">-->
-<!--                              <span class="input-group-text" (click)="viewFile(docId)">View</span>-->
-<!--                            </div>-->
-<!--                          </div>-->
-<!--                        </div>-->
-<!--                      </form></td>-->
+                      <td *ngIf="sharedService.userRole=='CB Creator' &&sharedService.redirectedFrom=='inbox'"><form>
+                        <div class="form-group">
+                          <div *ngIf="cb.status === 'Approved' && sharedService.userRole=='CB Creator' " class="input-group">
+                            <div [formGroup]="formData" class="custom-file">
+                              <input #uploadFileInput class="custom-file-input" (change)="setLabel(formData.value,i)"
+                                     formControlName="uploadFile" id="uploadFile" type="file">
+                              <label class="custom-file-label" for="invoice"
+                                     *ngIf="cb.label!=''">{{cb.label}}</label>
+                              <label class="custom-file-label" for="invoice" *ngIf="cb.label==''">Choose
+                                File</label>
+                            </div>
+                            <div class="input-group-append">
+                                  <span (click)="uploadBill(cb)" class="input-group-text"
+                                        style="cursor: pointer">Upload</span>
+                            </div>
+                            <div class="input-group-append" *ngIf="docId!=undefined">
+                              <span class="input-group-text" (click)="viewFile(docId)">View</span>
+                            </div>
+                          </div>
+                        </div>
+                      </form></td>
                     </tr>
                     </tbody>
                   </table>

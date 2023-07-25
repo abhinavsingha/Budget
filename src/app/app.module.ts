@@ -51,6 +51,7 @@ import { ApprovedComponent } from './approved/approved.component';
 import { AllAllocationComponent } from './all-allocation/all-allocation.component';
 import { ArchiveComponent } from './archive/archive.component';
 import { FilterPipe } from './filter.pipe';
+import {ApprovedRebaseComponent} from "./approved-rebase/approved-rebase.component";
 // import {ViewFormComponent} from "./view-form/view-form.component";
 
 // import { DialogComponent } from './dialog/dialog.component';
@@ -78,10 +79,10 @@ function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        // url: 'http://localhost:8080/auth',
-        url: 'https://icg.net.in/auth/',
-        realm: 'icgrms',
-        clientId: 'cgbudget', // For Production and Diwakar Local PC
+        url: 'http://localhost:8080/auth',
+        // url: 'https://icg.net.in/auth/',
+        realm: 'Icgrms',
+        clientId: 'budget', // For Production and Diwakar Local PC
         // clientId: 'budget', // For UAT Server
       },
       initOptions: {
@@ -97,6 +98,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     AllAllocationComponent,
     ArchiveComponent,
     AppComponent,
+    ApprovedRebaseComponent,
     HeaderComponent,
     SidebarComponent,
     DashboardComponent,

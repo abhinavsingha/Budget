@@ -74,6 +74,7 @@ export class BudgetAllocationReportComponent implements OnInit {
   prevSub='';
   currentSub='';
   ma: boolean=false;
+  private gt: boolean=false;
   ngOnInit(): void {
     this.sharedService.updateInbox();
     $.getScript('assets/js/adminlte.js');
@@ -824,7 +825,10 @@ export class BudgetAllocationReportComponent implements OnInit {
       let url=this.cons.api.getConsolidateReceiptReport;
       if(formdata.reprtType=='02')
         url=url+'Doc';
-
+      if(formdata.unitId=='001321')
+        this.gt=true;
+      else
+        this.gt=false;
       this.apiService
         .getApi(
           url + '/' +
@@ -1086,7 +1090,7 @@ export class BudgetAllocationReportComponent implements OnInit {
     let columns;
     if(this.formdata.get('majorHead')?.value.majorHead=='2037') {
       columns = [
-        'DETAILED OBJECT HEAD',
+        'REVENUE OBJECT HEAD',
         'Unit',
         response[0].allocationType+' '+response[0].finYear+ ' Allocation (in '+response[0].amountIn+')',
         response[0].allocationType+' '+response[0].finYear+ ' Addition (in '+response[0].amountIn+')',
@@ -1094,7 +1098,7 @@ export class BudgetAllocationReportComponent implements OnInit {
       ];
     }else{
       columns = [
-        'DETAILED CAPITAL HEAD',
+        'CAPITAL DETAILED HEAD',
         'Unit',
         response[0].allocationType+' '+response[0].finYear+ ' Allocation (in '+response[0].amountIn+')',
         response[0].allocationType+' '+response[0].finYear+ ' Addition (in '+response[0].amountIn+')',
@@ -1268,7 +1272,7 @@ export class BudgetAllocationReportComponent implements OnInit {
       let columns;
     if(this.formdata.get('majorHead')?.value.majorHead=='2037') {
       columns = [
-        'DETAILED OBJECT HEAD',
+        'REVENUE OBJECT HEAD',
         response[0].allocationType.replaceAll(',', ' ')+' '+response[0].finYear.replaceAll(',', ' ')+' Allocation to ICG (in'+response[0].amountIn+')',
         'Unit',
         response[0].allocationType.replaceAll(',', ' ')+' '+response[0].finYear.replaceAll(',', ' ')+' Allocation (in'+response[0].amountIn+')',
@@ -1279,7 +1283,7 @@ export class BudgetAllocationReportComponent implements OnInit {
       ];
     }else{
       columns = [
-        'DETAILED CAPITAL HEAD',
+        'CAPITAL DETAILED HEAD',
         response[0].allocationType.replaceAll(',', ' ')+' '+response[0].finYear.replaceAll(',', ' ')+' Allocation to ICG (in'+response[0].amountIn+')',
         'Unit',
         response[0].allocationType.replaceAll(',', ' ')+' '+response[0].finYear.replaceAll(',', ' ')+' Allocation (in'+response[0].amountIn+')',
@@ -1330,13 +1334,13 @@ export class BudgetAllocationReportComponent implements OnInit {
       if(this.formdata.get('subHead')?.value.majorHead=='2037'){
         headingRow.push('');
         headingRow.push('FINANCIAL YEAR:'+this.unitwiseYear);
-        headingRow.push('DETAILED OBJECT HEAD:'+this.unitwiseUnit);
+        headingRow.push('REVENUE OBJECT HEAD:'+this.unitwiseUnit);
         headingRow.push('');
         csvData.push(headingRow);
       }else{
         headingRow.push('');
         headingRow.push('FINANCIAL YEAR:'+this.unitwiseYear);
-        headingRow.push('DETAILED CAPITAL HEAD:'+this.unitwiseUnit);
+        headingRow.push('CAPITAL DETAILED HEAD:'+this.unitwiseUnit);
         headingRow.push('');
         csvData.push(headingRow);
       }
@@ -1405,7 +1409,7 @@ export class BudgetAllocationReportComponent implements OnInit {
     if(this.formdata.get('majorHead')?.value.majorHead=='2037'){
       columns = [
         'SERIAL NO.',
-        'DETAILED OBJECT HEAD',
+        'REVENUE OBJECT HEAD',
         'ALLOCATION TYPE',
         'ALLOCATION AMOUNT (in '+response[0].amountIn+')'
       ];
@@ -1413,7 +1417,7 @@ export class BudgetAllocationReportComponent implements OnInit {
     else{
       columns = [
         'SERIAL NO.',
-        'DETAILED CAPITAL HEAD',
+        'CAPITAL DETAILED HEAD',
         'ALLOCATION TYPE',
         'ALLOCATION AMOUNT (in '+response[0].amountIn+')'
       ];
@@ -1516,14 +1520,14 @@ export class BudgetAllocationReportComponent implements OnInit {
     let columns;
     if(this.formdata.get('majorHead')?.value.majorHead=='2037'){
       columns = [
-        'DETAILED OBJECT HEAD',
+        'REVENUE OBJECT HEAD',
         'Unit',
         response[0].allocationType+' '+response[0].finYear+ ' Allocation (in '+response[0].amountIn+')',
       ];
     }
     else {
       columns = [
-        'DETAILED CAPITAL HEAD',
+        'CAPITAL DETAILED HEAD',
         'Unit',
         response[0].allocationType+' '+response[0].finYear+ ' Allocation (in '+response[0].amountIn+')',
       ];
@@ -1583,7 +1587,8 @@ export class BudgetAllocationReportComponent implements OnInit {
 
       if (i == 0) {
         tableData.push({
-          'MAJORHEAD': '4047',
+          'MAJORHEAD': '4047\n' +
+            '00.037.01 ',
           'DETAILED HEAD': 'CAPITAL DETAILED HEAD',
           'ALLOCATION ': '',
         });
@@ -1612,14 +1617,16 @@ export class BudgetAllocationReportComponent implements OnInit {
       }
     }
   }
-    tableData.push({
-      'MAJORHEAD': '',
-      'DETAILED HEAD': 'Grand Total',
-      'ALLOCATION ': Total,
-    });
+    if(this.gt){
+      tableData.push({
+        'MAJORHEAD': '',
+        'DETAILED HEAD': 'Grand Total',
+        'ALLOCATION ': Total,
+      });
+    }
     const columns = [
       'MAJORHEAD',
-      'DETAILED HEAD',
+      'HEAD',
       response[0].type + ' (' + response[0].finYear + ') Allocation (in '+response[0].amountType+')',
     ];
     const column = [
@@ -1676,7 +1683,7 @@ export class BudgetAllocationReportComponent implements OnInit {
         'Financial Year',
         'Major/Minor/Subhead',
         'Allocation Type',
-        'Detailed Object Head',
+        'Revenue Object Head',
         'Allocation Amount'+' (In '+formdata.amountType.amountType+')',
         'Reserve Fund'+ ' (In '+formdata.amountType.amountType+')'];    }
     else{
@@ -1685,7 +1692,7 @@ export class BudgetAllocationReportComponent implements OnInit {
         'Financial Year',
         'Major/Minor/Subhead',
         'Allocation Type',
-        'Detailed Capital Head',
+        'Capital Detailed Head',
         'Allocation Amount'+' (In '+formdata.amountType.amountType+')',
         'Reserve Fund'+ ' (In '+formdata.amountType.amountType+')'
       ];

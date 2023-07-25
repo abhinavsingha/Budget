@@ -248,7 +248,8 @@ export class ConstantsService {
     getMaxSectionNumber: this.serviceUrl+'contingentBillController/getMaxSectionNumber',
     saveBudgetAllocationSubHeadWiseEdit: this.serviceUrl+'budgetAllocation/saveBudgetAllocationSubHeadWiseEdit',
     getReceiptReportRevision: this.serviceUrl+'reportController/getReceiptReportRevision',
-    getContingentBillAll: this.serviceUrl+'reportController/getContingentBillAll'
+    getContingentBillAll: this.serviceUrl+'reportController/getContingentBillAll',
+    getUnitRebaseNotificationData: this.serviceUrl+'unitRebaseController/getUnitRebaseNotificationData'
 
 
   };

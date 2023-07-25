@@ -104,8 +104,11 @@ export class BudgetApproverComponent implements OnInit {
         if (result['message'] == 'success') {
           //debugger;
           this.budgetDataList = result['response'].budgetResponseist;
+
           for (let i = 0; i < this.budgetDataList.length; i++) {
-            this.budgetDataList[i].allocationAmount=parseFloat(this.budgetDataList[i].allocationAmount)+parseFloat(this.budgetDataList[i].unallocatedAmount);
+            debugger;
+            if(this.budgetDataList[i].unallocatedAmount!=undefined)
+            this.budgetDataList[i].allocationAmount=(parseFloat(this.budgetDataList[i].allocationAmount)+parseFloat(this.budgetDataList[i].unallocatedAmount)).toFixed(4);
             if (this.budgetDataList[i].balanceAmount != undefined) {
               this.budgetDataList[i].balanceAmount = parseFloat(
                 this.budgetDataList[i].balanceAmount
@@ -130,7 +133,7 @@ export class BudgetApproverComponent implements OnInit {
           this.budgetDataList = result['response'].budgetResponseist;
           for (let i = 0; i < this.budgetDataList.length; i++) {
             if(this.budgetDataList[i].unallocatedAmount!=undefined)
-              this.budgetDataList[i].allocationAmount=parseFloat(this.budgetDataList[i].allocationAmount)+parseFloat(this.budgetDataList[i].unallocatedAmount);
+              this.budgetDataList[i].allocationAmount=(parseFloat(this.budgetDataList[i].allocationAmount)+parseFloat(this.budgetDataList[i].unallocatedAmount)).toFixed(4);
           }
           // this.formdata.get('remarks')?.setValue(result['response'].budgetResponseist[0].returnRemarks);
           this.SpinnerService.hide();
@@ -1163,8 +1166,9 @@ export class BudgetApproverComponent implements OnInit {
           //debugger;
           this.budgetDataList = result['response'].budgetResponseist;
           for (let i = 0; i < this.budgetDataList.length; i++) {
+            debugger;
             if(this.budgetDataList[i].unallocatedAmount!=undefined)
-            this.budgetDataList[i].allocationAmount=parseFloat(this.budgetDataList[i].allocationAmount)+parseFloat(this.budgetDataList[i].unallocatedAmount);
+            this.budgetDataList[i].allocationAmount=(parseFloat(this.budgetDataList[i].allocationAmount)+parseFloat(this.budgetDataList[i].unallocatedAmount)).toFixed(4);
             if (this.budgetDataList[i].balanceAmount != undefined) {
               this.budgetDataList[i].balanceAmount = parseFloat(
                 this.budgetDataList[i].balanceAmount

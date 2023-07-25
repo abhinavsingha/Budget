@@ -190,7 +190,7 @@ export class NewContigentBillComponent implements OnInit {
     this.getCBData();
     this.getDashBoardDta();
     this.getSubHeadType();
-    this.getSanctionNumber();
+
   }
 
   addToList() {
@@ -296,8 +296,7 @@ export class NewContigentBillComponent implements OnInit {
 
         this.common.successAlert('Success', 'Data Added Successfully','success');
         // this.showUpdate=true;
-        this.sanctionCount++;
-        this.formdata.get('authority')?.setValue(this.sanctionCount);
+        // this.formdata.get('authority')?.setValue(this.sanctionCount);
       } else {
         Swal.fire(
           'Duplicate Entry. Select Update to update previously entered CB'
@@ -1022,9 +1021,12 @@ export class NewContigentBillComponent implements OnInit {
                 cdaParkingId:cda.cdaParkingId,
                 cdaAmount:cda.amount
               }
-              sum=sum+Number(cda.amount);
+
               if(cda.amount!=undefined||cda.amount>0)
-              cdatabledata.push(x);
+              {
+                sum=sum+Number(cda.amount);
+                cdatabledata.push(x);
+              }
             }
             if(sum!=parseFloat(this.cbList[i].amount)){
               this.common.warningAlert('CDA Amount Mismatch','CDA amount not equal to CB amount','');
@@ -1036,9 +1038,9 @@ export class NewContigentBillComponent implements OnInit {
               gst:this.formdata.get('gst')?.value,
               cdaParkingId:cdatabledata,
               allocationTypeId: this.allocation.allocTypeId,
-              onAccountOf: 'onAccountOf',
+              onAccountOf: this.formdata.get('onAccOf')?.value,
               authorityDetails:
-                'Sl. 10.1 of Schedule -10 of DFPCG-2017 vide Govt. of India , Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017',
+              this.formdata.get('authDetail')?.value,
               budgetHeadId: this.formdata.get('subHead')?.value.budgetCodeId,
               budgetFinancialYearId: this.cbList[i].finSerialNo,
               cbAmount: this.cbList[i].amount,
@@ -1157,7 +1159,7 @@ export class NewContigentBillComponent implements OnInit {
           this.common.successAlert('Updated','Successfully Updated','');
           this.showSave=true;
           this.showUpdate=false;
-          this.formdata.get('authority')?.setValue(this.sanctionCount);
+          // this.formdata.get('authority')?.setValue(this.sanctionCount);
         } else {
           Swal.fire('Cannot be updated');
         }
@@ -1418,17 +1420,77 @@ export class NewContigentBillComponent implements OnInit {
   }
   subHeadType: any;
 
-  checkDate(formdate:string,field:string) {
+  checkDate(formdata:any,formdate:string,field:string) {
     const date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     const cbDate = this.datePipe.transform(
       new Date(this.formdata.get(formdate)?.value),
       'yyyy-MM-dd'
     );
     if (cbDate != null && date != null) {
+      debugger;
       if (cbDate > date) {
         Swal.fire(field+' cannot be a future date');
         this.formdata.get(formdate)?.reset();
+        return;
         // console.log('date= ' + this.formdata.get('cbDate')?.value);
+      }
+      else{
+        if(formdate=='cbDate'){
+          if(this.cbList.length>0){
+            for(let li of this.cbList){
+              debugger;
+              if(Number(li.sanction)+1==Number(formdata.authority)&&formdata.subHead.subHeadDescr==li.subHead){
+                const prevDate = this.datePipe.transform(new Date(li.cbDate), 'yyyy-MM-dd');
+                const current = this.datePipe.transform(
+                  new Date(this.formdata.get(formdate)?.value),
+                  'yyyy-MM-dd'
+                );
+                if(prevDate!=null&&current!=null)
+                if(prevDate>current){
+                  this.common.warningAlert('CB date invalid','Current CB Date cannot be less than previous Bill date','');
+                  this.formdata.get(formdate)?.reset();
+                }
+              }
+            }
+          }
+
+        }
+        else if(formdate=='invoiceDate'){
+          if(formdata.cbDate==undefined){
+            this.common.warningAlert('Enter CB Date','Enter CB date before Invoice Date','');
+            this.formdata.get(formdate)?.reset();
+            return;
+          }
+          const prevDate = this.datePipe.transform(new Date(formdata.cbDate), 'yyyy-MM-dd');
+          const current = this.datePipe.transform(
+            new Date(this.formdata.get(formdate)?.value),
+            'yyyy-MM-dd'
+          );
+          if(prevDate!=null&&current!=null){
+            if(prevDate<current){
+              this.common.warningAlert('Invoice date invalid','Invoice Date Cannot be greater than CB Date','')
+              this.formdata.get(formdate)?.reset();
+            }
+          }
+        }
+        else{
+          if(formdata.invoiceDate==undefined){
+            this.common.warningAlert('Enter Invoice Date','Enter Invoice date before Sanction Date','');
+            this.formdata.get(formdate)?.reset();
+            return;
+          }
+          const prevDate = this.datePipe.transform(new Date(formdata.invoiceDate), 'yyyy-MM-dd');
+          const current = this.datePipe.transform(
+            new Date(this.formdata.get(formdate)?.value),
+            'yyyy-MM-dd'
+          );
+          if(prevDate!=null&&current!=null){
+            if(prevDate<current){
+              this.common.warningAlert('Sanction date invalid','Sanction Date Cannot be greater than Invoice Date','');
+              this.formdata.get(formdate)?.reset();
+            }
+          }
+        }
       }
     }
   }
@@ -1469,15 +1531,22 @@ export class NewContigentBillComponent implements OnInit {
     }
     // console.log(this.masterChecked);
   }
-
+  cbCount:any=0;
   getCbNo(formdata: any) {
-    const cbCount = this.cbList.length + 1;
+    let count:any=0
+    for(let li of this.cbList){
+      if(li.status=='Pending for Submission'&&li.subHead==formdata.subHead.subHeadDescr){
+        count++;
+      }
+    }
+    debugger;
+    this.cbCount = parseFloat(count)+parseFloat(this.sanctionCount.toString());
     const cbNo =
       this.dasboardData.userDetails.unit +
       '/CB/' +
       formdata.subHead.subheadShort +
       '/' +
-      cbCount +
+      this.cbCount +
       '/' +
       formdata.finYearName.finYear;
     this.formdata.get('cbNo')?.setValue(cbNo);
@@ -1523,15 +1592,18 @@ export class NewContigentBillComponent implements OnInit {
       this.amountEqualCda=false;
   }
 
-  private getSanctionNumber() {
-    this.apiService.getApi(this.cons.api.getMaxSectionNumber).subscribe({
+   getSanctionNumber(formdata:any) {
+    let json={
+      budgetId:formdata.subHead.budgetCodeId
+    }
+    this.apiService.postApi(this.cons.api.getMaxSectionNumber,json).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
         if (result['message'] == 'success') {
           this.sanctionCount=Number(result['response'].sectionNumber);
           this.formdata.get('authority')?.setValue(this.sanctionCount);
-
+          this.getCbNo(formdata);
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
@@ -1543,6 +1615,9 @@ export class NewContigentBillComponent implements OnInit {
       },
       complete: () => console.info('complete'),
     });
+     // this.sanctionCount=2;
+     // this.formdata.get('authority')?.setValue(this.sanctionCount);
+
     debugger;
   }
 }

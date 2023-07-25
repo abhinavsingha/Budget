@@ -68,7 +68,8 @@
                   <label>Sub Head</label>
                   <ng-select [(ngModel)]="subHead" [items]="subHeadData" bindLabel="subHeadDescr"
                     class="form-control select2bs4" formControlName="subHead" name="subHead"
-                    placeholder="Select Sub Head" (change)="getAvailableFundData()" (change)="getCbNo(formdata.value)"
+                    placeholder="Select Sub Head" (change)="getAvailableFundData()"
+                             (change)="getSanctionNumber(formdata.value)"
                     style="width: 100%">
                   </ng-select>
                 </div>
@@ -145,7 +146,7 @@
                 <div class="form-group">
                   <label>CB Date</label>
                   <input class="form-control" formControlName="cbDate" id="cbDate" placeholder="Enter Date" type="date"
-                    (change)="checkDate('cbDate','CB Date')" />
+                    (change)="checkDate(formdata.value,'cbDate','CB Date')" />
                 </div>
               </div>
               <div class="col-md-3">
@@ -165,7 +166,7 @@
               <div class="col-md-3">
                 <div class="form-group">
                   <label>Sanction Date</label>
-                  <input class="form-control" formControlName="date" id="date" placeholder="Enter Date" type="date" (change)="checkDate('date','Sanction Date')"/>
+                  <input class="form-control" formControlName="date" id="date" placeholder="Enter Date" type="date" (change)="checkDate(formdata.value,'date','Sanction Date')"/>
                 </div>
               </div>
               <div class="col-md-3">
@@ -205,7 +206,7 @@
                 <div class="form-group">
                   <label>Invoice Date</label>
                   <input class="form-control" formControlName="invoiceDate" id="invoiceDate"
-                    placeholder="Enter Invoice Date" type="date" (change)="checkDate('invoiceDate','Invoice Date')"/>
+                    placeholder="Enter Invoice Date" type="date" (change)="checkDate(formdata.value,'invoiceDate','Invoice Date')"/>
                 </div>
               </div>
               <div class="col-md-3">
@@ -238,7 +239,7 @@
                 <div class="form-group">
                   <label>File Date</label>
                   <input class="form-control" formControlName="fileDate" id="fileDate" placeholder="Enter Invoice Date"
-                    type="date" (change)="checkDate('fileDate', 'File Date')"/>
+                    type="date" (change)="checkDate(formdata.value,'fileDate', 'File Date')"/>
                 </div>
               </div>
               <div class="col-md-3">
@@ -291,7 +292,7 @@
                         <th>CB Date</th>
                         <th>Status</th>
                         <th></th>
-                        <th ng-if="approvedPresent">Ink Sign</th>
+<!--                        <th ng-if="approvedPresent">Ink Sign</th>-->
 
                       </tr>
                     </thead>
@@ -316,29 +317,29 @@
                             type="button">Download
                           </button>
                         </td>
-                        <td *ngIf="cb.cbFilePath==null">
-                          <form>
-                            <div class="form-group">
-                              <div *ngIf="cb.status === 'Approved'" class="input-group">
-                                <div [formGroup]="formData" class="custom-file">
-                                  <input #uploadFileInput class="custom-file-input" (change)="setLabel(formData.value,i)"
-                                    formControlName="uploadFile" id="uploadFile" type="file">
-                                  <label class="custom-file-label" for="invoice"
-                                    *ngIf="cb.label!=''">{{cb.label}}</label>
-                                  <label class="custom-file-label" for="invoice" *ngIf="cb.label==''">Choose
-                                    File</label>
-                                </div>
-                                <div class="input-group-append">
-                                  <span (click)="uploadBill(cb)" class="input-group-text"
-                                    style="cursor: pointer">Upload</span>
-                                </div>
-                                <div class="input-group-append" *ngIf="docId!=undefined">
-                                  <span class="input-group-text" (click)="viewFile(docId)">View</span>
-                                </div>
-                              </div>
-                            </div>
-                          </form>
-                        </td>
+<!--                        <td *ngIf="cb.cbFilePath==null">-->
+<!--                          <form>-->
+<!--                            <div class="form-group">-->
+<!--                              <div *ngIf="cb.status === 'Approved'" class="input-group">-->
+<!--                                <div [formGroup]="formData" class="custom-file">-->
+<!--                                  <input #uploadFileInput class="custom-file-input" (change)="setLabel(formData.value,i)"-->
+<!--                                    formControlName="uploadFile" id="uploadFile" type="file">-->
+<!--                                  <label class="custom-file-label" for="invoice"-->
+<!--                                    *ngIf="cb.label!=''">{{cb.label}}</label>-->
+<!--                                  <label class="custom-file-label" for="invoice" *ngIf="cb.label==''">Choose-->
+<!--                                    File</label>-->
+<!--                                </div>-->
+<!--                                <div class="input-group-append">-->
+<!--                                  <span (click)="uploadBill(cb)" class="input-group-text"-->
+<!--                                    style="cursor: pointer">Upload</span>-->
+<!--                                </div>-->
+<!--                                <div class="input-group-append" *ngIf="docId!=undefined">-->
+<!--                                  <span class="input-group-text" (click)="viewFile(docId)">View</span>-->
+<!--                                </div>-->
+<!--                              </div>-->
+<!--                            </div>-->
+<!--                          </form>-->
+<!--                        </td>-->
                       </tr>
                     </tbody>
                   </table>

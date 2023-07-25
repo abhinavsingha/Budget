@@ -580,7 +580,7 @@ export class BudgetAllocationSubheadwiseComponent {
           console.error(e);
           this.common.faliureAlert('Error', e['error']['message'], 'error');
         },
-        complete: () => console.info('complete'),
+        complete: () => window.location.reload(),
       });
 
     // this.common.successAlert('Success', 'Finally submitted', 'success');

@@ -72,6 +72,8 @@ export class ApprovedComponent implements OnInit {
                 isType='Budget Revision';
               else
                 isType='Budget Allocation';
+            }else if(list[i].isBgOrCg=="RR"){
+              isType='Budget Rebase';
             }
             else if(list[i].isBgOrCg=="BR"){
               isType='Budget Receipt';
@@ -123,6 +125,9 @@ export class ApprovedComponent implements OnInit {
       else
       this.router.navigate(['/budget-approval']);
 
+    }else if(entry.type=='RR'){
+      this.router.navigate(['/budget-rebase']);
+      // this.common.successAlert('Rebase','Unit rebase detail','');
     }
 
     else

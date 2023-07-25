@@ -133,7 +133,7 @@ export class UnitRebaseReportComponent {
             'FINANCIAL YEAR & ALLOCATION TYPE':rebaseList[i].finYear+' '+rebaseList[i].allocationType,
             'REVENUE OBJECT HEAD':rebaseList[i].subHead,
             'ALLOCATION IN:(':rebaseList[i].allocationAmount,
-            'EXPENDITURE IN:(INR)':rebaseList[i].expenditureAmount,
+            'EXPENDITURE IN:(':rebaseList[i].expenditureAmount,
             'BALANCE IN : (':rebaseList[i].balAmount,
             'LAST CB DATE':'',
           });
@@ -143,7 +143,7 @@ export class UnitRebaseReportComponent {
             'FINANCIAL YEAR & ALLOCATION TYPE':rebaseList[i].finYear+' '+rebaseList[i].allocationType,
             'REVENUE OBJECT HEAD':rebaseList[i].subHead,
             'ALLOCATION IN:(':rebaseList[i].allocationAmount,
-            'EXPENDITURE IN:(INR)':rebaseList[i].expenditureAmount,
+            'EXPENDITURE IN:(':rebaseList[i].expenditureAmount,
             'BALANCE IN : (':rebaseList[i].balAmount,
             'LAST CB DATE':this.datePipe.transform(new Date(rebaseList[i].lastCbDate),'yyyy-MM-dd'),
           });
@@ -157,7 +157,7 @@ export class UnitRebaseReportComponent {
             'FINANCIAL YEAR & ALLOCATION TYPE':'',
             'REVENUE OBJECT HEAD':'Grand Total',
             'ALLOCATION IN:(':allocTotal,
-            'EXPENDITURE IN:(INR)':expTotal,
+            'EXPENDITURE IN:(':expTotal,
             'BALANCE IN : (':balTotal,
             'LAST CB DATE':'',
           });
@@ -167,7 +167,7 @@ export class UnitRebaseReportComponent {
       'FINANCIAL YEAR & ALLOCATION TYPE',
       'REVENUE OBJECT HEAD',
       'ALLOCATION IN:( '+response[0].list[0].amountType+' )',
-      'EXPENDITURE IN:(INR)',
+      'EXPENDITURE IN:( '+response[0].list[0].amountType+' )' ,
       'BALANCE IN : ( '+response[0].list[0].amountType+' )',
       'LAST CB DATE',
     ];
@@ -175,7 +175,7 @@ export class UnitRebaseReportComponent {
       'FINANCIAL YEAR & ALLOCATION TYPE',
       'REVENUE OBJECT HEAD',
       'ALLOCATION IN:(',
-      'EXPENDITURE IN:(INR)',
+      'EXPENDITURE IN:(',
       'BALANCE IN : (',
       'LAST CB DATE',
     ];

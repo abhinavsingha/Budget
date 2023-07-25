@@ -183,7 +183,7 @@ export class InboxComponent implements OnInit {
               isRevision:list[i].isRevision
             };
             this.inboxList.push(entry);
-            debugger;
+            // debugger;
           }
         }
       } else {
