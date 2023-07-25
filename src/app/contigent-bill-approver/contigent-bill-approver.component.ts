@@ -183,7 +183,7 @@ export class ContigentBillApproverComponent implements OnInit {
                   'error'
                 );
               },
-              complete: () => this.SpinnerService.hide(),
+              complete: () => window.location.reload(),
             });
 
           this.SpinnerService.hide();

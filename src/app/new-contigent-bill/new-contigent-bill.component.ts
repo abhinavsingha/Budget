@@ -1473,7 +1473,7 @@ export class NewContigentBillComponent implements OnInit {
             }
           }
         }
-        else{
+        else if(formdate=='date'){
           if(formdata.invoiceDate==undefined){
             this.common.warningAlert('Enter Invoice Date','Enter Invoice date before Sanction Date','');
             this.formdata.get(formdate)?.reset();
