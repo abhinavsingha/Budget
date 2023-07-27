@@ -127,7 +127,7 @@ export class UnitRebaseReportComponent {
     let balTotal:any=0.0;
 
     for(let i=0;i<rebaseList.length;i++){
-
+        debugger;
         if(rebaseList[i].lastCbDate==null){
           tableData.push({
             'FINANCIAL YEAR & ALLOCATION TYPE':rebaseList[i].finYear+' '+rebaseList[i].allocationType,
@@ -152,7 +152,7 @@ export class UnitRebaseReportComponent {
         allocTotal=parseFloat(allocTotal)+parseFloat(rebaseList[i].allocationAmount);
         expTotal=parseFloat(expTotal)+parseFloat(rebaseList[i].expenditureAmount);
         balTotal=parseFloat(balTotal)+parseFloat(rebaseList[i].balAmount);
-        if(i=rebaseList.length-1){
+        if(i==rebaseList.length-1){
           tableData.push({
             'FINANCIAL YEAR & ALLOCATION TYPE':'',
             'REVENUE OBJECT HEAD':'Grand Total',

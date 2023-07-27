@@ -579,4 +579,10 @@ export class CdaParkingReportComponent implements OnInit {
     else
       this.showReportType=true;
   }
+
+  reset() {
+    this.formdata.get('reportType')?.reset();
+    this.formdata.get('subHead')?.reset();
+    this.subHeadData=[];
+  }
 }
