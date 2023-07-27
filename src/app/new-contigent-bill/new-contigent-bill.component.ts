@@ -202,7 +202,8 @@ export class NewContigentBillComponent implements OnInit {
           if (
             key != 'returnRemarks' &&
             key != 'firmName' &&
-            key != 'invoiceFile'
+            key != 'invoiceFile'&&
+            key != 'balance'
           ) {
             undefinedValues.push(key);
           }

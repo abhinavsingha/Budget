@@ -151,6 +151,46 @@
               </div>
               <div class="col-md-3">
                 <div class="form-group">
+                  <label>Firm Name</label>
+                  <input class="form-control" formControlName="firmName" id="FirmName" placeholder="Enter Firm Name"
+                         type="text" />
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Invoice Number</label>
+                  <input class="form-control" formControlName="invoiceNo" id="invoiceNo"
+                         placeholder="Enter Invoice Number" type="text" />
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Invoice Date</label>
+                  <input class="form-control" formControlName="invoiceDate" id="invoiceDate"
+                         placeholder="Enter Invoice Date" type="date" (change)="checkDate(formdata.value,'invoiceDate','Invoice Date')"/>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="invoice">Invoice Upload</label>
+                  <div class="input-group">
+                    <div class="custom-file">
+                      <input #invoiceFileInput class="custom-file-input" formControlName="file" id="invoice"
+                             type="file">
+                      <label class="custom-file-label" for="invoice" id="invoice2">Choose file</label>
+                    </div>
+                    <div class="input-group-append">
+                      <span (click)="upload('invoice')" class="input-group-text" style="cursor: pointer">Upload</span>
+                    </div>
+
+                    <div class="input-group-append" *ngIf="invoice!=undefined">
+                      <span class="input-group-text" (click)="viewFile(invoice)">View</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
                   <label>Sanction Unit</label>
                   <input class="form-control" formControlName="authorityUnit" id="authorityUnit" placeholder=""
                     type="text" readonly />
@@ -188,46 +228,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label>Firm Name</label>
-                  <input class="form-control" formControlName="firmName" id="FirmName" placeholder="Enter Firm Name"
-                    type="text" />
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label>Invoice Number</label>
-                  <input class="form-control" formControlName="invoiceNo" id="invoiceNo"
-                    placeholder="Enter Invoice Number" type="text" />
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label>Invoice Date</label>
-                  <input class="form-control" formControlName="invoiceDate" id="invoiceDate"
-                    placeholder="Enter Invoice Date" type="date" (change)="checkDate(formdata.value,'invoiceDate','Invoice Date')"/>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label for="invoice">Invoice Upload</label>
-                  <div class="input-group">
-                    <div class="custom-file">
-                      <input #invoiceFileInput class="custom-file-input" formControlName="file" id="invoice"
-                        type="file">
-                      <label class="custom-file-label" for="invoice" id="invoice2">Choose file</label>
-                    </div>
-                    <div class="input-group-append">
-                      <span (click)="upload('invoice')" class="input-group-text" style="cursor: pointer">Upload</span>
-                    </div>
 
-                    <div class="input-group-append" *ngIf="invoice!=undefined">
-                      <span class="input-group-text" (click)="viewFile(invoice)">View</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
               <div class="col-md-3">
                 <div class="form-group">
                   <label>File Number</label>

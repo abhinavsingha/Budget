@@ -729,6 +729,7 @@ export class DashboardComponent implements OnInit {
             this.totalUBalance=result['response'][0].sumBal;
             this.totalUExpenditure=result['response'][0].sumExp;
             this.totalUExpenditurePer=result['response'][0].perBal;
+            this.unitwiseUnit=this.tableData[0].amountIn;
             // for(let li of this.tableData){
             //   this.totalUAllocated=Number(parseFloat(li.allocatedAmount)+parseFloat(this.totalUAllocated)).toFixed(4);
             //   this.totalUExpenditure=Number(parseFloat(li.expenditureAmount)+parseFloat(this.totalUExpenditure)).toFixed(4);
@@ -844,6 +845,7 @@ export class DashboardComponent implements OnInit {
         this.totalSBalance=result['response'][0].sumBal;
         this.totalSExpenditure=result['response'][0].sumExp;
         this.totalSExpenditurePer=result['response'][0].perBal;
+        this.subheadwiseUnit=this.subHeadsResponse[0].amountIn;
         // for(let li of this.subHeadsResponse){
         //   this.totalSAllocated=Number(parseFloat(li.allocatedAmount)+parseFloat(this.totalSAllocated)).toFixed(4);
         //   this.totalSExpenditure=Number(parseFloat(li.expenditureAmount)+parseFloat(this.totalSExpenditure)).toFixed(4);

@@ -1718,4 +1718,8 @@ export class BudgetAllocationReportComponent implements OnInit {
     const filename = 'ReserveReport.csv';
     this.generateCSV(tableData, columns, filename, column);
   }
+
+  getSubheadByMajorHead(formdata: any) {
+
+  }
 }

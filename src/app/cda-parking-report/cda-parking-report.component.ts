@@ -455,6 +455,7 @@ export class CdaParkingReportComponent implements OnInit {
         },
         complete: () => console.info('complete'),
       });
+      debugger;
   }
 
   downloadPdf(pdfUrl: string, fileName: any): void {
@@ -563,6 +564,7 @@ export class CdaParkingReportComponent implements OnInit {
           },
           complete: () => console.info('complete'),
         });
+      debugger;
     }
   }
 
