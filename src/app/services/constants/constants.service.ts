@@ -7,11 +7,11 @@ export class ConstantsService {
   constructor() {}
 
   serverRedirectUrl = 'https://icg.net.in/auth/realms/icgrms/protocol/openid-connect/logout?redirect_uri=https://icg.net.in/'; //For Production Server
-  // serviceUrl = 'https://icg.net.in/budget/'; //prod server
+  serviceUrl = 'https://icg.net.in/cgbudget/'; //prod server
   // serviceUrl = 'https://icg.net.in/cgbudget/'; //UAT server
-  serviceUrl = 'http://172.20.10.05:1111/';
+  // serviceUrl = 'http://172.20.10.05:1111/';
   // serviceUrl = 'http://172.20.10.04:1111/';
-  //  serviceUrl = 'http://192.168.43.153:1111/';
+  //  serviceUrl = 'http://192.168.29.9:1111/';
   api = {
     getDataBudgetAllocation:
       this.serviceUrl + 'budgetAllocation/getDataBudgetAllocation',
@@ -160,8 +160,6 @@ export class ConstantsService {
       this.serviceUrl +
       'budgetAllocation/getAvailableFundFindByUnitIdAndFinYearId',
 
-    saveBudgetRevisionData:
-      this.serviceUrl + 'budgetAllocation/saveBudgetRevision',
 
     saveAuthData: this.serviceUrl + 'budgetAllocation/saveAuthData',
 
@@ -198,8 +196,6 @@ export class ConstantsService {
 
     updateInboxOutBox: this.serviceUrl + 'dashBoard/updateInboxOutBox',
 
-    approveRevisionBudgetOrReject:
-      this.serviceUrl + 'budgetAllocation/approveRevisionBudgetOrReject',
 
     getAllRevisionGroupId:
       this.serviceUrl + 'budgetAllocation/getAllRevisionGroupId',
@@ -244,13 +240,17 @@ export class ConstantsService {
     getConsolidateReceiptReport: this.serviceUrl +'reportController/getConsolidateReceiptReport',
     getDashBordSubHeadwiseExpenditure: this.serviceUrl+'dashBoard/getDashBordSubHeadwiseExpenditure',
     getReservedFund: this.serviceUrl+'reportController/getReservedFund',
-    saveAuthDataRevision: this.serviceUrl+'budgetAllocation/saveAuthDataRevision',
     getAllGroupIdAndUnitIdRevisionCase: this.serviceUrl+'budgetAllocation/getAllGroupIdAndUnitIdRevisionCase',
     getMaxSectionNumber: this.serviceUrl+'contingentBillController/getMaxSectionNumber',
     saveBudgetAllocationSubHeadWiseEdit: this.serviceUrl+'budgetAllocation/saveBudgetAllocationSubHeadWiseEdit',
     getReceiptReportRevision: this.serviceUrl+'reportController/getReceiptReportRevision',
     getContingentBillAll: this.serviceUrl+'reportController/getContingentBillAll',
-    getUnitRebaseNotificationData: this.serviceUrl+'unitRebaseController/getUnitRebaseNotificationData'
+    getUnitRebaseNotificationData: this.serviceUrl+'unitRebaseController/getUnitRebaseNotificationData',
+
+
+    saveAuthDataRevision: this.serviceUrl+'budgetAllocation/saveAuthDataRevision2',
+    saveBudgetRevisionData:this.serviceUrl + 'budgetAllocation/saveBudgetRevision2',
+    approveRevisionBudgetOrReject:this.serviceUrl + 'budgetAllocation/approveRevisionBudgetOrReject2',
 
 
   };

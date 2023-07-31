@@ -219,7 +219,7 @@
                           </thead>
                           <tbody>
                             <tr
-                              *ngFor="let entry of tableData| paginate :{itemsPerPage:15,currentPage:p} ; let i = index">
+                              *ngFor="let entry of tableData| paginate :{id: 'pagination1',itemsPerPage:15,currentPage:p} ; let i = index">
                               <td>{{15 *(p-1)+i+1}}</td>
                               <td>{{entry.cgUnit.descr}}</td>
                               <td>{{entry.budgetFinancialYear.finYear}}</td>
@@ -251,7 +251,7 @@
                         </div>
                         <div class="col-sm-12 col-md-7">
                           <div class="dataTables_paginate paging_simple_numbers" id="exmple2_paginate">
-                            <pagination-controls class="pagination float-right"
+                            <pagination-controls id="pagination1" class="pagination float-right"
                               (pageChange)="p = $event"></pagination-controls>
                           </div>
                         </div>
@@ -298,7 +298,7 @@
                           </thead>
                           <tbody>
                             <tr
-                              *ngFor="let entry of subHeadsResponse| paginate :{itemsPerPage:15,currentPage:q} ; let i = index">
+                              *ngFor="let entry of subHeadsResponse| paginate :{id: 'pagination2',itemsPerPage:15,currentPage:q} ; let i = index">
                               <td>{{15 *(q-1)+i+1}}</td>
                               <td>{{entry.unitName}}</td>
                               <td>{{entry.finYear}}</td>
@@ -333,7 +333,7 @@
 <!--                              (pageChange)="onPageChange2($event)">-->
 <!--                            </ngx-pagination>-->
 
-<pagination-controls class="pagination float-right"
+<pagination-controls id="pagination2" class="pagination float-right"
                               (pageChange)="q = $event"></pagination-controls>
                           </div>
                         </div>

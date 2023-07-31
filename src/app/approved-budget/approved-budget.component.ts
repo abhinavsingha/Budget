@@ -486,5 +486,14 @@ export class ApprovedBudgetComponent implements OnInit {
         // console.log('date= ' + this.formdata.get('cbDate')?.value);
       }
     }
+
+      let flag:boolean=this.common.checkDate(this.formdata.get(field)?.value);
+      if(!flag){
+        this.common.warningAlert('Invalid Date','Enter date of this fiscal year only','');
+        this.formdata.get(field)?.reset();
+      }
+
   }
+
+
 }

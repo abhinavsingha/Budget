@@ -177,7 +177,7 @@ export class NewContigentBillComponent implements OnInit {
     private apiService: ApiCallingServiceService,
     private cons: ConstantsService,
     private SpinnerService: NgxSpinnerService,
-    private common: CommonService,
+    public common: CommonService,
     private datePipe: DatePipe
   ) {}
 
@@ -1620,5 +1620,13 @@ export class NewContigentBillComponent implements OnInit {
      // this.formdata.get('authority')?.setValue(this.sanctionCount);
 
     debugger;
+  }
+
+  fiscalCheckDate(formdata: any, feild: string) {
+    let flag:boolean=this.common.checkDate(this.formdata.get(feild)?.value);
+      if(!flag){
+        this.common.warningAlert('Invalid Date','Enter date of this fiscal year only','');
+        this.formdata.get(feild)?.reset();
+      }
   }
 }

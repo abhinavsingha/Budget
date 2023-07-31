@@ -183,7 +183,7 @@ export class ContigentBillApproverComponent implements OnInit {
                   'error'
                 );
               },
-              complete: () => window.location.reload(),
+              complete: () => this.router.navigate(['/inbox']),
             });
 
           this.SpinnerService.hide();

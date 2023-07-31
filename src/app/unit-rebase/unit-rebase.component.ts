@@ -13,6 +13,7 @@ import {
   Validators,
 } from '@angular/forms';
 import {SharedService} from "../services/shared/shared.service";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-unit-rebase',
@@ -64,6 +65,7 @@ export class UnitRebaseComponent {
 
   formdata!: FormGroup;
   constructor(
+    private datePipe: DatePipe,
     private SpinnerService: NgxSpinnerService,
     private cons: ConstantsService,
     private apiService: ApiCallingServiceService,
@@ -452,5 +454,24 @@ export class UnitRebaseComponent {
         this.SpinnerService.hide();
       }
     );
+  }
+  checkDate(formdata:any,field:string) {
+    const date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    const cbDate = this.datePipe.transform(
+      new Date(formdata.authDate),
+      'yyyy-MM-dd'
+    );
+    if (cbDate != null && date != null) {
+      if (cbDate > date) {
+        Swal.fire('Date cannot be a future date');
+        this.formdata.get(field)?.reset();
+        // console.log('date= ' + this.formdata.get('cbDate')?.value);
+      }
+    }
+    let flag:boolean=this.common.checkDate(this.formdata.get(field)?.value);
+    if(!flag){
+      this.common.warningAlert('Invalid Date','Enter date of this fiscal year only','');
+      this.formdata.get(field)?.reset();
+    }
   }
 }

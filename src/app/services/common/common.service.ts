@@ -6,7 +6,8 @@ import {DatePipe} from "@angular/common";
   providedIn: 'root',
 })
 export class CommonService {
-  constructor(private datePipe: DatePipe) {}
+  constructor(private datePipe: DatePipe) {
+  }
 
   async successAlert(title: string, msg: string, icon: string) {
     // Swal.fire('Thank you...', 'You submitted succesfully!', 'success')
@@ -25,19 +26,30 @@ export class CommonService {
     let dateArr = date.split('-');
     return dateArr[2] + '-' + dateArr[1] + '-' + dateArr[0];
   }
-  checkDate(formdate:string,field:string,inputDate:string) {
-    const date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-    const cbDate = this.datePipe.transform(
-      new Date(inputDate),
-      'yyyy-MM-dd'
-    );
-    if (cbDate != null && date != null) {
-      if (cbDate > date) {
-        return false;
-      }
-      else
-        return true;
+  startDate: Date | undefined;
+  checkDate(inputDate:any) {
+    if(inputDate==null){
+      return true;
     }
-    return false;
+    let currentYear = new Date().getFullYear();
+    const fiscalYearStartMonth = 3; // 0-indexed, so 3 represents April
+    const fiscalYearEndMonth = 2;
+    const currentMonth = new Date().getMonth();
+
+    if(currentMonth<fiscalYearStartMonth){
+      currentYear=currentYear-1;
+    }
+    this.startDate = new Date(currentYear, fiscalYearStartMonth, 1);
+    console.log(inputDate);
+    const date =(new Date(inputDate));
+    console.log(date);
+    console.log(this.startDate);
+
+    if(date<this.startDate){
+
+      return false;
+    }
+    else
+      return true;
   }
 }

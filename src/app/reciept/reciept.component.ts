@@ -846,6 +846,10 @@ export class RecieptComponent {
         // console.log('date= ' + this.formdata.get('cbDate')?.value);
       }
     }
+    let flag:boolean=this.common.checkDate(this.uploadDocuments[i].authorityData);
+    if(!flag){
+      this.common.warningAlert('Invalid Date','Enter date of this fiscal year only','');
+      this.uploadDocuments[i].authorityData=undefined;
+    }
   }
-
 }

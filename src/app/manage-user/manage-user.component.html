@@ -75,7 +75,7 @@
                 <div class="form-group">
                   <label>From Date</label>
                   <input type="date" class="form-control" id="Date1" placeholder="Enter From Date"
-                    formControlName="fromDate" />
+                    formControlName="fromDate" (change)="checkDate(formdata.value,'fromDate')"/>
                 </div>
               </div>
               <div class="col-md-4">

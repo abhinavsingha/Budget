@@ -165,7 +165,7 @@
                 <div class="form-group">
                   <label>Occurrence Date</label>
                   <input type="date" class="form-control" id="OccurrenceDate" placeholder="Enter Occurrence Date"
-                    formControlName="occDate" />
+                    formControlName="occDate" (change)="checkDate(formdataForToStation.value,'occDate')" />
                 </div>
               </div>
 
@@ -188,7 +188,7 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Date</label>
-                  <input type="date" class="form-control" id="Date" placeholder="Enter Date" formControlName="date" />
+                  <input type="date" class="form-control" id="Date" placeholder="Enter Date" formControlName="date" (change)="checkDate(formdataForToStation.value,'date')"/>
                 </div>
               </div>
               <div class="col-md-4">

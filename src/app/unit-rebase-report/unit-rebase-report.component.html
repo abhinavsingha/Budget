@@ -51,13 +51,13 @@
               <div class="col-md-3">
                 <div class="form-group">
                   <label>From Date<span class="text-danger">*</span></label>
-                  <input class="form-control" formControlName="fromDate" placeholder="Enter Date" type="date" />
+                  <input class="form-control" formControlName="fromDate" placeholder="Enter Date" type="date" (change)="checkDate(formdata.value,'fromDate')"/>
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
                   <label>To Date<span class="text-danger">*</span></label>
-                  <input class="form-control" formControlName="toDate" placeholder="Enter Date" type="date" />
+                  <input class="form-control" formControlName="toDate" placeholder="Enter Date" type="date" (change)="checkDate(formdata.value,'toDate')"/>
                 </div>
               </div>
             </div>

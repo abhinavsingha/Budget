@@ -11,6 +11,7 @@ import * as FileSaver from 'file-saver';
 import { HttpClient } from '@angular/common/http';
 import {SharedService} from "../services/shared/shared.service";
 import * as Papa from "papaparse";
+import {DatePipe} from "@angular/common";
 
 class AllocationRepoList {
   financialYear: any;
@@ -91,6 +92,7 @@ export class BudgetAllocationReportComponent implements OnInit {
   }
 
   constructor(
+    private datePipe: DatePipe,
     private sharedService: SharedService,
     private SpinnerService: NgxSpinnerService,
     private cons: ConstantsService,
@@ -1720,6 +1722,28 @@ export class BudgetAllocationReportComponent implements OnInit {
   }
 
   getSubheadByMajorHead(formdata: any) {
+
+  }
+
+  checkDate(formdata:any,field:string) {
+    const date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    const cbDate = this.datePipe.transform(
+      new Date(this.formdata.get(field)?.value),
+      'yyyy-MM-dd'
+    );
+    if (cbDate != null && date != null) {
+      if (cbDate > date) {
+        Swal.fire('Date cannot be a future date');
+        this.formdata.get(field)?.reset();
+        // console.log('date= ' + this.formdata.get('cbDate')?.value);
+      }
+    }
+
+    let flag:boolean=this.common.checkDate(this.formdata.get(field)?.value);
+    if(!flag){
+      this.common.warningAlert('Invalid Date','Enter date of this fiscal year only','');
+      this.formdata.get(field)?.reset();
+    }
 
   }
 }

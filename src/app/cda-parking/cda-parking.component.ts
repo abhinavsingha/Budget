@@ -7,6 +7,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { bootstrapApplication } from '@angular/platform-browser';
 import {SharedService} from "../services/shared/shared.service";
+import {DatePipe} from "@angular/common";
 class CdaSubRequest {
   allocationTypeID: any;
   ginNo: any;
@@ -80,6 +81,7 @@ export class CdaParkingComponent implements OnInit {
   @ViewChild('authFileInput') authFileInput: any;
   authFile: any;
   constructor(
+    private datePipe: DatePipe,
     private apiService: ApiCallingServiceService,
     private cons: ConstantsService,
     private SpinnerService: NgxSpinnerService,
@@ -530,5 +532,26 @@ export class CdaParkingComponent implements OnInit {
         this.submitCdaTableData();
       }
     });
+  }
+  checkDate(formdata:any) {
+    const date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    const cbDate = this.datePipe.transform(
+      new Date(this.authorityDate),
+      'yyyy-MM-dd'
+    );
+    if (cbDate != null && date != null) {
+      if (cbDate > date) {
+        Swal.fire('Date cannot be a future date');
+        this.authorityDate=undefined;
+        // console.log('date= ' + this.formdata.get('cbDate')?.value);
+      }
+    }
+
+    let flag:boolean=this.common.checkDate(this.authorityDate);
+    if(!flag){
+      this.common.warningAlert('Invalid Date','Enter date of this fiscal year only','');
+      this.authorityDate=undefined;
+    }
+
   }
 }

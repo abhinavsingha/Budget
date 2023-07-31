@@ -451,7 +451,7 @@ export class RevisionApprovalComponent {
         Type: this.budgetDataLists[i].allocTypeId.allocType.replaceAll(',',' '),
         Allocated_Fund: this.budgetDataLists[i].allocationAmount.replaceAll(',',' '),
         AdditionalOrWithdrawal: this.budgetDataLists[i].revisedAmount.replaceAll(',',' '),
-        Revised:(parseFloat(this.budgetDataLists[i].allocationAmount)+parseFloat(this.budgetDataLists[i].revisedAmount))
+        Revised:Number((parseFloat(this.budgetDataLists[i].allocationAmount)+parseFloat(this.budgetDataLists[i].revisedAmount))).toFixed(4)
       }
       totalA=totalA+parseFloat(this.budgetDataLists[i].allocationAmount);
       totalR=totalR+(parseFloat(this.budgetDataLists[i].allocationAmount)+parseFloat(this.budgetDataLists[i].revisedAmount));
@@ -612,5 +612,11 @@ export class RevisionApprovalComponent {
         // console.log('date= ' + this.formdata.get('cbDate')?.value);
       }
     }
+    let flag:boolean=this.common.checkDate(this.formdata.get(field)?.value);
+    if(!flag){
+      this.common.warningAlert('Invalid Date','Enter date of this fiscal year only','');
+      this.formdata.get(field)?.reset();
+    }
   }
+
 }

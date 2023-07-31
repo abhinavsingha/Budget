@@ -9,7 +9,7 @@ import { SubHeadWiseUnitList } from '../model/sub-head-wise-unit-list';
 import { UploadDocuments } from '../model/upload-documents';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
-import { Location } from '@angular/common';
+import {DatePipe, Location} from '@angular/common';
 
 import {
   FormArray,
@@ -78,6 +78,7 @@ export class ManageUserRoleComponent {
   }
 
   constructor(
+    private datePipe:DatePipe,
     private SpinnerService: NgxSpinnerService,
     private cons: ConstantsService,
     private apiService: ApiCallingServiceService,
@@ -328,5 +329,26 @@ export class ManageUserRoleComponent {
         },
         complete: () => console.info('complete'),
       });
+  }
+  checkDate(formdata:any,field:string) {
+    const date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    const cbDate = this.datePipe.transform(
+      new Date(this.formdata.get(field)?.value),
+      'yyyy-MM-dd'
+    );
+    if (cbDate != null && date != null) {
+      if (cbDate > date) {
+        Swal.fire('Date cannot be a future date');
+        this.formdata.get(field)?.reset();
+        // console.log('date= ' + this.formdata.get('cbDate')?.value);
+      }
+    }
+
+    let flag:boolean=this.common.checkDate(this.formdata.get(field)?.value);
+    if(!flag){
+      this.common.warningAlert('Invalid Date','Enter date of this fiscal year only','');
+      this.formdata.get(field)?.reset();
+    }
+
   }
 }
