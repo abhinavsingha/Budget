@@ -14,6 +14,7 @@ import {Router} from "@angular/router";
 
 
 interface cb {
+  allocatedAmount:any;
   gst:any;
   cdaParkingId:any;
   authGroupId: any;
@@ -150,6 +151,7 @@ export class CbVerificationComponent {
               cdaData.push(cdaItr);
             }
             const entry: cb = {
+              allocatedAmount:getCbList[i].allocatedAmount,
               gst:getCbList[i].gst,
               cdaParkingId:cdaData,
               authGroupId: getCbList[i].authoritiesList[0].authGroupId,
@@ -302,39 +304,42 @@ export class CbVerificationComponent {
                         budgetFinancialYearId:this.formdata.get('finYearName')?.value.serialNo,
                         unitId:this.unitId
                       };
-                      this.apiService.postApi(this.cons.api.getAvailableFund, json).subscribe({
-                        next: (v: object) => {
-                          this.SpinnerService.hide();
-                          let result: { [key: string]: any } = v;
-                          if (result['message'] == 'success') {
-                            this.FundAllotted = result['response'];
-                            this.expenditure = parseFloat(this.FundAllotted.expenditure);
-                            this.formdata.get('progressive')?.setValue(this.expenditure);
-                            this.formdata.get('budgetAllocated')?.setValue(parseFloat(this.FundAllotted.fundallocated)*this.FundAllotted.amountUnit.amount);
-                            this.budgetAllotted = cbEntry.budgetAllocated;
-                            this.formdata.get('progressive')?.setValue(parseFloat(this.FundAllotted.expenditure));
-                            this.formdata
-                              .get('balance')
-                              ?.setValue(parseFloat(this.FundAllotted.fundallocated)*this.FundAllotted.amountUnit.amount - parseFloat(this.FundAllotted.expenditure));
-                            this.cdaData=result['response'].cdaParkingTrans;
-                            for(let cda of this.cdaData){
-                              cda.remainingCdaAmount=parseFloat(cda.remainingCdaAmount)*parseFloat(cda.amountType.amount);
-                              for(let cbEntryItr of cbEntry.cdaParkingId){
-                                if(cda.cdaParkingId==cbEntryItr.cdaParkingId)
-                                  cda.amount=cbEntryItr.cdaAmount;
-                              }
-                            }
-                          } else {
-                            this.common.faliureAlert('Please try later', result['message'], '');
-                          }
-                        },
-                        error: (e) => {
-                          this.SpinnerService.hide();
-                          console.error(e);
-                          this.common.faliureAlert('Error', e['error']['message'], 'error');
-                        },
-                        complete: () => console.info('complete'),
-                      });
+                      // this.apiService.postApi(this.cons.api.getAvailableFund, json).subscribe({
+                      //   next: (v: object) => {
+                      //     this.SpinnerService.hide();
+                      //     let result: { [key: string]: any } = v;
+                      //     if (result['message'] == 'success') {
+                      //       this.FundAllotted = result['response'];
+                      //       this.expenditure = parseFloat(this.FundAllotted.expenditure);
+                      //       this.formdata.get('progressive')?.setValue(this.expenditure);
+                      //       this.formdata.get('budgetAllocated')?.setValue(Number((
+                      //         parseFloat(result['response'].fundAvailable) *
+                      //         parseFloat(result['response'].amountUnit.amount)
+                      //       )+parseFloat(result['response'].expenditure)).toFixed(4));
+                      //       this.budgetAllotted = cbEntry.budgetAllocated;
+                      //       this.formdata.get('progressive')?.setValue(parseFloat(this.FundAllotted.expenditure));
+                      //       this.formdata
+                      //         .get('balance')
+                      //         ?.setValue(parseFloat(this.FundAllotted.fundallocated)*this.FundAllotted.amountUnit.amount - parseFloat(this.FundAllotted.expenditure));
+                      //       this.cdaData=result['response'].cdaParkingTrans;
+                      //       for(let cda of this.cdaData){
+                      //         cda.remainingCdaAmount=parseFloat(cda.remainingCdaAmount)*parseFloat(cda.amountType.amount);
+                      //         for(let cbEntryItr of cbEntry.cdaParkingId){
+                      //           if(cda.cdaParkingId==cbEntryItr.cdaParkingId)
+                      //             cda.amount=cbEntryItr.cdaAmount;
+                      //         }
+                      //       }
+                      //     } else {
+                      //       this.common.faliureAlert('Please try later', result['message'], '');
+                      //     }
+                      //   },
+                      //   error: (e) => {
+                      //     this.SpinnerService.hide();
+                      //     console.error(e);
+                      //     this.common.faliureAlert('Error', e['error']['message'], 'error');
+                      //   },
+                      //   complete: () => console.info('complete'),
+                      // });
                     }
                   }
                   this.SpinnerService.hide();
@@ -362,6 +367,12 @@ export class CbVerificationComponent {
     else if(cbEntry.budgetHeadID.subHeadTypeId=='02'){
       this.formdata.get('sHT')?.setValue('Voted');
     }
+
+    this.formdata.get('budgetAllocated')?.setValue(Number(cbEntry.allocatedAmount));
+
+    this.budgetAllotted= Number(cbEntry.allocatedAmount);
+    this.formdata.get('progressive')?.setValue(cbEntry.progressiveAmount);
+    this.formdata.get('balance')?.setValue(Number(cbEntry.allocatedAmount)-Number(cbEntry.progressiveAmount));
     this.formdata.get('onAccOf')?.setValue(cbEntry.onAccountOf)
     this.formdata.get('authDetail')?.setValue(cbEntry.authorityDetails)
     this.formdata.get('amount')?.setValue(cbEntry.amount);

@@ -282,8 +282,8 @@
                   <table class="table table-hover text-nowrap" id="cbTable">
                     <thead>
                       <tr>
-                        <th><input type="checkbox" [(ngModel)]="masterChecked" (change)="selectAll()"
-                            [ngModelOptions]="{standalone: true}"> All</th>
+<!--                        <th><input type="checkbox" [(ngModel)]="masterChecked" (change)="selectAll()"-->
+<!--                            [ngModelOptions]="{standalone: true}"> All</th>-->
                         <!--                      <th><input type="checkbox" [checked]="isAllCheckBoxChecked()" (change)="checkAllCheckBox($event)"></th>-->
                         <th>F.Y.</th>
                         <th>CB Unit</th>
@@ -302,7 +302,7 @@
                       <tr *ngFor="let cb of cbList  | paginate :{itemsPerPage:10,currentPage:p}; let i = index"
                         id="htmlData">
                         <!--                      <td><input (change)="getCheckedRows(cb.cbNo)" type="checkbox" value="{{cb.cbNo}}"></td>-->
-                        <td *ngIf="cb.cbFilePath==null"><input *ngIf="cb.status=='Pending for Submission'" type="checkbox" [(ngModel)]="cb.checked" [ngModelOptions]="{standalone: true}"></td>
+<!--                        <td *ngIf="cb.cbFilePath==null"><input *ngIf="cb.status=='Pending for Submission'" type="checkbox" [(ngModel)]="cb.checked" [ngModelOptions]="{standalone: true}"></td>-->
                         <td *ngIf="cb.cbFilePath==null">{{cb.finYearName}}</td>
                         <td *ngIf="cb.cbFilePath==null">{{cb.unit}}</td>
                         <td *ngIf="cb.cbFilePath==null">{{cb.subHead}}</td>
@@ -353,11 +353,11 @@
           </form>
         </div>
         <!-- /.card-body -->
-        <div class="card-footer">
-          <div class="row">
-            <button (click)="confirmModel()" class="btn btn-primary mr-2" type="submit">Submit</button>
-          </div>
-        </div>
+<!--        <div class="card-footer">-->
+<!--          <div class="row">-->
+<!--            <button (click)="confirmModel()" class="btn btn-primary mr-2" type="submit">Submit</button>-->
+<!--          </div>-->
+<!--        </div>-->
       </div>
       <!-- /.row -->
     </div>

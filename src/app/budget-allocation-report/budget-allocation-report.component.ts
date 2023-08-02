@@ -1242,15 +1242,16 @@ export class BudgetAllocationReportComponent implements OnInit {
         this.prevSub=ferDetails[i].subHead.replaceAll(',', ' ');
         allocTotal=allocTotal+parseFloat(ferDetails[i].allocAmount.replaceAll(',', ''));
         billTotal=billTotal+parseFloat(ferDetails[i].billSubmission.replaceAll(',', ''));
-        percentBillTotal=percentBillTotal+parseFloat(ferDetails[i].percentageBill.replaceAll(',', ''));
+
         if(i==ferDetails.length-1){
+          percentBillTotal=(billTotal*100)/allocTotal;
           tableData.push({
             'REVENUE OBJECT HEAD':'',
             'Allocation to ICG':'',
             'Unit':'Total:',
             'Allocation':allocTotal,
             'Bill Submission':billTotal,
-            '% BillSubmission w.r.t.':percentBillTotal,
+            '% BillSubmission w.r.t.':Number(percentBillTotal).toFixed(2),
             'CGDA Booking':'',
             '% Bill Clearance w.r.t.':'',
           });
@@ -1265,7 +1266,7 @@ export class BudgetAllocationReportComponent implements OnInit {
             'Unit':'Grand Total:',
             'Allocation':grandAllocTotal,
             'Bill Submission':grandBillTotal,
-            '% BillSubmission w.r.t.':'',
+            '% BillSubmission w.r.t.':Number((grandBillTotal*100)/grandAllocTotal).toFixed(2),
             'CGDA Booking':'',
             '% Bill Clearance w.r.t.':'',
           });
@@ -1392,7 +1393,7 @@ export class BudgetAllocationReportComponent implements OnInit {
     this.unitwiseUnit=response[0].unitName;
     this.unitwiseYear=response[0].finYear;
     for(let i=0;i<response.length;i++){
-          beallocTotal=beallocTotal+parseFloat(response[i].allocationAmount);
+          // beallocTotal=beallocTotal+parseFloat(response[i].allocationAmount);
       tableData.push({
         'SERIAL NO.':i+1,
         'SUB HEAD':response[i].budgetHead,

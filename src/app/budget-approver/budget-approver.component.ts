@@ -107,8 +107,13 @@ export class BudgetApproverComponent implements OnInit {
 
           for (let i = 0; i < this.budgetDataList.length; i++) {
             debugger;
-            if(this.budgetDataList[i].unallocatedAmount!=undefined)
-            this.budgetDataList[i].allocationAmount=(parseFloat(this.budgetDataList[i].allocationAmount)+parseFloat(this.budgetDataList[i].unallocatedAmount)).toFixed(4);
+            if(this.budgetDataList[i].unallocatedAmount!=undefined) {
+              this.budgetDataList[i].allocationAmount1 = (parseFloat(this.budgetDataList[i].allocationAmount) + parseFloat(this.budgetDataList[i].unallocatedAmount)).toFixed(4);
+            }
+            else{
+              this.budgetDataList[i].allocationAmount1 = (parseFloat(this.budgetDataList[i].allocationAmount)).toFixed(4);
+            }
+
             if (this.budgetDataList[i].balanceAmount != undefined) {
               this.budgetDataList[i].balanceAmount = parseFloat(
                 this.budgetDataList[i].balanceAmount
@@ -301,10 +306,10 @@ export class BudgetApproverComponent implements OnInit {
     this.multipleCdaParking = [];
     this.multipleCdaParking.push(new MultiCdaParking());
     if(data.revisedAmount!=undefined)
-      this.totalAmountToAllocateCDAParking = (parseFloat(data.allocationAmount)).toFixed(4);
+      this.totalAmountToAllocateCDAParking = (parseFloat(data.allocationAmount1)).toFixed(4);
         // +parseFloat(data.revisedAmount)).toFixed(4);
     else
-      this.totalAmountToAllocateCDAParking = data.allocationAmount;
+      this.totalAmountToAllocateCDAParking = data.allocationAmount1;
     this.balancedRemaingCdaParkingAmount = this.totalAmountToAllocateCDAParking;
     this.isdisableSubmitButton = true;
     this.isdisableUpdateButton = true;
@@ -442,9 +447,9 @@ export class BudgetApproverComponent implements OnInit {
     this.multipleCdaParking.push(new MultiCdaParking());
     // this.totalAmountToAllocateCDAParking = budgetData.allocationAmount;
     if(budgetData.revisedAmount!=undefined)
-      this.totalAmountToAllocateCDAParking = (parseFloat(budgetData.allocationAmount)).toFixed(4);
+      this.totalAmountToAllocateCDAParking = (parseFloat(budgetData.allocationAmount1)).toFixed(4);
     else
-      this.totalAmountToAllocateCDAParking = budgetData.allocationAmount;
+      this.totalAmountToAllocateCDAParking = budgetData.allocationAmount1;
 
     this.balancedRemaingCdaParkingAmount = '0.0000';
     this.isdisableSubmitButton = true;
@@ -1167,8 +1172,12 @@ export class BudgetApproverComponent implements OnInit {
           this.budgetDataList = result['response'].budgetResponseist;
           for (let i = 0; i < this.budgetDataList.length; i++) {
             debugger;
-            if(this.budgetDataList[i].unallocatedAmount!=undefined)
-            this.budgetDataList[i].allocationAmount=(parseFloat(this.budgetDataList[i].allocationAmount)+parseFloat(this.budgetDataList[i].unallocatedAmount)).toFixed(4);
+            if(this.budgetDataList[i].unallocatedAmount!=undefined){
+             this.budgetDataList[i].allocationAmount1=(parseFloat(this.budgetDataList[i].allocationAmount)+parseFloat(this.budgetDataList[i].unallocatedAmount)).toFixed(4);
+            }
+            else{
+              this.budgetDataList[i].allocationAmount1=(parseFloat(this.budgetDataList[i].allocationAmount)).toFixed(4);
+            }
             if (this.budgetDataList[i].balanceAmount != undefined) {
               this.budgetDataList[i].balanceAmount = parseFloat(
                 this.budgetDataList[i].balanceAmount

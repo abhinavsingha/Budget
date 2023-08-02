@@ -258,7 +258,7 @@ export class NewContigentBillComponent implements OnInit {
         invoiceFile: this.invoice,
         returnRemarks: this.formdata.get('returnRemarks')?.value,
         status: 'Pending for Submission',
-        checked: false,
+        checked: true,
         progressiveAmount: this.formdata.get('progressive')?.value,
         fileNo: this.formdata.get('fileNo')?.value,
         fileDate: this.formdata.get('fileDate')?.value,
@@ -294,8 +294,8 @@ export class NewContigentBillComponent implements OnInit {
         if(label1!=null)
           label1.textContent='Choose File';
         this.browseFileInput=undefined;
-
-        this.common.successAlert('Success', 'Data Added Successfully','success');
+        this.confirmModel();
+        // this.common.successAlert('Success', 'Data Added Successfully','success');
         // this.showUpdate=true;
         // this.formdata.get('authority')?.setValue(this.sanctionCount);
       } else {
@@ -353,18 +353,18 @@ export class NewContigentBillComponent implements OnInit {
             this.budgetAllotted = 0;
             this.formdata.get('budgetAllocated')?.setValue(0);
           } else {
-            this.budgetAllotted = (
-              parseFloat(result['response'].fundallocated) *
+            this.budgetAllotted = Number((
+              parseFloat(result['response'].fundAvailable) *
               parseFloat(result['response'].amountUnit.amount)
-            ).toFixed(4);
+            )+parseFloat(result['response'].expenditure)).toFixed(4);
             this.formdata
               .get('budgetAllocated')
               ?.setValue(
-                (
-                  parseFloat(result['response'].fundallocated) *
-                  parseFloat(result['response'].amountUnit.amount)
-                ).toFixed(4)
-              );
+                (Number((
+                    parseFloat(result['response'].fundAvailable) *
+                    parseFloat(result['response'].amountUnit.amount)
+                  )+parseFloat(result['response'].expenditure)).toFixed(4)
+              ));
           }
           this.cdaData=result['response'].cdaParkingTrans;
           for(let cda of this.cdaData){
@@ -1290,6 +1290,8 @@ export class NewContigentBillComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.submitList();
+      }else{
+        this.cbList.pop();
       }
     });
   }
