@@ -205,7 +205,7 @@
                         <div class="input-group-append">
                           <span class="input-group-text" (click)="uploadFile(i)">Upload</span>
                         </div>
-                        <div class="input-group-append" *ngIf="uploadDocuments[i]!=undefined">
+                        <div class="input-group-append" *ngIf="uploadDocuments[i].uploadDocId!=undefined">
                           <span class="input-group-text" (click)="viewFile(uploadDocuments[i].uploadDocId)">View</span>
                         </div>
                       </div>

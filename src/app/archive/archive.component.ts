@@ -17,6 +17,7 @@ class InboxList {
   unitName: string | undefined;
   groupId: string | undefined;
   status: string | undefined;
+  type1:any;
 }
 
 
@@ -81,7 +82,8 @@ export class ArchiveComponent implements OnInit {
               unitName: list[i].toUnit.descr,
               groupId: list[i].groupId,
               status: list[i].status,
-              type: list[i].isBgOrCg
+              type: list[i].isBgOrCg,
+              type1: list[i].type
             };
             this.inboxList.push(entry);
           }

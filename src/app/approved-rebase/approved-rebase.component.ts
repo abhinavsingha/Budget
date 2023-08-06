@@ -142,12 +142,16 @@ export class ApprovedRebaseComponent implements OnInit {
             new Date(li.dateOfRebase),
             'dd/MM/yyyy'
           );
-          li.lastCbDate=this.datePipe.transform(
-            new Date(li.lastCbDate),
-            'dd/MM/yyyy'
-          )
+          if(li.lastCbDate!=null){
+            li.lastCbDate=this.datePipe.transform(
+              new Date(li.lastCbDate),
+              'dd/MM/yyyy'
+            );
+          }
+          else{
+            li.lastCbDate='';
+          }
         }
-
       },
       (error) => {
         console.error(error);

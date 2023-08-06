@@ -1204,7 +1204,7 @@ export class BudgetAllocationReportComponent implements OnInit {
     let grandBillTotal=0.0;
       for(let i=0;i<ferDetails.length;i++){
         if(i>0){
-          if(this.prevSub!=ferDetails[i].subHead.replaceAll(',', ' ')){
+          if(this.prevSub!=ferDetails[i].subHead.replaceAll(',', ' ')&&ferDetails[i].subHead.replaceAll(',', ' ')!=''){
             tableData.push({
               'REVENUE OBJECT HEAD':'',
               'Allocation to ICG':'',
@@ -1628,7 +1628,7 @@ export class BudgetAllocationReportComponent implements OnInit {
       });
     }
     const columns = [
-      'MAJORHEAD',
+      'MAJOR/MINOR/SUBHEAD',
       'HEAD',
       response[0].type + ' (' + response[0].finYear + ') Allocation (in '+response[0].amountType+')',
     ];

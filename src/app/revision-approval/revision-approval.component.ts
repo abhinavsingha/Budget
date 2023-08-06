@@ -359,6 +359,13 @@ export class RevisionApprovalComponent {
   openPdfUrlInNewTab(pdfUrl: string): void {
     window.open(pdfUrl, '_blank');
   }
+
+  confirm(){
+
+  }
+
+
+
   save(formDataValue: any) {
     let newSubmitJson = {
       authDate: formDataValue.authDate,
@@ -466,8 +473,19 @@ export class RevisionApprovalComponent {
       Allocated_Fund: totalA,
       AdditionalOrWithdrawal: totalRE,
       Revised:totalR
-    }
+    };
+
     tableData.push(table);
+    table= {
+      Financial_Year: '',
+      Unit: '',
+      Subhead: '',
+      Type: 'Grand Total',
+      Allocated_Fund: totalA,
+      AdditionalOrWithdrawal: totalRE,
+      Revised:totalR
+    }
+    tableData.push(table)
     const columns = [
       'Financial_Year',
       'Unit',

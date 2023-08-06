@@ -88,7 +88,7 @@
                         <button *ngIf="buggetData.isCDAparking == '0' && buggetData.isFlag!='1'" type="submit" class="btn btn-warning mr-2"
                           data-toggle="modal" data-target="#modal-lg" (click)="addCDAParking(buggetData,((p-1)*15)+i)">Add
                           CDA Parking</button>
-                        <button *ngIf="buggetData.isCDAparking == '1'" type="submit" class="btn btn-primary mr-2"
+                        <button *ngIf="buggetData.isCDAparking == '1'&&buggetData.isFlag!='1'&&buggetData.isRevision!='1'" type="submit" class="btn btn-primary mr-2"
                           data-toggle="modal" data-target="#modal-lg" (click)="viewCDAParking(buggetData)"  >View &
                           Update</button></td>
                       <td *ngIf=" type=='Budget Allocation'"><button  type="submit" class="btn btn-primary mr-2" data-toggle="modal" data-target="#modal-lg1" (click)="cdaDataList(buggetData.cdaData)" >View CDA Info</button></td>
@@ -203,7 +203,7 @@
                       </td>
                       <td><input type="number"  min="0" class="form-control" id="Aallocationamount"
                           placeholder="Please Enter Amount" [(ngModel)]="cdaParking.amount"
-                          (keyup)="getCDAParkingAllocatedAmount()" /></td>
+                          (keyup)="getCDAParkingAllocatedAmount()" (keyup)="checkOldDataChange(cdaParking)" /></td>
                       <td>{{cdaParking.balance}}</td>
                       <td><button type="button" class="btn btn-danger"
                           (click)="deleteFromMultipleCdaParking(i)">Delete</button></td>
@@ -260,8 +260,7 @@
                   <tbody>
                   <tr *ngFor="let cdaParking of cdaData; let i = index">
                     <td>
-                      {{cdaParking.ginNo.cdaName
-                      }}
+                      {{cdaParking.ginNo.cdaName}}
                     </td>
                     <td>{{cdaParking.allocationAmount}}</td>
                     <td>{{cdaParking.amount}}</td>

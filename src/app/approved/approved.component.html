@@ -59,7 +59,7 @@
                             </tr>
                           </thead>
                           <tbody>
-                          <tr *ngFor="let li of inboxList| filter: searchKey| paginate :{itemsPerPage:20,currentPage:p}; let i = index " [ngClass]="{ 'ng-star-inserted new': li.isCda == false }"
+                          <tr *ngFor="let li of inboxList| filter: searchKey| paginate :{itemsPerPage:20,currentPage:p}; let i = index "
                               id="htmlData" >
                             <td>{{20 *(p-1)+i+1}}</td>
                             <td>{{li.isType}}</td>

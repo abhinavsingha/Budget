@@ -1092,6 +1092,7 @@ export class BudgetAllocationComponent implements OnInit {
               parseFloat(this.subHeadFilterDatas[i].cdaParkingTrans[j].amountType.amount)) /
             parseFloat(this.formdata.get('amountType')?.value.amount)
           ).toFixed(4);
+          this.subHeadFilterDatas[i].cdaParkingTrans[j].amountType=this.formdata.get('amountType')?.value;
         }
         this.subHeadFilterDatas[i].totalAmount = (
           (this.subHeadFilterDatas[i].totalAmount *
@@ -1142,7 +1143,7 @@ export class BudgetAllocationComponent implements OnInit {
           this.formdata.patchValue({
             allocationType: result['response'].allocationType,
           });
-          this.formdata.get('finYearName')?.setValue(result['response'].budgetFinancialYear);
+          this.formdata.get('finYearId')?.setValue(result['response'].budgetFinancialYear);
 
 
 

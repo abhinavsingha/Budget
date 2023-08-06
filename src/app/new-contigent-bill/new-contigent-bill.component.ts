@@ -203,13 +203,17 @@ export class NewContigentBillComponent implements OnInit {
             key != 'returnRemarks' &&
             key != 'firmName' &&
             key != 'invoiceFile'&&
-            key != 'balance'
+            key != 'balance'&&
+            key != 'gst'
           ) {
             undefinedValues.push(key);
           }
         }
       }
     });
+    if(this.formdata.get('gst')?.value==undefined){
+      this.formdata.get('gst')?.setValue(0);
+    }
     if (this.invoice == undefined) {
       undefinedValues.push('invoiceFile');
     }

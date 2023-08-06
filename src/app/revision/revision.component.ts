@@ -45,6 +45,7 @@ class revision {
   allocationTypeId: any;
   remark: any;
   amountTypeId:any;
+  remainingAmount:any;
 }
 
 @Component({
@@ -672,6 +673,7 @@ export class RevisionComponent {
         allocationTypeId: this.tabledata[i].allocationType.allocationTypeId,
         amountTypeId:this.formdata.get('amountType')?.value.amountTypeId,
         remark: this.formdata.get('remarks')?.value,
+        remainingAmount:this.tabledata[i].manipulate
       };
       requestJson.push(entry);
     }

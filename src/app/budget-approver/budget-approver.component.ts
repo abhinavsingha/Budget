@@ -47,6 +47,7 @@ export class BudgetApproverComponent implements OnInit {
   private currentIndex: number = 0;
   private authGroupId: any;
   private isRevision: boolean=false;
+  previousParking: any[]=[];
 
   ngOnInit(): void {
     this.sharedService.updateInbox();
@@ -107,7 +108,7 @@ export class BudgetApproverComponent implements OnInit {
 
           for (let i = 0; i < this.budgetDataList.length; i++) {
             debugger;
-            if(this.budgetDataList[i].unallocatedAmount!=undefined) {
+            if(this.budgetDataList[i].unallocatedAmount!=undefined&&this.budgetDataList[i].isTYpe!='REBASE') {
               this.budgetDataList[i].allocationAmount1 = (parseFloat(this.budgetDataList[i].allocationAmount) + parseFloat(this.budgetDataList[i].unallocatedAmount)).toFixed(4);
             }
             else{
@@ -315,6 +316,60 @@ export class BudgetApproverComponent implements OnInit {
     this.isdisableUpdateButton = true;
     this.showUpdate = false;
     this.showSubmit = true;
+    this.previousParking=[];
+
+
+    let submitJson={
+      financialYearId:this.budgetDataList[index].finYear.serialNo,
+      budgetHeadId:this.budgetDataList[index].subHead.budgetCodeId,
+      allocationTypeId:this.budgetDataList[index].allocTypeId.allocTypeId,
+      authGroupId:localStorage.getItem('group_id'),
+      amountType:this.budgetDataList[index].amountUnit.amountTypeId,
+    }
+
+
+
+    // put rebase condition
+    debugger;
+    if(this.budgetDataList[this.currentIndex].isTYpe=='REBASE'){
+
+      this.apiService
+        .postApi(this.cons.api.getOldCdaDataForRebase, submitJson)
+        .subscribe({
+          next: (v: object) => {
+            this.SpinnerService.hide();
+            let result: { [key: string]: any } = v;
+            if (result['message'] == 'success') {
+              const keys = Object.keys(result['response'].subHeadData);
+              for (const key of keys) {
+                const value = result['response'].subHeadData[key];
+                console.log(`${key}: ${value}`);
+                let oldCdaData:MultiCdaParking= {
+                  id: undefined,
+                  cdaParkingUnit: value.ginNo,
+                  amount: value.totalParkingAmount,
+                  balance: undefined,
+                  oldData: value.totalParkingAmount
+                }
+                this.multipleCdaParking.push(oldCdaData);
+                this.getCDAParkingAllocatedAmount();
+              }
+
+
+            } else {
+              this.common.faliureAlert('Please try later', result['message'], '');
+            }
+          },
+          error: (e) => {
+            this.SpinnerService.hide();
+            console.error(e);
+            this.common.faliureAlert('Error', e['error']['message'], 'error');
+          },
+          complete: () => console.info('complete'),
+        });
+
+    }
+
   }
 
   deleteFromMultipleCdaParking(index: any) {
@@ -347,7 +402,9 @@ export class BudgetApproverComponent implements OnInit {
   addNewRow() {
     this.multipleCdaParking.push(new MultiCdaParking());
   }
-
+  addOldParking(parking:MultiCdaParking) {
+    this.multipleCdaParking.push(parking);
+  }
   cdaParkingListResponseData: any[] = [];
 
   saveCdaParkingData() {
@@ -367,17 +424,24 @@ export class BudgetApproverComponent implements OnInit {
         transactionId: this.getCurrentSubHeadData.allocationId,
       });
     }
+    debugger;
     this.saveCDAParking(this.cdaParkingListResponseData);
   }
 
   saveCDAParking(data: any) {
     this.SpinnerService.show();
     var newSubmitJson = {
+      totalExpenditure: this.budgetDataList[this.currentIndex].unallocatedAmount,
       cdaRequest: data,
     };
-
+    let url=this.cons.api.saveCdaParkingData;
+    if(this.budgetDataList[0].isTYpe=='REBASE'){
+      debugger;
+      url=this.cons.api.saveCdaParkingDataForRebase;
+    }
+    debugger;
     this.apiService
-      .postApi(this.cons.api.saveCdaParkingData, newSubmitJson)
+      .postApi(url, newSubmitJson)
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -829,10 +893,8 @@ export class BudgetApproverComponent implements OnInit {
     let totalA = 0.0;
     for (let i = 0; i < this.budgetDataList.length; i++) {
       totalA =
-        totalA +
-        parseFloat(this.budgetDataList[i].allocationAmount) *
-          this.budgetDataList[i].amountUnit.amount;
-      // totalR=totalR+(parseFloat(this.budgetDataList[i].balanceAmount)*this.budgetDataList[i].remeningBalanceUnit.amount);
+        Number(totalA + Number(this.budgetDataList[i].allocationAmount));
+      totalR=Number(totalR+Number(this.budgetDataList[i].revisedAmount));
       let table: any = {
         Financial_Year: this.budgetDataList[i].finYear.finYear.replaceAll(
           ',',
@@ -845,7 +907,6 @@ export class BudgetApproverComponent implements OnInit {
           ' '
         ),
         Type: this.budgetDataList[i].allocTypeId.allocType.replaceAll(',', ' '),
-        // Remaining_Amount: (parseFloat(this.budgetDataList[i].balanceAmount)*this.budgetDataList[i].remeningBalanceUnit.amount/this.budgetDataList[i].amountUnit.amount).toString(),
         Allocated_Fund: parseFloat(this.budgetDataList[i].allocationAmount
           .replaceAll(',', ' ')
           .toString())-parseFloat(this.budgetDataList[i].revisedAmount.replaceAll(',', ' ').toString()),
@@ -857,18 +918,29 @@ export class BudgetApproverComponent implements OnInit {
       if(parseFloat(this.budgetDataList[i].allocationAmount)!=0)
         tableData.push(table);
     }
-    let table: TableData = {
+    let table: any = {
       Financial_Year: '',
       To_Unit: '',
       From_Unit: '',
       Subhead: '',
-      Type: 'TOTAL',
-      Allocated_Fund: (
-        parseFloat(totalA.toFixed(4)) /
-        parseFloat(this.budgetDataList[0].amountUnit.amount)
-      ).toString(),
+      Type: 'Total',
+      Allocated_Fund: Number(totalA-totalR),
+      Additional_Or_Withdrawal:totalR,
+      Revised_Amount:totalA,
     };
-    //Ashish ne kaha total hata do so hata diya
+    tableData.push(table);
+    table = {
+      Financial_Year: '',
+      To_Unit: '',
+      From_Unit: '',
+      Subhead: '',
+      Type: 'Grand Total',
+      Allocated_Fund: Number(totalA-totalR),
+      Additional_Or_Withdrawal:totalR,
+      Revised_Amount:totalA,
+    };
+    tableData.push(table);
+    //Ashish ne kaha total hata do so hata diya phir bola wapas lagado total and grand total
     // tableData.push(table);
 
 
@@ -1201,5 +1273,14 @@ export class BudgetApproverComponent implements OnInit {
   else if(this.budgetDataList[0].isTYpe == 'U'||this.budgetDataList[0].isTYpe == 'u'){
     this.router.navigate(['/budget-allocation']);
   }
+  }
+
+  checkOldDataChange(cdaParking: any) {
+    if(cdaParking.oldData!=undefined){
+      if(cdaParking.amount<cdaParking.oldData){
+        this.common.warningAlert('Amount cannot be less than previous expenditure','Amount cannot be less than previous expenditure of '+cdaParking.oldData,'');
+      }
+    }
+
   }
 }

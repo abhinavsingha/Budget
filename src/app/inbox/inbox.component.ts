@@ -84,6 +84,7 @@ export class InboxComponent implements OnInit {
   ) {}
 
   redirect(li: InboxList) {
+
     debugger;
     this.sharedService.isRevision=li.isRevision;
     localStorage.setItem('isInboxOrOutbox', 'inbox');
@@ -140,6 +141,10 @@ export class InboxComponent implements OnInit {
       // this.sharedService.redirectedFrom!='approved';
       this.router.navigate(['/revision-approval']);
     }
+    else if(li.isType=='Budget Rebase'){
+      this.updateMsgStatusMain(li.mangeInboxId);
+      this.router.navigate(['/budget-rebase']);
+    }
   }
 
   private inboxlist() {
@@ -165,9 +170,12 @@ export class InboxComponent implements OnInit {
             else if(list[i].isBgOrCg=="CB"){
               isType='Contingent Bill';
             }
+            else if(list[i].isBgOrCg=="RR"){
+              isType='Budget Rebase';
+            }
             const entry: InboxList = {
-              mangeInboxId:list[i].mangeInboxId,
-              isCda:list[i].isCda,
+              mangeInboxId: list[i].mangeInboxId,
+              isCda: list[i].isCda,
               serial: i + 1,
               isType: isType,
               createDate: this.convertEpochToDateTime(list[i].createdOn),
@@ -180,7 +188,7 @@ export class InboxComponent implements OnInit {
               groupId: list[i].groupId,
               status: list[i].status,
               type: list[i].type,
-              isRevision:list[i].isRevision
+              isRevision: list[i].isRevision,
             };
             this.inboxList.push(entry);
             // debugger;
@@ -255,5 +263,21 @@ export class InboxComponent implements OnInit {
   }
   openPdfUrlInNewTab(pdfUrl: string): void {
     window.open(pdfUrl, '_blank');
+  }
+
+  private updateMsgStatusMain(msgId: any) {
+
+    this.apiService
+      .getApi(this.cons.api.updateMsgStatusMain +'/'+msgId)
+      .subscribe(
+        (res) => {
+          let result: { [key: string]: any } = res;
+        },
+        (error) => {
+          console.error(error);
+          this.SpinnerService.hide();
+        }
+      );
+
   }
 }

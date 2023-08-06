@@ -248,10 +248,12 @@ export class UnitRebaseComponent {
               }
             });
           } else {
+            debugger;
             this.common.faliureAlert('Please try later', result['message'], '');
           }
         },
         error: (e) => {
+          debugger;
           this.SpinnerService.hide();
           console.error(e);
           this.common.faliureAlert('Error', e['error']['message'], 'error');

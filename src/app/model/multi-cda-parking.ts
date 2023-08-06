@@ -3,4 +3,5 @@ export class MultiCdaParking {
   cdaParkingUnit: any;
   amount: any;
   balance:any;
+  oldData:any;
 }

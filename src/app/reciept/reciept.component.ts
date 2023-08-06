@@ -280,6 +280,7 @@ export class RecieptComponent {
   file: any;
 
   onChangeFile(event: any,i:number) {
+    debugger;
     if (event.target.files.length > 0) {
       this.file = event.target.files[0];
       // debugger;
@@ -289,6 +290,7 @@ export class RecieptComponent {
   }
   uploadFileResponse: any;
   uploadFile(index: any) {
+    debugger;
     const formData = new FormData();
     formData.append('file', this.file);
 

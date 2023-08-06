@@ -129,6 +129,9 @@ export class OutboxComponent implements OnInit {
       this.sharedService.redirectedFrom = 'approved';
       this.router.navigate(['/budget-approval']);
     }
+    else if(li.isType=='Budget Rebase'){
+      this.router.navigate(['/budget-rebase']);
+    }
   }
 
   private outboxlist() {
@@ -152,6 +155,9 @@ export class OutboxComponent implements OnInit {
             }
             else if(list[i].isBgOrCg=="CB"){
               isType='Contingent Bill';
+            }
+            else if(list[i].isBgOrCg=="RR"){
+              isType='Budget Rebase';
             }
             const entry: InboxList = {
               serial: i + 1,
@@ -197,6 +203,9 @@ export class OutboxComponent implements OnInit {
       isType='BR'
     else if(li.isType=='Budget Receipt')
       isType='BR'
+    else if(li.isType=='Budget Rebase'){
+      isType='RR'
+    }
     else
       isType='CB'
 

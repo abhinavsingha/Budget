@@ -571,6 +571,12 @@ export class BudgetAllocationSubheadwiseComponent {
             this.sharedService.msgId=undefined;
             this.updateInbox();
             this.budgetAllocationArray=[];
+            const delayMilliseconds = 3000;
+
+            setTimeout(() => {
+              // Reload the page
+              window.location.reload();
+            }, delayMilliseconds);
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
@@ -580,7 +586,7 @@ export class BudgetAllocationSubheadwiseComponent {
           console.error(e);
           this.common.faliureAlert('Error', e['error']['message'], 'error');
         },
-        complete: () => window.location.reload(),
+        complete: () => console.log('Complete'),
       });
 
     // this.common.successAlert('Success', 'Finally submitted', 'success');
