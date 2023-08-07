@@ -331,7 +331,7 @@ export class BudgetApproverComponent implements OnInit {
 
     // put rebase condition
     debugger;
-    if(this.budgetDataList[this.currentIndex].isTYpe=='REBASE'){
+    if(this.budgetDataList[this.currentIndex].isTYpe=='REBASE'||this.budgetDataList[0].isTYpe=='REVISION'){
 
       this.apiService
         .postApi(this.cons.api.getOldCdaDataForRebase, submitJson)
@@ -435,11 +435,11 @@ export class BudgetApproverComponent implements OnInit {
       cdaRequest: data,
     };
     let url=this.cons.api.saveCdaParkingData;
-    if(this.budgetDataList[0].isTYpe=='REBASE'){
-      debugger;
-      url=this.cons.api.saveCdaParkingDataForRebase;
-    }
-    debugger;
+    // if(this.budgetDataList[0].isTYpe=='REBASE'){
+    //   debugger;
+    //   url=this.cons.api.saveCdaParkingDataForRebase;
+    // }
+    // debugger;
     this.apiService
       .postApi(url, newSubmitJson)
       .subscribe({
