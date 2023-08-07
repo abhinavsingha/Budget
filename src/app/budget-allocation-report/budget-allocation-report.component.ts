@@ -1660,7 +1660,7 @@ export class BudgetAllocationReportComponent implements OnInit {
       tableData.push({
             'S.No':i,
             'Financial Year':formdata.finYear.finYear,
-            'Major/Minor/Subhead':formdata.majorHead.majorHead+'/'+formdata.majorHead.minorHead,
+            'Major/Minor/Subhead':formdata.majorHead.majorHead+'/00/'+formdata.majorHead.minorHead,
             'Allocation Type':formdata.allocationType.allocType,
             'Subhead':key,
             'Reserve Fund':response.allCdaData[key][0].name,
@@ -1684,7 +1684,7 @@ export class BudgetAllocationReportComponent implements OnInit {
       columns = [
         'S.No',
         'Financial Year',
-        'Major/Minor/Subhead',
+        'Major Head/Sub Major Head/Minor Head',
         'Allocation Type',
         'Revenue Object Head',
         'Allocation Amount'+' (In '+formdata.amountType.amountType+')',
@@ -1693,7 +1693,7 @@ export class BudgetAllocationReportComponent implements OnInit {
       columns = [
         'S.No',
         'Financial Year',
-        'Major/Minor/Subhead',
+        'Major Head/Sub Major Head/Minor Head',
         'Allocation Type',
         'Capital Detailed Head',
         'Allocation Amount'+' (In '+formdata.amountType.amountType+')',

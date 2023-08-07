@@ -375,12 +375,19 @@ export class UnitRebaseComponent {
         fromUnitRHQ: '',
       });
     }
-    this.tooltipFromUnitDHQ = data.cgStation.dhqName;
-    this.tooltipFromUnitRHQ = data.cgStation.rhqId;
+    // this.tooltipFromUnitDHQ = data.cgStation.dhqName;
+    this.tooltipFromUnitDHQ = data.unitDhq;
+    // this.tooltipFromUnitRHQ = data.cgStation.rhqId;
+    this.tooltipFromUnitRHQ = data.unitRhq;
+    // this.formdata.patchValue({
+    //   fromStation: data.cgStation.stationName,
+    //   fromUnitDHQ: data.cgStation.dhqName,
+    //   fromUnitRHQ: data.cgStation.rhqId,
+    // });
     this.formdata.patchValue({
       fromStation: data.cgStation.stationName,
-      fromUnitDHQ: data.cgStation.dhqName,
-      fromUnitRHQ: data.cgStation.rhqId,
+      fromUnitDHQ: data.unitDhq,
+      fromUnitRHQ: data.unitRhq,
     });
   }
 
