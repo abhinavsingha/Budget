@@ -1205,6 +1205,7 @@ export class BudgetAllocationReportComponent implements OnInit {
       for(let i=0;i<ferDetails.length;i++){
         if(i>0){
           if(this.prevSub!=ferDetails[i].subHead.replaceAll(',', ' ')&&ferDetails[i].subHead.replaceAll(',', ' ')!=''){
+            percentBillTotal=Number(Number(allocTotal)*100/Number(billTotal));
             tableData.push({
               'REVENUE OBJECT HEAD':'',
               'Allocation to ICG':'',
@@ -1220,7 +1221,6 @@ export class BudgetAllocationReportComponent implements OnInit {
             allocTotal=0.0;
             billTotal=0.0;
             percentBillTotal=0.0;
-
           }
           // else{
           //   allocTotal=allocTotal+parseFloat(ferDetails[i].allocAmount);

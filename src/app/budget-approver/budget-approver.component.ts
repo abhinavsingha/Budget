@@ -412,17 +412,31 @@ export class BudgetApproverComponent implements OnInit {
     this.multipleCdaParking;
     this.cdaParkingListResponseData = [];
     for (var i = 0; i < this.multipleCdaParking.length; i++) {
-      this.cdaParkingListResponseData.push({
-        amountTypeId: this.amountUnitData.amountTypeId,
-        budgetFinancialYearId: this.getCurrentSubHeadData.finYear.serialNo,
-        allocationTypeID: this.getCurrentSubHeadData.allocTypeId.allocTypeId,
-        ginNo: this.multipleCdaParking[i].cdaParkingUnit.ginNo,
-        budgetHeadId: this.getCurrentSubHeadData.subHead.budgetCodeId,
-        currentParkingAmount: this.multipleCdaParking[i].cdaParkingUnit.amount,
-        availableParkingAmount: this.multipleCdaParking[i].amount,
-        authGroupId: this.getCurrentSubHeadData.authGroupId,
-        transactionId: this.getCurrentSubHeadData.allocationId,
-      });
+      if(this.multipleCdaParking[i].oldData!=undefined){
+        this.cdaParkingListResponseData.push({
+          amountTypeId: this.amountUnitData.amountTypeId,
+          budgetFinancialYearId: this.getCurrentSubHeadData.finYear.serialNo,
+          allocationTypeID: this.getCurrentSubHeadData.allocTypeId.allocTypeId,
+          ginNo: this.multipleCdaParking[i].cdaParkingUnit.ginNo,
+          budgetHeadId: this.getCurrentSubHeadData.subHead.budgetCodeId,
+          totalParkingAmount: this.multipleCdaParking[i].amount,
+          availableParkingAmount: Number(Number(this.multipleCdaParking[i].amount)-Number(this.multipleCdaParking[i].oldData)),
+          authGroupId: this.getCurrentSubHeadData.authGroupId,
+          transactionId: this.getCurrentSubHeadData.allocationId,
+        });
+      }else{
+        this.cdaParkingListResponseData.push({
+          amountTypeId: this.amountUnitData.amountTypeId,
+          budgetFinancialYearId: this.getCurrentSubHeadData.finYear.serialNo,
+          allocationTypeID: this.getCurrentSubHeadData.allocTypeId.allocTypeId,
+          ginNo: this.multipleCdaParking[i].cdaParkingUnit.ginNo,
+          budgetHeadId: this.getCurrentSubHeadData.subHead.budgetCodeId,
+          totalParkingAmount: this.multipleCdaParking[i].amount,
+          availableParkingAmount: this.multipleCdaParking[i].amount,
+          authGroupId: this.getCurrentSubHeadData.authGroupId,
+          transactionId: this.getCurrentSubHeadData.allocationId,
+        });
+      }
     }
     debugger;
     this.saveCDAParking(this.cdaParkingListResponseData);
@@ -435,11 +449,11 @@ export class BudgetApproverComponent implements OnInit {
       cdaRequest: data,
     };
     let url=this.cons.api.saveCdaParkingData;
-    // if(this.budgetDataList[0].isTYpe=='REBASE'){
-    //   debugger;
-    //   url=this.cons.api.saveCdaParkingDataForRebase;
-    // }
-    // debugger;
+    if(this.budgetDataList[0].isTYpe=='REBASE'||this.budgetDataList[0].isTYpe=='REVISION'){
+      debugger;
+      url=this.cons.api.saveCdaParkingDataForRebase;
+    }
+    debugger;
     this.apiService
       .postApi(url, newSubmitJson)
       .subscribe({
