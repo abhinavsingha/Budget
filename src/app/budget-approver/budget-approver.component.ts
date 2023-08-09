@@ -44,7 +44,7 @@ export class BudgetApproverComponent implements OnInit {
 
   isInboxAndOutbox: any;
   private amountUnitData: any;
-  private currentIndex: number = 0;
+   currentIndex: number = 0;
   private authGroupId: any;
   private isRevision: boolean=false;
   previousParking: any[]=[];

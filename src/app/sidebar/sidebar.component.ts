@@ -135,4 +135,8 @@ export class SidebarComponent {
         complete: () => console.info('complete'),
       });
   }
+
+  resetShared() {
+    this.sharedService.reject=false;
+  }
 }

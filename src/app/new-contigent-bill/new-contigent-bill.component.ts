@@ -810,17 +810,36 @@ export class NewContigentBillComponent implements OnInit {
                                 this.expenditure = parseFloat(
                                   this.FundAllotted.expenditure
                                 );
-                                this.formdata
-                                  .get('progressive')
-                                  ?.setValue(this.expenditure);
+
+                                this.budgetAllotted = Number((
+                                  parseFloat(result['response'].fundAvailable) *
+                                  parseFloat(result['response'].amountUnit.amount)
+                                )+parseFloat(result['response'].expenditure)).toFixed(4);
                                 this.formdata
                                   .get('budgetAllocated')
                                   ?.setValue(
-                                    parseFloat(
-                                      this.FundAllotted.fundallocated
-                                    ) * this.FundAllotted.amountUnit.amount
-                                  );
-                                this.budgetAllotted = cbEntry.budgetAllocated;
+                                    (Number((
+                                        parseFloat(result['response'].fundAvailable) *
+                                        parseFloat(result['response'].amountUnit.amount)
+                                      )+parseFloat(result['response'].expenditure)).toFixed(4)
+                                    ));
+
+
+
+
+
+
+                                this.formdata
+                                  .get('progressive')
+                                  ?.setValue(this.expenditure);
+                                // this.formdata
+                                //   .get('budgetAllocated')
+                                //   ?.setValue(
+                                //     parseFloat(
+                                //       this.FundAllotted.fundallocated
+                                //     ) * this.FundAllotted.amountUnit.amount
+                                //   );
+                                // this.budgetAllotted = cbEntry.budgetAllocated;
                                 this.formdata
                                   .get('progressive')
                                   ?.setValue(

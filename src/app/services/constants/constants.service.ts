@@ -11,7 +11,7 @@ export class ConstantsService {
   // serviceUrl = 'https://icg.net.in/cgbudget/'; //UAT server
   // serviceUrl = 'http://172.20.10.05:1111/';
   // serviceUrl = 'http://192.168.43.153:1111/';
-  //  serviceUrl = 'http://192.168.70.9:1111/';
+  //  serviceUrl = 'http://192.168.62.9:1111/';
   api = {
     getDataBudgetAllocation:
       this.serviceUrl + 'budgetAllocation/getDataBudgetAllocation',
@@ -58,8 +58,8 @@ export class ConstantsService {
     saveCdaParkingData:
       this.serviceUrl + 'cdaParkingController/saveCdaParkingData',
 
-    updateCdaParkingData:
-      this.serviceUrl + 'cdaParkingController/updateCdaParkingData',
+    updateCdaParkingData:this.serviceUrl + 'cdaParkingController/updateCda',
+      // this.serviceUrl + 'cdaParkingController/updateCdaParkingData',
 
     getAllUser: this.serviceUrl + 'mangeUser/getAllUser',
 
@@ -253,7 +253,8 @@ export class ConstantsService {
     approveRevisionBudgetOrReject:this.serviceUrl + 'budgetAllocation/approveRevisionBudgetOrReject2',
     saveCdaParkingDataForRebase: this.serviceUrl+'cdaParkingController/saveCdaParkingDataForRebase',
     updateMsgStatusMain: this.serviceUrl+'inboxOutbox/updateMsgStatusMain',
-    getOldCdaDataForRebase: this.serviceUrl+'cdaParkingController/getOldCdaDataForRebase'
+    getOldCdaDataForRebase: this.serviceUrl+'cdaParkingController/getOldCdaDataForRebase',
+    getAllSubHeadList: this.serviceUrl+'budgetAllocation/getAllSubHeadList'
 
 
   };

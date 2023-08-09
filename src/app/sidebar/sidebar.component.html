@@ -86,13 +86,13 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link" [routerLink]="['/budget-allocation']" [routerLinkActive]="['active']">
+              <a href="#" class="nav-link" (click)="resetShared()" [routerLink]="['/budget-allocation']" [routerLinkActive]="['active']">
                 <i class="fas fa-network-wired nav-icon"></i>
                 <p>Allocation Unit Wise</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link" [routerLink]="['/budget-allocation-subheadwise']"
+              <a href="#" class="nav-link" (click)="resetShared()" [routerLink]="['/budget-allocation-subheadwise']"
                 [routerLinkActive]="['active']">
                 <i class="fas fa-network-wired nav-icon"></i>
                 <p>Allocation Subhead Wise</p>
@@ -102,6 +102,12 @@
               <a href="#" class="nav-link" [routerLink]="['/revision']" [routerLinkActive]="['active']">
                 <i class="fas fas fa-file-signature nav-icon"></i>
                 <p>Revision</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link" [routerLink]="['/cda-parking']" [routerLinkActive]="['active']">
+                <i class="fas fas fa-file-signature nav-icon"></i>
+                <p>Update CDA</p>
               </a>
             </li>
             <!-- <li class="nav-item">

@@ -99,7 +99,7 @@ export class ApprovedComponent implements OnInit {
             this.inboxList.push(entry);
           }
         }
-        // debugger;
+        debugger;
       } else {
         this.common.faliureAlert('Please try later', result['message'], '');
       }

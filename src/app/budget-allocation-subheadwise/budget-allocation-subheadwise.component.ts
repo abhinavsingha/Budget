@@ -67,6 +67,7 @@ export class BudgetAllocationSubheadwiseComponent {
       this.getCgUnitData();
     }
     else{
+      debugger;
       this.subHeads.push(this.sharedService.allocationData[0].subHead);
       this.formdata.get('subHead')?.setValue(this.subHeads[0]);
       // debugger;

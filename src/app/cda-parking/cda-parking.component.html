@@ -36,234 +36,274 @@
           </div>
         </div>
         <!-- /.card-header -->
+<!--        <div class="card-body">-->
+<!--          <form [formGroup]="formdata">-->
+<!--            <div class="row">-->
+<!--              <div class="col-md-6">-->
+<!--                <div class="row">-->
+<!--                  <div class="col-md-6">-->
+<!--                    <div class="form-group">-->
+<!--                      <label>Financial Year</label>-->
+<!--                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="finYearData"-->
+<!--                        bindLabel="finYear" placeholder="Select Financial Year" formControlName="finYearName" required>-->
+<!--                      </ng-select>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                  <div class="col-md-6">-->
+<!--                    <div class="form-group">-->
+<!--                      <label>Budget Type</label>-->
+<!--                      <ng-select name="budgetType" class="form-control select2bs4" style="width: 100%"-->
+<!--                        [items]="budgetType" bindLabel="allocDesc" placeholder="Select Major Head"-->
+<!--                        formControlName="budgetType">-->
+<!--                      </ng-select>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                  <div class="col-md-6">-->
+<!--                    <div class="form-group">-->
+<!--                      <label>Major Head</label>-->
+<!--                      <ng-select name="majorHead" [(ngModel)]="majorHead" class="form-control select2bs4"-->
+<!--                        style="width: 100%" [items]="majorHeadData" bindLabel="majorHead"-->
+<!--                        placeholder="Select Major Head" formControlName="majorHead" (change)="setSubHead()">-->
+<!--                      </ng-select>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                  <div class="col-md-6">-->
+<!--                    <div class="form-group">-->
+<!--                      <label>Minor Head</label>-->
+<!--                      <ng-select name="MinorHead" class="form-control select2bs4" style="width: 100%"-->
+<!--                        [items]="minorHeadData" bindLabel="minorHead" placeholder="Select Minor Head"-->
+<!--                        formControlName="minorHead">-->
+<!--                      </ng-select>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                  <div class="col-md-6">-->
+<!--                    <div class="form-group">-->
+<!--                      <label>Sub Head</label>-->
+<!--                      <ng-select name="subHead" class="form-control select2bs4" style="width: 100%"-->
+<!--                        [items]="subHeadData" bindLabel="subHeadDescr" placeholder="Select Sub Head"-->
+<!--                        formControlName="subHead">-->
+<!--                      </ng-select>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                  <div class=" col-md-6">-->
+<!--                    <div class="form-group">-->
+<!--                      <label>Fund Available</label>-->
+<!--                      <input type="number" class="form-control" id="FundAvailable" placeholder="2.22" readonly />-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                  <div class=" col-md-6">-->
+<!--                    <div class="form-group">-->
+<!--                      <label>Current Parking</label>-->
+<!--                      <input type="number" class="form-control" id="CurrentParking" placeholder="2.22"-->
+<!--                        formControlName="currentParking" readonly />-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                  <div class=" col-md-6">-->
+<!--                    <div class="form-group">-->
+<!--                      <label>Balance Available</label>-->
+<!--                      <input type="number" class="form-control" id="BalanceAvailable" placeholder="2.22"-->
+<!--                        formControlName="BalanceAvailable" readonly />-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                  <div class="col-md-6">-->
+<!--                    <div class="form-group">-->
+<!--                      <label>Rupees in<span class="text-danger"></span></label>-->
+<!--                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="amountType"-->
+<!--                                 bindLabel="amountType" placeholder="Select Amount Unit" formControlName="amountType"></ng-select>-->
+<!--                    </div>-->
+<!--                  </div>-->
+
+<!--                  <div class=" col-md-6">-->
+<!--                    <div class="form-group">-->
+<!--                      <label>Remarks</label>-->
+<!--                      <input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Remarks"-->
+<!--                        formControlName="remarks"/>-->
+
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                  <div class="col-md-6">-->
+<!--                    <label style="opacity:0">.</label>-->
+<!--                    <br>-->
+<!--                    <button type="button" class="btn btn-primary mr-2" (click)="checkFieldsAddCda()">Add</button>-->
+
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--              <div class="col-md-6">-->
+<!--                <div class="card-body table-responsive p-0" style="height:330px;">-->
+<!--                  <table class="table table-hover text-nowrap">-->
+<!--                    <thead>-->
+<!--                      <tr>-->
+<!--                        <th></th>-->
+<!--                        <th>Unit</th>-->
+<!--                        <th>Existing</th>-->
+<!--                        <th>Current</th>-->
+<!--                        <th>Total</th>-->
+<!--                      </tr>-->
+<!--                    </thead>-->
+<!--                    <tbody>-->
+<!--                      <tr *ngFor="let cda of cdaData" id="htmlData">-->
+
+<!--                        <td><input class="form-check-input" type="checkbox" id="checkbox" name="option1"-->
+<!--                            [(ngModel)]="cda.checked" [ngModelOptions]="{standalone: true}"></td>-->
+<!--                        <td>{{cda.cdaName}}</td>-->
+<!--                        <td>{{cda.amount}}</td>-->
+<!--                        <td><input type="number" [(ngModel)]="cda.current" [ngModelOptions]="{standalone: true}"-->
+<!--                            id="Aallocationamount" placeholder="Please Enter Amount" (change)="updateCda(cda)" /></td>-->
+<!--                        <td>{{cda.total}}</td>-->
+<!--                      </tr>-->
+<!--                    </tbody>-->
+<!--                    <tfoot>-->
+<!--                      <tr>-->
+<!--                        <td></td>-->
+<!--                        <td>Total</td>-->
+<!--                        <td>{{cdaAmountTotal}}</td>-->
+<!--                        <td>{{cdaCurrentTotal}}</td>-->
+<!--                        <td>{{cdaTotalTotal}}</td>-->
+<!--                      </tr>-->
+<!--                    </tfoot>-->
+<!--                  </table>-->
+
+<!--                </div>-->
+<!--              </div>-->
+<!--              &lt;!&ndash; /.col &ndash;&gt;-->
+<!--            </div>-->
+<!--          </form>-->
+<!--          &lt;!&ndash; /.row &ndash;&gt;-->
+<!--          <div class="row">-->
+<!--            <div class="col-sm-12 mt-4">-->
+<!--              <div class="card-body table-responsive p-0">-->
+<!--                <table class="table table-hover text-nowrap">-->
+<!--                  <thead>-->
+<!--                    <tr>-->
+<!--                      <th></th>-->
+<!--                      <th>F.Y.</th>-->
+<!--                      <th>CDA</th>-->
+<!--                      <th>Sub Head</th>-->
+<!--                      <th>Existing</th>-->
+<!--                      <th>Current</th>-->
+<!--                      <th>Total</th>-->
+<!--                      <th>Remarks</th>-->
+
+<!--                    </tr>-->
+<!--                  </thead>-->
+<!--                  <tbody>-->
+<!--                    <tr *ngFor="let cda of cdaTableData">-->
+<!--                      <td><input class="form-check-input" type="checkbox" id="check1" name="option1"-->
+<!--                          [(ngModel)]="cda.checked" [ngModelOptions]="{standalone: true}"></td>-->
+<!--                      <td>{{cda.financialYear}}</td>-->
+<!--                      <td>{{cda.cda}}</td>-->
+<!--                      <td>{{cda.subHead}}</td>-->
+<!--                      <td>{{cda.existing}}</td>-->
+<!--                      <td>{{cda.current}}</td>-->
+<!--                      <td>{{cda.total}}</td>-->
+<!--                      <td>{{cda.remarks}}</td>-->
+<!--                    </tr>-->
+
+<!--                  </tbody>-->
+<!--                </table>-->
+
+<!--              </div>-->
+<!--              <div class="row mt-2">-->
+<!--                <div class="col-sm-12 col-md-12">-->
+<!--                  <button type="button" class="btn btn-danger mr-2 float-left"-->
+<!--                    (click)="deleteFromCdaTable()">Delete</button>-->
+<!--                  <pagination-controls class="pagination float-right"></pagination-controls>-->
+
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+
+<!--          <div class="row">-->
+<!--            <div class="col-md-4">-->
+
+<!--              <div class="form-group">-->
+<!--                <label>Authority Unit</label>-->
+<!--                <ng-select class="form-control select2bs4" style="width: 100%" [items]="unitData" bindLabel="descr"-->
+<!--                  placeholder="Select Authority Unit" [(ngModel)]="authorityUnit">-->
+<!--                </ng-select>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="col-md-4">-->
+<!--              <div class="form-group">-->
+<!--                <label>Authority</label>-->
+<!--                <input type="text" class="form-control" placeholder="Enter Authority" [(ngModel)]="authority" />-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="col-md-4">-->
+<!--              <div class="form-group">-->
+<!--                <label>Date</label>-->
+<!--                <input type="date" class="form-control" id="date" [(ngModel)]="authorityDate" (change)="checkDate(authorityDate)"/>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="col-md-4">-->
+<!--              <div class="form-group">-->
+<!--                <label for="exampleInputFile">Browse Document</label>-->
+<!--                <div class="input-group">-->
+<!--                  <div class="custom-file">-->
+<!--                    <input type="file" class="custom-file-input" id="exampleInputFile" #authFileInput>-->
+<!--                    <label class="custom-file-label" for="exampleInputFile">Choose file</label>-->
+<!--                  </div>-->
+<!--                  <div class="input-group-append">-->
+<!--                    <span class="input-group-text" style="cursor: pointer" (click)="invoiceUpload()">Upload</span>-->
+<!--                    &lt;!&ndash;                        <span class="input-group-text" (click)="invoiceUpload()">Upload</span>&ndash;&gt;-->
+<!--                  </div>-->
+<!--                  <div class="input-group-append" *ngIf="authFile!=undefined">-->
+<!--                    <span class="input-group-text" (click)="viewFile(authFile)">View</span>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+
+<!--          </div>-->
+
+<!--        </div>-->
+        <!-- /.card-body -->
         <div class="card-body">
-          <form [formGroup]="formdata">
+          <form>
             <div class="row">
-              <div class="col-md-6">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Financial Year</label>
-                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="finYearData"
-                        bindLabel="finYear" placeholder="Select Financial Year" formControlName="finYearName" required>
-                      </ng-select>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Budget Type</label>
-                      <ng-select name="budgetType" class="form-control select2bs4" style="width: 100%"
-                        [items]="budgetType" bindLabel="allocDesc" placeholder="Select Major Head"
-                        formControlName="budgetType">
-                      </ng-select>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Major Head</label>
-                      <ng-select name="majorHead" [(ngModel)]="majorHead" class="form-control select2bs4"
-                        style="width: 100%" [items]="majorHeadData" bindLabel="majorHead"
-                        placeholder="Select Major Head" formControlName="majorHead" (change)="setSubHead()">
-                      </ng-select>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Minor Head</label>
-                      <ng-select name="MinorHead" class="form-control select2bs4" style="width: 100%"
-                        [items]="minorHeadData" bindLabel="minorHead" placeholder="Select Minor Head"
-                        formControlName="minorHead">
-                      </ng-select>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Sub Head</label>
-                      <ng-select name="subHead" class="form-control select2bs4" style="width: 100%"
-                        [items]="subHeadData" bindLabel="subHeadDescr" placeholder="Select Sub Head"
-                        formControlName="subHead">
-                      </ng-select>
-                    </div>
-                  </div>
-                  <div class=" col-md-6">
-                    <div class="form-group">
-                      <label>Fund Available</label>
-                      <input type="number" class="form-control" id="FundAvailable" placeholder="2.22" readonly />
-                    </div>
-                  </div>
-                  <div class=" col-md-6">
-                    <div class="form-group">
-                      <label>Current Parking</label>
-                      <input type="number" class="form-control" id="CurrentParking" placeholder="2.22"
-                        formControlName="currentParking" readonly />
-                    </div>
-                  </div>
-                  <div class=" col-md-6">
-                    <div class="form-group">
-                      <label>Balance Available</label>
-                      <input type="number" class="form-control" id="BalanceAvailable" placeholder="2.22"
-                        formControlName="BalanceAvailable" readonly />
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Rupees in<span class="text-danger"></span></label>
-                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="amountType"
-                                 bindLabel="amountType" placeholder="Select Amount Unit" formControlName="amountType"></ng-select>
-                    </div>
-                  </div>
-
-                  <div class=" col-md-6">
-                    <div class="form-group">
-                      <label>Remarks</label>
-                      <input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Remarks"
-                        formControlName="remarks"/>
-
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <label style="opacity:0">.</label>
-                    <br>
-                    <button type="button" class="btn btn-primary mr-2" (click)="checkFieldsAddCda()">Add</button>
-
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="card-body table-responsive p-0" style="height:330px;">
+              <div class="col-sm-12">
+                <div class="card-body table-responsive p-0">
                   <table class="table table-hover text-nowrap">
                     <thead>
-                      <tr>
-                        <th></th>
-                        <th>Unit</th>
-                        <th>Existing</th>
-                        <th>Current</th>
-                        <th>Total</th>
-                      </tr>
+                    <tr>
+                      <th>S.No.</th>
+                      <th>SubHead</th>
+                      <th>Allocation Amount</th>
+                      <th>Action</th>
+                    </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let cda of cdaData" id="htmlData">
+                    <tr *ngFor="let li of subHeadList|  paginate :{itemsPerPage:100,currentPage:p}; let i = index " id="htmlData" >
 
-                        <td><input class="form-check-input" type="checkbox" id="checkbox" name="option1"
-                            [(ngModel)]="cda.checked" [ngModelOptions]="{standalone: true}"></td>
-                        <td>{{cda.cdaName}}</td>
-                        <td>{{cda.amount}}</td>
-                        <td><input type="number" [(ngModel)]="cda.current" [ngModelOptions]="{standalone: true}"
-                            id="Aallocationamount" placeholder="Please Enter Amount" (change)="updateCda(cda)" /></td>
-                        <td>{{cda.total}}</td>
-                      </tr>
+                      <td>{{20 *(p-1)+i+1}}</td>
+                      <td>{{li.subHead.subHeadDescr}}</td>
+                      <td>{{li.allocationAmount}} {{li.amountUnit.amountType}}</td>
+                      <td><button *ngIf="li.cdaData.length!=0" type="submit" class="btn btn-primary mr-2" data-toggle="modal" data-target="#modal-lg" (click)="populateCda(li,i)">Update CDA</button></td>
+                    </tr>
                     </tbody>
-                    <tfoot>
-                      <tr>
-                        <td></td>
-                        <td>Total</td>
-                        <td>{{cdaAmountTotal}}</td>
-                        <td>{{cdaCurrentTotal}}</td>
-                        <td>{{cdaTotalTotal}}</td>
-                      </tr>
-                    </tfoot>
                   </table>
-
+                </div>
+                <div class="row mt-2">
+                  <div class="col-sm-12 col-md-5">
+                    <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
+                    </div>
+                  </div>
+                  <div class="col-sm-12 col-md-7">
+                    <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                      <pagination-controls class="pagination float-right" (pageChange)="p = $event"></pagination-controls>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <!-- /.col -->
             </div>
           </form>
-          <!-- /.row -->
-          <div class="row">
-            <div class="col-sm-12 mt-4">
-              <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap">
-                  <thead>
-                    <tr>
-                      <th></th>
-                      <th>F.Y.</th>
-                      <th>CDA</th>
-                      <th>Sub Head</th>
-                      <th>Existing</th>
-                      <th>Current</th>
-                      <th>Total</th>
-                      <th>Remarks</th>
-
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let cda of cdaTableData">
-                      <td><input class="form-check-input" type="checkbox" id="check1" name="option1"
-                          [(ngModel)]="cda.checked" [ngModelOptions]="{standalone: true}"></td>
-                      <td>{{cda.financialYear}}</td>
-                      <td>{{cda.cda}}</td>
-                      <td>{{cda.subHead}}</td>
-                      <td>{{cda.existing}}</td>
-                      <td>{{cda.current}}</td>
-                      <td>{{cda.total}}</td>
-                      <td>{{cda.remarks}}</td>
-                    </tr>
-
-                  </tbody>
-                </table>
-
-              </div>
-              <div class="row mt-2">
-                <div class="col-sm-12 col-md-12">
-                  <button type="button" class="btn btn-danger mr-2 float-left"
-                    (click)="deleteFromCdaTable()">Delete</button>
-                  <pagination-controls class="pagination float-right"></pagination-controls>
-
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-4">
-
-              <div class="form-group">
-                <label>Authority Unit</label>
-                <ng-select class="form-control select2bs4" style="width: 100%" [items]="unitData" bindLabel="descr"
-                  placeholder="Select Authority Unit" [(ngModel)]="authorityUnit">
-                </ng-select>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <label>Authority</label>
-                <input type="text" class="form-control" placeholder="Enter Authority" [(ngModel)]="authority" />
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <label>Date</label>
-                <input type="date" class="form-control" id="date" [(ngModel)]="authorityDate" (change)="checkDate(authorityDate)"/>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="exampleInputFile">Browse Document</label>
-                <div class="input-group">
-                  <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="exampleInputFile" #authFileInput>
-                    <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                  </div>
-                  <div class="input-group-append">
-                    <span class="input-group-text" style="cursor: pointer" (click)="invoiceUpload()">Upload</span>
-                    <!--                        <span class="input-group-text" (click)="invoiceUpload()">Upload</span>-->
-                  </div>
-                  <div class="input-group-append" *ngIf="authFile!=undefined">
-                    <span class="input-group-text" (click)="viewFile(authFile)">View</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
         </div>
-        <!-- /.card-body -->
         <div class="card-footer">
           <div class="row">
-            <button type="button" class="btn btn-primary mr-2" (click)="checkSubmitTableData()">Submit</button>
-            <button type="button" class="btn btn-primary mr-2">Print</button>
+<!--            <button type="button" class="btn btn-primary mr-2" (click)="checkSubmitTableData()">Submit</button>-->
+<!--            <button type="button" class="btn btn-primary mr-2">Print</button>-->
 
           </div>
         </div>
@@ -275,7 +315,72 @@
     </div>
     <!-- /.container-fluid -->
   </section>
-
+  <div  class="modal fade" id="modal-lg">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">CDA Parking </h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-12" id="cdaParking">
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap" *ngIf="currentEntry!=undefined" >
+                  <thead>
+                  <tr>
+                    <th>CDA</th>
+                    <th>Amount (in{{currentEntry.cdaData[0].amountType.amountType}}) </th>
+                    <th>Remaining Amount (in{{currentEntry.cdaData[0].amountType.amountType}})</th>
+                    <th>Action</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                  <tr *ngFor="let cdaParking of cdaList; let i = index">
+                    <td>
+                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="cdaUnitList"
+                                 bindLabel="cdaName" placeholder="Select CDA Unit" appendTo="body"
+                                 [(ngModel)]="cdaParking.cdaParkingUnit" >
+                      </ng-select>
+                    </td>
+                    <td >
+                      <input type="number"  min="0" class="form-control" id="Aallocationamount"
+                      placeholder="Please Enter Amount" [(ngModel)]="cdaParking.amount" (keyup)="checkTotalParking()"/>
+                    </td>
+                    <td>{{cdaParking.balance}}</td>
+                    <td><button type="button" class="btn btn-danger" (click)="deleteFromMultipleCdaParking(i)">Delete</button></td>
+                  </tr>
+                  </tbody>
+                  <tfoot>
+                  <tr>
+                    <td ><button type="button" class="btn btn-primary" id="btnCda" (click)="addNewRow()">Add
+                      Row</button></td>
+                    <td>
+                      <b>Total amount to be parked = {{totalParking}} {{currentEntry.cdaData[0].amountType.amountType}}</b>
+                    </td>
+                    <td></td>
+                  </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-start">
+          <button class="btn btn-danger mr-2" data-dismiss="modal">Close</button>
+          <button class="btn btn-warning" (click)="updateCdaParkingDataApi()"
+                  [disabled]="isdisableUpdateButton" data-dismiss="modal">Update</button>
+          <!--          <button class="btn btn-warning" (click)="updateCdaParkingDataApi()" *ngIf="showUpdate"-->
+          <!--            [disabled]="isdisableUpdateButton" data-dismiss="modal">Update</button>-->
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
   <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
