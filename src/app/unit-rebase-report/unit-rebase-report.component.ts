@@ -17,6 +17,7 @@ import { HttpClient } from '@angular/common/http';
 import { SharedService } from '../services/shared/shared.service';
 import * as Papa from "papaparse";
 import {DatePipe} from "@angular/common";
+import {defined} from "chart.js/helpers";
 
 @Component({
   selector: 'app-unit-rebase-report',
@@ -25,6 +26,7 @@ import {DatePipe} from "@angular/common";
 })
 export class UnitRebaseReportComponent {
   formdata!: FormGroup;
+  allunits: any[]=[];
 
   constructor(
     private datePipe: DatePipe,
@@ -39,16 +41,23 @@ export class UnitRebaseReportComponent {
     this.formdata = formBuilder.group({
       fromDate: ['', Validators.required],
       toDate: ['', Validators.required],
-      reprtType:new FormControl('Select Report Type')
+      reprtType:new FormControl('Select Report Type'),
+      toUnit:new FormControl()
     });
   }
 
   ngOnInit(): void {
     this.sharedService.updateInbox();
+    this.getCgUnitData();
     $.getScript('assets/js/adminlte.js');
   }
 
   downloadRebaseReport(formdata: any) {
+    if(formdata.toUnit==undefined||formdata.toDate==undefined||formdata.fromDate==undefined){
+      this.common.faliureAlert('Missing Required Values','Please select all required values','')
+      return;
+    }
+    debugger;
     // var fromDateInMilliseconds = new Date(formdata.fromDate).getTime();
     this.SpinnerService.show();
     debugger;
@@ -63,7 +72,9 @@ export class UnitRebaseReportComponent {
           '/' +
           formdata.fromDate +
           '/' +
-          formdata.toDate
+          formdata.toDate +
+        '/'+
+        formdata.toUnit.unit
       )
       .subscribe({
         next: (v: object) => {
@@ -253,5 +264,27 @@ export class UnitRebaseReportComponent {
       this.common.warningAlert('Invalid Date','Enter date of this fiscal year only','');
       this.formdata.get(field)?.reset();
     }
+  }
+  getCgUnitData() {
+    this.SpinnerService.show();
+    this.apiService.getApi(this.cons.api.getIsShipCgUnit).subscribe({
+      next: (v: object) => {
+        debugger;
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+        if (result['message'] == 'success') {
+          this.allunits = result['response'];
+          this.SpinnerService.hide();
+        } else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
   }
 }

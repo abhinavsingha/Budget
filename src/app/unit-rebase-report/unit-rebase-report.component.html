@@ -60,6 +60,14 @@
                   <input class="form-control" formControlName="toDate" placeholder="Enter Date" type="date" (change)="checkDate(formdata.value,'toDate')"/>
                 </div>
               </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Unit</label>
+                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="allunits" bindLabel="descr"
+                             appendTo="body" placeholder="Select To Unit" formControlName="toUnit">
+                  </ng-select>
+                </div>
+              </div>
             </div>
           </form>
         </div>
