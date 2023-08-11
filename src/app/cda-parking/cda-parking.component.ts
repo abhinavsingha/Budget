@@ -680,8 +680,9 @@ export class CdaParkingComponent implements OnInit {
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
             // this.router.navigate(['/budget-approval']);
-            // window.location.reload();
-            this.common.successAlert('Updated','CDA updated Successfully','')
+            window.location.reload();
+            this.common.successAlert('Updated','CDA updated Successfully','');
+
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
@@ -691,7 +692,7 @@ export class CdaParkingComponent implements OnInit {
           console.error(e);
           this.common.faliureAlert('Error', e['error']['message'], 'error');
         },
-        complete: () => this.ngOnInit(),
+        complete: () => console.log('complete'),
       });
   }
 }

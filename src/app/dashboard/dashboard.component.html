@@ -203,7 +203,7 @@
                   <div class="row">
                     <div class="col-sm-12">
                       <div class="card-body table-responsive p-0">
-                        <table class="table table-hover text-nowrap">
+                        <table class="table table-hover text-nowrap" *ngIf="tableData!=undefined">
                           <thead>
                             <tr>
                               <th>Sr. No.</th>
@@ -282,7 +282,7 @@
                   <div class="row">
                     <div class="col-sm-12">
                       <div class="card-body table-responsive p-0">
-                        <table class="table table-hover text-nowrap">
+                        <table class="table table-hover text-nowrap" *ngIf="subHeadsResponse!=undefined">
                           <thead>
                             <tr>
                               <th>Sr. No.</th>

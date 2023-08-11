@@ -95,7 +95,21 @@ export class BudgetApproverComponent implements OnInit {
     private router: Router,
     public sharedService: SharedService
   ) {}
+  private updateMsgStatusMain(msgId: any) {
 
+    this.apiService
+      .getApi(this.cons.api.updateMsgStatusMain +'/'+msgId)
+      .subscribe(
+        (res) => {
+          let result: { [key: string]: any } = res;
+        },
+        (error) => {
+          console.error(error);
+          this.SpinnerService.hide();
+        }
+      );
+
+  }
   getAllGroupIdAndUnitId(groupId: any) {
     this.SpinnerService.show();
     this.apiService
@@ -103,9 +117,11 @@ export class BudgetApproverComponent implements OnInit {
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
-          //debugger;
+          debugger;
           this.budgetDataList = result['response'].budgetResponseist;
-
+          if(this.budgetDataList[0].isTYpe=='REBASE'){
+            this.updateMsgStatusMain(this.sharedService.msgId);
+          }
           for (let i = 0; i < this.budgetDataList.length; i++) {
             debugger;
             if(this.budgetDataList[i].unallocatedAmount!=undefined&&this.budgetDataList[i].isTYpe!='REBASE') {

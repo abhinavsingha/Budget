@@ -424,9 +424,7 @@ export class CdaParkingReportComponent implements OnInit {
         subHeadType:formdata.subHeadType.subHeadTypeId,
       };
     }
-
-
-
+      this.SpinnerService.show();
     this.apiService
       .postApi(this.cons.api.getCdaParkingReport, submitJson)
       .subscribe({
@@ -445,6 +443,7 @@ export class CdaParkingReportComponent implements OnInit {
             //   result['response'].fileName
             // );
           } else {
+            this.SpinnerService.hide();
             this.common.faliureAlert('Please try later', result['message'], '');
           }
         },

@@ -15,6 +15,7 @@ import { DatePipe } from '@angular/common';
 import { SharedService } from '../services/shared/shared.service';
 
 class InboxList {
+  isRebase:string|undefined;
   isType:string|undefined;
   serial: number | undefined;
   type: undefined;
@@ -84,7 +85,9 @@ export class InboxComponent implements OnInit {
   ) {}
 
   redirect(li: InboxList) {
-
+    if(li.isRebase=='1'){
+      this.updateMsgStatusMain(li.mangeInboxId);
+    }
     debugger;
     this.sharedService.isRevision=li.isRevision;
     localStorage.setItem('isInboxOrOutbox', 'inbox');
@@ -127,22 +130,20 @@ export class InboxComponent implements OnInit {
       // window.location.href = '/budget-approval';
     }
     else if (li.isType == 'Budget Receipt') {
-      debugger;
+      this.sharedService.msgId=li.mangeInboxId;
       this.sharedService.reject=false;
       this.sharedService.sharedValue = li.groupId;
       this.router.navigate(['/budget-approval']);
       this.sharedService.redirectedFrom = 'inbox';
-      // window.location.href = '/budget-approval';
     }
     else if(li.isType == 'Budget Revision'){
       this.sharedService.revisionStatus=li.status;
       if(li.status=='Fully Approved')
         this.sharedService.status=true;
-      // this.sharedService.redirectedFrom!='approved';
       this.router.navigate(['/revision-approval']);
     }
     else if(li.isType=='Budget Rebase'){
-      this.updateMsgStatusMain(li.mangeInboxId);
+
       this.router.navigate(['/budget-rebase']);
     }
   }
@@ -158,6 +159,9 @@ export class InboxComponent implements OnInit {
         if (list.length > 0) {
           let isType='';
           for (let i = 0; i < list.length; i++) {
+            if(list[i].isRebase==null){
+              list[i].isRebase='0';
+            }
             if(list[i].isBgOrCg=="BG"){
               if(list[i].remarks=="Budget Revision")
                 isType='Budget Revision';
@@ -174,16 +178,12 @@ export class InboxComponent implements OnInit {
               isType='Budget Rebase';
             }
             const entry: InboxList = {
+              isRebase:list[i].isRebase,
               mangeInboxId: list[i].mangeInboxId,
               isCda: list[i].isCda,
               serial: i + 1,
               isType: isType,
               createDate: this.convertEpochToDateTime(list[i].createdOn),
-              //   this.datePipe.transform(
-              //   new Date(list[i].createdOn),
-              //   'dd-MM-yyyy'
-              // // ),
-              // createBy: list[i].userData.fullName,
               unitName: list[i].toUnit.descr,
               groupId: list[i].groupId,
               status: list[i].status,

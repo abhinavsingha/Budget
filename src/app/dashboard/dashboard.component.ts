@@ -380,38 +380,40 @@ export class DashboardComponent implements OnInit {
           this.sharedService.outbox = result['response'].outBox;
           this.sharedService.archive = result['response'].archived;
           this.sharedService.approve = result['response'].approved;
-          for (
-            let i = 0;
-            i < this.dasboardData.unitWiseExpenditureList.length;
-            i++
-          ) {
-            const dataEntry: UnitWiseExpenditureList = {
-              unit: this.dasboardData.unitWiseExpenditureList[i].unit.descr,
-              financialYear:
+          if(this.dasboardData.unitWiseExpenditureList!=undefined){
+            for (
+              let i = 0;
+              i < this.dasboardData.unitWiseExpenditureList.length;
+              i++
+            ) {
+              const dataEntry: UnitWiseExpenditureList = {
+                unit: this.dasboardData.unitWiseExpenditureList[i].unit.descr,
+                financialYear:
                 this.dasboardData.unitWiseExpenditureList[i].financialYearId
                   .finYear,
-              subhead:
+                subhead:
                 this.dasboardData.unitWiseExpenditureList[i].subHead
                   .subHeadDescr,
-              allocated:
+                allocated:
                 this.dasboardData.unitWiseExpenditureList[i].allocatedAmount,
-              expenditure: 0,
-              lastCbDate:
+                expenditure: 0,
+                lastCbDate:
                 this.dasboardData.unitWiseExpenditureList[i].lastCBDate,
-            };
+              };
 
-            this.unitWiseExpenditureList.push(dataEntry);
-          }
-          for (let i = 0; i < this.unitWiseExpenditureList.length; i++) {
-            if (
-              this.formdata.get('finYear')?.value.finYear !=
+              this.unitWiseExpenditureList.push(dataEntry);
+            }
+            for (let i = 0; i < this.unitWiseExpenditureList.length; i++) {
+              if (
+                this.formdata.get('finYear')?.value.finYear !=
                 this.unitWiseExpenditureList[i].financialYear ||
-              this.formdata.get('unit')?.value.descr !=
+                this.formdata.get('unit')?.value.descr !=
                 this.unitWiseExpenditureList[i].unit ||
-              this.formdata.get('subHead')?.value.subHeadDescr !=
+                this.formdata.get('subHead')?.value.subHeadDescr !=
                 this.unitWiseExpenditureList[i].subhead
-            ) {
-              this.unitWiseExpenditureList.pop();
+              ) {
+                this.unitWiseExpenditureList.pop();
+              }
             }
           }
           // console.log('DATA>>>>>>>'+this.dasboardData);
@@ -432,7 +434,7 @@ export class DashboardComponent implements OnInit {
   }
 
   draw(): void {
-    Chart.register(...registerables);
+    // Chart.register(...registerables);
     //     const data = {
     //       labels: ['OE','SM','WS','OT','DT','RT','PU','PL','AP','MW', 'PS', 'ME', 'IT'],
     //       datasets: [{
@@ -460,133 +462,133 @@ export class DashboardComponent implements OnInit {
     //     }
     //     ]
     // };
-    const data = {
-      labels: this.dasboardData.subHeadWiseExpenditure.subhead,
-      datasets: [
-        {
-          label: 'Expenditure(Lakhs)',
-          backgroundColor: 'rgba(60,141,188,0.9)',
-          borderColor: 'rgba(60,141,188,0.8)',
-          pointRadius: false,
-          pointColor: '#3b8bba',
-          pointStrokeColor: 'rgba(60,141,188,1)',
-          pointHighlightFill: '#fff',
-          pointHighlightStroke: 'rgba(60,141,188,1)',
-          data: this.dasboardData.subHeadWiseExpenditure.expenditureSubHead,
-        },
-        {
-          label: 'Allocated(Lakhs)',
-          backgroundColor: 'rgba(210, 214, 222, 1)',
-          borderColor: 'rgba(210, 214, 222, 1)',
-          pointRadius: false,
-          pointColor: 'rgba(210, 214, 222, 1)',
-          pointStrokeColor: '#c1c7d1',
-          pointHighlightFill: '#fff',
-          pointHighlightStroke: 'rgba(220,220,220,1)',
-          data: this.dasboardData.subHeadWiseExpenditure.allocatedSubHead,
-        },
-      ],
-    };
-    const options = {
-      maintainAspectRatio: false,
-      responsive: true,
-      legend: {
-        display: false,
-      },
-      scales: {
-        y: {
-          beginAtZero: true,
-          display: true,
-        },
-      },
-    };
-    const config: ChartConfiguration = {
-      type: 'bar',
-      data: data,
-      options: options,
-    };
-    const chartItem: ChartItem = document.getElementById(
-      'my-chart'
-    ) as ChartItem;
-    new Chart(chartItem, config);
-
-    // const data2 = {
-    //   labels: ['CGHQ','RHQ(W)','RHQ(NW)','RHQ(NE)','RHQ(E)','RHQ(A&N)'],
-    //   datasets: [{
-    //     label: 'Expenditure(Lakhs)',
-    //     backgroundColor: 'rgba(60,141,188,0.9)',
-    //     borderColor: 'rgba(60,141,188,0.8)',
-    //     pointRadius: false,
-    //     pointColor: '#3b8bba',
-    //     pointStrokeColor: 'rgba(60,141,188,1)',
-    //     pointHighlightFill: '#fff',
-    //     pointHighlightStroke: 'rgba(60,141,188,1)',
-    //     data: [58, 68, 40, 59, 86, 67]
-    //   },
-    // {
-    //   label: 'Allocated(Lakhs)',
-    //   backgroundColor: 'rgba(210, 214, 222, 1)',
-    //   borderColor: 'rgba(210, 214, 222, 1)',
-    //   pointRadius: false,
-    //   pointColor: 'rgba(210, 214, 222, 1)',
-    //   pointStrokeColor: '#c1c7d1',
-    //   pointHighlightFill: '#fff',
-    //   pointHighlightStroke: 'rgba(220,220,220,1)',
-    //   data: [38, 45, 50, 39, 46, 57]
-    //
-    // }
-    // ]
+    // const data = {
+    //   labels: this.dasboardData.subHeadWiseExpenditure.subhead,
+    //   datasets: [
+    //     {
+    //       label: 'Expenditure(Lakhs)',
+    //       backgroundColor: 'rgba(60,141,188,0.9)',
+    //       borderColor: 'rgba(60,141,188,0.8)',
+    //       pointRadius: false,
+    //       pointColor: '#3b8bba',
+    //       pointStrokeColor: 'rgba(60,141,188,1)',
+    //       pointHighlightFill: '#fff',
+    //       pointHighlightStroke: 'rgba(60,141,188,1)',
+    //       data: this.dasboardData.subHeadWiseExpenditure.expenditureSubHead,
+    //     },
+    //     {
+    //       label: 'Allocated(Lakhs)',
+    //       backgroundColor: 'rgba(210, 214, 222, 1)',
+    //       borderColor: 'rgba(210, 214, 222, 1)',
+    //       pointRadius: false,
+    //       pointColor: 'rgba(210, 214, 222, 1)',
+    //       pointStrokeColor: '#c1c7d1',
+    //       pointHighlightFill: '#fff',
+    //       pointHighlightStroke: 'rgba(220,220,220,1)',
+    //       data: this.dasboardData.subHeadWiseExpenditure.allocatedSubHead,
+    //     },
+    //   ],
     // };
-    const data2 = {
-      labels: this.dasboardData.unitWiseExpenditure.unitWise,
-      datasets: [
-        {
-          label: 'Expenditure(Lakhs)',
-          backgroundColor: 'rgba(60,141,188,0.9)',
-          borderColor: 'rgba(60,141,188,0.8)',
-          pointRadius: false,
-          pointColor: '#3b8bba',
-          pointStrokeColor: 'rgba(60,141,188,1)',
-          pointHighlightFill: '#fff',
-          pointHighlightStroke: 'rgba(60,141,188,1)',
-          data: this.dasboardData.unitWiseExpenditure.expenditureUnit,
-        },
-        {
-          label: 'Allocated(Lakhs)',
-          backgroundColor: 'rgba(210, 214, 222, 1)',
-          borderColor: 'rgba(210, 214, 222, 1)',
-          pointRadius: false,
-          pointColor: 'rgba(210, 214, 222, 1)',
-          pointStrokeColor: '#c1c7d1',
-          pointHighlightFill: '#fff',
-          pointHighlightStroke: 'rgba(220,220,220,1)',
-          data: this.dasboardData.unitWiseExpenditure.allocatedUnit,
-        },
-      ],
-    };
-    const options2 = {
-      maintainAspectRatio: false,
-      responsive: true,
-      legend: {
-        display: false,
-      },
-      scales: {
-        y: {
-          beginAtZero: true,
-          display: true,
-        },
-      },
-    };
-    const config2: ChartConfiguration = {
-      type: 'bar',
-      data: data2,
-      options: options2,
-    };
-
-    const chartItem2: ChartItem = document.getElementById(
-      'my-chart2'
-    ) as ChartItem;
-    new Chart(chartItem2, config2);
+    // const options = {
+    //   maintainAspectRatio: false,
+    //   responsive: true,
+    //   legend: {
+    //     display: false,
+    //   },
+    //   scales: {
+    //     y: {
+    //       beginAtZero: true,
+    //       display: true,
+    //     },
+    //   },
+    // };
+    // const config: ChartConfiguration = {
+    //   type: 'bar',
+    //   data: data,
+    //   options: options,
+    // };
+    // const chartItem: ChartItem = document.getElementById(
+    //   'my-chart'
+    // ) as ChartItem;
+    // new Chart(chartItem, config);
+    //
+    // // const data2 = {
+    // //   labels: ['CGHQ','RHQ(W)','RHQ(NW)','RHQ(NE)','RHQ(E)','RHQ(A&N)'],
+    // //   datasets: [{
+    // //     label: 'Expenditure(Lakhs)',
+    // //     backgroundColor: 'rgba(60,141,188,0.9)',
+    // //     borderColor: 'rgba(60,141,188,0.8)',
+    // //     pointRadius: false,
+    // //     pointColor: '#3b8bba',
+    // //     pointStrokeColor: 'rgba(60,141,188,1)',
+    // //     pointHighlightFill: '#fff',
+    // //     pointHighlightStroke: 'rgba(60,141,188,1)',
+    // //     data: [58, 68, 40, 59, 86, 67]
+    // //   },
+    // // {
+    // //   label: 'Allocated(Lakhs)',
+    // //   backgroundColor: 'rgba(210, 214, 222, 1)',
+    // //   borderColor: 'rgba(210, 214, 222, 1)',
+    // //   pointRadius: false,
+    // //   pointColor: 'rgba(210, 214, 222, 1)',
+    // //   pointStrokeColor: '#c1c7d1',
+    // //   pointHighlightFill: '#fff',
+    // //   pointHighlightStroke: 'rgba(220,220,220,1)',
+    // //   data: [38, 45, 50, 39, 46, 57]
+    // //
+    // // }
+    // // ]
+    // // };
+    // const data2 = {
+    //   labels: this.dasboardData.unitWiseExpenditure.unitWise,
+    //   datasets: [
+    //     {
+    //       label: 'Expenditure(Lakhs)',
+    //       backgroundColor: 'rgba(60,141,188,0.9)',
+    //       borderColor: 'rgba(60,141,188,0.8)',
+    //       pointRadius: false,
+    //       pointColor: '#3b8bba',
+    //       pointStrokeColor: 'rgba(60,141,188,1)',
+    //       pointHighlightFill: '#fff',
+    //       pointHighlightStroke: 'rgba(60,141,188,1)',
+    //       data: this.dasboardData.unitWiseExpenditure.expenditureUnit,
+    //     },
+    //     {
+    //       label: 'Allocated(Lakhs)',
+    //       backgroundColor: 'rgba(210, 214, 222, 1)',
+    //       borderColor: 'rgba(210, 214, 222, 1)',
+    //       pointRadius: false,
+    //       pointColor: 'rgba(210, 214, 222, 1)',
+    //       pointStrokeColor: '#c1c7d1',
+    //       pointHighlightFill: '#fff',
+    //       pointHighlightStroke: 'rgba(220,220,220,1)',
+    //       data: this.dasboardData.unitWiseExpenditure.allocatedUnit,
+    //     },
+    //   ],
+    // };
+    // const options2 = {
+    //   maintainAspectRatio: false,
+    //   responsive: true,
+    //   legend: {
+    //     display: false,
+    //   },
+    //   scales: {
+    //     y: {
+    //       beginAtZero: true,
+    //       display: true,
+    //     },
+    //   },
+    // };
+    // const config2: ChartConfiguration = {
+    //   type: 'bar',
+    //   data: data2,
+    //   options: options2,
+    // };
+    //
+    // const chartItem2: ChartItem = document.getElementById(
+    //   'my-chart2'
+    // ) as ChartItem;
+    // new Chart(chartItem2, config2);
   }
 
   confirmRedirectModel() {
@@ -696,7 +698,7 @@ export class DashboardComponent implements OnInit {
   getTableData(formDataValue: any) {
 
     this.SpinnerService.show();
-
+    this.tableData=undefined;
     this.apiService
       .getApi(
         this.cons.api
@@ -729,7 +731,8 @@ export class DashboardComponent implements OnInit {
             this.totalUBalance=result['response'][0].sumBal;
             this.totalUExpenditure=result['response'][0].sumExp;
             this.totalUExpenditurePer=result['response'][0].perBal;
-            this.unitwiseUnit=this.tableData[0].amountIn;
+            if(this.tableData[0]!=undefined)
+              this.unitwiseUnit=this.tableData[0].amountIn;
             // for(let li of this.tableData){
             //   this.totalUAllocated=Number(parseFloat(li.allocatedAmount)+parseFloat(this.totalUAllocated)).toFixed(4);
             //   this.totalUExpenditure=Number(parseFloat(li.expenditureAmount)+parseFloat(this.totalUExpenditure)).toFixed(4);
@@ -829,6 +832,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getSubheadWiseTableData(formdata: any) {
+    this.subHeadsResponse=undefined;
     let json={
       subHeadId:formdata.subHead.budgetCodeId,
       finYearId:formdata.finYear.serialNo,
@@ -840,6 +844,7 @@ export class DashboardComponent implements OnInit {
     this.apiService.postApi(url,json).subscribe(
       (results) => {
         let result: { [key: string]: any } = results;
+        debugger;
         this.subHeadsResponse = result['response'][0].grTotalObj;
         this.totalSAllocated=result['response'][0].sumAlloc;
         this.totalSBalance=result['response'][0].sumBal;
