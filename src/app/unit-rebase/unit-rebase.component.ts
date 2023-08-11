@@ -365,6 +365,7 @@ export class UnitRebaseComponent {
 
   tooltipFromUnitDHQ: String = '';
   tooltipFromUnitRHQ: String = '';
+  bigShip:boolean=false;
   selectUnit(data: any) {
     if (data == undefined) {
       this.tooltipFromUnitDHQ = '';
@@ -377,6 +378,11 @@ export class UnitRebaseComponent {
     }
     // this.tooltipFromUnitDHQ = data.cgStation.dhqName;
     this.tooltipFromUnitDHQ = data.unitDhq;
+    if(data.shipType=='S'){
+      this.bigShip=false;
+    }else{
+      this.bigShip=true;
+    }
     // this.tooltipFromUnitRHQ = data.cgStation.rhqId;
     this.tooltipFromUnitRHQ = data.unitRhq;
     // this.formdata.patchValue({

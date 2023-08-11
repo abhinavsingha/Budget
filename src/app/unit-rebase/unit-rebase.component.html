@@ -151,7 +151,8 @@
                 <div class="form-group">
                   <label style="opacity:0">.</label>
                   <br>
-                  <input type="text" class="form-control" placeholder="-" formControlName="toUnitDHQ" readonly />
+                  <input *ngIf="!bigShip" type="text" class="form-control" placeholder="-" formControlName="toUnitDHQ" readonly />
+                  <input *ngIf="bigShip" type="text" class="form-control" placeholder="-" readonly />
                 </div>
               </div>
               <div class="col-md-1 pl-1 pr-1">
