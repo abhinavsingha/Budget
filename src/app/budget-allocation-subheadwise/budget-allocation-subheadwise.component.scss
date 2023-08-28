@@ -2,10 +2,10 @@ col-width{
   width: 200px;
 }
 .tfoot{
-  position: sticky;
-    bottom: -1px;
-    background-color: #f6f9fc;
-    width: 97%;
-    border: 1px solid #dee2e6;
-    border-radius: 0 0px 5px 5px;
+  position: absolute;
+  bottom: 5px;
+  background-color: #f6f9fc;
+  width: 97%;
+  border: 1px solid #dee2e6;
+  border-radius: 0 0px 5px 5px;
 }
