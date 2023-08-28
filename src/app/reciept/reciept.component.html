@@ -187,7 +187,9 @@
                   </td>
                   <td><input type="text" class="form-control" id="PrvAllocation" placeholder="Enter Authority"
                       [(ngModel)]="uploadData.authority" name="uploadData.authority" /></td>
-                  <td><input type="date" class="form-control" id="date" [(ngModel)]="uploadData.authorityData" (change)="checkDate(i)"/></td>
+<!--                  <td><input type="date" class="form-control" id="date" [(ngModel)]="uploadData.authorityData" (change)="checkDate(i)"/></td>-->
+                  //Remove validation on date as per Ashish Sinha
+                  <td><input type="date" class="form-control" id="date" [(ngModel)]="uploadData.authorityData" /></td>
                   <td><input type="text" class="form-control" id="PrevAllocation" placeholder="Enter Remarks"
                       [(ngModel)]="uploadData.remarks" /></td>
                   <td>
