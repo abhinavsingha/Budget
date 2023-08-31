@@ -104,7 +104,7 @@ export class BudgetAllocationSubheadwiseComponent {
           unit: unit,
           amount: Number(parseFloat(this.sharedService.allocationData[count].allocationAmount)*parseFloat(this.sharedService.allocationData[count].amountUnit.amount)/parseFloat(this.amountUnit.amount)).toFixed(4),
           isSelected: true,
-          amountUnit: undefined,
+          amountUnit: this.amountUnit,
           cdaParkingId: []
         }
       }
@@ -770,7 +770,7 @@ export class BudgetAllocationSubheadwiseComponent {
         this.formdata.get('amountType')?.value;
       // }
     }
-
+    this.calcTotal();
   }
   updateInbox() {
     this.apiService.getApi(this.cons.api.updateInboxOutBox).subscribe({
