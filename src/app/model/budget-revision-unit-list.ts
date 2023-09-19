@@ -11,4 +11,5 @@ export class BudgetRevisionUnitList {
   manipulate2:any;
   cdaTransData:any;
   expenditure:any;
+  remAmount:any;
 }

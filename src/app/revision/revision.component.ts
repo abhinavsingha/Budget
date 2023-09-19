@@ -369,7 +369,7 @@ export class RevisionComponent {
     this.budgetRevisionUnitList2[this.loginIndex].revisionAmount=0.0;
     if(this.budgetRevisionUnitList2[index].revisionAmount==undefined)
       this.budgetRevisionUnitList2[index].revisionAmount=0.0000.toFixed(4);
-    if(parseFloat(this.budgetRevisionUnitList2[index].existingAmount)+parseFloat(this.budgetRevisionUnitList2[index].revisionAmount)<0){
+    if(parseFloat(this.budgetRevisionUnitList2[index].remAmount)+parseFloat(this.budgetRevisionUnitList2[index].revisionAmount)<0){
       Swal.fire('Cannot withdraw more than existing amount');
       this.budgetRevisionUnitList2[index].revisionAmount=undefined;
       return;
@@ -415,7 +415,8 @@ export class RevisionComponent {
         amountType: this.allRevisedUnits[i].amountType,
         remainingAmount:(parseFloat(this.allRevisedUnits[i].balAmount)*parseFloat(this.allRevisedUnits[i].amountType.amount)/this.formdata.get('amountType')?.value.amount).toFixed(4),
         manipulate:this.allRevisedUnits[i].manipulate,
-        manipulate2:this.allRevisedUnits[i].manipulate
+        manipulate2:this.allRevisedUnits[i].manipulate,
+        remAmount:(parseFloat(this.allRevisedUnits[i].remainingAmount)*parseFloat(this.allRevisedUnits[i].amountType.amount)/this.formdata.get('amountType')?.value.amount).toFixed(4),
       };
       this.budgetRevisionUnitList2.push(entry);
     }
