@@ -470,9 +470,9 @@ export class RevisionApprovalComponent {
       Unit: '',
       Subhead: '',
       Type: 'Total',
-      Allocated_Fund: totalA,
-      AdditionalOrWithdrawal: totalRE,
-      Revised:totalR
+      Allocated_Fund: Number(totalA).toFixed(4),
+      AdditionalOrWithdrawal: Number(totalRE).toFixed(4),
+      Revised:Number(totalR).toFixed(4)
     };
 
     tableData.push(table);
@@ -481,9 +481,9 @@ export class RevisionApprovalComponent {
       Unit: '',
       Subhead: '',
       Type: 'Grand Total',
-      Allocated_Fund: totalA,
-      AdditionalOrWithdrawal: totalRE,
-      Revised:totalR
+      Allocated_Fund: Number(totalA).toFixed(4),
+      AdditionalOrWithdrawal: Number(totalRE).toFixed(4),
+      Revised:Number(totalR).toFixed(4)
     }
     tableData.push(table)
     const columns = [
