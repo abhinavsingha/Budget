@@ -284,9 +284,10 @@ export class ManageUserRoleComponent {
   }
 
   deactivateUserRoleFinallySubmit(data: any, indexValue: any) {
+    debugger;
     this.SpinnerService.show();
     this.apiService
-      .getApi(this.cons.api.deActivateUser + '/' + data.pid)
+      .getApi(this.cons.api.deActivateUser + '/' + data.pid+'/'+data.roleId)
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
 
