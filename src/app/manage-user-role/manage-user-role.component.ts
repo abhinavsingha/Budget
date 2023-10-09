@@ -294,6 +294,8 @@ export class ManageUserRoleComponent {
         if (result['message'] == 'success') {
           this.usersWithRole.splice(indexValue, 1);
           this.SpinnerService.hide();
+          this.common.faliureAlert('Request Successful', result['message'], '');
+          window.location.reload();
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
