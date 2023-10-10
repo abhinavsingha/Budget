@@ -599,7 +599,7 @@ export class CdaParkingComponent implements OnInit {
         oldData: undefined
       };
       this.cdaList.push(entry);
-      this.totalParking=sum;
+      this.totalParking=Number(sum).toFixed(4);
 
     }
 
@@ -637,7 +637,7 @@ export class CdaParkingComponent implements OnInit {
       if(cda.balance!=undefined)
         sum1=Number(sum1)+Number(cda.balance);
     }
-    this.totalParking=sum1;
+    this.totalParking=Number(sum1).toFixed(4);
     this.totalParking=Number(Number(this.totalParking)-Number(sum)).toFixed(4);
     if(this.totalParking==0){
       this.isdisableUpdateButton=false;
