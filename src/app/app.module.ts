@@ -82,7 +82,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
         // url: 'http://localhost:8080/auth',
         url: 'https://icg.net.in/auth/',
         realm: 'icgrms',
-        clientId: 'cgbudget', // For Production and Diwakar Local PC
+        clientId: 'cgbudget', // For Production
         // clientId: 'budget', // For UAT Server
       },
       initOptions: {

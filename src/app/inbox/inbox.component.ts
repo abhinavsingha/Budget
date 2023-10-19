@@ -280,4 +280,67 @@ export class InboxComponent implements OnInit {
       );
 
   }
+
+  moveApproved(li: InboxList) {
+    Swal.fire({
+      title: 'Are you sure you want to move to Approved?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, submit it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.finallyMoveApprove(li);
+      }
+    });
+  }
+
+  private finallyMoveApprove(li: InboxList) {
+    this.apiService
+      .getApi(this.cons.api.updateMsgStatusMain +'/'+li.mangeInboxId)
+      .subscribe(
+        (res) => {
+          let result: { [key: string]: any } = res;
+          window.location.reload();
+        },
+        (error) => {
+          console.error(error);
+          this.SpinnerService.hide();
+        }
+      );
+  }
+
+  moveArchive(li: InboxList) {
+    Swal.fire({
+      title: 'Are you sure you want to move to Approved?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, submit it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.finallyMoveArchive(li);
+      }
+    });
+
+  }
+
+  private finallyMoveArchive(li: InboxList) {
+    this.apiService
+      .getApi(this.cons.api.moveToArchive +'/'+li.mangeInboxId)
+      .subscribe(
+        (res) => {
+          let result: { [key: string]: any } = res;
+          window.location.reload();
+        },
+        (error) => {
+          console.error(error);
+          this.SpinnerService.hide();
+        }
+      );
+  }
 }

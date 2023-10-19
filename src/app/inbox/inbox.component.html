@@ -67,7 +67,7 @@
                       <td>Approved</td>
                     </tr> -->
                   <tr *ngFor="let li of inboxList| paginate :{itemsPerPage:20,currentPage:p}; let i = index" [ngClass]="{ 'ng-star-inserted new': li.isCda == false }"
-                    id="htmlData" (click)="redirect(li)">
+                    id="htmlData" >
                     <td>{{20 *(p-1)+i+1}}</td>
                     <td>{{li.isType}}</td>
                     <td>{{li.createDate}}</td>
@@ -81,6 +81,13 @@
                           class="fas fa-eye"></i> View</button>
                       <button *ngIf="li.status== 'Fully Approved'||li.isType=='Budget Receipt'" type="button"
                         class="btn btn-primary mr-2" (click)="getAuthDoc(li)">Auth Doc</button>
+
+                      <a *ngIf="li.status== 'Fully Approved'" href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                          <a class="dropdown-item" href="#" (click)="moveApproved(li)" data-toggle="modal" data-target="#edit_employee" ><i class="fa fa-pencil m-r-5"></i> Move to Approved</a>
+                          <a class="dropdown-item" href="#" (click)="moveArchive(li)"data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i> Move to Archive</a>
+
+                      </div>
                     </td>
                   </tr>
                 </tbody>

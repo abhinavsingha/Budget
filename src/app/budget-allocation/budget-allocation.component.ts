@@ -955,7 +955,10 @@ export class BudgetAllocationComponent implements OnInit {
               this.subHeadFilterDatas[i].amount = 0;
               this.subHeadFilterDatas[i].amountUnit2 = this.formdata.get('amountType')?.value;
               if(this.sharedService.reject){
+                if(this.sharedService.allocationData[i]!=undefined)
                 this.subHeadFilterDatas[i].amount=Number(parseFloat(this.sharedService.allocationData[i].allocationAmount)*parseFloat(this.sharedService.allocationData[i].amountUnit.amount)/parseFloat(this.amountUnits.amount)).toFixed(4);
+                else
+                  this.subHeadFilterDatas[i].amount=0;
               }
 
 
@@ -1264,17 +1267,32 @@ export class BudgetAllocationComponent implements OnInit {
             });
           }
         }
-        budgetRequest.push({
-          transactionId:this.sharedService.allocationData[i].transactionId,
-          budgetFinanciaYearId: this.tableData[i].financialYear.serialNo,
-          toUnitId: this.tableData[i].unitName.unit,
-          subHeadId: this.tableData[i].selectedSubHead.budgetCodeId,
-          amount: this.tableData[i].selectedSubHead.amount,
-          remark: this.tableData[i].remarks,
-          allocationTypeId: this.tableData[i].allocationType.allocTypeId,
-          amountTypeId: this.formdata.get('amountType')?.value.amountTypeId,
-          cdaParkingId: cda,
-        });
+        if(this.sharedService.allocationData[i]!=undefined){
+          budgetRequest.push({
+            transactionId:this.sharedService.allocationData[i].transactionId,
+            budgetFinanciaYearId: this.tableData[i].financialYear.serialNo,
+            toUnitId: this.tableData[i].unitName.unit,
+            subHeadId: this.tableData[i].selectedSubHead.budgetCodeId,
+            amount: this.tableData[i].selectedSubHead.amount,
+            remark: this.tableData[i].remarks,
+            allocationTypeId: this.tableData[i].allocationType.allocTypeId,
+            amountTypeId: this.formdata.get('amountType')?.value.amountTypeId,
+            cdaParkingId: cda,
+          });
+        }
+        else{
+          budgetRequest.push({
+            budgetFinanciaYearId: this.tableData[i].financialYear.serialNo,
+            toUnitId: this.tableData[i].unitName.unit,
+            subHeadId: this.tableData[i].selectedSubHead.budgetCodeId,
+            amount: this.tableData[i].selectedSubHead.amount,
+            remark: this.tableData[i].remarks,
+            allocationTypeId: this.tableData[i].allocationType.allocTypeId,
+            amountTypeId: this.formdata.get('amountType')?.value.amountTypeId,
+            cdaParkingId: cda,
+          });
+        }
+
       }
       debugger;
       this.submitJson = {

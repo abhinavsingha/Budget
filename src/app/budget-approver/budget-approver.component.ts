@@ -44,7 +44,7 @@ export class BudgetApproverComponent implements OnInit {
 
   isInboxAndOutbox: any;
   private amountUnitData: any;
-   currentIndex: number = 0;
+  currentIndex: number = 0;
   private authGroupId: any;
   private isRevision: boolean=false;
   previousParking: any[]=[];
@@ -217,24 +217,24 @@ export class BudgetApproverComponent implements OnInit {
   approveFormFinally(formDataValue: any) {
     this.SpinnerService.show();
     let cdapark: any[] = [];
-    for (let list of this.budgetDataList) {
-      for (let cda of list.cdaData) {
-        const entry = {
-          cdacrDrId: cda.cdaCrdrId,
-          allocatedAmount: cda.amount,
-          allocatedAmountType: cda.amountTypeMain.amountTypeId,
-        };
-        cdapark.push(entry);
-      }
-    }
+    // for (let list of this.budgetDataList) {
+    //   for (let cda of list.cdaData) {
+    //     const entry = {
+    //       cdacrDrId: cda.cdaCrdrId,
+    //       allocatedAmount: cda.amount,
+    //       allocatedAmountType: cda.amountTypeMain.amountTypeId,
+    //     };
+    //     cdapark.push(entry);
+    //   }
+    // }
     let submitJson = {
       authGroupId: this.budgetDataList[0].authGroupId,
       status: 'Approved',
       remarks: formDataValue.remarks,
-      cdaParkingId: cdapark,
+      // cdaParkingId: cdapark,
     };
     this.apiService
-      .postApi(this.cons.api.approveBudgetOrReject, submitJson)
+      .postApi(this.cons.api.budgetApprove, submitJson)
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -281,7 +281,7 @@ export class BudgetApproverComponent implements OnInit {
       cdaParkingId: cdapark,
     };
     this.apiService
-      .postApi(this.cons.api.approveBudgetOrReject, submitJson)
+      .postApi(this.cons.api.budgetReject, submitJson)
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
