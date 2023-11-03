@@ -12,6 +12,7 @@ export class SharedService {
   public sharedValue: string|undefined; // Property to hold the shared value
   public redirectedFrom: string|undefined;
   public inbox:any;
+  public rejectedBillCount:any;
   public outbox:any;
   public roleHeading: any;
   public status:boolean=false;
@@ -44,6 +45,8 @@ export class SharedService {
           this.outboxResponse=result['response'];
           this.inbox = result['response'].inbox;
           this.outbox = result['response'].outBox;
+          this.rejectedBillCount = result['response'].rejectedBillCount;
+
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
@@ -91,6 +94,7 @@ export class SharedService {
             this.outbox = result['response'].outBox;
             this.approve=result['response'].approved;
             this.archive=result['response'].archived;
+            this.rejectedBillCount=result['response'].rejectedBillCount;
             // console.log(result['response']);
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');

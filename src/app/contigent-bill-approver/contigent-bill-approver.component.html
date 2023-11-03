@@ -227,7 +227,7 @@
                 </div>
               </div>
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group" >
                   <label>Sanction</label>
                   <input type="text" readonly class="form-control" id="authority" placeholder="Enter Remarks"
                          formControlName="authority" />
@@ -314,6 +314,13 @@
                   <label>Return Remarks</label>
                   <input type="text" class="form-control" id="ReturnRemarks" placeholder="Return Remarks"
                          formControlName="returnRemarks" />
+                </div>
+              </div>
+              <div class="col-md-4" *ngIf="(sharedService.redirectedFrom === 'inbox'&&  sharedService.roleHeading == 'CB Creator')||(sharedService.redirectedFrom === 'outbox'&&  sharedService.roleHeading != 'CB Creator')">
+                <div class="form-group">
+                  <label>Return Remarks</label>
+                  <input type="text" class="form-control" id="ReturnRemarks" placeholder="Return Remarks"
+                         formControlName="returnRemarks1" [readonly]="true"/>
                 </div>
               </div>
               <div class="col-md-4">

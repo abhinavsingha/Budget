@@ -119,6 +119,7 @@ export class ContigentBillApproverComponent implements OnInit {
     invoiceDate: new FormControl(),
     invoiceFile: new FormControl(),
     returnRemarks: new FormControl(),
+    returnRemarks1: new FormControl(),
   });
   subHeadType:any;
   formData = new FormGroup({
@@ -211,6 +212,7 @@ export class ContigentBillApproverComponent implements OnInit {
     this.getCgUnitData();
     this.getSubHeadType();
     this.updateInbox();
+    debugger;
   }
   // getDashBoardDta() {
   //   this.SpinnerService.show();
@@ -502,7 +504,8 @@ export class ContigentBillApproverComponent implements OnInit {
     this.formdata.get('invoiceNo')?.setValue(cbEntry.invoiceNo);
     this.formdata.get('invoiceDate')?.setValue(cbEntry.invoiceDate);
     this.formdata.get('invoiceFile')?.setValue(cbEntry.invoiceFile);
-    this.formdata.get('returnRemarks')?.setValue(cbEntry.returnRemarks);
+    this.formdata.get('returnRemarks')?.setValue(cbEntry.remarks);
+    this.formdata.get('returnRemarks1')?.setValue(cbEntry.remarks);
     for (let i = 0; i < this.minorHeadData.length; i++) {
       if (this.minorHeadData[i].minorHead == cbEntry.minorHead) {
         this.formdata.get('minorHead')?.setValue(this.minorHeadData[i]);

@@ -90,6 +90,7 @@ export class SidebarComponent {
   }
 
   unitId: any;
+  rejectedBillCount: any;
   getDashBoardDta() {
     this.SpinnerService.show();
     var newSubmitJson = null;
@@ -105,6 +106,7 @@ export class SidebarComponent {
             this.inbox = result['response'].inbox;
             this.outbox = result['response'].outBox;
             this.archive = result['response'].archived;
+            this.rejectedBillCount = result['response'].rejectedBillCount;
             this.approve = result['response'].approved;
             this.sharedService.inbox=this.inbox;
             this.sharedService.outbox=this.outbox;
