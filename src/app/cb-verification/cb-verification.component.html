@@ -304,6 +304,13 @@
                          formControlName="returnRemarks" />
                 </div>
               </div>
+              <div class="col-md-4" *ngIf="sharedService.redirectedFrom === 'outbox'">
+                <div class="form-group">
+                  <label>Return Remarks</label>
+                  <input type="text" class="form-control" id="ReturnRemarks1" placeholder="Return Remarks"
+                         formControlName="remarks" [readonly]="true"/>
+                </div>
+              </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>On Account Of</label>

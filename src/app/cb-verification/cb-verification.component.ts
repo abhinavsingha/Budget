@@ -379,13 +379,18 @@ export class CbVerificationComponent {
     this.formdata.get('cbNo')?.setValue(cbEntry.cbNo);
     this.formdata.get('cbDate')?.setValue(cbEntry.cbDate);
     this.formdata.get('remarks')?.setValue(cbEntry.remarks);
+
     this.formdata.get('authority')?.setValue(cbEntry.authority);
     this.formdata.get('date')?.setValue(cbEntry.date);
     this.formdata.get('firmName')?.setValue(cbEntry.firmName);
     this.formdata.get('invoiceNo')?.setValue(cbEntry.invoiceNo);
     this.formdata.get('invoiceDate')?.setValue(cbEntry.invoiceDate);
     this.formdata.get('invoiceFile')?.setValue(cbEntry.invoiceFile);
-    this.formdata.get('returnRemarks')?.setValue(cbEntry.returnRemarks);
+    debugger;
+    if(cbEntry.returnRemarks==null)
+      this.formdata.get('returnRemarks')?.setValue(cbEntry.remarks);
+    else
+      this.formdata.get('returnRemarks')?.setValue(cbEntry.returnRemarks);
     this.formdata.get('gst')?.setValue(cbEntry.gst);
     this.formdata.get('fileNo')?.setValue(cbEntry.fileNo);
     this.formdata.get('fileDate')?.setValue(cbEntry.fileDate);
