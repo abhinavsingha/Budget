@@ -127,7 +127,7 @@ export class ConstantsService {
       this.serviceUrl + 'budgetAllocation/getAvailableFundData',
 
     getBudgetRevisionData:
-      this.serviceUrl + 'budgetAllocation/getBudgetRevisionData',
+      this.serviceUrl + 'budgetAllocation/getBudgetRevisionData3',
 
     getCdaParkingReport:
       this.serviceUrl + 'reportController/getCdaParkingReport',
@@ -244,9 +244,9 @@ export class ConstantsService {
     getUnitRebaseNotificationData: this.serviceUrl+'unitRebaseController/getUnitRebaseNotificationData',
 
 
-    saveAuthDataRevision: this.serviceUrl+'budgetAllocation/saveAuthDataRevision2',
-    saveBudgetRevisionData:this.serviceUrl + 'budgetAllocation/saveBudgetRevision2',
-    approveRevisionBudgetOrReject:this.serviceUrl + 'budgetAllocation/approveRevisionBudgetOrReject2',
+    saveAuthDataRevision: this.serviceUrl+'budgetAllocation/saveAuthDataRevision3',
+    saveBudgetRevisionData:this.serviceUrl + 'budgetAllocation/saveBudgetRevision3',
+    approveRevisionBudgetOrReject:this.serviceUrl + 'budgetAllocation/approveRevisionBudgetOrReject3',
     saveCdaParkingDataForRebase: this.serviceUrl+'cdaParkingController/saveCdaParkingDataForRebase',
     updateMsgStatusMain: this.serviceUrl+'inboxOutbox/updateMsgStatusMain',
     getOldCdaDataForRebase: this.serviceUrl+'cdaParkingController/getOldCdaDataForRebase',

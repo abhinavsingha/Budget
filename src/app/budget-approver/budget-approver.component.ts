@@ -1275,10 +1275,10 @@ export class BudgetApproverComponent implements OnInit {
           for (let i = 0; i < this.budgetDataList.length; i++) {
             debugger;
             if(this.budgetDataList[i].unallocatedAmount!=undefined){
-             this.budgetDataList[i].allocationAmount1=(parseFloat(this.budgetDataList[i].allocationAmount)+parseFloat(this.budgetDataList[i].unallocatedAmount)).toFixed(4);
+             this.budgetDataList[i].allocationAmount1=(Number(this.budgetDataList[i].allocationAmount).toFixed(4)+Number(this.budgetDataList[i].unallocatedAmount).toFixed(4));
             }
             else{
-              this.budgetDataList[i].allocationAmount1=(parseFloat(this.budgetDataList[i].allocationAmount)).toFixed(4);
+              this.budgetDataList[i].allocationAmount1=(Number(this.budgetDataList[i].allocationAmount)).toFixed(4);
             }
             if (this.budgetDataList[i].balanceAmount != undefined) {
               this.budgetDataList[i].balanceAmount = parseFloat(

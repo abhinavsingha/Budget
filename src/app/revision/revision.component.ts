@@ -32,9 +32,11 @@ class tableData {
   revisedAmount: any;
   amountType:any;
   bal:any;
+  expenditure:any;
 }
 
 class revision {
+  isAutoAssignAllocation:any;
   cdaParkingId:any;
   isAllocated:any;
   budgetFinanciaYearId: any;
@@ -365,11 +367,22 @@ export class RevisionComponent {
   }
 
   revisionAmount(index: any) {
+    debugger;
     this.localIndex=index;
     this.budgetRevisionUnitList2[this.loginIndex].revisionAmount=0.0;
     if(this.budgetRevisionUnitList2[index].revisionAmount==undefined)
       this.budgetRevisionUnitList2[index].revisionAmount=0.0000.toFixed(4);
-    if(parseFloat(this.budgetRevisionUnitList2[index].remAmount)+parseFloat(this.budgetRevisionUnitList2[index].revisionAmount)<0){
+
+    debugger;
+    if(Number(this.budgetRevisionUnitList2[index].existingAmount)==0&&Number(this.budgetRevisionUnitList2[index].expenditure)>0&&(Number(this.budgetRevisionUnitList2[index].revisionAmount)*Number(this.formdata.get('amountType')?.value.amount))<Number(this.budgetRevisionUnitList2[index].expenditure))
+    {
+      this.common.warningAlert('Allocation cannot be less than Expenditure','Allocation cannot be less than Expenditure: '+((parseFloat(this.budgetRevisionUnitList2[index].expenditure))/parseFloat(this.formdata.get('amountType')?.value.amount)).toFixed(4)+this.formdata.get('amountType')?.value.amountType,'')
+      return;
+
+    }
+
+
+    if((parseFloat(this.budgetRevisionUnitList2[index].remAmount)+parseFloat(this.budgetRevisionUnitList2[index].revisionAmount)<0)&&(Number(this.budgetRevisionUnitList2[index].existingAmount)!=0)){
       Swal.fire('Cannot withdraw more than existing amount');
       this.budgetRevisionUnitList2[index].revisionAmount=undefined;
       return;
@@ -385,7 +398,7 @@ export class RevisionComponent {
     this.budgetRevisionUnitList2[index].revisiedAmount = (parseFloat(this.budgetRevisionUnitList2[index].existingAmount)+parseFloat(this.budgetRevisionUnitList2[index].revisionAmount)).toFixed(4);
     this.budgetRevisionUnitList2[index].manipulate2 = (parseFloat(this.budgetRevisionUnitList2[index].manipulate)+parseFloat(this.budgetRevisionUnitList2[index].revisionAmount)).toFixed(4);
     this.budgetRevisionUnitList2[index].revisionAmount=parseFloat(this.budgetRevisionUnitList2[index].revisionAmount).toFixed(4);
-    //debugger;
+    debugger;
     if(parseFloat(this.budgetRevisionUnitList2[index].manipulate2)<parseFloat(this.budgetRevisionUnitList2[index].expenditure)/parseFloat(this.formdata.get('amountType')?.value.amount)){
       this.budgetRevisionUnitList2[index].revisionAmount=0
       this.common.warningAlert('Allocation cannot be less than Expenditure','Allocation cannot be less than Expenditure: '+((parseFloat(this.budgetRevisionUnitList2[index].expenditure))/parseFloat(this.formdata.get('amountType')?.value.amount)).toFixed(4)+this.formdata.get('amountType')?.value.amountType,'')
@@ -444,9 +457,9 @@ export class RevisionComponent {
         !this.budgetRevisionUnitList2[i].isSelected
       ) {
         let data: tableData= {
-          manipulate:undefined,
-          manipulate2:undefined,
-          cdaDetails:undefined,
+          manipulate: undefined,
+          manipulate2: undefined,
+          cdaDetails: undefined,
           checked: false,
           financialYear: undefined,
           unit: undefined,
@@ -457,7 +470,8 @@ export class RevisionComponent {
           amountType: undefined,
           bal: undefined,
           isAllocated: undefined,
-          allocated: undefined
+          allocated: undefined,
+          expenditure: undefined
         }
         if(this.budgetRevisionUnitList2[i].revisionAmount<0){
           data = {
@@ -475,10 +489,12 @@ export class RevisionComponent {
             bal:parseFloat(this.budgetRevisionUnitList2[i].manipulate2).toFixed(4),
             manipulate:parseFloat(this.budgetRevisionUnitList2[i].manipulate).toFixed(4),
             manipulate2:parseFloat(this.budgetRevisionUnitList2[i].manipulate2).toFixed(4),
+            expenditure:parseFloat(this.budgetRevisionUnitList2[i].expenditure).toFixed(4),
           };
         }
         else{
           data = {
+            expenditure:parseFloat(this.budgetRevisionUnitList2[i].expenditure).toFixed(4),
             cdaDetails:this.budgetRevisionUnitList2[i].cdaTransData,
             isAllocated: 1,
             checked: false,
@@ -662,6 +678,7 @@ export class RevisionComponent {
 
       }
       const entry: revision = {
+        isAutoAssignAllocation:0,
         cdaParkingId:cdapark,
         isAllocated:this.tabledata[i].isAllocated,
         budgetFinanciaYearId: this.tabledata[i].financialYear.serialNo,
@@ -674,9 +691,27 @@ export class RevisionComponent {
         allocationTypeId: this.tabledata[i].allocationType.allocationTypeId,
         amountTypeId:this.formdata.get('amountType')?.value.amountTypeId,
         remark: this.formdata.get('remarks')?.value,
+        // remainingAmount:this.tabledata[i].manipulate
         remainingAmount:this.tabledata[i].manipulate
       };
       requestJson.push(entry);
+      if(this.tabledata[i].revisedAmount<0){
+        const entry1: revision = {
+          isAutoAssignAllocation:1,
+          cdaParkingId:cdapark,
+          isAllocated:this.tabledata[i].isAllocated,
+          budgetFinanciaYearId: this.tabledata[i].financialYear.serialNo,
+          toUnitId: this.tabledata[i].unit.unit,
+          subHeadId: this.tabledata[i].subHead.budgetCodeId,
+          amount:this.tabledata[i].allocated,
+          revisedAmount: Number(Number(this.tabledata[i].allocated)+Number(this.tabledata[i].revisedAmount)),
+          allocationTypeId: this.tabledata[i].allocationType.allocationTypeId,
+          amountTypeId:this.formdata.get('amountType')?.value.amountTypeId,
+          remark: this.formdata.get('remarks')?.value,
+          remainingAmount:this.tabledata[i].manipulate
+        };
+        requestJson.push(entry1);
+      }
     }
     const req = {
       // revisionType:revisionType,
@@ -704,7 +739,7 @@ export class RevisionComponent {
 
               setTimeout(() => {
                 // Reload the page
-                window.location.reload();
+                // window.location.reload();
               }, delayMilliseconds);
             } else {
               this.common.faliureAlert('Please try later', result['message'], '');
