@@ -739,7 +739,7 @@ export class RevisionComponent {
 
               setTimeout(() => {
                 // Reload the page
-                // window.location.reload();
+                window.location.reload();
               }, delayMilliseconds);
             } else {
               this.common.faliureAlert('Please try later', result['message'], '');
