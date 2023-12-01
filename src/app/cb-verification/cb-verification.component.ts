@@ -595,10 +595,7 @@ export class CbVerificationComponent {
             this.budgetAllotted = 0;
             this.formdata.get('budgetAllocated')?.setValue(0);
           } else {
-            this.budgetAllotted = (
-              parseFloat(result['response'].fundallocated) *
-              parseFloat(result['response'].amountUnit.amount)
-            ).toFixed(4);
+            this.budgetAllotted = Number(result['response'].cbAllocationAMount.toFixed(4));
             this.formdata
               .get('budgetAllocated')
               ?.setValue(

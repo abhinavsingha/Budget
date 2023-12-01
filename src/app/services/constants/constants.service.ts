@@ -8,7 +8,6 @@ export class ConstantsService {
 
   serverRedirectUrl = 'https://icg.net.in/auth/realms/icgrms/protocol/openid-connect/logout?redirect_uri=https://icg.net.in/'; //For Production Server
   serviceUrl = 'https://icg.net.in/budget/'; //UAT server
-  // serviceUrl = 'http://192.168.2.2:1111/';
 
   api = {
     getDataBudgetAllocation:
@@ -224,7 +223,7 @@ export class ConstantsService {
 
     updateAllocation: this.serviceUrl + 'budgetAllocation/updateAllocation',
     getRevisedAllocationReport:
-      this.serviceUrl + 'reportController/getRevisedAllocationReport',
+      this.serviceUrl + 'reportController/getRevisedAllocationReportPdf',
     getRevisedAllocationAprReport:
       this.serviceUrl + 'reportController/getRevisedAllocationAprReport',
     getAllocationReportDoc:
@@ -254,7 +253,8 @@ export class ConstantsService {
     getIsShipCgUnit: this.serviceUrl+'unitRebaseController/getIsShipCgUnit',
     budgetApprove: this.serviceUrl + 'budgetAllocation/budgetApprove',
     budgetReject: this.serviceUrl + 'budgetAllocation/budgetReject',
-    moveToArchive: this.serviceUrl+'inboxOutbox/moveToArchive'
+    moveToArchive: this.serviceUrl+'inboxOutbox/moveToArchive',
+    getRevisionReportExcel: this.serviceUrl+'reportController/getRevisionReportExcel'
 
 
   };

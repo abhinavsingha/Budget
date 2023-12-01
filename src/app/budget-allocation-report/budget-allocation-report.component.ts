@@ -606,7 +606,7 @@ export class BudgetAllocationReportComponent implements OnInit {
       if(formdata.reprtType=='02')
         url=url+'Doc';
       else if(formdata.reprtType=='03')
-        url=url+'Excel';
+        url=this.cons.api.getRevisionReportExcel;
       this.apiService
         .getApi(
           url +

@@ -364,10 +364,7 @@ export class NewContigentBillComponent implements OnInit {
             this.formdata
               .get('budgetAllocated')
               ?.setValue(
-                (Number((
-                    parseFloat(result['response'].fundAvailable) *
-                    parseFloat(result['response'].amountUnit.amount)
-                  )+parseFloat(result['response'].expenditure)).toFixed(4)
+                (Number(result['response'].cbAllocationAMount).toFixed(4)
               ));
           }
           this.cdaData=result['response'].cdaParkingTrans;
@@ -856,10 +853,10 @@ export class NewContigentBillComponent implements OnInit {
                                   );
                                 this.cdaData=result['response'].cdaParkingTrans;
                                 for(let cda of this.cdaData){
-                                  cda.remainingCdaAmount=parseFloat(cda.remainingCdaAmount)*parseFloat(cda.amountType.amount);
+                                  cda.remainingCdaAmount=Number(parseFloat(cda.remainingCdaAmount)*parseFloat(cda.amountType.amount)).toFixed(4);
                                   for(let cbEntryItr of cbEntry.cdaParkingId){
                                     if(cda.cdaParkingId==cbEntryItr.cdaParkingId)
-                                      cda.amount=cbEntryItr.cdaAmount;
+                                      cda.amount=Number(cbEntryItr.cdaAmount).toFixed(4);
                                   }
                                 }
                               } else {
@@ -935,10 +932,10 @@ export class NewContigentBillComponent implements OnInit {
                         );
                       this.cdaData=result['response'].cdaParkingTrans;
                       for(let cda of this.cdaData){
-                        cda.remainingCdaAmount=parseFloat(cda.remainingCdaAmount)*parseFloat(cda.amountType.amount);
+                        cda.remainingCdaAmount=Number(parseFloat(cda.remainingCdaAmount)*parseFloat(cda.amountType.amount)).toFixed(4);
                         for(let cbEntryItr of cbEntry.cdaParkingId){
                           if(cda.cdaParkingId==cbEntryItr.cdaParkingId)
-                            cda.amount=cbEntryItr.cdaAmount;
+                            cda.amount=Number(cbEntryItr.cdaAmount).toFixed(4);
                         }
                       }
 

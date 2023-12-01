@@ -566,34 +566,36 @@ export class RevisionApprovalComponent {
               result['response'][0].fileName
             );
             // console.log(result['response']);
-          }else if(result['message'] =='PENDING RECORD NOT FOUND'){
-            this.apiService.getApi(this.cons.api.getRevisedAllocationAprReport+'/'+localStorage.getItem('group_id'))
-              .subscribe({
-                next: (v: object) => {
-                  this.SpinnerService.hide();
-                  let result: { [key: string]: any } = v;
-                  if (result['message'] == 'success') {
-                    this.downloadPdf(
-                      result['response'][0].path,
-                      result['response'][0].fileName
-                    );
-                  } else {
-                    this.common.faliureAlert(
-                      'Please try later',
-                      result['message'],
-                      ''
-                    );
-                  }
-                },
-                error: (e) => {
-                  this.SpinnerService.hide();
-                  console.error(e);
-                  this.common.faliureAlert('Error', e['error']['message'], 'error');
-                },
-                complete: () => console.info('complete'),
-              });
-
-          } else {
+          }
+          // else if(result['message'] =='PENDING RECORD NOT FOUND'){
+          //   this.apiService.getApi(this.cons.api.getRevisedAllocationAprReport+'/'+localStorage.getItem('group_id'))
+          //     .subscribe({
+          //       next: (v: object) => {
+          //         this.SpinnerService.hide();
+          //         let result: { [key: string]: any } = v;
+          //         if (result['message'] == 'success') {
+          //           this.downloadPdf(
+          //             result['response'][0].path,
+          //             result['response'][0].fileName
+          //           );
+          //         } else {
+          //           this.common.faliureAlert(
+          //             'Please try later',
+          //             result['message'],
+          //             ''
+          //           );
+          //         }
+          //       },
+          //       error: (e) => {
+          //         this.SpinnerService.hide();
+          //         console.error(e);
+          //         this.common.faliureAlert('Error', e['error']['message'], 'error');
+          //       },
+          //       complete: () => console.info('complete'),
+          //     });
+          //
+          // }
+          else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
         },
