@@ -94,6 +94,7 @@ export class RevisionComponent {
   newRevisionAmount: number=0;
   private localIndex: any;
   cdaDetails: any;
+  private flag: boolean=true;
   constructor(
     private sharedService: SharedService,
     private SpinnerService: NgxSpinnerService,
@@ -438,6 +439,9 @@ export class RevisionComponent {
   tabledata: tableData[] = [];
   masterChecked: boolean = false;
   saveDataToTable() {
+    if(!this.flag){
+      return;
+    }
     this.showSubmit=true;
     const alloc = {
       allocationType: this.formdata.get('allocationType')?.value.allocDesc,
@@ -601,6 +605,13 @@ export class RevisionComponent {
     }else
       this.allocation_withdrawl=(parseFloat(this.totlaRevisionAmount)).toFixed(4);
     this.formdata.get('reallocateFund')?.setValue(parseFloat(this.allocation_withdrawl).toFixed(4));
+    if(((parseFloat(this.formdata.get('fundAvailable')?.value)-parseFloat(this.allocation_withdrawl)*parseFloat(this.formdata.get('amountType')?.value.amount)))<0){
+      this.common.warningAlert('Unit Out of Funds','Revision is exceeding unit funds','')
+      this.flag=false;
+    }
+    else{
+      this.flag=true;
+    }
     this.formdata.get('balanceFund')?.setValue((parseFloat(this.formdata.get('fundAvailable')?.value)-parseFloat(this.allocation_withdrawl)*parseFloat(this.formdata.get('amountType')?.value.amount)).toFixed(4));
     this.autoCalcHomeUnitRevision(this.localIndex);
   }

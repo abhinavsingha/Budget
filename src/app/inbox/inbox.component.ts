@@ -86,7 +86,7 @@ export class InboxComponent implements OnInit {
 
   redirect(li: InboxList) {
     if(li.isRebase=='1'){
-      this.updateMsgStatusMain(li.mangeInboxId);
+      this.updateMsgStatusMain(li);
     }
     debugger;
     this.sharedService.isRevision=li.isRevision;
@@ -177,6 +177,9 @@ export class InboxComponent implements OnInit {
             else if(list[i].isBgOrCg=="RR"){
               isType='Budget Rebase';
             }
+            else if(list[i].isBgOrCg=="UR"){
+              isType='Budget Revised';
+            }
             const entry: InboxList = {
               isRebase:list[i].isRebase,
               mangeInboxId: list[i].mangeInboxId,
@@ -265,8 +268,8 @@ export class InboxComponent implements OnInit {
     window.open(pdfUrl, '_blank');
   }
 
-  private updateMsgStatusMain(msgId: any) {
-
+   updateMsgStatusMain(li:any) {
+    let msgId=li.mangeInboxId;
     this.apiService
       .getApi(this.cons.api.updateMsgStatusMain +'/'+msgId)
       .subscribe(

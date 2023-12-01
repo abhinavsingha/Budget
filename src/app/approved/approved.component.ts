@@ -74,6 +74,8 @@ export class ApprovedComponent implements OnInit {
                 isType='Budget Allocation';
             }else if(list[i].isBgOrCg=="RR"){
               isType='Budget Rebase';
+            }else if(list[i].isBgOrCg=="UR"){
+              isType='Budget Revised';
             }
             else if(list[i].isBgOrCg=="BR"){
               isType='Budget Receipt';
