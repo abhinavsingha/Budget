@@ -48,6 +48,7 @@ class revision {
   remark: any;
   amountTypeId:any;
   remainingAmount:any;
+  revisedAmountMain:any;
 }
 
 @Component({
@@ -689,37 +690,39 @@ export class RevisionComponent {
 
       }
       const entry: revision = {
-        isAutoAssignAllocation:0,
-        cdaParkingId:cdapark,
-        isAllocated:this.tabledata[i].isAllocated,
+        isAutoAssignAllocation: 0,
+        cdaParkingId: cdapark,
+        isAllocated: this.tabledata[i].isAllocated,
         budgetFinanciaYearId: this.tabledata[i].financialYear.serialNo,
         toUnitId: this.tabledata[i].unit.unit,
         subHeadId: this.tabledata[i].subHead.budgetCodeId,
-        amount:this.tabledata[i].allocated,
+        amount: this.tabledata[i].allocated,
         // amount: this.tabledata[i].amount,//allocation
         // revisedAmount: this.tabledata[i].revisedAmount,//additional/withdrawal
-         revisedAmount: this.tabledata[i].revisedAmount,//additional/withdrawal
+        revisedAmount: this.tabledata[i].revisedAmount,
         allocationTypeId: this.tabledata[i].allocationType.allocationTypeId,
-        amountTypeId:this.formdata.get('amountType')?.value.amountTypeId,
+        amountTypeId: this.formdata.get('amountType')?.value.amountTypeId,
         remark: this.formdata.get('remarks')?.value,
         // remainingAmount:this.tabledata[i].manipulate
-        remainingAmount:this.tabledata[i].manipulate
+        remainingAmount: this.tabledata[i].manipulate,
+        revisedAmountMain: this.tabledata[i].revisedAmount,
       };
       requestJson.push(entry);
       if(this.tabledata[i].revisedAmount<0){
         const entry1: revision = {
-          isAutoAssignAllocation:1,
-          cdaParkingId:cdapark,
-          isAllocated:this.tabledata[i].isAllocated,
+          isAutoAssignAllocation: 1,
+          cdaParkingId: cdapark,
+          isAllocated: this.tabledata[i].isAllocated,
           budgetFinanciaYearId: this.tabledata[i].financialYear.serialNo,
           toUnitId: this.tabledata[i].unit.unit,
           subHeadId: this.tabledata[i].subHead.budgetCodeId,
-          amount:this.tabledata[i].allocated,
-          revisedAmount: Number(Number(this.tabledata[i].allocated)+Number(this.tabledata[i].revisedAmount)),
+          amount: this.tabledata[i].allocated,
+          revisedAmount: Number(Number(this.tabledata[i].allocated) + Number(this.tabledata[i].revisedAmount)),
           allocationTypeId: this.tabledata[i].allocationType.allocationTypeId,
-          amountTypeId:this.formdata.get('amountType')?.value.amountTypeId,
+          amountTypeId: this.formdata.get('amountType')?.value.amountTypeId,
           remark: this.formdata.get('remarks')?.value,
-          remainingAmount:this.tabledata[i].manipulate
+          remainingAmount: this.tabledata[i].manipulate,
+          revisedAmountMain: this.tabledata[i].revisedAmount
         };
         requestJson.push(entry1);
       }

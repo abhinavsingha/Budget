@@ -151,7 +151,7 @@ export class BudgetApproverComponent implements OnInit {
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
-          //debugger;
+          debugger;
           this.budgetDataList = result['response'].budgetResponseist;
           for (let i = 0; i < this.budgetDataList.length; i++) {
             if(this.budgetDataList[i].unallocatedAmount!=undefined)
@@ -1089,34 +1089,36 @@ export class BudgetApproverComponent implements OnInit {
               result['response'][0].path,
               result['response'][0].fileName
             );
-          }else if(result['message'] =='PENDING RECORD NOT FOUND'){
-            this.apiService.getApi(this.cons.api.getRevisedAllocationAprReport+data+'/'+localStorage.getItem('group_id'))
-              .subscribe({
-                next: (v: object) => {
-                  this.SpinnerService.hide();
-                  let result: { [key: string]: any } = v;
-                  if (result['message'] == 'success') {
-                    this.downloadPdf(
-                      result['response'][0].path,
-                      result['response'][0].fileName
-                    );
-                  } else {
-                    this.common.faliureAlert(
-                      'Please try later',
-                      result['message'],
-                      ''
-                    );
-                  }
-                },
-                error: (e) => {
-                  this.SpinnerService.hide();
-                  console.error(e);
-                  this.common.faliureAlert('Error', e['error']['message'], 'error');
-                },
-                complete: () => console.info('complete'),
-              });
-
-          } else {
+          }
+          // else if(result['message'] =='PENDING RECORD NOT FOUND'){
+          //   this.apiService.getApi(this.cons.api.getRevisedAllocationAprReport+data+'/'+localStorage.getItem('group_id'))
+          //     .subscribe({
+          //       next: (v: object) => {
+          //         this.SpinnerService.hide();
+          //         let result: { [key: string]: any } = v;
+          //         if (result['message'] == 'success') {
+          //           this.downloadPdf(
+          //             result['response'][0].path,
+          //             result['response'][0].fileName
+          //           );
+          //         } else {
+          //           this.common.faliureAlert(
+          //             'Please try later',
+          //             result['message'],
+          //             ''
+          //           );
+          //         }
+          //       },
+          //       error: (e) => {
+          //         this.SpinnerService.hide();
+          //         console.error(e);
+          //         this.common.faliureAlert('Error', e['error']['message'], 'error');
+          //       },
+          //       complete: () => console.info('complete'),
+          //     });
+          //
+          // }
+          else {
             this.common.faliureAlert(
               'Please try later',
               result['message'],
@@ -1174,7 +1176,7 @@ export class BudgetApproverComponent implements OnInit {
       if(formdata.reportType=='03'){
         if(parseFloat(this.budgetDataList[0].revisedAmount)!=0)
         {
-          this.getreAllocationReport('Doc');
+          this.getreAllocationReportnew();
         }
         else{
           this.getRecieptReport('Doc');
@@ -1304,13 +1306,59 @@ export class BudgetApproverComponent implements OnInit {
     this.router.navigate(['/budget-allocation']);
   }
   }
-
+  // oldDataFlag:boolean=false;
   checkOldDataChange(cdaParking: any) {
     if(cdaParking.oldData!=undefined){
       if(cdaParking.amount<cdaParking.oldData){
         this.common.warningAlert('Amount cannot be less than previous expenditure','Amount cannot be less than previous expenditure of '+cdaParking.oldData,'');
+        // this.oldDataFlag=true;
+
+        for(let cda of this.multipleCdaParking){
+          if(cda.cdaParkingUnit!=undefined){
+            if(cda.cdaParkingUnit.ginNo==cdaParking.cdaParkingUnit.ginNo){
+              cda.amount=cdaParking.oldData;
+              this.getCDAParkingAllocatedAmount();
+            }
+          }
+
+          debugger;
+        }
       }
     }
+
+  }
+
+  private getreAllocationReportnew() {
+    this.SpinnerService.show();
+    // //debugger;
+    let url=this.cons.api.getReceiptReportNew;
+    this.apiService
+      .getApi(url+'/'+localStorage.getItem('group_id'))
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            this.downloadPdf(
+              result['response'][0].path,
+              result['response'][0].fileName
+            );
+          } else {
+            this.common.faliureAlert(
+              'Please try later',
+              result['message'],
+              ''
+            );
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
+
 
   }
 }
