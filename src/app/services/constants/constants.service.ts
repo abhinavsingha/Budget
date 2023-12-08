@@ -7,9 +7,9 @@ export class ConstantsService {
   constructor() {}
 
   serverRedirectUrl = 'https://icg.net.in/auth/realms/icgrms/protocol/openid-connect/logout?redirect_uri=https://icg.net.in/'; //For Production Server
-  serviceUrl = 'https://icg.net.in/budget/'; //UAT server
+  serviceUrl = 'https://icg.net.in/cgbudget/'; //UAT server
   // serviceUrl = 'http://10.3.8.81:1111/';
-  // serviceUrl = 'http://172.20.10.5:1111/';
+  // serviceUrl = 'http://192.168.2.2:1111/';
   api = {
     getDataBudgetAllocation:
       this.serviceUrl + 'budgetAllocation/getDataBudgetAllocation',
