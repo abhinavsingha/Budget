@@ -440,6 +440,9 @@ export class RevisionComponent {
   tabledata: tableData[] = [];
   masterChecked: boolean = false;
   saveDataToTable() {
+    if(this.tabledata.length!=0){
+      return;
+    }
     if(!this.flag){
       return;
     }
@@ -459,7 +462,7 @@ export class RevisionComponent {
     for (let i = 0; i < this.budgetRevisionUnitList2.length; i++) {
       if (
         this.budgetRevisionUnitList2[i].revisionAmount != undefined &&
-        !this.budgetRevisionUnitList2[i].isSelected
+        !this.budgetRevisionUnitList2[i].isSelected && Number(this.budgetRevisionUnitList2[i].revisionAmount) != 0
       ) {
         let data: tableData= {
           manipulate: undefined,
@@ -552,6 +555,11 @@ export class RevisionComponent {
     // console.log(this.masterChecked);
   }
   deleteTableData() {
+    for(let j=0;j<this.budgetRevisionUnitList2.length;j++){
+      if(this.budgetRevisionUnitList2[j].isSelected == false)
+        this.budgetRevisionUnitList2[j].revisionAmount=undefined;
+    }
+
     for (let i = this.tabledata.length - 1; i >= 0; i--) {
       if (this.tabledata[i].checked) {
         for (let j = 0; i < this.budgetRevisionUnitList2.length; j++) {

@@ -202,7 +202,7 @@
                   </thead>
                   <tbody>
                   <tr *ngFor="let td of tabledata; let i = index">
-                    <td><input type="checkbox" [(ngModel)]="td.checked" [ngModelOptions]="{standalone: true}"></td>
+                    <td><input type="checkbox" [(ngModel)]="td.checked" [ngModelOptions]="{standalone: true}" disabled></td>
                     <td>{{td.financialYear.finYear}}</td>
                     <td>{{td.unit.descr}}</td>
                     <td>{{td.subHead.subHeadDescr}}</td>
