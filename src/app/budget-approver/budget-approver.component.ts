@@ -48,6 +48,7 @@ export class BudgetApproverComponent implements OnInit {
   private authGroupId: any;
   private isRevision: boolean=false;
   previousParking: any[]=[];
+  olddataflag: boolean=true;
 
   ngOnInit(): void {
     this.sharedService.updateInbox();
@@ -348,7 +349,7 @@ export class BudgetApproverComponent implements OnInit {
     // put rebase condition
     debugger;
     if(this.budgetDataList[this.currentIndex].isTYpe=='REBASE'||this.budgetDataList[0].isTYpe=='REVISION'){
-
+      this.olddataflag=false;
       this.apiService
         .postApi(this.cons.api.getOldCdaDataForRebase, submitJson)
         .subscribe({
@@ -368,6 +369,7 @@ export class BudgetApproverComponent implements OnInit {
                   oldData: value.totalParkingAmount
                 }
                 this.multipleCdaParking.push(oldCdaData);
+                this.olddataflag=true;
                 this.getCDAParkingAllocatedAmount();
               }
 
