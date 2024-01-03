@@ -275,14 +275,16 @@ export class InboxComponent implements OnInit {
       .subscribe(
         (res) => {
           let result: { [key: string]: any } = res;
-
+          if (result['message'] == 'success') {
+            window.location.reload();
+          }
         },
         (error) => {
           console.error(error);
           this.SpinnerService.hide();
         }
       );
-     window.location.reload();
+     //
   }
 
   moveApproved(li: InboxList) {

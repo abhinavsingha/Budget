@@ -109,7 +109,6 @@ export class BudgetApproverComponent implements OnInit {
           this.SpinnerService.hide();
         }
       );
-
   }
   getAllGroupIdAndUnitId(groupId: any) {
     this.SpinnerService.show();
@@ -120,6 +119,9 @@ export class BudgetApproverComponent implements OnInit {
         if (result['message'] == 'success') {
           debugger;
           this.budgetDataList = result['response'].budgetResponseist;
+          if(this.budgetDataList[0].isFlag=='1'&&this.budgetDataList[0].isBudgetRevision=='1'){
+            this.updateMsgStatusMain(this.sharedService.msgId);
+          }
           if(this.budgetDataList[0].isTYpe=='REBASE'){
             this.updateMsgStatusMain(this.sharedService.msgId);
           }
@@ -143,6 +145,7 @@ export class BudgetApproverComponent implements OnInit {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
       });
+
   }
 
   getAlGroupId(groupId: any) {
@@ -357,6 +360,7 @@ export class BudgetApproverComponent implements OnInit {
             this.SpinnerService.hide();
             let result: { [key: string]: any } = v;
             if (result['message'] == 'success') {
+              this.olddataflag=true;
               const keys = Object.keys(result['response'].subHeadData);
               for (const key of keys) {
                 const value = result['response'].subHeadData[key];
@@ -369,7 +373,7 @@ export class BudgetApproverComponent implements OnInit {
                   oldData: value.totalParkingAmount
                 }
                 this.multipleCdaParking.push(oldCdaData);
-                this.olddataflag=true;
+
                 this.getCDAParkingAllocatedAmount();
               }
 
@@ -1276,6 +1280,10 @@ export class BudgetApproverComponent implements OnInit {
         if (result['message'] == 'success') {
           //debugger;
           this.budgetDataList = result['response'].budgetResponseist;
+          debugger;
+          if(this.budgetDataList[0].isFlag=='1'&&this.budgetDataList[0].isBudgetRevision=='1'){
+            this.updateMsgStatusMain(this.sharedService.msgId);
+          }
           for (let i = 0; i < this.budgetDataList.length; i++) {
             debugger;
             if(this.budgetDataList[i].unallocatedAmount!=undefined){
@@ -1295,6 +1303,7 @@ export class BudgetApproverComponent implements OnInit {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
       });
+
     this.sharedService.isRevision=0;
   }
   editReturnedAllocation(value: any) {
@@ -1363,4 +1372,6 @@ export class BudgetApproverComponent implements OnInit {
 
 
   }
+
+
 }
