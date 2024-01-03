@@ -204,7 +204,58 @@
         </div>
         <!-- /.container-fluid -->
     </section>
-
+  <div  *ngIf="transfer" class="modal fade show" id="modal-lg2" style="display:block!important">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Hand Over To</h4>
+          <button type="button" class="close" (click)="closeTransferModal()" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-12" id="cdaParking1">
+              <div class="card-body p-0">
+                <form [formGroup]="formdata">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label>CG P.No.</label>
+                        <ng-select class="form-control select2bs4" style="width: 100%" [disabled]="true"
+                                   [items]="cbCreaterNewList" bindLabel="pno" appendTo="body" placeholder="Select CG P.No."
+                                   (change)="setOtherValues1($event)" formControlName="pno1"></ng-select>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label>User Name</label>
+                        <input type="text" class="form-control" id="fundAvailable" value="{{userName1}}"
+                               formControlName="userName" readonly />
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label>Rank</label>
+                        <input type="text" class="form-control" id="rank" value="{{rank1}}"
+                               formControlName="rank" readonly />
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-start">
+          <button class="btn btn-danger mr-2" data-dismiss="modal" (click)="closeTransferModal()">Close</button>
+          <button class="btn btn-primary " data-dismiss="modal" >Submit</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->

@@ -34,6 +34,7 @@ export class ManageUserRoleComponent {
   roleHeading: any;
 
   usersWithRole: any[] = [];
+  cbCreaterList: any[] = [];
 
   allRoles: any[] = [];
 
@@ -56,6 +57,7 @@ export class ManageUserRoleComponent {
   formdata = new FormGroup({
     unit: new FormControl(),
     pno: new FormControl(),
+    pno1: new FormControl(),
     role: new FormControl(),
     fromDate: new FormControl(),
     toDate: new FormControl(),
@@ -64,6 +66,8 @@ export class ManageUserRoleComponent {
   });
   currentUserUnit: any;
   userCurrentUnitName: any;
+  userName1: any;
+  rank1: any;
   ngOnInit(): void {
     $.getScript('assets/js/adminlte.js');
     this.getAllUser();
@@ -111,6 +115,7 @@ export class ManageUserRoleComponent {
         for (var i = 0; i < valueFromAPI.length; i++) {
           let userRole: any[] = valueFromAPI[i].role;
           for (var j = 0; j < userRole.length; j++) {
+            debugger;
             this.usersWithRole.push({
               unit: valueFromAPI[i].unit,
               rank: valueFromAPI[i].rank,
@@ -123,6 +128,20 @@ export class ManageUserRoleComponent {
               isActive: 1,
               pid: valueFromAPI[i].pid,
             });
+            if(valueFromAPI[i].role[j].roleId=="116"){
+              this.cbCreaterList.push({
+                  unit: valueFromAPI[i].unit
+                ,
+                rank: valueFromAPI[i].rank,
+                name: valueFromAPI[i].fullName,
+                pno: valueFromAPI[i].pno,
+                fromDate: valueFromAPI[i].fromDate,
+                toDate: valueFromAPI[i].toDate,
+                role: valueFromAPI[i].role[j].roleName,
+                roleId: valueFromAPI[i].role[j].roleId,
+                isActive: 1,
+                pid: valueFromAPI[i].pid,});
+            }
           }
         }
 
@@ -262,9 +281,26 @@ export class ManageUserRoleComponent {
         this._router.navigate([decodeURI(this._location.path())]);
       });
   }
-
+  cbCreaterNewList:any[]=[]
   deactivateUserRole(user: any, indexValue: any) {
-    this.deactivateUserRoleConfirmModel(user, indexValue - 1);
+    debugger;
+    this.cbCreaterNewList=[];
+    if(user.role=='CB Creator'){
+      for(let userCb of this.cbCreaterList){
+        if(userCb.pno!=user.pno){
+          this.cbCreaterNewList.push(userCb);
+        }
+      }
+      debugger;
+      this.transfer=true;
+    }
+
+    else{
+      this.deactivateUserRoleConfirmModel(user, indexValue - 1);
+    }
+  }
+  closeTransferModal(){
+    this.transfer=false;
   }
 
   deactivateUserRoleConfirmModel(data: any, formDataValue: any) {
@@ -304,6 +340,7 @@ export class ManageUserRoleComponent {
 
   currentUserUnitNew: any;
   currentUserUnitNameNew: any;
+  transfer: boolean=false;
   getDashBoardDta() {
     this.SpinnerService.show();
     var newSubmitJson = null;
@@ -353,5 +390,9 @@ export class ManageUserRoleComponent {
       this.formdata.get(field)?.reset();
     }
 
+  }
+  setOtherValues1(event: any) {
+    this.userName1 = event.name;
+    this.rank1 = event.rank;
   }
 }
