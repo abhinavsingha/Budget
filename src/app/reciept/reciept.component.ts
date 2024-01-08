@@ -12,6 +12,7 @@ import { UploadDocuments } from '../model/upload-documents';
 import { elements } from 'chart.js';
 import {SharedService} from "../services/shared/shared.service";
 import {DatePipe} from "@angular/common";
+import {MultiCdaParking} from "../model/multi-cda-parking";
 
 @Component({
   selector: 'app-reciept',
@@ -56,10 +57,16 @@ export class RecieptComponent {
   defaultAllocationType: any;
   defaultAmountType: any;
   outboxResponse: any;
-
+  cdaUnitList: any;
+  cdaList: any;
+  currentIndex:any;
+  currentEntry:any;
+  totalParking:any;
+  parking: any;
   ngOnInit(): void {
     this.sharedService.updateInbox();
     $.getScript('./assets/js/adminlte.js');
+    this.getCdaUnitList();
     this.getAmountType();
     this.getBudgetFinYear();
     this.majorDataNew();
@@ -189,6 +196,7 @@ export class RecieptComponent {
               this.defaultAmountType2.amount
             ).toFixed(4);
             this.finalTableData[i].isEdit = false;
+            this.finalTableData[i].allocationAmountBackup=this.finalTableData[i].allocationAmount;
           }
           this.updateInbox();
         }
@@ -854,4 +862,138 @@ export class RecieptComponent {
       this.uploadDocuments[i].authorityData=undefined;
     }
   }
+  private getCdaUnitList() {
+    this.SpinnerService.show();
+    this.apiService.getApi(this.cons.api.getCdaUnitList).subscribe((res) => {
+      let result: { [key: string]: any } = res;
+      if (result['message'] == 'success') {
+        this.cdaUnitList = result['response'];
+        this.SpinnerService.hide();
+      } else {
+        this.common.faliureAlert('Please try later', result['message'], '');
+      }
+    });
+  }
+  isdisableUpdateButton=true;
+  checkTotalParking() {
+    this.totalParking=Number(this.parking).toFixed(4);
+    debugger;
+    let sum=0;
+    for(let cda of this.cdaList){
+      if(cda.amount!=undefined)
+        sum=Number(sum)+Number(cda.amount);
+    }
+
+    this.totalParking=Number(Number(this.totalParking)-Number(sum)).toFixed(4);
+    if(this.totalParking==0){
+      this.isdisableUpdateButton=false;
+    }
+    else{
+      this.isdisableUpdateButton=true;
+    }
+  }
+  addNewRow() {
+    this.cdaList.push(new MultiCdaParking());
+  }
+
+  deleteFromMultipleCdaParking(index: any) {
+    this.cdaList.splice(index, 1);
+  }
+  populateCda(li: any,index:number) {
+    let sum1 =0;
+    for(let cda of li.cdaParkingListData){
+      sum1=sum1+Number(cda.remainingCdaAmount);
+    }
+    this.parking=Number(Number(li.allocationAmount)-Number(li.allocationAmountBackup)+Number(sum1)).toFixed(4);
+    this.totalParking=Number(this.parking).toFixed(4);
+    debugger;
+    this.cdaList=[];
+    this.currentIndex=index;
+    this.currentEntry=li;
+    let sum:number=0;
+    for(let cda of li.cdaParkingListData){
+      sum=sum+Number(cda.remainingCdaAmount);
+      let entry:MultiCdaParking={
+        id: undefined,
+        cdaParkingUnit: cda.ginNo,
+        amount: undefined,
+        balance: cda.remainingCdaAmount,
+        oldData: undefined
+      };
+      // this.cdaList.push(entry);
+    }
+    this.addNewRow();
+    debugger;
+  }
+
+  checkRemaining(li:any) {
+    let sum =0;
+    for(let cda of li.cdaParkingListData){
+      sum=sum+Number(cda.remainingCdaAmount);
+    }
+    if(Number(li.allocationAmount)<(Number(li.allocationAmountBackup)-Number(sum))){
+      this.common.faliureAlert('Amount less than remaining','Amount should be atleast '+ Number(Number(li.allocationAmountBackup)-Number(sum)).toFixed(4),'');
+      li.allocationAmount=undefined;
+    }
+    else{
+      this.parking=Number(li.allocationAmount)-Number(li.allocationAmountBackup)+Number(sum);
+      this.totalParking=this.parking;
+    }
+
+    debugger;
+  }
+
+  updateCdaPark() {
+    this.cdaList;
+    this.currentEntry;
+    debugger;
+    let cdaReq:any[]=[];
+    for(let cda of this.cdaList) {
+      let cdaRequest = {
+        budgetFinancialYearId:this.currentEntry.finYear.serialNo,
+        allocationTypeID: this.currentEntry.allocTypeId.allocTypeId,
+        ginNo: cda.cdaParkingUnit.ginNo,
+        budgetHeadId: this.currentEntry.subHead.budgetCodeId,
+        availableParkingAmount: cda.amount.toString(),
+        remark: undefined,
+        authGroupId: this.currentEntry.authGroupId,
+        transactionId: this.currentEntry.transactionId,
+        amountTypeId: this.currentEntry.amountUnit.amountTypeId
+      }
+
+      cdaReq.push(cdaRequest);
+    }
+      let json={
+        budgetFinancialYearId:this.currentEntry.finYear.serialNo,
+        allocationTypeId:this.currentEntry.allocTypeId.allocTypeId,
+        amountTypeId:this.currentEntry.amountUnit.amountTypeId,
+        budgetHeadId:this.currentEntry.subHead.budgetCodeId,
+        allocationAmount:this.currentEntry.allocationAmount,
+
+        alterAmount:(Number(this.currentEntry.allocationAmount)-Number(this.currentEntry.allocationAmountBackup)).toString(),
+
+        cdaRequest:cdaReq
+      }
+      this.apiService
+        .postApi(this.cons.api.updateRecipetSave, json)
+        .subscribe({
+          next: (v: object) => {
+            this.SpinnerService.hide();
+            let result: { [key: string]: any } = v;
+            if (result['message'] == 'success') {
+              this.getBudgetRecipt();
+              this.updateInbox();
+              this.common.successAlert('Success', 'Successfully Updated', '');
+            } else {
+              this.common.faliureAlert('Please try later', result['message'], '');
+            }
+          },
+          error: (e) => {
+            this.SpinnerService.hide();
+            console.error(e);
+            this.common.faliureAlert('Error', e['error']['message'], 'error');
+          },
+          complete: () => console.info('complete'),
+        });
+    }
 }

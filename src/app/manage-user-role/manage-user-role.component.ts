@@ -68,6 +68,7 @@ export class ManageUserRoleComponent {
   userCurrentUnitName: any;
   userName1: any;
   rank1: any;
+  private currentUser: any;
   ngOnInit(): void {
     $.getScript('assets/js/adminlte.js');
     this.getAllUser();
@@ -106,6 +107,8 @@ export class ManageUserRoleComponent {
   }
 
   getAllUser() {
+    this.usersWithRole=[];
+    this.cbCreaterList=[];
     this.SpinnerService.show();
     this.apiService.getApi(this.cons.api.getAllUser).subscribe((res) => {
       let result: { [key: string]: any } = res;
@@ -292,6 +295,7 @@ export class ManageUserRoleComponent {
         }
       }
       debugger;
+      this.currentUser=user;
       this.transfer=true;
     }
 
@@ -394,5 +398,34 @@ export class ManageUserRoleComponent {
   setOtherValues1(event: any) {
     this.userName1 = event.name;
     this.rank1 = event.rank;
+  }
+
+  deactivateCBCreater() {
+    debugger;
+    let json={
+      oldUserId:this.currentUser.pid,
+      newUserId:this.formdata.get('pno1')?.value.pid
+    }
+    this.apiService
+      .postApi(this.cons.api.transferCbBill, json)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            this.common.successAlert('Success', result['response'].msg, '');
+            this.getAllUser();
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
+    this.transfer=false;
   }
 }
