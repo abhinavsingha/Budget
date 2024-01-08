@@ -52,6 +52,7 @@ import { AllAllocationComponent } from './all-allocation/all-allocation.componen
 import { ArchiveComponent } from './archive/archive.component';
 import { FilterPipe } from './filter.pipe';
 import {ApprovedRebaseComponent} from "./approved-rebase/approved-rebase.component";
+import { CdaParkingHistoryComponent } from './cda-parking-history/cda-parking-history.component';
 // import {ViewFormComponent} from "./view-form/view-form.component";
 
 // import { DialogComponent } from './dialog/dialog.component';

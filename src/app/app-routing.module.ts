@@ -28,6 +28,7 @@ import { AllAllocationComponent } from './all-allocation/all-allocation.componen
 import { UnitRebaseReportComponent } from './unit-rebase-report/unit-rebase-report.component';
 import {ApprovedRebaseComponent} from "./approved-rebase/approved-rebase.component";
 // import {ViewFormComponent} from "./view-form/view-form.component";
+import { CdaParkingHistoryComponent } from './cda-parking-history/cda-parking-history.component';
 
 const routes: Routes = [
   // { path: '', component: LoginComponent },
@@ -90,6 +91,7 @@ const routes: Routes = [
   { path: 'all-allocation', component: AllAllocationComponent },
   { path: 'archive', component: ArchiveComponent },
   { path: 'unit-rebase-report', component: UnitRebaseReportComponent },
+  { path: 'cda-parking-history', component: CdaParkingHistoryComponent },
   // { path: 'view-form', component: ViewFormComponent },
 ];
 
