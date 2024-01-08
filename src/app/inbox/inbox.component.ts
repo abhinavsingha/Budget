@@ -127,7 +127,12 @@ export class InboxComponent implements OnInit {
         this.sharedService.reject=true;
         this.router.navigate(['/budget-approval']);
       }
+
       // window.location.href = '/budget-approval';
+    }
+    else if (li.isType == 'CDA Update') {
+      this.sharedService.sharedValue = li.groupId;
+      this.router.navigate(['/cda-parking-history']);
     }
     else if (li.isType == 'Budget Receipt') {
       this.sharedService.msgId=li.mangeInboxId;
@@ -179,6 +184,9 @@ export class InboxComponent implements OnInit {
             }
             else if(list[i].isBgOrCg=="UR"){
               isType='Budget Revised';
+            }
+            else if(list[i].isBgOrCg=="CDA"){
+              isType='CDA Update';
             }
             const entry: InboxList = {
               isRebase:list[i].isRebase,

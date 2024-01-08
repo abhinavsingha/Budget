@@ -9,7 +9,8 @@ export class ConstantsService {
   serverRedirectUrl = 'https://icg.net.in/auth/realms/icgrms/protocol/openid-connect/logout?redirect_uri=https://icg.net.in/'; //For Production Server
   // serviceUrl = 'https://icg.net.in/budget/'; //UAT server
   // serviceUrl = 'http://10.3.8.81:1111/';
-  serviceUrl = 'http://192.168.2.12:1111/';
+  serviceUrl = 'http://172.20.10.2:1111/';
+  // serviceUrl = 'http://192.168.2.12:1111/';
   api = {
     getDataBudgetAllocation:
       this.serviceUrl + 'budgetAllocation/getDataBudgetAllocation',
@@ -244,7 +245,7 @@ export class ConstantsService {
     getUnitRebaseNotificationData: this.serviceUrl+'unitRebaseController/getUnitRebaseNotificationData',
 
 
-    saveAuthDataRevision: this.serviceUrl+'budgetAllocation/saveAuthDataRevision3',
+    saveAuthDataRevision: this.serviceUrl+'saveAuthDataRevisionSaveCbAsAllocation',
     saveBudgetRevisionData:this.serviceUrl + 'budgetAllocation/saveBudgetRevision3',
     approveRevisionBudgetOrReject:this.serviceUrl + 'budgetAllocation/approveRevisionBudgetOrReject3',
     saveCdaParkingDataForRebase: this.serviceUrl+'cdaParkingController/saveCdaParkingDataForRebase',
@@ -257,7 +258,8 @@ export class ConstantsService {
     moveToArchive: this.serviceUrl+'inboxOutbox/moveToArchive',
     getRevisionReportExcel: this.serviceUrl+'reportController/getRevisionReportExcel',
     getReceiptReportNew: this.serviceUrl+'reportController/getRevisedAllocationAprReportDoc',
-    transferCbBill: this.serviceUrl+'contingentBillController/transferCbBill'
+    transferCbBill: this.serviceUrl+'contingentBillController/transferCbBill',
+    cdaHistoryData: this.serviceUrl+'cdaParkingController/getCdaHistoryData'
 
 
   };
