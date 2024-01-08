@@ -80,7 +80,7 @@
                     <td *ngIf="li.isType!= 'Budget Revised'">
                       <button type="submit" class="btn btn-warning mr-2" (click)="redirect(li)"> <i
                           class="fas fa-eye"></i> View</button>
-                      <button *ngIf="li.status== 'Fully Approved'||li.isType=='Budget Receipt'" type="button"
+                      <button *ngIf="(li.status== 'Fully Approved'||li.isType=='Budget Receipt')&&li.isType!='CDA Update'" type="button"
                         class="btn btn-primary mr-2" (click)="getAuthDoc(li)">Auth Doc</button>
 <!--                      <a *ngIf="li.status== 'Fully Approved'" href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>-->
 <!--                        <div class="dropdown-menu dropdown-menu-right">-->

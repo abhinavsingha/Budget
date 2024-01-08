@@ -49,35 +49,13 @@ export class BudgetApproverComponent implements OnInit {
   private isRevision: boolean=false;
   previousParking: any[]=[];
   olddataflag: boolean=true;
+  private unitId: any;
+  showAction: boolean=true;
 
   ngOnInit(): void {
     this.sharedService.updateInbox();
     //debugger;
-    if (
-      localStorage.getItem('isInboxOrOutbox') != null ||
-      localStorage.getItem('isInboxOrOutbox') != undefined
-    ) {
-      this.isInboxAndOutbox = localStorage.getItem('isInboxOrOutbox');
-    }
-    if (
-      localStorage.getItem('type') != null ||
-      localStorage.getItem('type') != undefined
-    ) {
-      this.type = localStorage.getItem('type');
 
-      if (this.type == 'Budget Receipt') {
-        debugger;
-        if(this.sharedService.isRevision=='1')
-        {
-          this.getAllGroupIdAndUnitIdRevisionCase(this.sharedService.sharedValue)
-        }
-        else {
-          this.getAllGroupIdAndUnitId(this.sharedService.sharedValue);
-        }
-      } else {
-        this.getAlGroupId(localStorage.getItem('group_id'));
-      }
-    }
     this.authGroupId=localStorage.getItem('group_id');
     this.getCdaUnitList();
     this.multipleCdaParking.push(new MultiCdaParking());
@@ -157,6 +135,8 @@ export class BudgetApproverComponent implements OnInit {
         if (result['message'] == 'success') {
           debugger;
           this.budgetDataList = result['response'].budgetResponseist;
+          if(this.budgetDataList[0].toUnit.unit!=this.unitId)
+            this.showAction=false;
           for (let i = 0; i < this.budgetDataList.length; i++) {
             if(this.budgetDataList[i].unallocatedAmount!=undefined)
               this.budgetDataList[i].allocationAmount=(parseFloat(this.budgetDataList[i].allocationAmount)+parseFloat(this.budgetDataList[i].unallocatedAmount)).toFixed(4);
@@ -516,11 +496,37 @@ export class BudgetApproverComponent implements OnInit {
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
             this.userRole = result['response'].userDetails.role[0].roleName;
-
+            this.unitId=result['response'].userDetails.unitId;
             this.sharedService.inbox = result['response'].inbox;
             this.sharedService.outbox = result['response'].outBox;
             this.sharedService.archive = result['response'].archived;
             this.sharedService.approve = result['response'].approved;
+
+            if (
+              localStorage.getItem('isInboxOrOutbox') != null ||
+              localStorage.getItem('isInboxOrOutbox') != undefined
+            ) {
+              this.isInboxAndOutbox = localStorage.getItem('isInboxOrOutbox');
+            }
+            if (
+              localStorage.getItem('type') != null ||
+              localStorage.getItem('type') != undefined
+            ) {
+              this.type = localStorage.getItem('type');
+
+              if (this.type == 'Budget Receipt') {
+                debugger;
+                if(this.sharedService.isRevision=='1')
+                {
+                  this.getAllGroupIdAndUnitIdRevisionCase(this.sharedService.sharedValue)
+                }
+                else {
+                  this.getAllGroupIdAndUnitId(this.sharedService.sharedValue);
+                }
+              } else {
+                this.getAlGroupId(localStorage.getItem('group_id'));
+              }
+            }
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }

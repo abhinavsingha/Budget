@@ -48,11 +48,25 @@ debugger;
         }
 
         debugger;
+        this.finallyMoveArchive(this.sharedService.msgId);
       },
       (error) => {
         console.error(error);
         this.SpinnerService.hide();
       }
     );
+  }
+  private finallyMoveArchive(msgId:string) {
+    this.apiService
+      .getApi(this.cons.api.moveToArchive +'/'+msgId)
+      .subscribe(
+        (res) => {
+          let result: { [key: string]: any } = res;
+        },
+        (error) => {
+          console.error(error);
+          this.SpinnerService.hide();
+        }
+      );
   }
 }

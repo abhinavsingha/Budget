@@ -130,6 +130,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     ApprovedComponent,
     UnitRebaseReportComponent,
     FilterPipe,
+    CdaParkingHistoryComponent
 
     // ViewFormComponent
     // DialogComponent,

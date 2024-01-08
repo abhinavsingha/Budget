@@ -64,7 +64,7 @@
                       <!--                        Rem. Amount-->
                       <!--                      </th>-->
                       <th
-                        *ngIf="isInboxAndOutbox!= 'Outbox' && type!='Budget Allocation' && userRole!='Budget Approver'">
+                        *ngIf="(isInboxAndOutbox!= 'Outbox' && type!='Budget Allocation' && userRole!='Budget Approver')&&this.showAction">
                         Action</th>
                       <th
                         *ngIf="type=='Budget Allocation'">
@@ -84,7 +84,7 @@
                       <td>{{buggetData.allocationAmount}} {{buggetData.amountUnit.amountType}}</td>
                       <td *ngIf="budgetDataList[0].revisedAmount!=0">{{buggetData.revisedAmount}} {{buggetData.amountUnit.amountType}}</td>
                       <td
-                        *ngIf="(isInboxAndOutbox== 'approved'||isInboxAndOutbox== 'inbox') && type!='Budget Allocation' && userRole!='Budget Approver'">
+                        *ngIf="showAction&&((isInboxAndOutbox== 'approved'||isInboxAndOutbox== 'inbox') && type!='Budget Allocation' && userRole!='Budget Approver')">
                         <button *ngIf="buggetData.allocationAmount!='0.0000' && buggetData.isCDAparking == '0' && buggetData.isFlag!='1' &&buggetData.isBudgetRevision!='1'" type="submit" class="btn btn-warning mr-2"
                           data-toggle="modal" data-target="#modal-lg" (click)="addCDAParking(buggetData,((p-1)*15)+i)">Add
                           CDA Parking</button>

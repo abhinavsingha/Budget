@@ -113,6 +113,7 @@ export class InboxComponent implements OnInit {
       // window.location.href =;
     }
     else if (li.isType == 'Budget Allocation') {
+      debugger;
       if (li.status == 'Approved') {
         this.sharedService.reject=false;
         this.router.navigate(['/budget-approved']);
@@ -130,8 +131,31 @@ export class InboxComponent implements OnInit {
 
       // window.location.href = '/budget-approval';
     }
+    else if (li.isType == 'Lower Unit Budget Allocation') {
+      debugger;
+      this.finallyMoveArchive(li);
+      if (li.status == 'Approved') {
+
+        this.sharedService.reject=false;
+        this.router.navigate(['/budget-approved']);
+      } else if (li.status == 'Fully Approved') {
+        this.sharedService.reject=false;
+        this.router.navigate(['/budget-approval']);
+      } else if (li.status == 'Pending') {
+        this.sharedService.reject=false;
+        this.router.navigate(['/budget-approval']);
+      } else if (li.status == 'Rejected') {
+        this.sharedService.msgId=li.mangeInboxId;
+        this.sharedService.reject=true;
+        this.router.navigate(['/budget-approval']);
+
+      }
+
+      // window.location.href = '/budget-approval';
+    }
     else if (li.isType == 'CDA Update') {
       this.sharedService.sharedValue = li.groupId;
+      this.sharedService.msgId=li.mangeInboxId;
       this.router.navigate(['/cda-parking-history']);
     }
     else if (li.isType == 'Budget Receipt') {
@@ -187,6 +211,9 @@ export class InboxComponent implements OnInit {
             }
             else if(list[i].isBgOrCg=="CDA"){
               isType='CDA Update';
+            }
+            else if(list[i].isBgOrCg=="SBG"){
+              isType='Lower Unit Budget Allocation';
             }
             const entry: InboxList = {
               isRebase:list[i].isRebase,
@@ -349,7 +376,7 @@ export class InboxComponent implements OnInit {
       .subscribe(
         (res) => {
           let result: { [key: string]: any } = res;
-          window.location.reload();
+          // window.location.reload();
         },
         (error) => {
           console.error(error);

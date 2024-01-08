@@ -75,6 +75,12 @@ export class ArchiveComponent implements OnInit {
             else if(list[i].isBgOrCg=="CB"){
               isType='Contingent Bill';
             }
+            else if(list[i].isBgOrCg=="CDA"){
+              isType='CDA Update';
+            }
+            else if(list[i].isBgOrCg=="SBG"){
+              isType='Lower Unit Budget Allocation';
+            }
             const entry: InboxList = {
               serial: i + 1,
               isType: isType,
@@ -124,9 +130,36 @@ export class ArchiveComponent implements OnInit {
       else
         this.router.navigate(['/budget-approval']);
 
-    }else if(entry.type=='RR'){
+    }
+    else if (entry.isType == 'Lower Unit Budget Allocation') {
+      debugger;
+      if (entry.status == 'Approved') {
+
+        this.sharedService.reject=false;
+        this.router.navigate(['/budget-approved']);
+      } else if (entry.status == 'Fully Approved') {
+        this.sharedService.reject=false;
+        this.router.navigate(['/budget-approval']);
+      } else if (entry.status == 'Pending') {
+        this.sharedService.reject=false;
+        this.router.navigate(['/budget-approval']);
+      } else if (entry.status == 'Rejected') {
+        this.sharedService.msgId=entry.mangeInboxId;
+        this.sharedService.reject=true;
+        this.router.navigate(['/budget-approval']);
+
+      }
+
+      // window.location.href = '/budget-approval';
+    }
+    else if(entry.type=='RR'){
       this.router.navigate(['/budget-rebase']);
       // this.common.successAlert('Rebase','Unit rebase detail','');
+    }
+    else if (entry.isType == 'CDA Update') {
+      this.sharedService.sharedValue =entry.groupId;
+      this.sharedService.msgId=entry.mangeInboxId;
+      this.router.navigate(['/cda-parking-history']);
     }
 
     else
