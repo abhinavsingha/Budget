@@ -195,16 +195,28 @@
                   <tbody>
                     <tr *ngFor="let cdaParking of multipleCdaParking; let i = index">
                       <td>
-                        <ng-select class="form-control select2bs4" style="width: 100%" [items]="cdaUnitList"
+                        <ng-select *ngIf="cdaParking.id==undefined" class="form-control select2bs4" style="width: 100%" [items]="cdaUnitList"
                           bindLabel="cdaName" placeholder="Select CDA Unit" appendTo="body"
                           [(ngModel)]="cdaParking.cdaParkingUnit">
                         </ng-select>
+                        <ng-select *ngIf="cdaParking.id==-1" class="form-control select2bs4" style="width: 100%" [items]="cdaUnitList"
+                          bindLabel="cdaName" placeholder="Select CDA Unit" appendTo="body"
+                          [(ngModel)]="cdaParking.cdaParkingUnit" [readonly]="true">
+                        </ng-select>
                       </td>
-                      <td  *ngIf="budgetDataList[currentIndex].isCDAparking!='1'"><input type="number"  min="0" class="form-control" id="Aallocationamount"
+                      <td  *ngIf="budgetDataList[currentIndex].isCDAparking!='1'">
+
+                        <input *ngIf="cdaParking.id==undefined" type="number"  min="0" class="form-control" id="Aallocationamount"
                           placeholder="Please Enter Amount" [(ngModel)]="cdaParking.amount"
-                          (keyup)="getCDAParkingAllocatedAmount()" (keyup)="checkOldDataChange(cdaParking)" /></td>
+                          (keyup)="getCDAParkingAllocatedAmount()" (keyup)="checkOldDataChange(cdaParking)" />
+                      <input *ngIf="cdaParking.id==-1" type="number"  min="0" class="form-control" id="Aallocationamount"
+                          placeholder="Please Enter Amount" [(ngModel)]="cdaParking.amount"
+                          (keyup)="getCDAParkingAllocatedAmount()" (change)="checkOldDataChange(cdaParking)" (keyup)="checkOldDataChange(cdaParking)" />
+
+
+                      </td>
                       <td>{{cdaParking.balance}}</td>
-                      <td><button type="button" class="btn btn-danger"
+                      <td><button *ngIf="cdaParking.id!=-1" type="button" class="btn btn-danger"
                           (click)="deleteFromMultipleCdaParking(i)">Delete</button></td>
                     </tr>
                   </tbody>
