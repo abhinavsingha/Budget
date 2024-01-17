@@ -88,7 +88,7 @@
                         <button *ngIf="buggetData.allocationAmount!='0.0000' && buggetData.isCDAparking == '0' && buggetData.isFlag!='1' &&buggetData.isBudgetRevision!='1'" type="submit" class="btn btn-warning mr-2"
                           data-toggle="modal" data-target="#modal-lg" (click)="addCDAParking(buggetData,((p-1)*15)+i)">Add
                           CDA Parking</button>
-                        <button *ngIf="buggetData.isCDAparking == '1'&&buggetData.isFlag!='1'&&buggetData.isRevision!='1'" type="submit" class="btn btn-primary mr-2"
+                        <button *ngIf="buggetData.isCDAparking == '1'&&buggetData.isFlag!='1'&&buggetData.isBudgetRevision!='1'" type="submit" class="btn btn-primary mr-2"
                           data-toggle="modal" data-target="#modal-lg" (click)="viewCDAParking(buggetData)"  >View CDA</button></td>
                       <td *ngIf=" type=='Budget Allocation'"><button *ngIf="buggetData.isFlag!='1'||buggetData.isBudgetRevision!='1'" type="submit" class="btn btn-primary mr-2" data-toggle="modal" data-target="#modal-lg1" (click)="cdaDataList(buggetData.cdaData)" >View CDA Info</button></td>
 

@@ -56,7 +56,7 @@ export class BudgetApproverComponent implements OnInit {
 
   ngOnInit(): void {
     this.sharedService.updateInbox();
-    //debugger;
+    ////debugger;
 
     this.authGroupId=localStorage.getItem('group_id');
     this.getCdaUnitList();
@@ -97,16 +97,16 @@ export class BudgetApproverComponent implements OnInit {
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
-          debugger;
+          //debugger;
           this.budgetDataList = result['response'].budgetResponseist;
-          if(this.budgetDataList[0].isFlag=='1'&&this.budgetDataList[0].isBudgetRevision=='1'){
+          if(this.budgetDataList[0].isFlag=='1'||this.budgetDataList[0].isBudgetRevision=='1'){
             this.updateMsgStatusMain(this.sharedService.msgId);
           }
           if(this.budgetDataList[0].isTYpe=='REBASE'){
             this.updateMsgStatusMain(this.sharedService.msgId);
           }
           for (let i = 0; i < this.budgetDataList.length; i++) {
-            debugger;
+            //debugger;
             if(this.budgetDataList[i].unallocatedAmount!=undefined&&this.budgetDataList[i].isTYpe!='REBASE') {
               this.budgetDataList[i].allocationAmount1 = (parseFloat(this.budgetDataList[i].allocationAmount) + parseFloat(this.budgetDataList[i].unallocatedAmount)).toFixed(4);
             }
@@ -135,7 +135,7 @@ export class BudgetApproverComponent implements OnInit {
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
-          debugger;
+          //debugger;
           this.budgetDataList = result['response'].budgetResponseist;
           if(this.budgetDataList[0].toUnit.unit!=this.unitId)
             this.showAction=false;
@@ -301,7 +301,7 @@ export class BudgetApproverComponent implements OnInit {
   showSubHeadDataInNextPage: any;
   addCDAParking(data: any, index: number) {
     this.currentIndex = index;
-    //debugger;
+    ////debugger;
     this.getCurrentSubHeadData = data;
     this.showSubHeadDataInNextPage = data.subHead.subHeadDescr;
     this.amountUnit = data.amountUnit.amountType;
@@ -334,12 +334,13 @@ export class BudgetApproverComponent implements OnInit {
     }
 
     if(this.budgetDataList[0].isTYpe=='AFTER REVISION'){
-      debugger;
+      //debugger;
       this.totalAmountToAllocateCDAParking=(Number(this.totalAmountToAllocateCDAParking)-(Number(this.totalExpWithAllocation)/this.budgetDataList[0].amountUnit.amount)).toFixed(4)
     }
     this.balancedRemaingCdaParkingAmount = this.totalAmountToAllocateCDAParking;
+    this.getCDAParkingAllocatedAmount();
     // put rebase condition
-    debugger;
+    //debugger;
     if(this.budgetDataList[this.currentIndex].isTYpe=='REBASE'){
       this.olddataflag=false;
       this.apiService
@@ -452,7 +453,7 @@ export class BudgetApproverComponent implements OnInit {
 
       }
     }
-    debugger;
+    //debugger;
     this.saveCDAParking(this.cdaParkingListResponseData);
   }
 
@@ -464,10 +465,10 @@ export class BudgetApproverComponent implements OnInit {
     };
     let url=this.cons.api.saveCdaParkingData;
     if(this.budgetDataList[0].isTYpe=='REBASE'||this.budgetDataList[0].isTYpe=='REVISION'){
-      debugger;
+      //debugger;
       url=this.cons.api.saveCdaParkingDataForRebase;
     }
-    debugger;
+    //debugger;
     this.apiService
       .postApi(url, newSubmitJson)
       .subscribe({
@@ -513,7 +514,7 @@ export class BudgetApproverComponent implements OnInit {
             this.sharedService.outbox = result['response'].outBox;
             this.sharedService.archive = result['response'].archived;
             this.sharedService.approve = result['response'].approved;
-            debugger;
+            //debugger;
             if (
               localStorage.getItem('isInboxOrOutbox') != null ||
               localStorage.getItem('isInboxOrOutbox') != undefined
@@ -527,7 +528,7 @@ export class BudgetApproverComponent implements OnInit {
               this.type = localStorage.getItem('type');
 
               if (this.type == 'Budget Receipt') {
-                debugger;
+                //debugger;
                 if(this.sharedService.isRevision=='1')
                 {
                   this.getAllGroupIdAndUnitIdRevisionCase(this.sharedService.sharedValue)
@@ -658,7 +659,7 @@ export class BudgetApproverComponent implements OnInit {
         amount = parseFloat(amount) + parseFloat(unitIndex[i].amount);
       }
     }
-    //debugger;
+    ////debugger;
     amount=amount.toFixed(4);
     this.balancedRemaingCdaParkingAmount = (
       parseFloat(this.totalAmountToAllocateCDAParking) - parseFloat(amount)
@@ -682,7 +683,7 @@ export class BudgetApproverComponent implements OnInit {
     this.getCurrentSubHeadData;
     this.multipleCdaParking;
     this.cdaParkingListResponseData = [];
-    //debugger;
+    ////debugger;
     for (var i = 0; i < this.multipleCdaParking.length; i++) {
       this.cdaParkingListResponseData.push({
         amountTypeId: this.amountUnitData.amountTypeId,
@@ -1062,7 +1063,7 @@ export class BudgetApproverComponent implements OnInit {
     this.cdaData = cdaData;
     this.allocAmountUnit=cdaData[0].amountTypeMain.amountType;
     this.amountUnitType=cdaData[0].amountType.amountType;
-    //debugger;
+    ////debugger;
   }
 
   resetCdaList() {
@@ -1070,12 +1071,12 @@ export class BudgetApproverComponent implements OnInit {
   }
   getAllocationReport(authGroupId: any) {
     this.SpinnerService.show();
-    // //debugger;
+    // ////debugger;
     this.apiService
       .getApi(this.cons.api.getAllocationReport + '/' + authGroupId)
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
-        // //debugger;
+        // ////debugger;
         if (result['message'] == 'success') {
           if (result['response'].length > 0) {
             this.downloadPdf(
@@ -1093,12 +1094,12 @@ export class BudgetApproverComponent implements OnInit {
   }
 
   getreAllocationReport(data: any) {
-    debugger;
+    //debugger;
 
 
 
     this.SpinnerService.show();
-    // //debugger;
+    // ////debugger;
     let url=this.cons.api.getRevisedAllocationReport+data;
     // let url=this.cons.api.getReceiptReportRevision+data;
     // this.apiService
@@ -1160,12 +1161,12 @@ export class BudgetApproverComponent implements OnInit {
   }
   getAllocationReportDocx(authGroupId: any) {
     this.SpinnerService.show();
-    // //debugger;
+    // ////debugger;
     this.apiService
       .getApi(this.cons.api.getAllocationReportDoc + '/' + authGroupId)
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
-        // //debugger;
+        // ////debugger;
         if (result['message'] == 'success') {
           if (result['response'].length > 0) {
             this.downloadPdf(
@@ -1194,7 +1195,7 @@ export class BudgetApproverComponent implements OnInit {
     );
   }
   downloadReport(formdata:any) {
-    debugger;
+    //debugger;
     if(this.type=='Budget Receipt'){
 
       if(formdata.reportType=='03'){
@@ -1257,7 +1258,7 @@ export class BudgetApproverComponent implements OnInit {
 
   private getRecieptReport(data: string) {
     this.SpinnerService.show();
-    // //debugger;
+    // ////debugger;
     let url=this.cons.api.getReceiptReport+data;
     this.apiService
       .getApi(url+'/'+localStorage.getItem('group_id'))
@@ -1296,14 +1297,14 @@ export class BudgetApproverComponent implements OnInit {
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
-          //debugger;
+          ////debugger;
           this.budgetDataList = result['response'].budgetResponseist;
-          debugger;
-          if(this.budgetDataList[0].isFlag=='1'||this.budgetDataList[0].isBudgetRevision=='1'){
+          //debugger;
+          if(this.budgetDataList[0].isFlag=='1'||this.budgetDataList[0].isBudgetRevision=='1'||this.budgetDataList[0].allocationAmount=='0.0000'){
             this.updateMsgStatusMain(this.sharedService.msgId);
           }
           for (let i = 0; i < this.budgetDataList.length; i++) {
-            debugger;
+            //debugger;
             let json={
               financialYearId:this.budgetDataList[i].finYear.serialNo,
               budgetHeadId:this.budgetDataList[i].subHead.budgetCodeId,
@@ -1332,7 +1333,7 @@ export class BudgetApproverComponent implements OnInit {
     this.sharedService.isRevision=0;
   }
   editReturnedAllocation(value: any) {
-    debugger;
+    //debugger;
   this.sharedService.allocationData=this.budgetDataList;
     if (this.budgetDataList[0].isTYpe == 'S'||this.budgetDataList[0].isTYpe == 's') {
       this.router.navigate(['/budget-allocation-subheadwise']);
@@ -1357,7 +1358,7 @@ export class BudgetApproverComponent implements OnInit {
             }
           }
 
-          debugger;
+          //debugger;
         }
       }
     }
@@ -1366,7 +1367,7 @@ export class BudgetApproverComponent implements OnInit {
 
   private getreAllocationReportnew() {
     this.SpinnerService.show();
-    // //debugger;
+    // ////debugger;
     let url=this.cons.api.getReceiptReportNew;
     this.apiService
       .getApi(url+'/'+localStorage.getItem('group_id'))
@@ -1421,12 +1422,13 @@ export class BudgetApproverComponent implements OnInit {
                 balance: undefined,
                 oldData: value.totalParkingAmount
               }
-              this.totalExpWithAllocation=result['response'].totalExpWithAllocation.toString();
+
               if(oldCdaData!=undefined)
                 this.oldmultipleCdaParking.push(oldCdaData);
 
               this.getCDAParkingAllocatedAmount();
             }
+            this.totalExpWithAllocation=result['response'].totalExpWithAllocation.toString();
 
 
           } else {
