@@ -97,7 +97,7 @@ export class BudgetApproverComponent implements OnInit {
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
-          //debugger;
+          debugger;
           this.budgetDataList = result['response'].budgetResponseist;
           if(this.budgetDataList[0].isFlag=='1'||this.budgetDataList[0].isBudgetRevision=='1'){
             this.updateMsgStatusMain(this.sharedService.msgId);
@@ -107,10 +107,18 @@ export class BudgetApproverComponent implements OnInit {
           }
           for (let i = 0; i < this.budgetDataList.length; i++) {
             //debugger;
+            // let json={
+            //   financialYearId:this.budgetDataList[i].finYear.serialNo,
+            //   budgetHeadId:this.budgetDataList[i].subHead.budgetCodeId,
+            //   amountType:this.budgetDataList[i].amountUnit.amountTypeId,
+            //   allocationTypeId:this.budgetDataList[i].allocTypeId.allocTypeId
+            // };
+            // this.getOldCdaData(json);
             if(this.budgetDataList[i].unallocatedAmount!=undefined&&this.budgetDataList[i].isTYpe!='REBASE') {
               this.budgetDataList[i].allocationAmount1 = (parseFloat(this.budgetDataList[i].allocationAmount) + parseFloat(this.budgetDataList[i].unallocatedAmount)).toFixed(4);
             }
             else{
+
               this.budgetDataList[i].allocationAmount1 = (parseFloat(this.budgetDataList[i].allocationAmount)).toFixed(4);
             }
 
@@ -320,10 +328,61 @@ export class BudgetApproverComponent implements OnInit {
     this.showUpdate = false;
     this.showSubmit = true;
     this.previousParking=[];
-
-    for(let oldCda of this.oldmultipleCdaParking){
-      this.multipleCdaParking.push(oldCda);
+debugger;
+    if(Number(data.revisedAmount)!=0){
+      for(let oldCda of this.oldmultipleCdaParking){
+        this.multipleCdaParking.push(oldCda);
+      }
     }
+    else{
+      let json={
+        financialYearId:data.finYear.serialNo,
+        budgetHeadId:data.subHead.budgetCodeId,
+        amountType:data.amountUnit.amountTypeId,
+        allocationTypeId:data.allocTypeId.allocTypeId
+      };
+      this.olddataflag=false;
+      this.apiService
+        .postApi(this.cons.api.getAllBillCdaAndAllocationSummery, json)
+        .subscribe({
+          next: (v: object) => {
+            this.SpinnerService.hide();
+            let result: { [key: string]: any } = v;
+            if (result['message'] == 'success') {
+              this.olddataflag=true;
+              const keys = Object.keys(result['response'].subHeadData);
+              for (const key of keys) {
+                debugger;
+                const value = result['response'].subHeadData[key];
+                console.log(`${key}: ${value}`);
+                let oldCdaData:MultiCdaParking= {
+                  id: -1,
+                  cdaParkingUnit: value.ginNo,
+                  amount: value.totalParkingAmount,
+                  balance: undefined,
+                  oldData: value.totalParkingAmount
+                }
+
+                if(oldCdaData!=undefined)
+                  this.oldmultipleCdaParking.push(oldCdaData);
+                this.multipleCdaParking.push(oldCdaData);
+                this.getCDAParkingAllocatedAmount();
+              }
+              this.totalExpWithAllocation=result['response'].totalExpWithAllocation.toString();
+
+            } else {
+              this.common.faliureAlert('Please try later', result['message'], '');
+            }
+          },
+          error: (e) => {
+            this.SpinnerService.hide();
+            console.error(e);
+            this.common.faliureAlert('Error', e['error']['message'], 'error');
+          },
+          complete: () => console.info('complete'),
+        });
+    }
+
     this.getCDAParkingAllocatedAmount();
     let submitJson={
       financialYearId:this.budgetDataList[index].finYear.serialNo,
@@ -424,7 +483,12 @@ export class BudgetApproverComponent implements OnInit {
     this.multipleCdaParking;
     this.cdaParkingListResponseData = [];
     for (var i = 0; i < this.multipleCdaParking.length; i++) {
+      debugger;
       if(this.multipleCdaParking[i].oldData!=undefined){
+        if(this.multipleCdaParking[i].cdaParkingUnit==undefined&&this.multipleCdaParking[i].amount!=undefined){
+          this.common.faliureAlert('Cannot Submit','Cannot Save CDA data without selecting CDA','');
+          return;
+        }
         this.cdaParkingListResponseData.push({
           amountTypeId: this.amountUnitData.amountTypeId,
           budgetFinancialYearId: this.getCurrentSubHeadData.finYear.serialNo,
@@ -437,6 +501,10 @@ export class BudgetApproverComponent implements OnInit {
           transactionId: this.getCurrentSubHeadData.allocationId,
         });
       }else{
+        if(this.multipleCdaParking[i].cdaParkingUnit==undefined&&this.multipleCdaParking[i].amount!=undefined){
+          this.common.faliureAlert('Cannot Submit','Cannot Save CDA data without selecting CDA','');
+          return;
+        }
         if(this.multipleCdaParking[i].cdaParkingUnit!=undefined){
           this.cdaParkingListResponseData.push({
             amountTypeId: this.amountUnitData.amountTypeId,
@@ -453,7 +521,7 @@ export class BudgetApproverComponent implements OnInit {
 
       }
     }
-    //debugger;
+    debugger;
     this.saveCDAParking(this.cdaParkingListResponseData);
   }
 
@@ -1300,7 +1368,7 @@ export class BudgetApproverComponent implements OnInit {
           ////debugger;
           this.budgetDataList = result['response'].budgetResponseist;
           //debugger;
-          if(this.budgetDataList[0].isFlag=='1'||this.budgetDataList[0].isBudgetRevision=='1'||this.budgetDataList[0].allocationAmount=='0.0000'){
+          if(this.budgetDataList[0].isFlag=='1'||this.budgetDataList[0].isBudgetRevision=='1'||this.budgetDataList[0].allocationAmount=='0.0000'||this.budgetDataList[0].isCDAparking=='1'){
             this.updateMsgStatusMain(this.sharedService.msgId);
           }
           for (let i = 0; i < this.budgetDataList.length; i++) {

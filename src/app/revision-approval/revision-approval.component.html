@@ -216,7 +216,7 @@
               </div>
               <div class="col-md-4" *ngIf="!status && userRole=='Budget Manager' && !sharedService.status && sharedService.redirectedFrom!='approved' && sharedService.revisionStatus=='Approved';" class="row">
                 <div class="row" [formGroup]="formdata">
-                  <button class="btn btn-primary mr-2" type="button" (click)="save(formdata.value)">Submit</button>
+                  <button class="btn btn-primary mr-2" type="button" (click)="confirmModel(formdata.value)">Submit</button>
                 </div>
               </div>
             </form>

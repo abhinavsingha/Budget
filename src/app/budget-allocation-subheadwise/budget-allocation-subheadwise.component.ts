@@ -60,6 +60,7 @@ export class BudgetAllocationSubheadwiseComponent {
   ngOnInit(): void {
     this.sharedService.updateInbox();
     this.getAmountType();
+    this.getDashBoardDta();
     // this.getBudgetFinYear();
     debugger;
     if(!this.sharedService.reject) {
@@ -624,7 +625,9 @@ export class BudgetAllocationSubheadwiseComponent {
     this.formdata.patchValue({
       allocationType: this.sharedService.dashboardData.allocationType,
     });
-    this.formdata.get('allocationType')?.setValue(this.sharedService.dashboardData.allocationType);
+    debugger;
+    if(this.sharedService.dashboardData!=undefined)
+      this.formdata.get('allocationType')?.setValue(this.sharedService.dashboardData.allocationType);
     if(this.sharedService.finYear!=undefined)
       this.formdata.get('finYear')?.setValue(this.sharedService.finYear);
 
@@ -637,7 +640,7 @@ export class BudgetAllocationSubheadwiseComponent {
     data: any,
     subhead: any
   ) {
-    // //debugger;
+    debugger;
     this.formdata.patchValue({
       majorHead: subhead.majorHead,
       minorHead: subhead.minorHead,
@@ -953,4 +956,41 @@ currentIndex:any;
     this.confirmModel(this.submitJson);
 
   }
+
+
+
+  getDashBoardDta() {
+    this.SpinnerService.show();
+
+    this.apiService.postApi(this.cons.api.getDashBoardDta, null).subscribe({
+      next: (v: object) => {
+        this.SpinnerService.hide();
+        let result: { [key: string]: any } = v;
+
+        if (result['message'] == 'success') {
+          this.sharedService.dashboardData = result['response'];
+          this.sharedService.inbox = result['response'].inbox;
+          this.sharedService.outbox = result['response'].outBox;
+          this.sharedService.archive = result['response'].archived;
+          this.sharedService.approve = result['response'].approved;
+          this.sharedDashboardData();
+        }
+        else {
+          this.common.faliureAlert('Please try later', result['message'], '');
+        }
+      },
+      error: (e) => {
+        this.SpinnerService.hide();
+        console.error(e);
+        this.common.faliureAlert('Error', e['error']['message'], 'error');
+      },
+      complete: () => console.info('complete'),
+    });
+  }
+
+
+
+
+
+
 }

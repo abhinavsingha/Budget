@@ -208,10 +208,10 @@
 
                         <input *ngIf="cdaParking.id==undefined" type="number"  min="0" class="form-control" id="Aallocationamount"
                           placeholder="Please Enter Amount" [(ngModel)]="cdaParking.amount"
-                          (keyup)="getCDAParkingAllocatedAmount()" (keyup)="checkOldDataChange(cdaParking)" />
+                          (keyup)="getCDAParkingAllocatedAmount()" (keyup)="checkOldDataChange(cdaParking)" (change)="getCDAParkingAllocatedAmount()"/>
                       <input *ngIf="cdaParking.id==-1" type="number"  min="0" class="form-control" id="Aallocationamount"
                           placeholder="Please Enter Amount" [(ngModel)]="cdaParking.amount"
-                          (keyup)="getCDAParkingAllocatedAmount()" (change)="checkOldDataChange(cdaParking)" (keyup)="checkOldDataChange(cdaParking)" />
+                          (keyup)="getCDAParkingAllocatedAmount()" (change)="checkOldDataChange(cdaParking)" (change)="getCDAParkingAllocatedAmount()" (keyup)="checkOldDataChange(cdaParking)" />
 
 
                       </td>
