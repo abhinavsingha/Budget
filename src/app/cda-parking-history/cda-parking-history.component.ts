@@ -26,7 +26,10 @@ export class CdaParkingHistoryComponent implements OnInit {
   ) {
   }
   ngOnInit(): void {
-    this.getCdaHistoryData();
+    if(localStorage.getItem('cdaType')=='update')
+      this.getCdaHistoryData();
+    else if(localStorage.getItem('cdaType')=='entry')
+      this.getCdaData();
   }
 
   private getCdaHistoryData() {
@@ -62,6 +65,35 @@ debugger;
       .subscribe(
         (res) => {
           let result: { [key: string]: any } = res;
+
+        },
+        (error) => {
+          console.error(error);
+          this.SpinnerService.hide();
+        }
+      );
+  }
+
+  private getCdaData() {
+    this.newSum=0;
+    this.apiService
+      .getApi(this.cons.api.getCdaData +'/'+this.sharedService.sharedValue)
+      .subscribe(
+        (res) => {
+          let result: { [key: string]: any } = res;
+          debugger;
+          let cdaData=result['response'].cdaParking;
+          for(let data of cdaData){
+            let entry={
+              amountType:data.amountUnit,
+              newGinNo:data.ginNo,
+              newAmount:data.remainingCdaAmount,
+              subHead:data.budgetHead
+            }
+            this.newSum=Number(Number(this.newSum)+Number(entry.newAmount)).toFixed(4);
+            this.newCdaData.push(entry);
+            debugger;
+          }
         },
         (error) => {
           console.error(error);

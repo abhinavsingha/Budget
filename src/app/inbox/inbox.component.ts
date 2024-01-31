@@ -156,6 +156,13 @@ export class InboxComponent implements OnInit {
     else if (li.isType == 'CDA Update') {
       this.sharedService.sharedValue = li.groupId;
       this.sharedService.msgId=li.mangeInboxId;
+      localStorage.setItem('cdaType','update');
+      this.router.navigate(['/cda-parking-history']);
+    }
+    else if (li.isType == 'CDA Entry') {
+      this.sharedService.sharedValue = li.groupId;
+      this.sharedService.msgId=li.mangeInboxId;
+      localStorage.setItem('cdaType','entry');
       this.router.navigate(['/cda-parking-history']);
     }
     else if (li.isType == 'Budget Receipt') {
@@ -214,6 +221,9 @@ export class InboxComponent implements OnInit {
             }
             else if(list[i].isBgOrCg=="SBG"){
               isType='Lower Unit Budget Allocation';
+            }
+            else if(list[i].isBgOrCg=="CDAI"){
+              isType='CDA Entry';
             }
             const entry: InboxList = {
               isRebase:list[i].isRebase,

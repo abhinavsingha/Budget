@@ -77,6 +77,8 @@ export class ArchiveComponent implements OnInit {
             }
             else if(list[i].isBgOrCg=="CDA"){
               isType='CDA Update';
+            }else if(list[i].isBgOrCg=="CDAI"){
+              isType='CDA Entry';
             }
             else if(list[i].isBgOrCg=="SBG"){
               isType='Lower Unit Budget Allocation';
@@ -157,6 +159,12 @@ export class ArchiveComponent implements OnInit {
       // this.common.successAlert('Rebase','Unit rebase detail','');
     }
     else if (entry.isType == 'CDA Update') {
+      localStorage.setItem('cdaType','update');
+      this.sharedService.sharedValue =entry.groupId;
+      this.sharedService.msgId=entry.mangeInboxId;
+      this.router.navigate(['/cda-parking-history']);
+    } else if (entry.isType == 'CDA Entry') {
+      localStorage.setItem('cdaType','entry');
       this.sharedService.sharedValue =entry.groupId;
       this.sharedService.msgId=entry.mangeInboxId;
       this.router.navigate(['/cda-parking-history']);
