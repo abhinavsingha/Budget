@@ -9,6 +9,7 @@ import {DatePipe, Location} from "@angular/common";
 import {SharedService} from "../services/shared/shared.service";
 
 class InboxList {
+  fromUnit:any;
   isType:string|undefined;
   serial: number | undefined;
   type: undefined;
@@ -78,7 +79,7 @@ export class ArchiveComponent implements OnInit {
             else if(list[i].isBgOrCg=="CDA"){
               isType='CDA Update';
             }else if(list[i].isBgOrCg=="CDAI"){
-              isType='CDA Entry';
+              isType='CDA Parked';
             }
             else if(list[i].isBgOrCg=="SBG"){
               isType='Lower Unit Budget Allocation';
@@ -91,7 +92,8 @@ export class ArchiveComponent implements OnInit {
               groupId: list[i].groupId,
               status: list[i].status,
               type: list[i].isBgOrCg,
-              type1: list[i].type
+              type1: list[i].type,
+              fromUnit:list[i].fromUnit
             };
             this.inboxList.push(entry);
           }
@@ -162,12 +164,15 @@ export class ArchiveComponent implements OnInit {
       localStorage.setItem('cdaType','update');
       this.sharedService.sharedValue =entry.groupId;
       this.sharedService.msgId=entry.mangeInboxId;
+      localStorage.setItem('cdaUnitId',entry.fromUnit.unit);
       this.router.navigate(['/cda-parking-history']);
-    } else if (entry.isType == 'CDA Entry') {
+    } else if (entry.isType == 'CDA Parked') {
       localStorage.setItem('cdaType','entry');
       this.sharedService.sharedValue =entry.groupId;
       this.sharedService.msgId=entry.mangeInboxId;
       this.router.navigate(['/cda-parking-history']);
+      debugger;
+      localStorage.setItem('cdaUnitId',entry.fromUnit.unit);
     }
 
     else

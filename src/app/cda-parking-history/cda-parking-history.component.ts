@@ -34,7 +34,7 @@ export class CdaParkingHistoryComponent implements OnInit {
 
   private getCdaHistoryData() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.cdaHistoryData+'/'+this.sharedService.sharedValue).subscribe(
+    this.apiService.getApi(this.cons.api.cdaHistoryData+'/'+this.sharedService.sharedValue+'/'+localStorage.getItem('cdaUnitId')).subscribe(
       (results) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = results;
@@ -77,7 +77,7 @@ debugger;
   private getCdaData() {
     this.newSum=0;
     this.apiService
-      .getApi(this.cons.api.getCdaData +'/'+this.sharedService.sharedValue)
+      .getApi(this.cons.api.getCdaDataUnitWise +'/'+this.sharedService.sharedValue+'/'+localStorage.getItem('cdaUnitId'))
       .subscribe(
         (res) => {
           let result: { [key: string]: any } = res;
@@ -94,6 +94,7 @@ debugger;
             this.newCdaData.push(entry);
             debugger;
           }
+          this.finallyMoveArchive(this.sharedService.msgId);
         },
         (error) => {
           console.error(error);

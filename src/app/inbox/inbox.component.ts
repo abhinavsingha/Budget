@@ -27,6 +27,7 @@ class InboxList {
   isCda:any;
   isRevision: any;
   mangeInboxId:any;
+  fromUnit:any;
 }
 
 import {
@@ -159,11 +160,12 @@ export class InboxComponent implements OnInit {
       localStorage.setItem('cdaType','update');
       this.router.navigate(['/cda-parking-history']);
     }
-    else if (li.isType == 'CDA Entry') {
+    else if (li.isType == 'CDA Parked') {
       this.sharedService.sharedValue = li.groupId;
       this.sharedService.msgId=li.mangeInboxId;
       localStorage.setItem('cdaType','entry');
       this.router.navigate(['/cda-parking-history']);
+      localStorage.setItem('cdaUnitId',li.fromUnit.unit);
     }
     else if (li.isType == 'Budget Receipt') {
       this.sharedService.msgId=li.mangeInboxId;
@@ -223,9 +225,10 @@ export class InboxComponent implements OnInit {
               isType='Lower Unit Budget Allocation';
             }
             else if(list[i].isBgOrCg=="CDAI"){
-              isType='CDA Entry';
+              isType='CDA Parked';
             }
             const entry: InboxList = {
+              fromUnit:list[i].fromUnit,
               isRebase:list[i].isRebase,
               mangeInboxId: list[i].mangeInboxId,
               isCda: list[i].isCda,
