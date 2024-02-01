@@ -379,6 +379,69 @@
       </div>
       <!-- /.modal-content -->
     </div>
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Expenditure Details </h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-12" id="cdaParking">
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap" *ngIf="currentEntry!=undefined" >
+                  <thead>
+                  <tr>
+                    <th>CDA</th>
+<!--                    <th>Amount (in{{currentEntry.cdaData[0].amountType.amountType}}) </th>-->
+                    <th>Expenditure (in{{currentEntry.cdaData[0].amountType.amountType}})</th>
+<!--                    <th>Action</th>-->
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                  <tr *ngFor="let cdaParking of oldmultipleCdaParking; let i = index">
+                    <td>
+                      <ng-select class="form-control select2bs4" style="width: 100%" [items]="cdaUnitList"
+                                 bindLabel="cdaName" placeholder="Select CDA Unit" appendTo="body"
+                                 [(ngModel)]="cdaParking.cdaParkingUnit" disabled>
+                      </ng-select>
+                    </td>
+<!--                    <td >-->
+<!--                      <input type="number"  min="0" class="form-control" id="Aallocationamount"-->
+<!--                             placeholder="Please Enter Amount" [(ngModel)]="cdaParking.amount" (keyup)="checkTotalParking()"/>-->
+<!--                    </td>-->
+                    <td>{{cdaParking.amount}}</td>
+<!--                    <td><button type="button" class="btn btn-danger" (click)="deleteFromMultipleCdaParking(i)">Delete</button></td>-->
+                  </tr>
+                  </tbody>
+<!--                  <tfoot>-->
+<!--                  <tr>-->
+<!--                    <td ><button type="button" class="btn btn-primary" id="btnCda" (click)="addNewRow()">Add-->
+<!--                      Row</button></td>-->
+<!--                    <td>-->
+<!--                      <b>Total amount to be parked = {{totalParking}} {{currentEntry.cdaData[0].amountType.amountType}}</b>-->
+<!--                    </td>-->
+<!--                    <td></td>-->
+<!--                  </tr>-->
+<!--                  </tfoot>-->
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+<!--        <div class="modal-footer justify-content-start">-->
+<!--          <button class="btn btn-danger mr-2" data-dismiss="modal">Close</button>-->
+<!--          <button class="btn btn-warning" (click)="updateCdaParkingDataApi()"-->
+<!--                  [disabled]="isdisableUpdateButton" data-dismiss="modal">Update</button>-->
+<!--          &lt;!&ndash;          <button class="btn btn-warning" (click)="updateCdaParkingDataApi()" *ngIf="showUpdate"&ndash;&gt;-->
+<!--          &lt;!&ndash;            [disabled]="isdisableUpdateButton" data-dismiss="modal">Update</button>&ndash;&gt;-->
+<!--        </div>-->
+      </div>
+      <!-- /.modal-content -->
+    </div>
     <!-- /.modal-dialog -->
   </div>
   <!-- /.content -->

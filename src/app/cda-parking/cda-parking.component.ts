@@ -130,7 +130,62 @@ export class CdaParkingComponent implements OnInit {
 
     }
 
+
+  oldmultipleCdaParking:any[]=[];
+  private getOldCdaData(submitJson:any) {
+    this.oldmultipleCdaParking=[];
+    this.apiService
+      .postApi(this.cons.api.getAllBillCdaAndAllocationSummery, submitJson)
+      .subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            // this.olddataflag=true;
+            const keys = Object.keys(result['response'].subHeadData);
+            for (const key of keys) {
+              debugger;
+              const value = result['response'].subHeadData[key];
+              console.log(`${key}: ${value}`);
+              let oldCdaData:MultiCdaParking= {
+                id: -1,
+                cdaParkingUnit: value.ginNo,
+                amount: value.totalParkingAmount,
+                balance: undefined,
+                oldData: value.totalParkingAmount
+              }
+
+              if(oldCdaData!=undefined)
+                this.oldmultipleCdaParking.push(oldCdaData);
+              debugger;
+
+              // this.getCDAParkingAllocatedAmount();
+            }
+            // this.totalExpWithAllocation=result['response'].totalExpWithAllocation.toString();
+
+
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
+  }
   populateCda(li: any,index:number) {
+debugger;
+    let json={
+      financialYearId:li.finYear.serialNo,
+      budgetHeadId:li.subHead.budgetCodeId,
+      amountType:li.amountUnit.amountTypeId,
+      allocationTypeId:li.allocTypeId.allocTypeId
+    };
+    this.getOldCdaData(json);
+
     this.cdaList=[];
     this.currentIndex=index;
     this.currentEntry=li;
