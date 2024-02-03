@@ -478,7 +478,7 @@ debugger;
   }
   cdaParkingListResponseData: any[] = [];
 
-  saveCdaParkingData() {
+  saveCdaParkingData1() {
     this.getCurrentSubHeadData;
     this.multipleCdaParking;
     this.cdaParkingListResponseData = [];
@@ -1510,5 +1510,17 @@ debugger;
         },
         complete: () => console.info('complete'),
       });
+  }
+
+  saveCdaParkingData() {
+    for(let cdaParking of this.multipleCdaParking){
+      if(cdaParking.oldData!=undefined){
+        if(cdaParking.amount<cdaParking.oldData){
+          this.common.warningAlert('Amount cannot be less than previous expenditure','Amount cannot be less than previous expenditure of '+cdaParking.oldData,'');
+        return;
+        }
+      }
+    }
+    this.saveCdaParkingData1();
   }
 }
