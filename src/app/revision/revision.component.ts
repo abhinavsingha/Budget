@@ -871,6 +871,13 @@ export class RevisionComponent {
 
               if(this.allRevisedUnits[i].unit.unit==this.unitId){
                 this.cdaDetails=this.allRevisedUnits[i].cdaTransData;
+                if(this.cdaDetails!=undefined){
+                  for(let cdaIn of this.cdaDetails){
+                    if(cdaIn.remainingCdaAmount!=undefined){
+                      cdaIn.remainingCdaAmount=Number(cdaIn.remainingCdaAmount).toFixed(4);
+                    }
+                  }
+                }
                 this.allRevisedUnits[i].manipulate=(parseFloat(this.allRevisedUnits[i].allocationAmount)*parseFloat(this.allRevisedUnits[i].amountType.amount)/this.formdata.get('amountType')?.value.amount-alloc).toFixed(4);
                 this.loginIndex=i;
               }
