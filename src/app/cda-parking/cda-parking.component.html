@@ -280,7 +280,8 @@
                       <td>{{20 *(p-1)+i+1}}</td>
                       <td>{{li.subHead.subHeadDescr}}</td>
                       <td>{{li.allocationAmount}} {{li.amountUnit.amountType}}</td>
-                      <td><button *ngIf="li.cdaData.length!=0" type="submit" class="btn btn-primary mr-2" data-toggle="modal" data-target="#modal-lg" (click)="populateCda(li,i)">Update CDA</button></td>
+                      <td *ngIf="li.cdaData.length!=0"><button  type="submit" class="btn btn-primary mr-2" data-toggle="modal" data-target="#modal-lg" (click)="populateCda(li,i)">Update CDA</button></td>
+                      <td *ngIf="li.cdaData.length==0"><button  type="submit" class="btn btn-danger mr-2" data-toggle="modal" data-target="#modal-lg" disabled>CDA Not Parked</button></td>
                     </tr>
                     </tbody>
                   </table>

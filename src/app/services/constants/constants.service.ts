@@ -7,12 +7,12 @@ export class ConstantsService {
   constructor() {}
 
   serverRedirectUrl = 'https://icg.net.in/auth/realms/icgrms/protocol/openid-connect/logout?redirect_uri=https://icg.net.in/'; //For Production Server
-  serviceUrl = 'https://icg.net.in/cgbudget/'; //Production server
+  // serviceUrl = 'https://icg.net.in/cgbudget/'; //Production server
   // serviceUrl = 'https://icg.net.in/budget/'; //UAT server
   // serviceUrl = 'http://10.3.8.81:1111/';
   // serviceUrl = 'http://172.20.10.2:1111/';
   // serviceUrl = 'http://192.168.2.13:1111/';
-  // serviceUrl = 'http://192.168.137.179:1111/';
+  serviceUrl = 'http://192.168.137.180:1111/';
   api = {
     getDataBudgetAllocation:
       this.serviceUrl + 'budgetAllocation/getDataBudgetAllocation',

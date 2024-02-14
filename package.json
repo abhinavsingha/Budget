@@ -25,7 +25,7 @@
     "chart.js": "^4.1.2",
     "file-saver": "^2.0.5",
     "jquery": "^3.6.3",
-    "keycloak-angular": "^13.0.0",
+    "keycloak-angular": "^13.1.0",
     "keycloak-js": "^20.0.5",
     "ngx-extended-pdf-viewer": "^17.0.0-alpha.0",
     "ngx-pagination": "^6.0.3",
