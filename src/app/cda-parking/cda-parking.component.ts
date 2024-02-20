@@ -176,6 +176,7 @@ export class CdaParkingComponent implements OnInit {
         complete: () => console.info('complete'),
       });
   }
+  originalCda:any;
   populateCda(li: any,index:number) {
 debugger;
     let json={
@@ -187,6 +188,7 @@ debugger;
     this.getOldCdaData(json);
 
     this.cdaList=[];
+    this.originalCda=[];
     this.currentIndex=index;
     this.currentEntry=li;
     let sum:number=0;
@@ -200,6 +202,7 @@ debugger;
         oldData: undefined
       };
       this.cdaList.push(entry);
+      this.originalCda.push(entry);
       this.totalParking=Number(sum).toFixed(4);
 
     }
@@ -231,12 +234,16 @@ debugger;
     debugger;
     let sum=0;
     let sum1=0;
+    for(let cda of this.originalCda){
+      if(cda.balance!=undefined)
+        sum1=Number(sum1)+Number(cda.balance);
+    }
     for(let cda of this.cdaList){
       debugger;
       if(cda.amount!=undefined)
         sum=Number(sum)+Number(cda.amount);
-      if(cda.balance!=undefined)
-        sum1=Number(sum1)+Number(cda.balance);
+      // if(cda.balance!=undefined)
+      //   sum1=Number(sum1)+Number(cda.balance);
     }
     this.totalParking=Number(sum1).toFixed(4);
     this.totalParking=Number(Number(this.totalParking)-Number(sum)).toFixed(4);
