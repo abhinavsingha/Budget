@@ -159,6 +159,7 @@ export class InboxComponent implements OnInit {
       this.sharedService.msgId=li.mangeInboxId;
       localStorage.setItem('cdaType','update');
       this.router.navigate(['/cda-parking-history']);
+      localStorage.setItem('cdaUnitId',li.fromUnit.unit);
     }
     else if (li.isType == 'CDA Parked') {
       this.sharedService.sharedValue = li.groupId;

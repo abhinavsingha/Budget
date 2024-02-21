@@ -12,7 +12,7 @@ export class ConstantsService {
   // serviceUrl = 'http://10.3.8.81:1111/';
   // serviceUrl = 'http://172.20.10.2:1111/';
   // serviceUrl = 'http://192.168.2.13:1111/';
-  // serviceUrl = 'http://192.168.43.200:1111/';
+  // serviceUrl = 'http://192.168.137.237:1111/';
   api = {
     getDataBudgetAllocation:
       this.serviceUrl + 'budgetAllocation/getDataBudgetAllocation',
