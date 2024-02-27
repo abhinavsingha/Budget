@@ -361,11 +361,16 @@ export class NewContigentBillComponent implements OnInit {
               parseFloat(result['response'].fundAvailable) *
               parseFloat(result['response'].amountUnit.amount)
             )+parseFloat(result['response'].expenditure)).toFixed(4);
+            // this.formdata
+            //   .get('budgetAllocated')
+            //   ?.setValue(
+            //     (Number(result['response'].cbAllocationAMount).toFixed(4)
+            //   ));
             this.formdata
               .get('budgetAllocated')
               ?.setValue(
-                (Number(result['response'].cbAllocationAMount).toFixed(4)
-              ));
+                (Number(this.budgetAllotted).toFixed(4)
+                ));
           }
           this.cdaData=result['response'].cdaParkingTrans;
           for(let cda of this.cdaData){
