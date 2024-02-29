@@ -18,7 +18,7 @@ class InboxList {
   unitName: string | undefined;
   groupId: string | undefined;
   status: string | undefined;
-  type1:any;
+  unit_sub:any;
 }
 
 
@@ -92,7 +92,7 @@ export class ArchiveComponent implements OnInit {
               groupId: list[i].groupId,
               status: list[i].status,
               type: list[i].isBgOrCg,
-              type1: list[i].type,
+              unit_sub: list[i].type,
               fromUnit:list[i].fromUnit
             };
             this.inboxList.push(entry);
@@ -114,6 +114,7 @@ export class ArchiveComponent implements OnInit {
   //   this.sharedService.redirectedFrom = 'approved';
   //   this.router.navigate(['/budget-approval']);
   // }
+  searchKey: string='';
   redirect(entry: any) {
     // debugger;
     this.sharedService.isRevision=entry.isRevision;
@@ -233,5 +234,9 @@ export class ArchiveComponent implements OnInit {
     const seconds = ('0' + date.getSeconds()).slice(-2);
 
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  }
+
+  search() {
+
   }
 }
