@@ -264,7 +264,8 @@ export class ConstantsService {
     getReceiptReportNew: this.serviceUrl+'reportController/getRevisedAllocationAprReportDoc',
     transferCbBill: this.serviceUrl+'contingentBillController/transferCbBill',
     cdaHistoryData: this.serviceUrl+'cdaParkingController/getCdaHistoryData',
-    getAllBillCdaAndAllocationSummery: this.serviceUrl+'cdaParkingController/getAllBillCdaAndAllocationSummery'
+    getAllBillCdaAndAllocationSummery: this.serviceUrl+'cdaParkingController/getAllBillCdaAndAllocationSummery',
+    getAllBillCdaAndAllocationSummeryUnit: this.serviceUrl+'cdaParkingController/getAllBillCdaAndAllocationSummeryunit',
 
 
   };

@@ -5,6 +5,7 @@ import {ConstantsService} from "../services/constants/constants.service";
 import {NgxSpinnerService} from "ngx-spinner";
 import {CommonService} from "../services/common/common.service";
 import {SharedService} from "../services/shared/shared.service";
+import {MultiCdaParking} from "../model/multi-cda-parking";
 
 @Component({
   selector: 'app-cda-parking-history',
@@ -16,6 +17,8 @@ export class CdaParkingHistoryComponent implements OnInit {
   newCdaData: any[]=[];
   oldSum: any;
   newSum: any;
+  expDataCdaList: any[]=[];
+  expSum: any;
   constructor(
     private datePipe: DatePipe,
     private apiService: ApiCallingServiceService,
@@ -50,6 +53,7 @@ debugger;
           this.newSum=Number(Number(this.newSum)+Number(cda.newAmount)).toFixed(4);
         }
 
+
         debugger;
         this.finallyMoveArchive(this.sharedService.msgId);
       },
@@ -83,6 +87,7 @@ debugger;
           let result: { [key: string]: any } = res;
           debugger;
           let cdaData=result['response'].cdaParking;
+
           for(let data of cdaData){
             let entry={
               amountType:data.amountUnit,
@@ -94,6 +99,7 @@ debugger;
             this.newCdaData.push(entry);
             debugger;
           }
+          this.getPreviousCdaExpenditure(cdaData);
           this.finallyMoveArchive(this.sharedService.msgId);
         },
         (error) => {
@@ -101,5 +107,49 @@ debugger;
           this.SpinnerService.hide();
         }
       );
+  }
+
+  private getPreviousCdaExpenditure(data: any[]) {
+debugger;
+    let json={
+      financialYearId:data[0].finYearId.serialNo,
+      budgetHeadId:data[0].budgetHead.budgetCodeId,
+      amountType:data[0].amountUnit.amountTypeId,
+      allocationTypeId:data[0].allocationType.allocTypeId,
+      unitId:data[0].unitId,
+    };
+    this.apiService.postApi(this.cons.api.getAllBillCdaAndAllocationSummeryUnit, json).subscribe({
+        next: (v: object) => {
+          this.SpinnerService.hide();
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            this.expDataCdaList=[];
+            this.expSum='0';
+            const keys = Object.keys(result['response'].subHeadData);
+            for (const key of keys) {
+              debugger;
+              const value = result['response'].subHeadData[key];
+              console.log(`${key}: ${value}`);
+              let oldCdaData= {
+                ginNo: value.ginNo,
+                amount: value.totalParkingAmount,
+              }
+              this.expSum=Number(Number(this.expSum)+Number(oldCdaData.amount)).toFixed(4);
+              this.expDataCdaList.push(oldCdaData);
+
+            }
+            debugger;
+    } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
+
   }
 }
