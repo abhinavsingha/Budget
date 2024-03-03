@@ -266,6 +266,10 @@ export class ConstantsService {
     cdaHistoryData: this.serviceUrl+'cdaParkingController/getCdaHistoryData',
     getAllBillCdaAndAllocationSummery: this.serviceUrl+'cdaParkingController/getAllBillCdaAndAllocationSummery',
     getAllBillCdaAndAllocationSummeryUnit: this.serviceUrl+'cdaParkingController/getAllBillCdaAndAllocationSummeryunit',
+    inboxListMain: this.serviceUrl + 'inboxOutbox/getInboxListMain',
+    outBoxListMain: this.serviceUrl + 'inboxOutbox/getOutBoxListMain',
+    archiveListMain: this.serviceUrl + 'inboxOutbox/getArchiveListMain',
+    approvedListMain: this.serviceUrl + 'inboxOutbox/getApprovedListMain'
 
 
   };

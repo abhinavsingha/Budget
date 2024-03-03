@@ -59,7 +59,7 @@ export class ApprovedComponent implements OnInit {
 
   private getApproved() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.inboxlist).subscribe((res) => {
+    this.apiService.getApi(this.cons.api.approvedListMain).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.SpinnerService.hide();

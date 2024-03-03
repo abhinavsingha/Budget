@@ -32,7 +32,8 @@ export class CdaParkingHistoryComponent implements OnInit {
     if(localStorage.getItem('cdaType')=='update')
       this.getCdaHistoryData();
     else if(localStorage.getItem('cdaType')=='entry')
-      this.getCdaData();
+      // this.getCdaData();
+      this.getCdaHistoryData();
   }
 
   private getCdaHistoryData() {
@@ -46,11 +47,11 @@ export class CdaParkingHistoryComponent implements OnInit {
         this.oldSum=0;
         this.newSum=0;
         for(let cda of this.oldCdaData){
-          this.oldSum=Number(Number(this.oldSum)+Number(cda.oldAmount)).toFixed(4);
+          this.oldSum=((Number(Number(this.oldSum)*100000000+Number(cda.oldAmount)*100000000))/100000000).toString();
         }
 debugger;
         for(let cda of this.newCdaData){
-          this.newSum=Number(Number(this.newSum)+Number(cda.newAmount)).toFixed(4);
+          this.newSum=((Number(Number(this.newSum)*100000000+Number(cda.newAmount)*100000000)/100000000)).toString();
         }
 
 
@@ -95,7 +96,7 @@ debugger;
               newAmount:data.remainingCdaAmount,
               subHead:data.budgetHead
             }
-            this.newSum=Number(Number(this.newSum)+Number(entry.newAmount)).toFixed(4);
+            this.newSum=(Number(Number(this.newSum)*100000000+Number(entry.newAmount)*100000000)/100000000).toString();
             this.newCdaData.push(entry);
             debugger;
           }
@@ -132,9 +133,9 @@ debugger;
               console.log(`${key}: ${value}`);
               let oldCdaData= {
                 ginNo: value.ginNo,
-                amount: value.totalParkingAmount,
+                amount: Number(value.totalParkingAmount).toString(),
               }
-              this.expSum=Number(Number(this.expSum)+Number(oldCdaData.amount)).toFixed(4);
+              this.expSum=Number(Number(this.expSum)+Number(oldCdaData.amount)).toString();
               this.expDataCdaList.push(oldCdaData);
 
             }

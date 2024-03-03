@@ -87,6 +87,12 @@ export class RevisionApprovalComponent {
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
+          if(localStorage.getItem('move')=='1'){
+            localStorage.removeItem('move')
+            this.finallyMoveArchive(this.sharedService.msgId);
+          }
+          else
+            localStorage.removeItem('move');
           debugger;
           this.budgetDataLists = result['response'].budgetResponseist;
           this.finYear=this.budgetDataLists[0].finYear;
@@ -652,5 +658,18 @@ export class RevisionApprovalComponent {
       this.formdata.get(field)?.reset();
     }
   }
+  private finallyMoveArchive(msgId:string) {
+    this.apiService
+      .getApi(this.cons.api.moveToArchive +'/'+msgId)
+      .subscribe(
+        (res) => {
+          let result: { [key: string]: any } = res;
 
+        },
+        (error) => {
+          console.error(error);
+          this.SpinnerService.hide();
+        }
+      );
+  }
 }

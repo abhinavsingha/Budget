@@ -175,11 +175,19 @@ export class InboxComponent implements OnInit {
       this.router.navigate(['/budget-approval']);
       this.sharedService.redirectedFrom = 'inbox';
     }
-    else if(li.isType == 'Budget Revision'){
+    else if(li.isType == 'Budget Revision'||li.isType == 'Budget Revised By Lower Unit'){
       this.sharedService.revisionStatus=li.status;
       if(li.status=='Fully Approved')
         this.sharedService.status=true;
+      if(li.isType == 'Budget Revision')
+        localStorage.setItem('move','0');
+      else if(li.isType == 'Budget Revised By Lower Unit')
+      {
+        localStorage.setItem('move','1');
+        this.sharedService.msgId=li.mangeInboxId;
+      }
       this.router.navigate(['/revision-approval']);
+
     }
     else if(li.isType=='Budget Rebase'){
 
@@ -189,7 +197,7 @@ export class InboxComponent implements OnInit {
 
   private inboxlist() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.inboxlist).subscribe((res) => {
+    this.apiService.getApi(this.cons.api.inboxListMain).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.SpinnerService.hide();
@@ -198,6 +206,7 @@ export class InboxComponent implements OnInit {
         if (list.length > 0) {
           let isType='';
           for (let i = 0; i < list.length; i++) {
+            isType='';
             if(list[i].isRebase==null){
               list[i].isRebase='0';
             }
@@ -218,6 +227,8 @@ export class InboxComponent implements OnInit {
             }
             else if(list[i].isBgOrCg=="UR"){
               isType='Budget Revised';
+            }else if(list[i].isBgOrCg=="BGR"){
+              isType='Budget Revised By Lower Unit';
             }
             else if(list[i].isBgOrCg=="CDA"){
               isType='CDA Update';

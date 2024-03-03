@@ -56,7 +56,7 @@ export class ArchiveComponent implements OnInit {
 
   private getApproved() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.inboxlist).subscribe((res) => {
+    this.apiService.getApi(this.cons.api.archiveListMain).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.SpinnerService.hide();
@@ -83,6 +83,9 @@ export class ArchiveComponent implements OnInit {
             }
             else if(list[i].isBgOrCg=="SBG"){
               isType='Lower Unit Budget Allocation';
+            }
+            else if(list[i].isBgOrCg=="BGR"){
+              isType='Budget Revised By Lower Unit';
             }
             const entry: InboxList = {
               serial: i + 1,
@@ -125,11 +128,18 @@ export class ArchiveComponent implements OnInit {
     this.sharedService.sharedValue = entry.groupId;
 
     this.sharedService.redirectedFrom = 'approved';
-    // debugger;
-    if(entry.type=='BG'||entry.type=='BR'){
-      if(entry.isType=='Budget Revision')
+    debugger;
+    if(entry.type=='BG'||entry.type=='BR'||entry.type=='BGR'){
+      if(entry.isType=='Budget Revision'||entry.isType == 'Budget Revised By Lower Unit')
       {
         this.sharedService.revisionStatus=entry.status;
+        if(entry.isType == 'Budget Revision')
+          localStorage.setItem('move','0');
+        else if(entry.isType == 'Budget Revised By Lower Unit')
+        {
+          localStorage.setItem('move','1');
+          this.sharedService.msgId=entry.mangeInboxId;
+        }
         this.router.navigate(['/revision-approval']);
       }
       else

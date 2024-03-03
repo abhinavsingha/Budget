@@ -53,28 +53,6 @@ import { ArchiveComponent } from './archive/archive.component';
 import { FilterPipe } from './filter.pipe';
 import {ApprovedRebaseComponent} from "./approved-rebase/approved-rebase.component";
 import { CdaParkingHistoryComponent } from './cda-parking-history/cda-parking-history.component';
-// import {ViewFormComponent} from "./view-form/view-form.component";
-
-// import { DialogComponent } from './dialog/dialog.component';
-// import { MatIconModule } from '@angular/material/icon';
-// import { MatFormFieldModule } from '@angular/material/form-field';
-// import { MatInputModule } from '@angular/material/input';
-// import { MatDialogModule } from '@angular/material/dialog';
-
-// function initializeKeycloak(keycloak: KeycloakService) {
-//   return () =>
-//     keycloak.init({
-//       config: {
-//         url: 'http://localhost:8080/auth',
-//         realm: 'icgrms',
-//         clientId: 'budget',
-//       },
-//       initOptions: {
-//         onLoad: 'login-required',
-//         flow: 'standard',
-//       },
-//     });
-// }
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>

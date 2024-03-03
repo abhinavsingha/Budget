@@ -136,7 +136,7 @@ export class OutboxComponent implements OnInit {
 
   private outboxlist() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.inboxlist).subscribe((res) => {
+    this.apiService.getApi(this.cons.api.outBoxListMain).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.SpinnerService.hide();

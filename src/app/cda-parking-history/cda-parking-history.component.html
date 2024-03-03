@@ -95,33 +95,33 @@
 
                       </div>
                 </div>
-                <div class="col-sm-6">
-                  <h3 class="card-title mb-2">Previous Expenditure from  CDA Parking</h3>
-                  <div class="card-body table-responsive p-0 " >
-                    <table class="table table-hover text-nowrap" >
-                      <thead>
-                      <th>S.No.</th>
-                      <th>Subhead</th>
-                      <th>Amount (in {{newCdaData[0].amountType.amountType}})</th>
-                      </thead>
-                      <tbody>
-                      <tr *ngFor="let cda of expDataCdaList;let j = index">
-                        <td>{{j+1}}</td>
-                        <td>{{cda.ginNo.cdaName}}</td>
-                        <td>{{cda.amount}}</td>
-                      </tr>
-                      </tbody>
-                      <tfoot style="position: absolute;bottom: -35px;background-color: #f6f9fc;width: 97%;border: 1px solid #dee2e6;border-radius: 0 0px 5px 5px;">
-                      <tr style="float: right; padding-right: 102px">
-                        <td class="font-weight-bold">Total</td>
-                        <td></td>
-                        <td class="font-weight-bold"> = {{this.expSum}}</td>
-                      </tr>
-                      </tfoot>
-                    </table>
+<!--                <div class="col-sm-6">-->
+<!--                  <h3 class="card-title mb-2">Previous Expenditure from  CDA Parking</h3>-->
+<!--                  <div class="card-body table-responsive p-0 " >-->
+<!--                    <table class="table table-hover text-nowrap" >-->
+<!--                      <thead>-->
+<!--                      <th>S.No.</th>-->
+<!--                      <th>Subhead</th>-->
+<!--                      <th>Amount (in {{newCdaData[0].amountType.amountType}})</th>-->
+<!--                      </thead>-->
+<!--                      <tbody>-->
+<!--                      <tr *ngFor="let cda of expDataCdaList;let j = index">-->
+<!--                        <td>{{j+1}}</td>-->
+<!--                        <td>{{cda.ginNo.cdaName}}</td>-->
+<!--                        <td>{{cda.amount}}</td>-->
+<!--                      </tr>-->
+<!--                      </tbody>-->
+<!--                      <tfoot style="position: absolute;bottom: -35px;background-color: #f6f9fc;width: 97%;border: 1px solid #dee2e6;border-radius: 0 0px 5px 5px;">-->
+<!--                      <tr style="float: right; padding-right: 102px">-->
+<!--                        <td class="font-weight-bold">Total</td>-->
+<!--                        <td></td>-->
+<!--                        <td class="font-weight-bold"> = {{this.expSum}}</td>-->
+<!--                      </tr>-->
+<!--                      </tfoot>-->
+<!--                    </table>-->
 
-                  </div>
-                </div>
+<!--                  </div>-->
+<!--                </div>-->
               </div>
             </form>
           </div>

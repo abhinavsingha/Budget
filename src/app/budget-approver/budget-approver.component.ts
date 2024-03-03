@@ -53,7 +53,7 @@ export class BudgetApproverComponent implements OnInit {
   showAction: boolean=true;
   oldmultipleCdaParking: any[]=[];
   private totalExpWithAllocation: any;
-
+  subUnitAllocation:number=0;
   ngOnInit(): void {
     this.sharedService.updateInbox();
     ////debugger;
@@ -115,11 +115,11 @@ export class BudgetApproverComponent implements OnInit {
             // };
             // this.getOldCdaData(json);
             if(this.budgetDataList[i].unallocatedAmount!=undefined&&this.budgetDataList[i].isTYpe!='REBASE') {
-              this.budgetDataList[i].allocationAmount1 = (parseFloat(this.budgetDataList[i].allocationAmount) + parseFloat(this.budgetDataList[i].unallocatedAmount)).toFixed(4);
+              this.budgetDataList[i].allocationAmount1 = ((Number(this.budgetDataList[i].allocationAmount)*100000000 + Number(this.budgetDataList[i].unallocatedAmount)*100000000)/100000000).toString();
             }
             else{
 
-              this.budgetDataList[i].allocationAmount1 = (parseFloat(this.budgetDataList[i].allocationAmount)).toFixed(4);
+              this.budgetDataList[i].allocationAmount1 = (Number(this.budgetDataList[i].allocationAmount)).toString();
             }
 
             if (this.budgetDataList[i].balanceAmount != undefined) {
@@ -318,17 +318,17 @@ export class BudgetApproverComponent implements OnInit {
 
     this.multipleCdaParking.push(new MultiCdaParking());
     if(data.revisedAmount!=undefined)
-      this.totalAmountToAllocateCDAParking = (parseFloat(data.allocationAmount1)).toFixed(4);
-        // +parseFloat(data.revisedAmount)).toFixed(4);
+      this.totalAmountToAllocateCDAParking = ((Number(data.allocationAmount1)*100000000)/100000000).toString();
+    // +parseFloat(data.revisedAmount)).toFixed(4);
     else
-      this.totalAmountToAllocateCDAParking = data.allocationAmount1;
-
+      this.totalAmountToAllocateCDAParking = ((Number(data.allocationAmount1)*100000000)/100000000).toString();
+    debugger;
     this.isdisableSubmitButton = true;
     this.isdisableUpdateButton = true;
     this.showUpdate = false;
     this.showSubmit = true;
     this.previousParking=[];
-debugger;
+    debugger;
     if(Number(data.revisedAmount)!=0){
       for(let oldCda of this.oldmultipleCdaParking){
         this.multipleCdaParking.push(oldCda);
@@ -342,6 +342,7 @@ debugger;
         allocationTypeId:data.allocTypeId.allocTypeId
       };
       this.olddataflag=false;
+      this.subUnitAllocation=0;
       this.apiService
         .postApi(this.cons.api.getAllBillCdaAndAllocationSummery, json)
         .subscribe({
@@ -350,6 +351,12 @@ debugger;
             let result: { [key: string]: any } = v;
             if (result['message'] == 'success') {
               this.olddataflag=true;
+              this.subUnitAllocation=Number(result['response'].totalExpWithAllocation);
+              if(result['response'].totalExpWithAllocation!=undefined){
+                this.totalAmountToAllocateCDAParking=((Number(this.totalAmountToAllocateCDAParking)*100000000-(Number(result['response'].totalExpWithAllocation)*100000000/this.budgetDataList[0].amountUnit.amount))/100000000).toString();
+              }
+
+
               const keys = Object.keys(result['response'].subHeadData);
               for (const key of keys) {
                 debugger;
@@ -358,9 +365,9 @@ debugger;
                 let oldCdaData:MultiCdaParking= {
                   id: -1,
                   cdaParkingUnit: value.ginNo,
-                  amount: value.totalParkingAmount,
+                  amount: Number(value.totalParkingAmount).toString(),
                   balance: undefined,
-                  oldData: value.totalParkingAmount
+                  oldData: Number(value.totalParkingAmount).toString()
                 }
 
                 if(oldCdaData!=undefined)
@@ -392,10 +399,10 @@ debugger;
       amountType:this.budgetDataList[index].amountUnit.amountTypeId,
     }
 
-    if(this.budgetDataList[0].isTYpe=='AFTER REVISION'){
-      //debugger;
-      this.totalAmountToAllocateCDAParking=(Number(this.totalAmountToAllocateCDAParking)-(Number(this.totalExpWithAllocation)/this.budgetDataList[0].amountUnit.amount)).toFixed(4)
-    }
+    // if(this.budgetDataList[0].isTYpe=='AFTER REVISION'){
+    //   //debugger;
+    //   this.totalAmountToAllocateCDAParking=(Number(this.totalAmountToAllocateCDAParking)-(Number(this.totalExpWithAllocation)/this.budgetDataList[0].amountUnit.amount)).toFixed(4)
+    // }
     this.balancedRemaingCdaParkingAmount = this.totalAmountToAllocateCDAParking;
     this.getCDAParkingAllocatedAmount();
     // put rebase condition
@@ -634,9 +641,9 @@ debugger;
     this.multipleCdaParking.push(new MultiCdaParking());
     // this.totalAmountToAllocateCDAParking = budgetData.allocationAmount;
     if(budgetData.revisedAmount!=undefined)
-      this.totalAmountToAllocateCDAParking = (parseFloat(budgetData.allocationAmount1)).toFixed(4);
+      this.totalAmountToAllocateCDAParking = (Number(budgetData.allocationAmount1)).toString();
     else
-      this.totalAmountToAllocateCDAParking = budgetData.allocationAmount1;
+      this.totalAmountToAllocateCDAParking = (Number(budgetData.allocationAmount1)).toString();
 
     this.balancedRemaingCdaParkingAmount = '0.0000';
     this.isdisableSubmitButton = true;
@@ -724,14 +731,14 @@ debugger;
           unitIndex[i].amount=undefined;
           return;
         }
-        amount = parseFloat(amount) + parseFloat(unitIndex[i].amount);
+        amount = (Number(amount)*100000000 + Number(unitIndex[i].amount)*100000000)/100000000;
       }
     }
     ////debugger;
-    amount=amount.toFixed(4);
+    amount=amount.toString();
     this.balancedRemaingCdaParkingAmount = (
-      parseFloat(this.totalAmountToAllocateCDAParking) - parseFloat(amount)
-    ).toFixed(4);
+      (Number(this.totalAmountToAllocateCDAParking)*100000000 - Number(amount)*100000000)/100000000
+    ).toString();
     if(this.balancedRemaingCdaParkingAmount == '-0.0000')
       this.balancedRemaingCdaParkingAmount == '0.0000';
     if (
@@ -1075,7 +1082,7 @@ debugger;
     // ];
     let columns;
     if(this.budgetDataList[0].subHead.majorHead=='2037'){
-       columns = [
+      columns = [
         'Financial_Year',
         'To_Unit',
         'From_Unit',
@@ -1087,7 +1094,7 @@ debugger;
       ];
     }
     else{
-       columns = [
+      columns = [
         'Financial_Year',
         'To_Unit',
         'From_Unit',
@@ -1172,7 +1179,7 @@ debugger;
     // let url=this.cons.api.getReceiptReportRevision+data;
     // this.apiService
     //   .getApi(url+'/'+localStorage.getItem('group_id'))
-      this.apiService.getApi(url+'/'+localStorage.getItem('group_id'))
+    this.apiService.getApi(url+'/'+localStorage.getItem('group_id'))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -1183,33 +1190,33 @@ debugger;
               result['response'][0].fileName
             );
           }
-          // else if(result['message'] =='PENDING RECORD NOT FOUND'){
-          //   this.apiService.getApi(this.cons.api.getRevisedAllocationAprReport+data+'/'+localStorage.getItem('group_id'))
-          //     .subscribe({
-          //       next: (v: object) => {
-          //         this.SpinnerService.hide();
-          //         let result: { [key: string]: any } = v;
-          //         if (result['message'] == 'success') {
-          //           this.downloadPdf(
-          //             result['response'][0].path,
-          //             result['response'][0].fileName
-          //           );
-          //         } else {
-          //           this.common.faliureAlert(
-          //             'Please try later',
-          //             result['message'],
-          //             ''
-          //           );
-          //         }
-          //       },
-          //       error: (e) => {
-          //         this.SpinnerService.hide();
-          //         console.error(e);
-          //         this.common.faliureAlert('Error', e['error']['message'], 'error');
-          //       },
-          //       complete: () => console.info('complete'),
-          //     });
-          //
+            // else if(result['message'] =='PENDING RECORD NOT FOUND'){
+            //   this.apiService.getApi(this.cons.api.getRevisedAllocationAprReport+data+'/'+localStorage.getItem('group_id'))
+            //     .subscribe({
+            //       next: (v: object) => {
+            //         this.SpinnerService.hide();
+            //         let result: { [key: string]: any } = v;
+            //         if (result['message'] == 'success') {
+            //           this.downloadPdf(
+            //             result['response'][0].path,
+            //             result['response'][0].fileName
+            //           );
+            //         } else {
+            //           this.common.faliureAlert(
+            //             'Please try later',
+            //             result['message'],
+            //             ''
+            //           );
+            //         }
+            //       },
+            //       error: (e) => {
+            //         this.SpinnerService.hide();
+            //         console.error(e);
+            //         this.common.faliureAlert('Error', e['error']['message'], 'error');
+            //       },
+            //       complete: () => console.info('complete'),
+            //     });
+            //
           // }
           else {
             this.common.faliureAlert(
@@ -1381,10 +1388,10 @@ debugger;
             };
             this.getOldCdaData(json);
             if(this.budgetDataList[i].unallocatedAmount!=undefined){
-             this.budgetDataList[i].allocationAmount1=(Number(this.budgetDataList[i].allocationAmount).toFixed(4)+Number(this.budgetDataList[i].unallocatedAmount).toFixed(4));
+              this.budgetDataList[i].allocationAmount1=((Number(this.budgetDataList[i].allocationAmount)*100000000+Number(this.budgetDataList[i].unallocatedAmount)*100000000)/100000000).toString();
             }
             else{
-              this.budgetDataList[i].allocationAmount1=(Number(this.budgetDataList[i].allocationAmount)).toFixed(4);
+              this.budgetDataList[i].allocationAmount1=(Number(this.budgetDataList[i].allocationAmount)).toString();
             }
             if (this.budgetDataList[i].balanceAmount != undefined) {
               this.budgetDataList[i].balanceAmount = parseFloat(
@@ -1402,14 +1409,14 @@ debugger;
   }
   editReturnedAllocation(value: any) {
     //debugger;
-  this.sharedService.allocationData=this.budgetDataList;
+    this.sharedService.allocationData=this.budgetDataList;
     if (this.budgetDataList[0].isTYpe == 'S'||this.budgetDataList[0].isTYpe == 's') {
       this.router.navigate(['/budget-allocation-subheadwise']);
 
     }
-  else if(this.budgetDataList[0].isTYpe == 'U'||this.budgetDataList[0].isTYpe == 'u'){
-    this.router.navigate(['/budget-allocation']);
-  }
+    else if(this.budgetDataList[0].isTYpe == 'U'||this.budgetDataList[0].isTYpe == 'u'){
+      this.router.navigate(['/budget-allocation']);
+    }
   }
   // oldDataFlag:boolean=false;
   checkOldDataChange(cdaParking: any) {
@@ -1486,9 +1493,9 @@ debugger;
               let oldCdaData:MultiCdaParking= {
                 id: -1,
                 cdaParkingUnit: value.ginNo,
-                amount: value.totalParkingAmount,
+                amount: (Number(value.totalParkingAmount)).toString(),
                 balance: undefined,
-                oldData: value.totalParkingAmount
+                oldData: (Number(value.totalParkingAmount)).toString()
               }
 
               if(oldCdaData!=undefined)
@@ -1496,6 +1503,7 @@ debugger;
 
               this.getCDAParkingAllocatedAmount();
             }
+            debugger;
             this.totalExpWithAllocation=result['response'].totalExpWithAllocation.toString();
 
 
@@ -1517,7 +1525,7 @@ debugger;
       if(cdaParking.oldData!=undefined){
         if(cdaParking.amount<cdaParking.oldData){
           this.common.warningAlert('Amount cannot be less than previous expenditure','Amount cannot be less than previous expenditure of '+cdaParking.oldData,'');
-        return;
+          return;
         }
       }
     }

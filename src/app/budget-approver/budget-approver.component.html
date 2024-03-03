@@ -51,53 +51,52 @@
               <div class="card-body table-responsive p-0">
                 <table class="table table-hover text-nowrap">
                   <thead>
-                    <tr *ngIf="budgetDataList[0]!=undefined">
-                      <th>Sr. No.</th>
-                      <th>F.Y.</th>
-                      <th>To Unit</th>
-                      <th>Sub Head</th>
-                      <th>Type</th>
-                      <th>Allocated Fund</th>
-                      <th *ngIf="budgetDataList[0].revisedAmount!=0">Total Additional/Withdrawal</th>
-                      <!--                      <th-->
-                      <!--                        *ngIf="isInboxAndOutbox!= 'Outbox' && type!='Budget Allocation' && userRole!='Budget Approver'">-->
-                      <!--                        Rem. Amount-->
-                      <!--                      </th>-->
-                      <th
-                        *ngIf="(isInboxAndOutbox!= 'Outbox' && type!='Budget Allocation' && userRole!='Budget Approver')&&this.showAction">
-                        Action</th>
-                      <th
-                        *ngIf="type=='Budget Allocation'">
-                        CDA Details</th>
-                    </tr>
+                  <tr *ngIf="budgetDataList[0]!=undefined">
+                    <th>Sr. No.</th>
+                    <th>F.Y.</th>
+                    <th>To Unit</th>
+                    <th>Sub Head</th>
+                    <th>Type</th>
+                    <th>Allocated Fund</th>
+                    <th *ngIf="budgetDataList[0].revisedAmount!=0">Total Additional/Withdrawal</th>
+                    <!--                      <th-->
+                    <!--                        *ngIf="isInboxAndOutbox!= 'Outbox' && type!='Budget Allocation' && userRole!='Budget Approver'">-->
+                    <!--                        Rem. Amount-->
+                    <!--                      </th>-->
+                    <th
+                      *ngIf="(isInboxAndOutbox!= 'Outbox' && type!='Budget Allocation' && userRole!='Budget Approver')&&this.showAction">
+                      Action</th>
+                    <th
+                      *ngIf="type=='Budget Allocation'">
+                      CDA Details</th>
+                  </tr>
                   </thead>
                   <tbody>
-                    <tr
-                      *ngFor="let buggetData of budgetDataList  | paginate :{itemsPerPage:15,currentPage:p} ; let i = index">
-                      <td>{{15 *(p-1)+i+1}}</td>
-                      <td>{{buggetData.finYear.finYear}}</td>
-                      <td>{{buggetData.toUnit.descr}}</td>
-                      <td>{{buggetData.subHead.subHeadDescr}}</td>
-                      <td>{{buggetData.allocTypeId.allocDesc}}</td>
-                      <td *ngIf="buggetData.balanceAmount!=undefined">{{buggetData.balanceAmount}}
-                        {{buggetData.remeningBalanceUnit.amountType}}</td>
-                      <td>{{buggetData.allocationAmount}} {{buggetData.amountUnit.amountType}}</td>
-                      <td *ngIf="budgetDataList[0].revisedAmount!=0">{{buggetData.revisedAmount}} {{buggetData.amountUnit.amountType}}</td>
-                      <td
-                        *ngIf="showAction&&((isInboxAndOutbox== 'approved'||isInboxAndOutbox== 'inbox') && type!='Budget Allocation' && userRole!='Budget Approver')">
-                        <button *ngIf="buggetData.allocationAmount!='0.0000' && buggetData.isCDAparking == '0' && buggetData.isFlag!='1' &&buggetData.isBudgetRevision!='1'" type="submit" class="btn btn-warning mr-2"
-                          data-toggle="modal" data-target="#modal-lg" (click)="addCDAParking(buggetData,((p-1)*15)+i)">Add
-                          CDA Parking</button>
-                        <button *ngIf="buggetData.isCDAparking == '1'&&buggetData.isFlag!='1'&&buggetData.isBudgetRevision!='1'" type="submit" class="btn btn-primary mr-2"
-                          data-toggle="modal" data-target="#modal-lg" (click)="viewCDAParking(buggetData)"  >View CDA</button></td>
-                      <td *ngIf=" type=='Budget Allocation'"><button *ngIf="buggetData.isFlag!='1'||buggetData.isBudgetRevision!='1'" type="submit" class="btn btn-primary mr-2" data-toggle="modal" data-target="#modal-lg1" (click)="cdaDataList(buggetData.cdaData)" >View CDA Info</button></td>
+                  <tr
+                    *ngFor="let buggetData of budgetDataList  | paginate :{itemsPerPage:15,currentPage:p} ; let i = index">
+                    <td>{{15 *(p-1)+i+1}}</td>
+                    <td>{{buggetData.finYear.finYear}}</td>
+                    <td>{{buggetData.toUnit.descr}}</td>
+                    <td>{{buggetData.subHead.subHeadDescr}}</td>
+                    <td>{{buggetData.allocTypeId.allocDesc}}</td>
+                    <td *ngIf="buggetData.balanceAmount!=undefined">{{buggetData.balanceAmount}}
+                      {{buggetData.remeningBalanceUnit.amountType}}</td>
+                    <td>{{buggetData.allocationAmount}} {{buggetData.amountUnit.amountType}}</td>
+                    <td *ngIf="budgetDataList[0].revisedAmount!=0">{{buggetData.revisedAmount}} {{buggetData.amountUnit.amountType}}</td>
+                    <td
+                      *ngIf="showAction&&((isInboxAndOutbox== 'approved'||isInboxAndOutbox== 'inbox') && type!='Budget Allocation' && userRole!='Budget Approver')">
+                      <button *ngIf="buggetData.allocationAmount!='0.0000' && buggetData.isCDAparking == '0' && buggetData.isFlag!='1' &&buggetData.isBudgetRevision!='1'" type="submit" class="btn btn-warning mr-2"
+                              data-toggle="modal" data-target="#modal-lg" (click)="addCDAParking(buggetData,((p-1)*15)+i)">Add CDA Parking</button>
+                      <button *ngIf="buggetData.isCDAparking == '1'&&buggetData.isFlag!='1'&&buggetData.isBudgetRevision!='1'" type="submit" class="btn btn-primary mr-2"
+                              data-toggle="modal" data-target="#modal-lg" (click)="viewCDAParking(buggetData)"  >View CDA</button></td>
+                    <td *ngIf=" type=='Budget Allocation'"><button *ngIf="buggetData.isFlag!='1'||buggetData.isBudgetRevision!='1'" type="submit" class="btn btn-primary mr-2" data-toggle="modal" data-target="#modal-lg1" (click)="cdaDataList(buggetData.cdaData)" >View CDA Info</button></td>
 
-                    </tr>
+                  </tr>
                   </tbody>
 
                 </table>
 
-                </div>
+              </div>
               <div class="row mt-2" [formGroup]="formdata">
                 <div class="col-md-3">
                   <div class="form-group" >
@@ -130,11 +129,11 @@
           <form [formGroup]="formdata">
             <div class="row">
               <div class="col-md-4"
-                *ngIf="type=='Budget Allocation' && userRole=='Budget Approver' && isInboxAndOutbox!= 'Outbox'&&budgetDataList[0].status=='Pending'">
+                   *ngIf="type=='Budget Allocation' && userRole=='Budget Approver' && isInboxAndOutbox!= 'Outbox'&&budgetDataList[0].status=='Pending'">
                 <div class="form-group">
                   <label>Approve/Return Remarks</label>
                   <input type="text" class="form-control" id="PrevAllocation1" placeholder="Enter Remarks"
-                    formControlName="remarks" />
+                         formControlName="remarks" />
                 </div>
               </div>
               <div class="col-md-4"
@@ -151,7 +150,7 @@
         <!-- /.card-body -->
 
         <div class=" card-footer"
-          *ngIf="type=='Budget Allocation' && userRole=='Budget Approver' && isInboxAndOutbox!= 'Outbox' &&budgetDataList[0].status=='Pending'&& sharedService.redirectedFrom!='approved'">
+             *ngIf="type=='Budget Allocation' && userRole=='Budget Approver' && isInboxAndOutbox!= 'Outbox' &&budgetDataList[0].status=='Pending'&& sharedService.redirectedFrom!='approved'">
           <div class="row">
             <button type="submit" class="btn btn-primary mr-2" (click)="approveForm(formdata.value)">Approve</button>
             <button type="submit" class="btn btn-danger" (click)="returnForm(formdata.value)">Return</button>
@@ -185,47 +184,47 @@
               <div class="card-body table-responsive p-0">
                 <table class="table table-hover text-nowrap" *ngIf="budgetDataList[currentIndex]!=undefined&&olddataflag==true">
                   <thead>
-                    <tr>
-                      <th>CDA</th>
-                      <th *ngIf="budgetDataList[currentIndex].isCDAparking!='1'">Amount</th>
-                      <th>Remaining Amount</th>
-                      <th>Action</th>
-                    </tr>
+                  <tr>
+                    <th>CDA</th>
+                    <th *ngIf="budgetDataList[currentIndex].isCDAparking!='1'">Amount</th>
+                    <th>Remaining Amount</th>
+                    <th>Action</th>
+                  </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let cdaParking of multipleCdaParking; let i = index">
-                      <td>
-                        <ng-select *ngIf="cdaParking.id==undefined" class="form-control select2bs4" style="width: 100%" [items]="cdaUnitList"
-                          bindLabel="cdaName" placeholder="Select CDA Unit" appendTo="body"
-                          [(ngModel)]="cdaParking.cdaParkingUnit">
-                        </ng-select>
-                        <ng-select *ngIf="cdaParking.id==-1" class="form-control select2bs4" style="width: 100%" [items]="cdaUnitList"
-                          bindLabel="cdaName" placeholder="Select CDA Unit" appendTo="body"
-                          [(ngModel)]="cdaParking.cdaParkingUnit" [readonly]="true">
-                        </ng-select>
-                      </td>
-                      <td  *ngIf="budgetDataList[currentIndex].isCDAparking!='1'">
+                  <tr *ngFor="let cdaParking of multipleCdaParking; let i = index">
+                    <td>
+                      <ng-select *ngIf="cdaParking.id==undefined" class="form-control select2bs4" style="width: 100%" [items]="cdaUnitList"
+                                 bindLabel="cdaName" placeholder="Select CDA Unit" appendTo="body"
+                                 [(ngModel)]="cdaParking.cdaParkingUnit">
+                      </ng-select>
+                      <ng-select *ngIf="cdaParking.id==-1" class="form-control select2bs4" style="width: 100%" [items]="cdaUnitList"
+                                 bindLabel="cdaName" placeholder="Select CDA Unit" appendTo="body"
+                                 [(ngModel)]="cdaParking.cdaParkingUnit" [readonly]="true">
+                      </ng-select>
+                    </td>
+                    <td  *ngIf="budgetDataList[currentIndex].isCDAparking!='1'">
 
-                        <input *ngIf="cdaParking.id==undefined" type="number"  min="0" class="form-control" id="Aallocationamount"
-                          placeholder="Please Enter Amount" [(ngModel)]="cdaParking.amount"
-                          (keyup)="getCDAParkingAllocatedAmount()" (change)="checkOldDataChange(cdaParking)" (change)="getCDAParkingAllocatedAmount()"/>
-                      <input *ngIf="cdaParking.id==-1" type="number"  min="0" class="form-control" id="Aallocationamount"
-                          placeholder="Please Enter Amount" [(ngModel)]="cdaParking.amount"
-                          (keyup)="getCDAParkingAllocatedAmount()" (change)="checkOldDataChange(cdaParking)" (change)="getCDAParkingAllocatedAmount()" />
-                      </td>
-                      <td>{{cdaParking.balance}}</td>
-                      <td><button *ngIf="cdaParking.id!=-1" type="button" class="btn btn-danger"
-                          (click)="deleteFromMultipleCdaParking(i)">Delete</button></td>
-                    </tr>
+                      <input *ngIf="cdaParking.id==undefined" type="number"  min="0" class="form-control" id="Aallocationamount"
+                             placeholder="Please Enter Amount" [(ngModel)]="cdaParking.amount"
+                             (keyup)="getCDAParkingAllocatedAmount()" (change)="checkOldDataChange(cdaParking)" (change)="getCDAParkingAllocatedAmount()"/>
+                      <input *ngIf="cdaParking.id==-1" type="number"  min="0" class="form-control" id="Aallocationamount1"
+                             placeholder="Please Enter Amount" [(ngModel)]="cdaParking.amount"
+                             (keyup)="getCDAParkingAllocatedAmount()" (change)="checkOldDataChange(cdaParking)" (change)="getCDAParkingAllocatedAmount()" />
+                    </td>
+                    <td>{{cdaParking.balance}}</td>
+                    <td><button *ngIf="cdaParking.id!=-1" type="button" class="btn btn-danger"
+                                (click)="deleteFromMultipleCdaParking(i)">Delete</button></td>
+                  </tr>
                   </tbody>
                   <tfoot>
-                    <tr *ngIf="budgetDataList[currentIndex].isCDAparking!='1'">
-                      <td ><button type="button" class="btn btn-primary" id="btnCda" (click)="addNewRow()" >Add
-                          Row</button></td>
-                      <td><b>Remaining Balance = {{balancedRemaingCdaParkingAmount}} In
-                          {{amountUnit}}</b></td>
-                      <td></td>
-                    </tr>
+                  <tr *ngIf="budgetDataList[currentIndex].isCDAparking!='1'">
+                    <td ><button type="button" class="btn btn-primary" id="btnCda" (click)="addNewRow()" >Add
+                      Row</button></td>
+                    <td><b>Remaining Balance = {{balancedRemaingCdaParkingAmount}} In
+                      {{amountUnit}}</b>  </td><td><b><span *ngIf="subUnitAllocation!=0">Allocation to subUnits: Rs {{subUnitAllocation}}</span></b></td>
+                    <td></td>
+                  </tr>
                   </tfoot>
                 </table>
               </div>
@@ -235,9 +234,9 @@
         <div class="modal-footer justify-content-start">
           <button class="btn btn-danger mr-2" data-dismiss="modal">Close</button>
           <button class="btn btn-primary mr-2" data-dismiss="modal" (click)="saveCdaParkingData()" *ngIf="showSubmit"
-            [disabled]="(isdisableSubmitButton)">Submit</button>
-<!--          <button class="btn btn-warning" (click)="updateCdaParkingDataApi()" *ngIf="showUpdate"-->
-<!--            [disabled]="isdisableUpdateButton" data-dismiss="modal">Update</button>-->
+                  [disabled]="(isdisableSubmitButton)">Submit</button>
+          <!--          <button class="btn btn-warning" (click)="updateCdaParkingDataApi()" *ngIf="showUpdate"-->
+          <!--            [disabled]="isdisableUpdateButton" data-dismiss="modal">Update</button>-->
         </div>
       </div>
       <!-- /.modal-content -->
@@ -261,7 +260,7 @@
                   <thead>
                   <tr>
                     <th>CDA</th>
-<!--                    <th>Allocated in {{allocAmountUnit}}</th>-->
+                    <!--                    <th>Allocated in {{allocAmountUnit}}</th>-->
                     <th>Withdrawal in {{amountUnitType}}</th>
                     <th>Balance in {{allocAmountUnit}}</th>
                   </tr>
@@ -271,9 +270,9 @@
                     <td>
                       {{cdaParking.ginNo.cdaName}}
                     </td>
-<!--                    <td>{{cdaParking.allocationAmount}}</td>-->
+                    <!--                    <td>{{cdaParking.allocationAmount}}</td>-->
                     <td>{{cdaParking.amount}}</td>
-                    <td>{{cdaParking.remainingAmount}}</td>
+                    <td>{{cdaParking.remainingAmount}} </td>
                   </tr>
                   </tbody>
                   <tfoot>
