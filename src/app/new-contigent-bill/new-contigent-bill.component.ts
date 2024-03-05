@@ -353,10 +353,10 @@ export class NewContigentBillComponent implements OnInit {
           this.FundAllotted = result['response'];
           this.expenditure = parseFloat(this.FundAllotted.expenditure);
           this.formdata.get('progressive')?.setValue(this.expenditure);
-          if (result['response'].fundAvailable == 0) {
+          // if (result['response'].fundAvailable == 0) {
             this.budgetAllotted = 0;
             this.formdata.get('budgetAllocated')?.setValue(0);
-          } else {
+          // } else {
             this.budgetAllotted = Number((
               parseFloat(result['response'].fundAvailable) *
               parseFloat(result['response'].amountUnit.amount)
@@ -371,7 +371,7 @@ export class NewContigentBillComponent implements OnInit {
               ?.setValue(
                 (Number(this.budgetAllotted).toFixed(4)
                 ));
-          }
+          // }
           this.cdaData=result['response'].cdaParkingTrans;
           for(let cda of this.cdaData){
             cda.remainingCdaAmount=Number((parseFloat(cda.remainingCdaAmount)*parseFloat(this.FundAllotted.amountUnit.amount)).toFixed(4));
