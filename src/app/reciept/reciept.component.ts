@@ -196,6 +196,9 @@ export class RecieptComponent {
               this.defaultAmountType2.amount
             ).toFixed(4);
             this.finalTableData[i].isEdit = false;
+            if(this.finalTableData[i].cdaParkingListData.length==0){
+              console.log(i+">>>>Backup Amount "+this.finalTableData[i].allocationAmount)
+            }
             this.finalTableData[i].allocationAmountBackup=this.finalTableData[i].allocationAmount;
           }
           this.updateInbox();
@@ -931,7 +934,7 @@ export class RecieptComponent {
     for(let cda of li.cdaParkingListData){
       sum=sum+Number(cda.remainingCdaAmount);
     }
-    if(Number(li.allocationAmount)<(Number(li.allocationAmountBackup)-Number(sum))){
+    if(li.cdaParkingListData.length>0&&(Number(li.allocationAmount)<(Number(li.allocationAmountBackup)-Number(sum)))){
       this.common.faliureAlert('Amount less than remaining','Amount should be atleast '+ Number(Number(li.allocationAmountBackup)-Number(sum)).toFixed(4),'');
       li.allocationAmount=undefined;
     }
