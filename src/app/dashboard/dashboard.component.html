@@ -137,7 +137,7 @@
           <!-- /.card -->
         </section>
         <!-- Left col -->
-        <!-- <section class="col-lg-6 connectedSortable">
+        <section class="col-lg-6 connectedSortable">
           <div class="card">
             <div class="card-header">
               <h3 class="card-title">
@@ -151,17 +151,24 @@
               </div>
             </div>
             <div class="card-body">
-              <div class="tab-content p-0">
+              <div class="tab-content p-0" *ngIf="showSubheadGraph">
+                <h6>{{selectedSubhead.subHeadDescr}}</h6>
                 <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;">
-                  <canvas id="my-chart" height="300" style="height: 300px;"></canvas>
+                  <canvas id="my-chart" height="300" style="height: 300px; width: 550px;" baseChart
+                          [data]="barChartData"
+                          [options]="barChartOptions"
+                          [plugins]="barChartPlugins"
+                          [legend]="barChartLegend"
+                          [type]="'bar'">
+                  </canvas>
                 </div>
               </div>
             </div>
           </div>
-        </section> -->
+        </section>
         <!-- /.Left col -->
         <!-- right col (We are only adding the ID to make the widgets sortable)-->
-        <!-- <section class="col-lg-6 connectedSortable">
+         <section class="col-lg-6 connectedSortable">
           <div class="card">
             <div class="card-header">
               <h3 class="card-title">
@@ -175,14 +182,25 @@
               </div>
             </div>
             <div class="card-body">
-              <div class="tab-content p-0">
+<!--              <input type="range" min="100" max="500" [(ngModel)]="graphHeight" class="slider">-->
+              <div class="tab-content p-0" *ngIf="showUnitGraph">
+                <h6>
+                  {{tableData[0].cgUnit.descr}}
+                </h6>
                 <div class="chart tab-pane active" id="revenue-chart2" style="position: relative; height: 300px;">
-                  <canvas id="my-chart2" height="300" style="height: 300px;"></canvas>
+<!--                  <canvas id="my-chart2" height="300" style="height: 300px;"></canvas>-->
+                  <canvas id="my-chart2" height="300" style="height: 300px; width: 550px;" baseChart
+                          [data]="barChartDataUnitwise"
+                          [options]="barChartOptions"
+                          [plugins]="barChartPlugins"
+                          [legend]="barChartLegend"
+                          [type]="'bar'">
+                  </canvas>
                 </div>
               </div>
             </div>
           </div>
-        </section> -->
+        </section>
         <!-- right col -->
         <section class="col-lg-12 connectedSortable">
           <div class="card">
