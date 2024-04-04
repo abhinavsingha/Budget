@@ -712,8 +712,8 @@ export class DashboardComponent implements OnInit {
     this.barChartDataUnitwise= {
       labels: headName,
       datasets: [
-        { data: allocation, label: 'Allocation' },
-        { data: expenditure, label: 'Expenditure' }
+        { data: allocation, label: 'Allocation',backgroundColor: '#0b5394', },
+        { data: expenditure, label: 'Expenditure',backgroundColor: '#7f0000', }
       ]
     };
 
@@ -736,9 +736,10 @@ export class DashboardComponent implements OnInit {
     this.barChartData= {
       labels: unitName,
       datasets: [
-        { data: allocation, label: 'Allocation' },
-        { data: expenditure, label: 'Expenditure' }
+        { data: allocation, label: 'Allocation',backgroundColor: '#0b5394', },
+        { data: expenditure, label: 'Expenditure',backgroundColor: '#7f0000', }
       ]
+
     };
 
   }
