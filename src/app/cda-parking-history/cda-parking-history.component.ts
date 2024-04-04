@@ -19,6 +19,8 @@ export class CdaParkingHistoryComponent implements OnInit {
   newSum: any;
   expDataCdaList: any[]=[];
   expSum: any;
+  oldSumResponse: any;
+  newSumResponse: any;
   constructor(
     private datePipe: DatePipe,
     private apiService: ApiCallingServiceService,
@@ -29,6 +31,7 @@ export class CdaParkingHistoryComponent implements OnInit {
   ) {
   }
   ngOnInit(): void {
+    debugger;
     if(localStorage.getItem('cdaType')=='update')
       this.getCdaHistoryData();
     else if(localStorage.getItem('cdaType')=='entry')
@@ -44,12 +47,15 @@ export class CdaParkingHistoryComponent implements OnInit {
         let result: { [key: string]: any } = results;
         this.oldCdaData=result['response'].oldCda;
         this.newCdaData=result['response'].newCda;
+        this.oldSumResponse=result['response'].oldDataSum;
+        this.newSumResponse=result['response'].newDataSum;
         this.oldSum=0;
         this.newSum=0;
+
         for(let cda of this.oldCdaData){
           this.oldSum=((Number(Number(this.oldSum)*100000000+Number(cda.oldAmount)*100000000))/100000000).toString();
         }
-debugger;
+          debugger;
         for(let cda of this.newCdaData){
           this.newSum=((Number(Number(this.newSum)*100000000+Number(cda.newAmount)*100000000)/100000000)).toString();
         }
