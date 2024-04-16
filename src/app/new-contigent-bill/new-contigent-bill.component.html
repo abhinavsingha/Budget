@@ -167,7 +167,7 @@
                 <div class="form-group">
                   <label>Invoice Date</label>
                   <input class="form-control" formControlName="invoiceDate" id="invoiceDate"
-                         placeholder="Enter Invoice Date" type="date" (change)="fiscalCheckDate(formdata,'invoiceDate')" (change)="checkDate(formdata.value,'invoiceDate','Invoice Date')"/>
+                         placeholder="Enter Invoice Date" type="date"/>
                 </div>
               </div>
               <div class="col-md-3">
@@ -198,9 +198,9 @@
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>Sanction</label>
-                  <input class="form-control" formControlName="authority" id="authority" placeholder="Enter Remarks"
-                    type="text" readonly/>
+                  <label>Sanction Number</label>
+                  <input class="form-control" formControlName="authority" id="authority" placeholder="Enter Sanction Number"
+                    type="Number" (change)="checkSanction()"/>
                 </div>
               </div>
               <div class="col-md-3">

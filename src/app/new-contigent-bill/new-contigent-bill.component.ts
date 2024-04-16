@@ -1630,7 +1630,7 @@ export class NewContigentBillComponent implements OnInit {
         let result: { [key: string]: any } = v;
         if (result['message'] == 'success') {
           this.sanctionCount=Number(result['response'].sectionNumber);
-          this.formdata.get('authority')?.setValue(this.sanctionCount);
+          // this.formdata.get('authority')?.setValue(this.sanctionCount);
           this.getCbNo(formdata);
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
@@ -1655,5 +1655,16 @@ export class NewContigentBillComponent implements OnInit {
         this.common.warningAlert('Invalid Date','Enter date of this fiscal year only','');
         this.formdata.get(feild)?.reset();
       }
+  }
+
+  checkSanction() {
+    if(Number(this.formdata.get('authority')?.value)==null){
+      this.common.warningAlert('Invalid Input','Sanction Number can only be Numeric','');
+      this.formdata.get('authority')?.setValue(null);
+    }
+    else if(Number(this.formdata.get('authority')?.value)<=0){
+      this.common.warningAlert('Invalid Input','Sanction Number should be greater than 0','');
+      this.formdata.get('authority')?.setValue(null);
+    }
   }
 }
