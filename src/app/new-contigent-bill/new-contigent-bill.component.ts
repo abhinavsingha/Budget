@@ -1101,6 +1101,7 @@ export class NewContigentBillComponent implements OnInit {
                       result['response']['msg'],
                       'success'
                     );
+                    this.cleardata(0);
                     this.showUpdate=false;
                     this.showSave=true;
                     // console.log(result['response']);
@@ -1299,7 +1300,7 @@ export class NewContigentBillComponent implements OnInit {
             this.common.faliureAlert('Error', e['error']['message'], 'error');
           }
         });
-      this.cleardata(1);
+      this.cleardata(0);
     }
   }
 
@@ -1524,7 +1525,9 @@ export class NewContigentBillComponent implements OnInit {
   }
 
   cleardata(key: number) {
-    if (key <= 0) this.formdata.get('majorHead')?.reset();
+    if (key < 0) this.formdata.reset();
+    this.invoice=undefined;
+    this.browse=undefined;
     if (key <= 1) this.formdata.get('subHeadType')?.reset();
     if (key <= 2) this.formdata.get('subHead')?.reset();
     if (key <= 3) this.formdata.get('minorHead')?.reset();
@@ -1538,6 +1541,9 @@ export class NewContigentBillComponent implements OnInit {
     if (key <= 12) this.formdata.get('invoiceDate')?.reset();
     if (key <= 13) this.formdata.get('fileNo')?.reset();
     if (key <= 14) this.formdata.get('fileDate')?.reset();
+    if (key <= 14) this.formdata.get('budgetAllocated')?.reset();
+    if (key <= 14) this.formdata.get('progressive')?.reset();
+    if (key <= 14) this.formdata.get('balance')?.reset();
     if (key <= 15)
       this.formdata
         .get('onAccOf')

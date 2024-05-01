@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import {FormControl, FormGroup,} from '@angular/forms';
 import {ChartConfiguration} from 'chart.js';
 import {SharedService} from '../services/shared/shared.service';
+import {KeycloakService} from "keycloak-angular";
 
 class UnitWiseExpenditureList {
   unit: any;
@@ -113,6 +114,7 @@ export class DashboardComponent implements OnInit {
     $.getScript('assets/main.js');
   }
   constructor(
+    private keycloakService: KeycloakService,
     public sharedService: SharedService,
     private SpinnerService: NgxSpinnerService,
     private cons: ConstantsService,
@@ -333,7 +335,11 @@ export class DashboardComponent implements OnInit {
       'warning'
     );
     await this.waitWithAsync(2000); // Wait for 2 seconds
-
+    localStorage.removeItem('userCurrentUnit');
+    localStorage.removeItem('userCurrentUnitName');
+    localStorage.removeItem('token');
+    localStorage.removeItem('cgwwaUserDetails');
+    this.keycloakService.logout();
     window.location.replace(this.cons.serverRedirectUrl);
     return;
   }
