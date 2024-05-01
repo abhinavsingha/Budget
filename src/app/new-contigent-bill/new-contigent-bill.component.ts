@@ -303,12 +303,10 @@ export class NewContigentBillComponent implements OnInit {
         // this.showUpdate=true;
         // this.formdata.get('authority')?.setValue(this.sanctionCount);
       } else {
-        Swal.fire(
-          'Duplicate Entry. Select Update to update previously entered CB'
-        );
+        this.common.warningAlert("Duplicate Entry","Select Update to update previously entered CB'",'')
       }
     } else {
-      Swal.fire('Enter missing data');
+      this.common.warningAlert('Enter Missing Data','Please Enter All the required feilds','');
     }
   }
 
@@ -336,7 +334,7 @@ export class NewContigentBillComponent implements OnInit {
   getAvailableFundData() {
     if(this.formdata.get('subHead')?.value==undefined)
     {
-      Swal.fire('Sub Head cannot be blank.');
+      this.common.warningAlert('Enter Subhead','Sub Head cannot be blank','');
       return;
     }
     this.SpinnerService.show();
@@ -660,14 +658,13 @@ export class NewContigentBillComponent implements OnInit {
         'CB amount cannot be greater than Budget Alloted',
         ''
       );
-      // Swal.fire("CB amount cannot be greater than Budget Alloted")
       return;
     }
     if (this.formdata.get('amount')?.value == null) {
       this.formdata.get('amount')?.reset();
-      Swal.fire('Invalid amount. Enter Number');
+      this.common.faliureAlert('Invalid Amount','Only Positive Number Allowed','');
     } else if (this.formdata.get('amount')?.value < 0) {
-      Swal.fire('Invalid amount. Negative value not allowed');
+      this.common.faliureAlert('Invalid Amount','Negative Numbers not Allowed','');
       this.formdata.get('amount')?.reset();
     } else {
       // this.expenditure = parseFloat(this.expenditure) + this.billAmount;
@@ -1188,7 +1185,7 @@ export class NewContigentBillComponent implements OnInit {
           this.showUpdate=false;
           // this.formdata.get('authority')?.setValue(this.sanctionCount);
         } else {
-          Swal.fire('Cannot be updated');
+          this.common.faliureAlert('Update Unsuccesful','Could Not be Updated. Please Retry','');
         }
       }
     }
@@ -1263,7 +1260,7 @@ export class NewContigentBillComponent implements OnInit {
       }
     }
     if (submitList.length == 0) {
-      Swal.fire('Add more Data');
+      this.common.warningAlert('Add more Data','Add more Data','')
     } else {
       this.SpinnerService.show();
       this.apiService

@@ -39,7 +39,7 @@
             <div class="row">
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>Financial Year</label>
+                  <label>Financial Year<span class="text-danger">*</span></label>
                   <ng-select [items]="finYearData" bindLabel="finYear" class="form-control select2bs4"
                     formControlName="finYearName" placeholder="Select Financial Year" required style="width: 100%"
                     (change)="cleardata(0)">
@@ -48,7 +48,7 @@
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>Major Head</label>
+                  <label>Major Head<span class="text-danger">*</span></label>
                   <ng-select [(ngModel)]="majorHead" [items]="majorHeadData" bindLabel="majorHead"
                     class="form-control select2bs4" formControlName="majorHead" name="majorHead"
                     placeholder="Select Major Head" style="width: 100%">
@@ -57,7 +57,7 @@
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>Sub Head Type<span class="text-danger"></span></label>
+                  <label>Sub Head Type<span class="text-danger">*</span></label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeadType"
                     (change)="setSubHead()" bindLabel="subType" placeholder="Select Amount Unit"
                     formControlName="subHeadType"></ng-select>
@@ -65,7 +65,7 @@
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>Sub Head</label>
+                  <label>Sub Head<span class="text-danger">*</span></label>
                   <ng-select [(ngModel)]="subHead" [items]="subHeadData" bindLabel="subHeadDescr"
                     class="form-control select2bs4" formControlName="subHead" name="subHead"
                     placeholder="Select Sub Head" (change)="getAvailableFundData()"
@@ -76,13 +76,13 @@
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>CB Unit</label>
+                  <label>CB Unit<span class="text-danger">*</span></label>
                   <input class="form-control" formControlName="unit" id="unit" readonly type="text" readonly />
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>Minor Head</label>
+                  <label>Minor Head<span class="text-danger">*</span></label>
                   <ng-select [items]="minorHeadData" bindLabel="minorHead" class="form-control select2bs4"
                     formControlName="minorHead" placeholder="Select Minor Head" style="width: 100%">
                   </ng-select>
@@ -90,7 +90,7 @@
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>Budget Alloted</label>
+                  <label>Budget Allotted</label>
                   <input class="form-control" formControlName="budgetAllocated" id="budgetAllotted" readonly
                     type="number" placeholder="Budget Alloted" />
                 </div>
@@ -98,7 +98,7 @@
               <div class=" col-md-3 row">
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label>CB Amount <i class="fas fa-info-circle" title="Withdraw Amount From CDA For CB Amount. For This Click On Withdraw Amount"></i></label>
+                    <label>CB Amount<span class="text-danger">*</span> <i class="fas fa-info-circle" title="Withdraw Amount From CDA For CB Amount. For This Click On Withdraw Amount"></i></label>
                     <input (change)="updateExpenditure()" (change)="checkTotal()" class="form-control" formControlName="amount" id="Amount" type="number" placeholder="Enter Amount in INR" />
                   </div>
                 </div>
@@ -144,35 +144,35 @@
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>CB Date</label>
+                  <label>CB Date<span class="text-danger">*</span></label>
                   <input class="form-control" formControlName="cbDate" id="cbDate" placeholder="Enter Date" type="date"
                     (change)="checkDate(formdata.value,'cbDate','CB Date')" (change)="fiscalCheckDate(formdata,'cbDate')"/>
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>Firm Name</label>
+                  <label>Firm Name<span class="text-danger">*</span></label>
                   <input class="form-control" formControlName="firmName" id="FirmName" placeholder="Enter Firm Name"
                          type="text" />
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>Invoice Number</label>
+                  <label>Invoice Number<span class="text-danger">*</span></label>
                   <input class="form-control" formControlName="invoiceNo" id="invoiceNo"
                          placeholder="Enter Invoice Number" type="text" />
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>Invoice Date</label>
+                  <label>Invoice Date<span class="text-danger">*</span></label>
                   <input class="form-control" formControlName="invoiceDate" id="invoiceDate"
                          placeholder="Enter Invoice Date" type="date"/>
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label for="invoice">Invoice Upload</label>
+                  <label for="invoice">Invoice Upload<span class="text-danger">*</span></label>
                   <div class="input-group">
                     <div class="custom-file">
                       <input #invoiceFileInput class="custom-file-input" formControlName="file" id="invoice"
@@ -198,21 +198,21 @@
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>Sanction Number</label>
+                  <label>Sanction Number<span class="text-danger">*</span></label>
                   <input class="form-control" formControlName="authority" id="authority" placeholder="Enter Sanction Number"
                     type="Number" (change)="checkSanction()"/>
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>Sanction Date</label>
+                  <label>Sanction Date<span class="text-danger">*</span></label>
 <!--                  <input class="form-control" formControlName="date" id="date" placeholder="Enter Date" (change)="fiscalCheckDate(formdata,'date')" type="date" (change)="checkDate(formdata.value,'date','Sanction Date')"/>-->
                   <input class="form-control" formControlName="date" id="date" placeholder="Enter Date" type="date" />
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label for="InputFile">Sanction File</label>
+                  <label for="InputFile">Sanction File<span class="text-danger">*</span></label>
                   <div class="input-group">
                     <div class="custom-file">
                       <input #browseFileInput class="custom-file-input" formControlName="file" id="InputFile"
@@ -232,14 +232,14 @@
 
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>File Number</label>
+                  <label>File Number<span class="text-danger">*</span></label>
                   <input class="form-control" formControlName="fileNo" id="fileNumber" placeholder="Enter File Number"
                     type="text" />
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>File Date</label>
+                  <label>File Date<span class="text-danger">*</span></label>
                   <input class="form-control" formControlName="fileDate" id="fileDate" placeholder="Enter Invoice Date" type="date"/>
 <!--                    type="date" (change)="fiscalCheckDate(formdata,'fileDate')" (change)="checkDate(formdata.value,'fileDate', 'File Date')"/>-->
 
@@ -247,7 +247,7 @@
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>On Account Of</label>
+                  <label>On Account Of<span class="text-danger">*</span></label>
                   <textarea class="form-control" formControlName="onAccOf" id="onAccOf"
                     placeholder="Quarterly payment(3rd Qtr) towars hiring of Designer/Developer IT Manpower(Project SDOT)"
                     type="text"></textarea>
@@ -255,7 +255,7 @@
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>Authority Details</label>
+                  <label>Authority Details<span class="text-danger">*</span></label>
                   <textarea class="form-control" formControlName="authDetail" id="authDetail"
                     placeholder="S1.10.1 of Shedule-10 of DFPCG-2017 vide Govt. of India, Ministry of Defence letter No. PF/0104/CGHQ/2017/D (CG) dated 04 Jul 2017"
                     type="text"></textarea>
