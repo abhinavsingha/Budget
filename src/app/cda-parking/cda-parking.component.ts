@@ -203,7 +203,7 @@ debugger;
       };
       this.cdaList.push(entry);
       this.originalCda.push(entry);
-      this.totalParking=Number(sum).toFixed(4);
+      this.totalParking=Number(sum).toFixed(7);
 
     }
 
@@ -245,8 +245,8 @@ debugger;
       // if(cda.balance!=undefined)
       //   sum1=Number(sum1)+Number(cda.balance);
     }
-    this.totalParking=Number(sum1).toFixed(4);
-    this.totalParking=Number(Number(this.totalParking)-Number(sum)).toFixed(4);
+    this.totalParking=Number(sum1).toFixed(7);
+    this.totalParking=Number(Number(this.totalParking)-Number(sum)).toFixed(7);
     if(this.totalParking==0){
       this.isdisableUpdateButton=false;
     }

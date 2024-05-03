@@ -731,14 +731,14 @@ export class BudgetApproverComponent implements OnInit {
           unitIndex[i].amount=undefined;
           return;
         }
-        amount = (Number(amount)*100000000 + Number(unitIndex[i].amount)*100000000)/100000000;
+        amount = ((Number(amount)*100000000) + (Number(unitIndex[i].amount)*100000000))/100000000;
       }
     }
-    ////debugger;
+    debugger;
     amount=amount.toString();
     this.balancedRemaingCdaParkingAmount = (
-      (Number(this.totalAmountToAllocateCDAParking)*100000000 - Number(amount)*100000000)/100000000
-    ).toString();
+      ((Number(this.totalAmountToAllocateCDAParking)*100000000) - (Number(amount)*100000000))).toFixed(0);
+    this.balancedRemaingCdaParkingAmount=(this.balancedRemaingCdaParkingAmount/100000000).toString();
     if(this.balancedRemaingCdaParkingAmount == '-0.0000')
       this.balancedRemaingCdaParkingAmount == '0.0000';
     if (
