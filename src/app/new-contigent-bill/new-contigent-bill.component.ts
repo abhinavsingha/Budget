@@ -768,122 +768,65 @@ export class NewContigentBillComponent implements OnInit {
         this.majorHead = major;
         if (this.subHeadData == undefined) {
           for (let i = 0; i < this.subHeadType.length; i++) {
-            if (
-              this.subHeadType[i].subHeadTypeId ==
-              cbEntry.budgetHeadID.subHeadTypeId
-            ) {
+            if (this.subHeadType[i].subHeadTypeId ==cbEntry.budgetHeadID.subHeadTypeId) {
               this.formdata.get('subHeadType')?.setValue(this.subHeadType[i]);
               this.SpinnerService.show();
               this.formdata.get('minorHead')?.setValue(this.majorHead);
               this.SpinnerService.show();
               let json = {
-                budgetHeadType:
-                  this.formdata.get('subHeadType')?.value.subHeadTypeId,
+                budgetHeadType:this.formdata.get('subHeadType')?.value.subHeadTypeId,
                 majorHead: cbEntry.majorHead,
               };
-              this.apiService
-                .postApi(this.cons.api.getAllSubHeadByMajorHead, json)
-                .subscribe(
-                  (res) => {
-                    let result: { [key: string]: any } = res;
-                    this.subHeadData = result['response'];
-                    for (let i = 0; i < this.subHeadData.length; i++) {
-                      let sub = this.subHeadData[i];
-                      if (sub.subHeadDescr == cbEntry.subHead) {
-                        this.formdata.get('subHead')?.setValue(sub);
-                        this.SpinnerService.show();
-                        let json = {
-                          budgetHeadId:
-                            this.formdata.get('subHead')?.value.budgetCodeId,
-                            budgetFinancialYearId:this.formdata.get('finYearName')?.value.serialNo,
-                            unitId:this.unitId
-                        };
-                        this.apiService
-                          .postApi(this.cons.api.getAvailableFund, json)
-                          .subscribe({
-                            next: (v: object) => {
-                              this.SpinnerService.hide();
-                              let result: { [key: string]: any } = v;
-                              if (result['message'] == 'success') {
-                                this.FundAllotted = result['response'];
-                                this.expenditure = parseFloat(
-                                  this.FundAllotted.expenditure
-                                );
-
-                                this.budgetAllotted = Number((
-                                  parseFloat(result['response'].fundAvailable) *
-                                  parseFloat(result['response'].amountUnit.amount)
-                                )+parseFloat(result['response'].expenditure)).toFixed(4);
-                                this.formdata
-                                  .get('budgetAllocated')
-                                  ?.setValue(
-                                    (Number((
-                                        parseFloat(result['response'].fundAvailable) *
-                                        parseFloat(result['response'].amountUnit.amount)
-                                      )+parseFloat(result['response'].expenditure)).toFixed(4)
-                                    ));
-
-
-
-
-
-
-                                this.formdata
-                                  .get('progressive')
-                                  ?.setValue(this.expenditure);
-                                // this.formdata
-                                //   .get('budgetAllocated')
-                                //   ?.setValue(
-                                //     parseFloat(
-                                //       this.FundAllotted.fundallocated
-                                //     ) * this.FundAllotted.amountUnit.amount
-                                //   );
-                                // this.budgetAllotted = cbEntry.budgetAllocated;
-                                this.formdata
-                                  .get('progressive')
-                                  ?.setValue(
-                                    parseFloat(this.FundAllotted.expenditure)
-                                  );
-                                this.formdata
-                                  .get('balance')
-                                  ?.setValue(
-                                    parseFloat(
-                                      this.FundAllotted.fundAvailable
-                                    ) *
-                                      this.FundAllotted.amountUnit.amount -
-                                      parseFloat(this.FundAllotted.expenditure)
-                                  );
-                                this.cdaData=result['response'].cdaParkingTrans;
-                                for(let cda of this.cdaData){
-                                  cda.remainingCdaAmount=Number(parseFloat(cda.remainingCdaAmount)*parseFloat(cda.amountType.amount)).toFixed(4);
-                                  for(let cbEntryItr of cbEntry.cdaParkingId){
-                                    if(cda.cdaParkingId==cbEntryItr.cdaParkingId)
-                                      cda.amount=Number(cbEntryItr.cdaAmount).toFixed(4);
-                                  }
-                                }
-                              } else {
-                                this.common.faliureAlert(
-                                  'Please try later',
-                                  result['message'],
-                                  ''
-                                );
-                              }
-                            },
-                            error: (e) => {
-                              this.SpinnerService.hide();
-                              console.error(e);
-                              this.common.faliureAlert(
-                                'Error',
-                                e['error']['message'],
-                                'error'
-                              );
-                            },
-                            complete: () => console.info('complete'),
-                          });
-                      }
-                    }
-                    this.SpinnerService.hide();
-                  },
+              this.apiService.postApi(this.cons.api.getAllSubHeadByMajorHead, json).subscribe((res) => {
+                let result: { [key: string]: any } = res;
+                this.subHeadData = result['response'];
+                for (let i = 0; i < this.subHeadData.length; i++) {
+                  let sub = this.subHeadData[i];
+                  if (sub.subHeadDescr == cbEntry.subHead) {
+                    this.formdata.get('subHead')?.setValue(sub);
+                    this.SpinnerService.show();
+                    let json = {
+                      budgetHeadId: this.formdata.get('subHead')?.value.budgetCodeId,
+                      budgetFinancialYearId:this.formdata.get('finYearName')?.value.serialNo,
+                      unitId:this.unitId
+                    };
+                    this.apiService.postApi(this.cons.api.getAvailableFund, json).subscribe({
+                      next: (v: object) => {
+                        this.SpinnerService.hide();
+                        let result: { [key: string]: any } = v;
+                        if (result['message'] == 'success') {
+                          this.FundAllotted = result['response'];
+                          this.expenditure = parseFloat(this.FundAllotted.expenditure);
+                          this.budgetAllotted = Number((parseFloat(result['response'].fundAvailable) * parseFloat(result['response'].amountUnit.amount))+parseFloat(result['response'].expenditure)).toFixed(4);
+                          this.formdata.get('budgetAllocated')?.setValue((Number((parseFloat(result['response'].fundAvailable) *parseFloat(result['response'].amountUnit.amount))+parseFloat(result['response'].expenditure)).toFixed(4)));
+                          this.formdata.get('progressive')?.setValue(this.expenditure);
+                          this.formdata.get('progressive')?.setValue((Number(this.FundAllotted.expenditure)+Number(cbEntry.amount)));
+                          // this.formdata.get('balance')?.setValue((parseFloat(this.FundAllotted.fundAvailable) * this.FundAllotted.amountUnit.amount) -parseFloat(this.FundAllotted.expenditure));
+                          this.formdata.get('balance')?.setValue((parseFloat(this.FundAllotted.fundAvailable) * this.FundAllotted.amountUnit.amount) -parseFloat(cbEntry.amount));
+                          this.cdaData=result['response'].cdaParkingTrans;
+                          for(let cda of this.cdaData){
+                            cda.remainingCdaAmount=Number(parseFloat(cda.remainingCdaAmount)*parseFloat(cda.amountType.amount)).toFixed(4);
+                            for(let cbEntryItr of cbEntry.cdaParkingId){
+                              if(cda.cdaParkingId==cbEntryItr.cdaParkingId)
+                                cda.amount=Number(cbEntryItr.cdaAmount).toFixed(4);
+                            }
+                          }
+                        }
+                        else {
+                          this.common.faliureAlert('Please try later',result['message'],'');
+                        }
+                        },
+                      error: (e) => {
+                        this.SpinnerService.hide();
+                        console.error(e);
+                        this.common.faliureAlert(                                'Error',                                e['error']['message'],                                'error'                              );
+                        },
+                      complete: () => console.info('complete'),
+                    });
+                  }
+                }
+                this.SpinnerService.hide();
+                },
                   (error) => {
                     console.error(error);
                     this.SpinnerService.hide();
