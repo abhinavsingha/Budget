@@ -713,6 +713,10 @@ export class ContigentBillApproverComponent implements OnInit {
     window.open(pdfUrl, '_blank');
   }
   downloadBill(cb: any) {
+    if(cb.status=='Rejected'){
+      this.common.faliureAlert('Cannot Download','Rejected Bill Cannot be Downloaded','');
+      return
+    }
     // console.log(cb);
     debugger;
     let json = {

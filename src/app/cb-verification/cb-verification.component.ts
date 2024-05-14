@@ -618,6 +618,10 @@ export class CbVerificationComponent {
     });
   }
   downloadBill(cb: any) {
+    if(cb.status=='Rejected')if(cb.status=='Rejected'){
+      this.common.faliureAlert('Cannot Download','Rejected Bill Cannot be Downloaded','');
+      return
+    }
     // console.log(cb);
     let json = {
       cbId: cb.contingentBilId,
