@@ -1,25 +1,14 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import * as $ from 'jquery';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { ConstantsService } from '../services/constants/constants.service';
-import { ApiCallingServiceService } from '../services/api-calling/api-calling-service.service';
-import { CommonService } from '../services/common/common.service';
-import { SharedService } from '../services/shared/shared.service';
-import { Router } from '@angular/router';
-import * as FileSaver from "file-saver";
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {NgxSpinnerService} from 'ngx-spinner';
+import {ConstantsService} from '../services/constants/constants.service';
+import {ApiCallingServiceService} from '../services/api-calling/api-calling-service.service';
+import {CommonService} from '../services/common/common.service';
+import {SharedService} from '../services/shared/shared.service';
+import {Router} from '@angular/router';
 import {HttpClient} from "@angular/common/http";
-import * as Papa from "papaparse";
-import Swal from "sweetalert2";
 import {DatePipe} from "@angular/common";
-class TableData {
-  Financial_Year: any;
-  To_Unit: any;
-  From_Unit: any;
-  Subhead: any;
-  Type: any;
-  Allocated_Fund: any;
-}
 
 @Component({
   selector: 'app-approved-rebase',
@@ -28,10 +17,7 @@ class TableData {
 })
 export class ApprovedRebaseComponent implements OnInit {
   @ViewChild('invoiceFileInput') invoiceFileInput: any;
-  budgetDataList: any[] = [];
-
   type: any = '';
-
   p: number = 1;
 
   formdata = new FormGroup({
@@ -40,17 +26,15 @@ export class ApprovedRebaseComponent implements OnInit {
     authority: new FormControl(),
     authUnit: new FormControl(),
     remarks: new FormControl(),
-    reportType:new FormControl('Select Report Type')
+    reportType: new FormControl('Select Report Type')
   });
 
   isInboxAndOutbox: any;
   unitData: any;
   invoice: any;
-  invoicePath: any;
-  private userUnitId: any;
-  private dashboardData: any;
-  private authGroupId: any;
   rebaseData: any;
+  public userRole: any;
+
   constructor(
     private http: HttpClient,
     private SpinnerService: NgxSpinnerService,
@@ -61,7 +45,9 @@ export class ApprovedRebaseComponent implements OnInit {
     public sharedService: SharedService,
     private router: Router,
     private datePipe: DatePipe
-  ) {}
+  ) {
+  }
+
   ngOnInit(): void {
     this.sharedService.updateInbox();
     // this.getCgUnitData();
@@ -80,7 +66,7 @@ export class ApprovedRebaseComponent implements OnInit {
     this.getDashBoardDta();
     $.getScript('assets/js/adminlte.js');
   }
-  public userRole: any;
+
   getDashBoardDta() {
     this.SpinnerService.show();
     var newSubmitJson = null;
@@ -91,10 +77,7 @@ export class ApprovedRebaseComponent implements OnInit {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
-            // debugger;
-            this.dashboardData=result['response'];
             this.userRole = result['response'].userDetails.role[0].roleName;
-            this.userUnitId=result['response'].userDetails.unitId;
             this.sharedService.inbox = result['response'].inbox;
             this.sharedService.outbox = result['response'].outBox;
             this.sharedService.archive = result['response'].archived;
@@ -112,9 +95,9 @@ export class ApprovedRebaseComponent implements OnInit {
         complete: () => console.info('complete'),
       });
   }
+
   getCgUnitData() {
     this.SpinnerService.show();
-    var comboJson = null;
     this.apiService.getApi(this.cons.api.getCgUnitData).subscribe(
       (res) => {
         this.SpinnerService.hide();
@@ -131,25 +114,23 @@ export class ApprovedRebaseComponent implements OnInit {
 
   private getUnitRebaseNotificationData(item: string | null) {
     this.SpinnerService.show();
-    var comboJson = null;
-    this.apiService.getApi(this.cons.api.getUnitRebaseNotificationData+'/'+item).subscribe(
+    this.apiService.getApi(this.cons.api.getUnitRebaseNotificationData + '/' + item).subscribe(
       (res) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = res;
         this.rebaseData = result['response'];
-        for(let li of this.rebaseData){
-          li.dateOfRebase=this.datePipe.transform(
+        for (let li of this.rebaseData) {
+          li.dateOfRebase = this.datePipe.transform(
             new Date(li.dateOfRebase),
             'dd/MM/yyyy'
           );
-          if(li.lastCbDate!=null){
-            li.lastCbDate=this.datePipe.transform(
+          if (li.lastCbDate != null) {
+            li.lastCbDate = this.datePipe.transform(
               new Date(li.lastCbDate),
               'dd/MM/yyyy'
             );
-          }
-          else{
-            li.lastCbDate='';
+          } else {
+            li.lastCbDate = '';
           }
         }
       },

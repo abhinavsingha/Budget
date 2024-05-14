@@ -1,17 +1,18 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import * as $ from 'jquery';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { ConstantsService } from '../services/constants/constants.service';
-import { ApiCallingServiceService } from '../services/api-calling/api-calling-service.service';
-import { CommonService } from '../services/common/common.service';
-import { SharedService } from '../services/shared/shared.service';
-import { Router } from '@angular/router';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {NgxSpinnerService} from 'ngx-spinner';
+import {ConstantsService} from '../services/constants/constants.service';
+import {ApiCallingServiceService} from '../services/api-calling/api-calling-service.service';
+import {CommonService} from '../services/common/common.service';
+import {SharedService} from '../services/shared/shared.service';
+import {Router} from '@angular/router';
 import * as FileSaver from "file-saver";
 import {HttpClient} from "@angular/common/http";
 import * as Papa from "papaparse";
 import Swal from "sweetalert2";
 import {DatePipe} from "@angular/common";
+
 class TableData {
   Financial_Year: any;
   To_Unit: any;
@@ -40,16 +41,22 @@ export class ApprovedBudgetComponent implements OnInit {
     authority: new FormControl(),
     authUnit: new FormControl(),
     remarks: new FormControl(),
-    reportType:new FormControl('Select Report Type')
+    reportType: new FormControl('Select Report Type')
   });
 
   isInboxAndOutbox: any;
   unitData: any;
   invoice: any;
   invoicePath: any;
+  public userRole: any;
+  path: any;
+  currentUnit: any;
+  cdaData: any;
+  cdaDataAmountUnit: string = '';
   private userUnitId: any;
   private dashboardData: any;
   private authGroupId: any;
+
   constructor(
     private http: HttpClient,
     private SpinnerService: NgxSpinnerService,
@@ -60,7 +67,9 @@ export class ApprovedBudgetComponent implements OnInit {
     public sharedService: SharedService,
     private router: Router,
     private datePipe: DatePipe
-  ) {}
+  ) {
+  }
+
   ngOnInit(): void {
     this.sharedService.updateInbox();
     // this.getCgUnitData();
@@ -80,7 +89,7 @@ export class ApprovedBudgetComponent implements OnInit {
     this.getDashBoardDta();
     $.getScript('assets/js/adminlte.js');
   }
-  public userRole: any;
+
   getDashBoardDta() {
     this.SpinnerService.show();
     var newSubmitJson = null;
@@ -92,9 +101,9 @@ export class ApprovedBudgetComponent implements OnInit {
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
             // debugger;
-            this.dashboardData=result['response'];
+            this.dashboardData = result['response'];
             this.userRole = result['response'].userDetails.role[0].roleName;
-            this.userUnitId=result['response'].userDetails.unitId;
+            this.userUnitId = result['response'].userDetails.unitId;
             this.sharedService.inbox = result['response'].inbox;
             this.sharedService.outbox = result['response'].outBox;
             this.sharedService.archive = result['response'].archived;
@@ -112,6 +121,7 @@ export class ApprovedBudgetComponent implements OnInit {
         complete: () => console.info('complete'),
       });
   }
+
   getAlGroupId(groupId: any) {
     this.SpinnerService.show();
     this.apiService
@@ -130,66 +140,37 @@ export class ApprovedBudgetComponent implements OnInit {
         }
       });
   }
-  path: any;
-  currentUnit: any;
 
   getCgUnitData() {
     this.SpinnerService.show();
-    var comboJson = null;
     this.apiService.getApi(this.cons.api.getCgUnitData).subscribe(
       (res) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = res;
         this.unitData = result['response'];
-        // if(this.userUnitId==undefined){
-        //   var newSubmitJson = null;
-        //   this.apiService
-        //     .postApi(this.cons.api.getDashBoardDta, newSubmitJson)
-        //     .subscribe({
-        //       next: (v: object) => {
-        //         this.SpinnerService.hide();
-        //         let result: { [key: string]: any } = v;
-        //         if (result['message'] == 'success') {
-        //           debugger;
-        //           this.userUnitId=result['response'].userDetails.unitId;
-        //
-        //         } else {
-        //           this.common.faliureAlert('Please try later', result['message'], '');
-        //         }
-        //       },
-        //       error: (e) => {
-        //         this.SpinnerService.hide();
-        //         console.error(e);
-        //         this.common.faliureAlert('Error', e['error']['message'], 'error');
-        //       },
-        //       complete: () => console.info('complete'),
-        //     });
-        // }
-        let flag=false;
-        for(let i=0;i<this.unitData.length;i++){
-          if(this.userUnitId=='001321'){
-            if(this.unitData[i].unit=='000225')
-            {
-              this.currentUnit=this.unitData[i];
+        let flag = false;
+        for (let i = 0; i < this.unitData.length; i++) {
+          if (this.userUnitId == '001321') {
+            if (this.unitData[i].unit == '000225') {
+              this.currentUnit = this.unitData[i];
               this.formdata.get('authUnit')?.setValue(this.currentUnit);
-              flag=true;
+              flag = true;
             }
-          }
-          else{
-            if(this.unitData[i].unit==this.userUnitId){
-              this.currentUnit=this.unitData[i];
+          } else {
+            if (this.unitData[i].unit == this.userUnitId) {
+              this.currentUnit = this.unitData[i];
               this.formdata.get('authUnit')?.setValue(this.currentUnit);
-              flag=true;
+              flag = true;
             }
           }
         }
-        if(!flag){
-          const addedUnit={
-            unit:this.dashboardData.userDetails.unitId,
-            descr:this.dashboardData.userDetails.unit
+        if (!flag) {
+          const addedUnit = {
+            unit: this.dashboardData.userDetails.unitId,
+            descr: this.dashboardData.userDetails.unit
           }
           this.unitData.push(addedUnit);
-          this.currentUnit=addedUnit;
+          this.currentUnit = addedUnit;
         }
       },
       (error) => {
@@ -198,6 +179,7 @@ export class ApprovedBudgetComponent implements OnInit {
       }
     );
   }
+
   viewFile(file: string) {
     this.apiService.getApi(this.cons.api.fileDownload + file).subscribe(
       (res) => {
@@ -211,9 +193,11 @@ export class ApprovedBudgetComponent implements OnInit {
       }
     );
   }
+
   openPdfUrlInNewTab(pdfUrl: string): void {
     window.open(pdfUrl, '_blank');
   }
+
   upload() {
     const file: File = this.invoiceFileInput.nativeElement.files[0];
     // console.log(file);
@@ -249,6 +233,7 @@ export class ApprovedBudgetComponent implements OnInit {
       complete: () => this.SpinnerService.hide(),
     });
   }
+
   save(formDataValue: any) {
     let newSubmitJson = {
       authDate: formDataValue.date,
@@ -279,30 +264,25 @@ export class ApprovedBudgetComponent implements OnInit {
         complete: () => console.info('complete'),
       });
   }
-  previewURL() {
-    window.open(this.invoicePath, '_blank');
-  }
-  cdaData:any;
-  cdaDataAmountUnit:string='';
+
   getCdaData(cdaData: any) {
-    this.cdaData=cdaData;
-    if(cdaData.length>0)
-      this.cdaDataAmountUnit=cdaData[0].amountType.amountType;
+    this.cdaData = cdaData;
+    if (cdaData.length > 0)
+      this.cdaDataAmountUnit = cdaData[0].amountType.amountType;
     debugger;
-    for(let cda of cdaData){
-      cda.remainingAmount=((parseFloat(cda.amountTypeMain.amount)*parseFloat(cda.remainingAmount))/parseFloat(cda.amountType.amount)).toFixed(4);
-      cda.available=(parseFloat(cda.amount)+parseFloat(cda.remainingAmount)).toFixed(4);
-      cda.amountTypeMain=cda.amountType;
+    for (let cda of cdaData) {
+      cda.remainingAmount = ((parseFloat(cda.amountTypeMain.amount) * parseFloat(cda.remainingAmount)) / parseFloat(cda.amountType.amount)).toFixed(4);
+      cda.available = (parseFloat(cda.amount) + parseFloat(cda.remainingAmount)).toFixed(4);
+      cda.amountTypeMain = cda.amountType;
     }
   }
+
   getAllocationReport(authGroupId: any) {
     this.SpinnerService.show();
-    // debugger;
     this.apiService
       .getApi(this.cons.api.getAllocationReport + '/' + authGroupId)
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
-        // debugger;
         if (result['message'] == 'success') {
           if (result['response'].length > 0) {
             this.downloadPdf(
@@ -310,21 +290,19 @@ export class ApprovedBudgetComponent implements OnInit {
               result['response'][0].fileName
             );
           }
-          // this.budgetDataList = result['response'].budgetResponseist;
-
           this.SpinnerService.hide();
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
       });
-  }getAllocationReportDocx(authGroupId: any) {
+  }
+
+  getAllocationReportDocx(authGroupId: any) {
     this.SpinnerService.show();
-    // debugger;
     this.apiService
       .getApi(this.cons.api.getAllocationReportDoc + '/' + authGroupId)
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
-        // debugger;
         if (result['message'] == 'success') {
           if (result['response'].length > 0) {
             this.downloadPdf(
@@ -333,16 +311,15 @@ export class ApprovedBudgetComponent implements OnInit {
             );
             this.path = result['response'][0].path;
           }
-          // this.budgetDataList = result['response'].budgetResponseist;
-
           this.SpinnerService.hide();
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
       });
   }
+
   downloadPdf(pdfUrl: string, fileName: any): void {
-    this.http.get(pdfUrl, { responseType: 'blob' }).subscribe(
+    this.http.get(pdfUrl, {responseType: 'blob'}).subscribe(
       (blob: Blob) => {
         this.SpinnerService.hide();
         FileSaver.saveAs(blob, fileName);
@@ -353,15 +330,16 @@ export class ApprovedBudgetComponent implements OnInit {
       }
     );
   }
-  downloadReport(formdata:any) {
-    // debugger;
-    if(formdata.reportType=='02')
+
+  downloadReport(formdata: any) {
+    if (formdata.reportType == '02')
       this.getAllocationReport(this.authGroupId);
-    else if(formdata.reportType=='03')
+    else if (formdata.reportType == '03')
       this.getAllocationReportDocx(this.authGroupId);
-    else if(formdata.reportType=='01')
+    else if (formdata.reportType == '01')
       this.downloadCsv();
   }
+
   generateCSV(
     data: any[],
     columns: string[],
@@ -386,7 +364,7 @@ export class ApprovedBudgetComponent implements OnInit {
     const csv = Papa.unparse(csvData);
 
     // Create a CSV file download
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
 
     const link = document.createElement('a');
     if (link.download !== undefined) {
@@ -407,14 +385,12 @@ export class ApprovedBudgetComponent implements OnInit {
   downloadCsv() {
     // Example data and column names
     let tableData = [];
-    let totalR = 0.0;
     let totalA = 0.0;
     for (let i = 0; i < this.budgetDataList.length; i++) {
       totalA =
         totalA +
         parseFloat(this.budgetDataList[i].allocationAmount) *
         this.budgetDataList[i].amountUnit.amount;
-      // totalR=totalR+(parseFloat(this.budgetDataList[i].balanceAmount)*this.budgetDataList[i].remeningBalanceUnit.amount);
       let table: any = {
         Financial_Year: this.budgetDataList[i].finYear.finYear.replaceAll(
           ',',
@@ -427,12 +403,11 @@ export class ApprovedBudgetComponent implements OnInit {
           ' '
         ),
         Type: this.budgetDataList[i].allocTypeId.allocType.replaceAll(',', ' '),
-        // Remaining_Amount: (parseFloat(this.budgetDataList[i].balanceAmount)*this.budgetDataList[i].remeningBalanceUnit.amount/this.budgetDataList[i].amountUnit.amount).toString(),
         Allocated_Fund: this.budgetDataList[i].allocationAmount
           .replaceAll(',', ' ')
           .toString(),
       };
-      if(parseFloat(this.budgetDataList[i].allocationAmount)!=0)
+      if (parseFloat(this.budgetDataList[i].allocationAmount) != 0)
         tableData.push(table);
     }
     let table: TableData = {
@@ -447,11 +422,6 @@ export class ApprovedBudgetComponent implements OnInit {
       ).toString(),
     };
     tableData.push(table);
-    // const data = [
-    //   { name: 'John', age: 30, city: 'New York' },
-    //   { name: 'Jane', age: 25, city: 'San Francisco' },
-    //   { name: 'Bob', age: 35, city: 'Chicago' },
-    // ];
     const columns = [
       'Financial_Year',
       'To_Unit',
@@ -473,7 +443,8 @@ export class ApprovedBudgetComponent implements OnInit {
     // Generate and download the CSV file
     this.generateCSV(tableData, columns, filename, column);
   }
-  checkDate(formdata:any,field:string) {
+
+  checkDate(formdata: any, field: string) {
     const date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     const cbDate = this.datePipe.transform(
       new Date(formdata.date),
@@ -487,11 +458,11 @@ export class ApprovedBudgetComponent implements OnInit {
       }
     }
 
-      let flag:boolean=this.common.checkDate(this.formdata.get(field)?.value);
-      if(!flag){
-        this.common.warningAlert('Invalid Date','Enter date of this fiscal year only','');
-        this.formdata.get(field)?.reset();
-      }
+    let flag: boolean = this.common.checkDate(this.formdata.get(field)?.value);
+    if (!flag) {
+      this.common.warningAlert('Invalid Date', 'Enter date of this fiscal year only', '');
+      this.formdata.get(field)?.reset();
+    }
 
   }
 
