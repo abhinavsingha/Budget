@@ -960,6 +960,7 @@ export class NewContigentBillComponent implements OnInit {
           this.cbList[i].file = this.formdata.get('file')?.value;
           this.cbList[i].finYearName =
             this.formdata.get('finYearName')?.value.finYear;
+          this.cbList[i].fileNo=this.formdata.get('fileNo')?.value,
           this.cbList[i].firmName = this.formdata.get('firmName')?.value;
           this.cbList[i].invoiceDate = this.formdata.get('invoiceDate')?.value;
           this.cbList[i].invoiceFile = this.formdata.get('invoiceFile')?.value;
@@ -980,6 +981,8 @@ export class NewContigentBillComponent implements OnInit {
             authorityId: this.cbList[i].authorityId,
             remarks: this.cbList[i].returnRemarks,
           };
+          this.cbList[i].uploadFileDate=this.uploadFileDate;
+          this.cbList[i].fileDate=this.formdata.get('fileDate')?.value;
           let sum=0;
             let cdatabledata=[];
             for(let cda of this.cdaData){
