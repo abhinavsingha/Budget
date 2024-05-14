@@ -1387,8 +1387,8 @@ export class BudgetApproverComponent implements OnInit {
               allocationTypeId:this.budgetDataList[i].allocTypeId.allocTypeId
             };
             this.getOldCdaData(json);
-            if(this.budgetDataList[i].unallocatedAmount!=undefined){
-              this.budgetDataList[i].allocationAmount1=((Number(this.budgetDataList[i].allocationAmount)*100000000+Number(this.budgetDataList[i].unallocatedAmount)*100000000)/100000000).toString();
+            if(this.budgetDataList[i].totalAllocationAmount!=undefined){
+              this.budgetDataList[i].allocationAmount1=((Number(this.budgetDataList[i].allocationAmount)*100000000-(Number(this.budgetDataList[i].totalAllocationAmount)/this.budgetDataList[i].amountUnit.amount)*100000000)/100000000).toString();
             }
             else{
               this.budgetDataList[i].allocationAmount1=(Number(this.budgetDataList[i].allocationAmount)).toString();
