@@ -939,6 +939,10 @@ export class BudgetApproverComponent implements OnInit {
     let totalR = 0.0;
     let totalA = 0.0;
     for (let i = 0; i < this.budgetDataList.length; i++) {
+      if(this.budgetDataList[i].isFlag=='1') {
+        debugger;
+        continue;
+      }
       totalA =
         totalA +
         parseFloat(this.budgetDataList[i].allocationAmount) *
