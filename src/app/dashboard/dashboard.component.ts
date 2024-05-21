@@ -10,6 +10,7 @@ import {FormControl, FormGroup,} from '@angular/forms';
 import {ChartConfiguration} from 'chart.js';
 import {SharedService} from '../services/shared/shared.service';
 import {KeycloakService} from "keycloak-angular";
+import * as readline from "readline";
 
 class UnitWiseExpenditureList {
   unit: any;
@@ -105,6 +106,7 @@ export class DashboardComponent implements OnInit {
   amountUnit :any;
    subHeadsResponse: any;
   selectedSubhead: any;
+  allocationType2: any[]=[];
 
   ngOnInit(): void {
     // ngOnInit(): void {
@@ -261,7 +263,7 @@ export class DashboardComponent implements OnInit {
         let result: { [key: string]: any } = v;
 
         if (result['message'] == 'success') {
-
+          this.setAllocationType(result['response'].budgetFinancialYear);
           this.sharedService.dashboardData = result['response'];
           this.dasboardData = result['response']; //
           this.sharedService.inbox = result['response'].inbox;
@@ -629,6 +631,7 @@ export class DashboardComponent implements OnInit {
         let result: { [key: string]: any } = v;
         if (result['message'] == 'success') {
           this.allocationType = result['response'];
+          this.allocationType2=result['response'];
           this.SpinnerService.hide();
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
@@ -748,5 +751,23 @@ export class DashboardComponent implements OnInit {
 
     };
 
+  }
+
+  private setAllocationType(finYear:any) {
+    this.allocationType=[]
+    for(let allocation of this.allocationType2){
+      if(finYear.serialNo==allocation.finYear){
+        this.allocationType.push(allocation);
+      }
+    }
+
+  }
+
+  stAllocationType() {
+    for(let finyear of this.budgetFinYears){
+      if(this.formdata.get('finYear')?.value.serialNo==finyear.serialNo){
+        this.setAllocationType(finyear);
+      }
+    }
   }
 }
