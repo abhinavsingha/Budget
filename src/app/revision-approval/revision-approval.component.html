@@ -145,9 +145,9 @@
                     </div>
                   </div>
               <!-- /.row -->
-              <div class="row">
-                <div class="col-md-4" >
-                  <div class="form-group">
+              <div class="row" *ngIf="budgetDataLists!=undefined">
+                <div class="col-md-4" *ngIf="budgetDataLists[0]!=undefined">
+                  <div class="form-group" *ngIf="budgetDataLists[0].status!='Approved'">
                     <label>Return Remarks</label>
                     <input
                     type="text"
