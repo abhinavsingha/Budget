@@ -201,7 +201,6 @@ export class NewContigentBillComponent implements OnInit {
         if (!control.value) {
           if (
             key != 'returnRemarks' &&
-            key != 'firmName' &&
             key != 'invoiceFile'&&
             key != 'balance'&&
             key != 'gst'
@@ -647,6 +646,8 @@ export class NewContigentBillComponent implements OnInit {
   }
 
   updateExpenditure() {
+    let amount = Number(this.formdata.get('amount')?.value).toFixed(2);
+    this.formdata.get('amount')?.setValue(amount);
     this.formdata.get('progressive')?.setValue(this.expenditure);
     if (
       this.formdata.get('amount')?.value >
