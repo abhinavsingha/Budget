@@ -714,8 +714,8 @@ export class DashboardComponent implements OnInit {
       if(Number(entry.allocatedAmount)==0)
         continue;
       headName.push(entry.budgetHead.subheadShort);
-      allocation.push(Number(entry.allocatedAmount));
-      expenditure.push(Number(entry.expenditureAmount));
+      allocation.push(Number(entry.allocatedAmount.replaceAll(',','')));
+      expenditure.push(Number(entry.expenditureAmount.replaceAll(',','')));
     }
 
     this.barChartDataUnitwise= {
@@ -732,14 +732,18 @@ export class DashboardComponent implements OnInit {
     let unitName:string[]=[];
     let allocation:number[]=[];
     let expenditure:number[]=[];
+    debugger;
+    // const x:string="123,345";
+    //
     for(let entry of subHeadsResponse){
       if(Number(entry.allocatedAmount)==0){
         continue;
       }
       unitName.push(entry.unitNameShort);
       // unitName.push(entry.unitName);
-      allocation.push(Number(entry.allocatedAmount));
-      expenditure.push(Number(entry.expenditureAmount));
+
+      allocation.push(Number(entry.allocatedAmount.replaceAll(',','')));
+      expenditure.push(Number(entry.expenditureAmount.replaceAll(',','')));
     }
 
     this.barChartData= {
