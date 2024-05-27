@@ -1,86 +1,18 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { ApiCallingServiceService } from '../services/api-calling/api-calling-service.service';
 import { ConstantsService } from '../services/constants/constants.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CommonService } from '../services/common/common.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import Swal from 'sweetalert2';
-import { bootstrapApplication } from '@angular/platform-browser';
 import {SharedService} from "../services/shared/shared.service";
 import {DatePipe} from "@angular/common";
 import {MultiCdaParking} from "../model/multi-cda-parking";
-class CdaSubRequest {
-  allocationTypeID: any;
-  ginNo: any;
-  budgetHeadId: any;
-  currentParkingAmount: any;
-  availableParkingAmount: any;
-  remark: any;
-  budgetFinancialYearId: any;
-}
-class AuthRequest {
-  authority: any;
-  authDate: any;
-  remark: any;
-  authUnitId: any;
-  authDocId: any;
-}
-class CdaRequest {
-  cdaRequest: CdaSubRequest[] | undefined;
-  authRequests: AuthRequest[] | undefined;
-}
-class cdaTableData {
-  majorHead: any;
-  minorHead: any;
-  allocationTypeId: any;
-  allocationType: any;
-  financialYear: any;
-  cda: any;
-  subHead: any;
-  existing: number | undefined;
-  current: number | undefined;
-  total: number | undefined;
-  remarks: any;
-  checked: boolean = false;
-  ginNo: any;
-}
+
 @Component({
   selector: 'app-cda-parking',
   templateUrl: './cda-parking.component.html',
   styleUrls: ['./cda-parking.component.scss'],
 })
 export class CdaParkingComponent implements OnInit {
-  // cdaTableData: cdaTableData[] = [];
-  // unitData: any;
-  // finYearData: any;
-  // majorHeadData: any;
-  // minorHeadData: any;
-  // subHeadData: any;
-  // majorHead: any;
-  // formdata = new FormGroup({
-  //   currentParking: new FormControl(),
-  //   BalanceAvailable: new FormControl(),
-  //   budgetType: new FormControl(),
-  //   minorHead: new FormControl(), //
-  //   unit: new FormControl(), //
-  //   finYearName: new FormControl(),
-  //   majorHead: new FormControl(),
-  //   subHead: new FormControl(),
-  //   remarks: new FormControl('', Validators.required),
-  //   amountType:new FormControl()
-  // });
-  // budgetType: any;
-  // budgetAllotted: any;
-  // cdaData: any;
-  // cdaAmountTotal: number = 0.0;
-  // cdaCurrentTotal: number = 0.0;
-  // cdaTotalTotal: number = 0;
-  // authorityUnit: any;
-  // authority: any;
-  // authorityFile: any;
-  // authorityDate: any;
-  // @ViewChild('authFileInput') authFileInput: any;
-  // authFile: any;
 
   p: number = 1;
   subHeadList: any[]=[];
