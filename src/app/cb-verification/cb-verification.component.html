@@ -286,14 +286,14 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label>File Number</label>
-                  <input type="text" class="form-control" readonly id="FirmName" placeholder="Enter Firm Name"
+                  <input type="text" class="form-control" readonly id="File Number" placeholder="Enter Firm Name"
                          formControlName="fileNo" />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>File Date</label>
-                  <input type="date" class="form-control" readonly id="FirmName" placeholder="Enter Firm Name"
+                  <input type="date" class="form-control" readonly id="date3" placeholder="Enter Firm Name"
                          formControlName="fileDate" />
                 </div>
               </div>
@@ -369,9 +369,8 @@
                     <!--                    <td>1</td>-->
                     <td>{{cda.ginNo.cdaName}}</td>
                     <td>{{cda.remainingCdaAmount}}</td>
-                    <td><input [(ngModel)]="cda.amount" disabled type="number" class="form-control" placeholder="Enter Amount in INR" /></td>
+                    <td><input [(ngModel)]="cda.amount" [readonly]="true" type="number" class="form-control" placeholder="Enter Amount in INR" /></td>
                   </tr>
-
                   </tbody>
                 </table>
               </div>

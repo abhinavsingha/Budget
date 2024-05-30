@@ -487,8 +487,8 @@ export class CbVerificationComponent {
     });
   }
   returnCb() {
-    if(this.formdata.get('returnRemarks')?.value==undefined){
-      Swal.fire('Return Remark cannot be blank');
+    if(this.formdata.get('remarks')?.value==undefined){
+      this.common.faliureAlert('Return Remark cannot be blank','Return Remark cannot be blank','');
       return;
     }
     for (let i = 0; i < this.cbList.length; i++) {
@@ -509,7 +509,7 @@ export class CbVerificationComponent {
     const update: updateRequest = {
       status: this.cbList[0].status,
       groupId: this.cbList[0].authGroupId,
-      remarks: this.formdata.get('returnRemarks')?.value,
+      remarks: this.formdata.get('remarks')?.value,
       cdaParkingId: cdapark
     };
     this.apiService
