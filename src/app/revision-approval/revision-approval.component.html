@@ -87,8 +87,9 @@
                     </ng-select>
                   </div>
                 </div>
-                <div class="col-md-4" *ngIf="!(status && userRole=='Budget Manager' && !sharedService.status && sharedService.redirectedFrom!='approved');">
-                  <div class="form-group">
+                <div class="col-md-4" *ngIf="(!(status && userRole=='Budget Manager' && !sharedService.status && sharedService.redirectedFrom!='approved'));">
+                  <div *ngIf="(budgetDataLists!=undefined)">
+                  <div class="form-group" *ngIf="(budgetDataLists[0].status!='Approved')">
                     <label>Remarks</label>
                     <input
                       type="text"
@@ -97,6 +98,7 @@
                       placeholder="CGHQ to RHQ"
                            formControlName="remarks"
                     />
+                  </div>
                   </div>
                 </div>
 
