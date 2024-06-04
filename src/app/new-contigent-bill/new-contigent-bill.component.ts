@@ -1189,7 +1189,7 @@ export class NewContigentBillComponent implements OnInit {
           unit: this.cbList[i].unitId,
           fileNumber: this.cbList[i].fileNo,
           progressiveAmount: this.cbList[i].progressiveAmount,
-          remark: ' ',
+          remark: null,
           vendorName: this.cbList[i].firmName,
           invoiceNo: this.cbList[i].invoiceNo,
           docUploadDate: this.cbList[i].uploadFileDate,
