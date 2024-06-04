@@ -94,7 +94,7 @@ export class BudgetApproverComponent implements OnInit {
     this.SpinnerService.show();
     this.apiService
       .getApi(this.cons.api.getAllGroupIdAndUnitId + '/' + groupId)
-      .subscribe((res) => {
+      .subscribe(async (res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
           debugger;
@@ -106,27 +106,18 @@ export class BudgetApproverComponent implements OnInit {
             this.updateMsgStatusMain(this.sharedService.msgId);
           }
           for (let i = 0; i < this.budgetDataList.length; i++) {
-            //debugger;
-            // let json={
-            //   financialYearId:this.budgetDataList[i].finYear.serialNo,
-            //   budgetHeadId:this.budgetDataList[i].subHead.budgetCodeId,
-            //   amountType:this.budgetDataList[i].amountUnit.amountTypeId,
-            //   allocationTypeId:this.budgetDataList[i].allocTypeId.allocTypeId
-            // };
-            // this.getOldCdaData(json);
             if(this.budgetDataList[i].unallocatedAmount!=undefined&&this.budgetDataList[i].isTYpe!='REBASE') {
-              this.budgetDataList[i].allocationAmount1 = ((Number(this.budgetDataList[i].allocationAmount)*100000000 + Number(this.budgetDataList[i].unallocatedAmount)*100000000)/100000000).toString();
+              // this.budgetDataList[i].allocationAmount1 = ((Number(this.budgetDataList[i].allocationAmount)*100000000 + Number(this.budgetDataList[i].unallocatedAmount)*100000000)/100000000).toString();
+              this.budgetDataList[i].allocationAmount1 = await this.common.addDecimals(this.budgetDataList[i].allocationAmount,this.budgetDataList[i].unallocatedAmount);
             }
             else{
-
-              this.budgetDataList[i].allocationAmount1 = (Number(this.budgetDataList[i].allocationAmount)).toString();
+              this.budgetDataList[i].allocationAmount1 = (this.budgetDataList[i].allocationAmount);
             }
-
-            if (this.budgetDataList[i].balanceAmount != undefined) {
-              this.budgetDataList[i].balanceAmount = parseFloat(
-                this.budgetDataList[i].balanceAmount
-              ).toFixed(4);
-            }
+            // if (this.budgetDataList[i].balanceAmount != undefined) {
+            //   this.budgetDataList[i].balanceAmount = parseFloat(
+            //     this.budgetDataList[i].balanceAmount
+            //   ).toFixed(4);
+            // }
           }
           this.SpinnerService.hide();
         } else {
@@ -140,7 +131,7 @@ export class BudgetApproverComponent implements OnInit {
     this.SpinnerService.show();
     this.apiService
       .getApi(this.cons.api.getAlGroupId + '/' + groupId)
-      .subscribe((res) => {
+      .subscribe(async (res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
           //debugger;
@@ -149,7 +140,8 @@ export class BudgetApproverComponent implements OnInit {
             this.showAction=false;
           for (let i = 0; i < this.budgetDataList.length; i++) {
             if(this.budgetDataList[i].unallocatedAmount!=undefined)
-              this.budgetDataList[i].allocationAmount=(parseFloat(this.budgetDataList[i].allocationAmount)+parseFloat(this.budgetDataList[i].unallocatedAmount)).toFixed(4);
+              // this.budgetDataList[i].allocationAmount=(parseFloat(this.budgetDataList[i].allocationAmount)+parseFloat(this.budgetDataList[i].unallocatedAmount)).toFixed(4);
+              this.budgetDataList[i].allocationAmount=await this.common.addDecimals(this.budgetDataList[i].allocationAmount,this.budgetDataList[i].unallocatedAmount);
           }
           // this.formdata.get('remarks')?.setValue(result['response'].budgetResponseist[0].returnRemarks);
           this.SpinnerService.hide();
@@ -318,10 +310,11 @@ export class BudgetApproverComponent implements OnInit {
 
     this.multipleCdaParking.push(new MultiCdaParking());
     if(data.revisedAmount!=undefined)
-      this.totalAmountToAllocateCDAParking = ((Number(data.allocationAmount1)*100000000)/100000000).toString();
-    // +parseFloat(data.revisedAmount)).toFixed(4);
+      // this.totalAmountToAllocateCDAParking = ((Number(data.allocationAmount1)*100000000)/100000000).toString();
+      this.totalAmountToAllocateCDAParking = data.allocationAmount1;
     else
-      this.totalAmountToAllocateCDAParking = ((Number(data.allocationAmount1)*100000000)/100000000).toString();
+      // this.totalAmountToAllocateCDAParking = ((Number(data.allocationAmount1)*100000000)/100000000).toString();
+      this.totalAmountToAllocateCDAParking = data.allocationAmount1;
     debugger;
     this.isdisableSubmitButton = true;
     this.isdisableUpdateButton = true;
@@ -346,14 +339,16 @@ export class BudgetApproverComponent implements OnInit {
       this.apiService
         .postApi(this.cons.api.getAllBillCdaAndAllocationSummery, json)
         .subscribe({
-          next: (v: object) => {
+          next: async (v: object) => {
             this.SpinnerService.hide();
             let result: { [key: string]: any } = v;
             if (result['message'] == 'success') {
               this.olddataflag=true;
               this.subUnitAllocation=Number(result['response'].totalExpWithAllocation);
               if(result['response'].totalExpWithAllocation!=undefined){
-                this.totalAmountToAllocateCDAParking=((Number(this.totalAmountToAllocateCDAParking)*100000000-(Number(result['response'].totalExpWithAllocation)*100000000/this.budgetDataList[0].amountUnit.amount))/100000000).toString();
+                // this.totalAmountToAllocateCDAParking=((Number(this.totalAmountToAllocateCDAParking)*100000000-(Number(result['response'].totalExpWithAllocation)*100000000/this.budgetDataList[0].amountUnit.amount))/100000000).toString();
+                const div=await this.common.divideDecimals(result['response'].totalExpWithAllocation,this.budgetDataList[0].amountUnit.amount);
+                this.totalAmountToAllocateCDAParking=await this.common.subtractDecimals((this.totalAmountToAllocateCDAParking),div);
               }
 
 
@@ -450,7 +445,7 @@ export class BudgetApproverComponent implements OnInit {
 
   }
 
-  deleteFromMultipleCdaParking(index: any) {
+  async deleteFromMultipleCdaParking(index: any) {
     this.multipleCdaParking.splice(index, 1);
     var amount:any = 0;
     var unitIndex = this.multipleCdaParking.filter(
@@ -458,16 +453,15 @@ export class BudgetApproverComponent implements OnInit {
     );
     for (var i = 0; i < unitIndex.length; i++) {
       if (unitIndex[i].amount != '' || unitIndex[i].amount != null) {
-        amount = parseFloat(amount) + parseFloat(unitIndex[i].amount);
+        // amount = parseFloat(amount) + parseFloat(unitIndex[i].amount);
+        amount =await this.common.addDecimals(amount,unitIndex[i].amount);
       }
     }
-    amount=amount.toFixed(4);
-    this.balancedRemaingCdaParkingAmount = (
-      parseFloat(this.totalAmountToAllocateCDAParking) - parseFloat(amount)
-    ).toFixed(4);
+    // amount=amount.toFixed(4);
+    this.balancedRemaingCdaParkingAmount =await this.common.subtractDecimals(this.totalAmountToAllocateCDAParking,amount);
     if (
       this.balancedRemaingCdaParkingAmount == '0' ||
-      this.balancedRemaingCdaParkingAmount == '0.0000'
+      this.balancedRemaingCdaParkingAmount == '0.0000'||Number(this.balancedRemaingCdaParkingAmount)==0
     ) {
       this.isdisableSubmitButton = false;
       this.isdisableUpdateButton = false;
@@ -485,7 +479,7 @@ export class BudgetApproverComponent implements OnInit {
   }
   cdaParkingListResponseData: any[] = [];
 
-  saveCdaParkingData1() {
+  async saveCdaParkingData1() {
     this.getCurrentSubHeadData;
     this.multipleCdaParking;
     this.cdaParkingListResponseData = [];
@@ -503,7 +497,8 @@ export class BudgetApproverComponent implements OnInit {
           ginNo: this.multipleCdaParking[i].cdaParkingUnit.ginNo,
           budgetHeadId: this.getCurrentSubHeadData.subHead.budgetCodeId,
           totalParkingAmount: this.multipleCdaParking[i].amount,
-          availableParkingAmount: Number(Number(this.multipleCdaParking[i].amount)-Number(this.multipleCdaParking[i].oldData)),
+          // availableParkingAmount: Number(Number(this.multipleCdaParking[i].amount)-Number(this.multipleCdaParking[i].oldData)),
+          availableParkingAmount:await this.common.subtractDecimals(this.multipleCdaParking[i].amount,this.multipleCdaParking[i].oldData),
           authGroupId: this.getCurrentSubHeadData.authGroupId,
           transactionId: this.getCurrentSubHeadData.allocationId,
         });
@@ -531,7 +526,6 @@ export class BudgetApproverComponent implements OnInit {
     debugger;
     this.saveCDAParking(this.cdaParkingListResponseData);
   }
-
   saveCDAParking(data: any) {
     this.SpinnerService.show();
     var newSubmitJson = {
@@ -570,9 +564,7 @@ export class BudgetApproverComponent implements OnInit {
         complete: () => this.updateInbox(),
       });
   }
-
   public userRole: any;
-
   getDashBoardDta() {
     this.SpinnerService.show();
     var newSubmitJson = null;
@@ -609,9 +601,10 @@ export class BudgetApproverComponent implements OnInit {
                   this.getAllGroupIdAndUnitIdRevisionCase(this.sharedService.sharedValue)
                 }
                 else {
-                  this.getAllGroupIdAndUnitId(this.sharedService.sharedValue);
+                  this.getAllGroupIdAndUnitId(localStorage.getItem('group_id'));
                 }
-              } else {
+              }
+              else {
                 this.getAlGroupId(localStorage.getItem('group_id'));
               }
             }
@@ -627,7 +620,6 @@ export class BudgetApproverComponent implements OnInit {
         complete: () => console.info('complete'),
       });
   }
-
   authGroupIdFromBackend: any;
   showUpdate: boolean = false;
   viewCDAParking(budgetData: any) {
@@ -641,9 +633,11 @@ export class BudgetApproverComponent implements OnInit {
     this.multipleCdaParking.push(new MultiCdaParking());
     // this.totalAmountToAllocateCDAParking = budgetData.allocationAmount;
     if(budgetData.revisedAmount!=undefined)
-      this.totalAmountToAllocateCDAParking = (Number(budgetData.allocationAmount1)).toString();
+      // this.totalAmountToAllocateCDAParking = (Number(budgetData.allocationAmount1)).toString();
+      this.totalAmountToAllocateCDAParking = budgetData.allocationAmount1;
     else
-      this.totalAmountToAllocateCDAParking = (Number(budgetData.allocationAmount1)).toString();
+      // this.totalAmountToAllocateCDAParking = (Number(budgetData.allocationAmount1)).toString();
+      this.totalAmountToAllocateCDAParking = budgetData.allocationAmount1;
 
     this.balancedRemaingCdaParkingAmount = '0.0000';
     this.isdisableSubmitButton = true;
@@ -658,7 +652,7 @@ export class BudgetApproverComponent implements OnInit {
     this.apiService
       .postApi(this.cons.api.getCdaDataList, submitJson)
       .subscribe({
-        next: (v: object) => {
+        next: async (v: object) => {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
@@ -674,8 +668,8 @@ export class BudgetApproverComponent implements OnInit {
                 cdaParkingList[i].ginNo;
               dummyMultipleCdaParkingData.amount =
                 cdaParkingList[i].totalParkingAmount;
-              dummyMultipleCdaParkingData.balance =
-                Number(cdaParkingList[i].remainingCdaAmount).toFixed(4);
+              // dummyMultipleCdaParkingData.balance = Number(cdaParkingList[i].remainingCdaAmount).toFixed(4);
+              dummyMultipleCdaParkingData.balance = cdaParkingList[i].remainingCdaAmount;
 
               this.multipleCdaParking.push(dummyMultipleCdaParkingData);
             }
@@ -686,16 +680,15 @@ export class BudgetApproverComponent implements OnInit {
             );
             for (var i = 0; i < unitIndex.length; i++) {
               if (unitIndex[i].amount != '' || unitIndex[i].amount != null) {
-                amount = Number(amount) + Number(unitIndex[i].amount);
+                amount =await this.common.addDecimals(amount,unitIndex[i].amount);
               }
             }
-            amount=amount.toFixed(4);
-            this.balancedRemaingCdaParkingAmount = (
-              parseFloat(this.totalAmountToAllocateCDAParking) - parseFloat(amount)
-            ).toFixed(4);
+            // amount=amount.toFixed(4);
+            // this.balancedRemaingCdaParkingAmount = (parseFloat(this.totalAmountToAllocateCDAParking) - parseFloat(amount)).toFixed(4);
+            this.balancedRemaingCdaParkingAmount =await this.common.addDecimals(this.totalAmountToAllocateCDAParking,amount);
             if (
               this.balancedRemaingCdaParkingAmount == '0' ||
-              this.balancedRemaingCdaParkingAmount == '0.0000'
+              this.balancedRemaingCdaParkingAmount == '0.0000'||Number(this.balancedRemaingCdaParkingAmount)==0
             ) {
               this.isdisableSubmitButton = false;
               this.isdisableUpdateButton = false;
@@ -715,11 +708,11 @@ export class BudgetApproverComponent implements OnInit {
         complete: () => console.info('complete'),
       });
   }
-
   balancedRemaingCdaParkingAmount: any;
   isdisableSubmitButton: boolean = true;
   isdisableUpdateButton: boolean = true;
-  getCDAParkingAllocatedAmount() {
+
+  async getCDAParkingAllocatedAmount() {
     var amount:any = 0;
     var unitIndex = this.multipleCdaParking.filter(
       (data) => data.amount != null
@@ -731,20 +724,21 @@ export class BudgetApproverComponent implements OnInit {
           unitIndex[i].amount=undefined;
           return;
         }
-        amount = ((Number(amount)*100000000) + (Number(unitIndex[i].amount)*100000000))/100000000;
+        // amount = ((Number(amount)*100000000) + (Number(unitIndex[i].amount)*100000000))/100000000;
+        amount =await this.common.addDecimals(amount,unitIndex[i].amount);
       }
     }
     debugger;
     amount=amount.toString();
-    this.balancedRemaingCdaParkingAmount = (
-      ((Number(this.totalAmountToAllocateCDAParking)*100000000) - (Number(amount)*100000000))).toFixed(0);
-    this.balancedRemaingCdaParkingAmount=(this.balancedRemaingCdaParkingAmount/100000000).toString();
+    // this.balancedRemaingCdaParkingAmount = (((Number(this.totalAmountToAllocateCDAParking)*100000000) - (Number(amount)*100000000))).toFixed(0);
+    this.balancedRemaingCdaParkingAmount =await this.common.subtractDecimals(this.totalAmountToAllocateCDAParking,amount);
+    // this.balancedRemaingCdaParkingAmount=(this.balancedRemaingCdaParkingAmount/100000000).toString();
     if(this.balancedRemaingCdaParkingAmount == '-0.0000')
       this.balancedRemaingCdaParkingAmount == '0.0000';
     if (
       this.balancedRemaingCdaParkingAmount == '0' ||
       this.balancedRemaingCdaParkingAmount == '0.0000' ||
-      this.balancedRemaingCdaParkingAmount == '-0.0000'
+      this.balancedRemaingCdaParkingAmount == '-0.0000'||Number(this.balancedRemaingCdaParkingAmount)==0
     ) {
       this.isdisableSubmitButton = false;
       this.isdisableUpdateButton = false;
@@ -753,7 +747,6 @@ export class BudgetApproverComponent implements OnInit {
       this.isdisableUpdateButton = true;
     }
   }
-
   updateCdaParkingDataApi() {
     this.getCurrentSubHeadData;
     this.multipleCdaParking;
@@ -775,7 +768,6 @@ export class BudgetApproverComponent implements OnInit {
 
     this.updateCdaParkingData(this.cdaParkingListResponseData);
   }
-
   updateCdaParkingData(data: any) {
     this.SpinnerService.show();
     var newSubmitJson = {
@@ -827,77 +819,7 @@ export class BudgetApproverComponent implements OnInit {
       complete: () => console.info('complete'),
     });
   }
-  // generateCsvData(tableData: any[]): string {
-  //   // Extract headers
-  //   const headers = Object.keys(tableData[0]);
-  //
-  //   // Extract data rows
-  //   const rows = tableData.map(row => {
-  //     return headers.map(header => {
-  //       return row[header];
-  //     });
-  //   });
-  //
-  //   // Combine headers and rows into a CSV string
-  //   const csvContent = headers.join(',') + '\n' +
-  //     rows.map(row => row.join(',')).join('\n');
-  //
-  //   return csvContent;
-  // }
-  //
-  // downloadCsv() {
-  //   let tableData=[];
-  //   let totalR=0.0;
-  //   let totalA=0.0;
-  //   for(let i=0;i<this.budgetDataList.length;i++){
-  //     totalA=totalA+(parseFloat(this.budgetDataList[i].allocationAmount)*this.budgetDataList[i].amountUnit.amount);
-  //     totalR=totalR+(parseFloat(this.budgetDataList[i].balanceAmount)*this.budgetDataList[i].remeningBalanceUnit.amount);
-  //     let table:TableData= {
-  //       Financial_Year: this.budgetDataList[i].finYear.finYear.replaceAll(',',' '),
-  //       To_Unit: this.budgetDataList[i].toUnit.descr.replaceAll(',',' '),
-  //       From_Unit: this.budgetDataList[i].fromUnit.descr.replaceAll(',',' '),
-  //       Subhead: this.budgetDataList[i].subHead.subHeadDescr.replaceAll(',',' '),
-  //       Type: this.budgetDataList[i].allocTypeId.allocType.replaceAll(',',' '),
-  //       Remaining_Amount: this.budgetDataList[i].balanceAmount.replaceAll(',',' ')+' ' +this.budgetDataList[i].remeningBalanceUnit.amountType,
-  //       Allocated_Fund: this.budgetDataList[i].allocationAmount.replaceAll(',',' ')+' ' +this.budgetDataList[i].amountUnit.amountType
-  //     }
-  //     tableData.push(table);
-  //   }
-  //   let table:TableData= {
-  //     Financial_Year: '',
-  //     To_Unit: '',
-  //     From_Unit: '',
-  //     Subhead: '',
-  //     Type: 'TOTAL',
-  //     Remaining_Amount: (parseFloat(totalR.toFixed(4))/parseFloat(this.budgetDataList[0].amountUnit.amount)).toString()+' ' + this.budgetDataList[0].amountUnit.amountType,
-  //     Allocated_Fund: (parseFloat(totalA.toFixed(4))/parseFloat(this.budgetDataList[0].amountUnit.amount)).toString() +' '+ this.budgetDataList[0].amountUnit.amountType
-  //   }
-  //   tableData.push(table);
-  //
-  //   // Generate CSV content
-  //   const csvContent = this.generateCsvData(tableData);
-  //
-  //   // Create Blob object from CSV content
-  //   const blob = new Blob([csvContent], { type: 'text/csv' });
-  //
-  //   // Create download link and click it programmatically
-  //   const link = document.createElement('a');
-  //   link.href = window.URL.createObjectURL(blob);
-  //
-  //   link.download = this.type+'.csv';
-  //   link.click();
-  //
-  //   // Clean up
-  //   window.URL.revokeObjectURL(link.href);
-  //   document.removeChild(link);
-  // }
-
-  generateCSV(
-    data: any[],
-    columns: string[],
-    filename: string,
-    column: string[]
-  ) {
+  generateCSV(data: any[],columns: string[],filename: string,column: string[]) {
     const csvData: any[][] = [];
 
     // Add column names as the first row
@@ -1144,7 +1066,6 @@ export class BudgetApproverComponent implements OnInit {
     this.amountUnitType=cdaData[0].amountType.amountType;
     ////debugger;
   }
-
   resetCdaList() {
     this.cdaData = [];
   }
@@ -1171,7 +1092,6 @@ export class BudgetApproverComponent implements OnInit {
         }
       });
   }
-
   getreAllocationReport(data: any) {
     //debugger;
 
@@ -1334,7 +1254,6 @@ export class BudgetApproverComponent implements OnInit {
     }
 
   }
-
   private getRecieptReport(data: string) {
     this.SpinnerService.show();
     // ////debugger;
@@ -1368,12 +1287,11 @@ export class BudgetApproverComponent implements OnInit {
 
 
   }
-
   private getAllGroupIdAndUnitIdRevisionCase(sharedValue: string | undefined) {
     this.SpinnerService.show();
     this.apiService
       .getApi(this.cons.api.getAllGroupIdAndUnitIdRevisionCase + '/' + sharedValue)
-      .subscribe((res) => {
+      .subscribe(async (res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
           ////debugger;
@@ -1392,16 +1310,16 @@ export class BudgetApproverComponent implements OnInit {
             };
             this.getOldCdaData(json);
             if(this.budgetDataList[i].totalAllocationAmount!=undefined){
-              this.budgetDataList[i].allocationAmount1=((Number(this.budgetDataList[i].allocationAmount)*100000000-(Number(this.budgetDataList[i].totalAllocationAmount)/this.budgetDataList[i].amountUnit.amount)*100000000)/100000000).toString();
+              // this.budgetDataList[i].allocationAmount1=((Number(this.budgetDataList[i].allocationAmount)*100000000-(Number(this.budgetDataList[i].totalAllocationAmount)/this.budgetDataList[i].amountUnit.amount)*100000000)/100000000).toString();
+              let div=await this.common.divideDecimals(this.budgetDataList[i].totalAllocationAmount,this.budgetDataList[i].amountUnit.amount);
+              this.budgetDataList[i].allocationAmount1=this.common.subtractDecimals(this.budgetDataList[i].allocationAmount,div);
             }
             else{
-              this.budgetDataList[i].allocationAmount1=(Number(this.budgetDataList[i].allocationAmount)).toString();
+              this.budgetDataList[i].allocationAmount1=this.budgetDataList[i].allocationAmount;
             }
-            if (this.budgetDataList[i].balanceAmount != undefined) {
-              this.budgetDataList[i].balanceAmount = parseFloat(
-                this.budgetDataList[i].balanceAmount
-              ).toFixed(4);
-            }
+            // if (this.budgetDataList[i].balanceAmount != undefined) {
+            //   this.budgetDataList[i].balanceAmount = parseFloat(this.budgetDataList[i].balanceAmount).toFixed(4);
+            // }
           }
           this.SpinnerService.hide();
         } else {
@@ -1443,7 +1361,6 @@ export class BudgetApproverComponent implements OnInit {
     }
 
   }
-
   private getreAllocationReportnew() {
     this.SpinnerService.show();
     // ////debugger;
@@ -1477,8 +1394,6 @@ export class BudgetApproverComponent implements OnInit {
 
 
   }
-
-
   private getOldCdaData(submitJson:any) {
 
     this.apiService
@@ -1497,9 +1412,9 @@ export class BudgetApproverComponent implements OnInit {
               let oldCdaData:MultiCdaParking= {
                 id: -1,
                 cdaParkingUnit: value.ginNo,
-                amount: (Number(value.totalParkingAmount)).toString(),
+                amount: ((value.totalParkingAmount)).toString(),
                 balance: undefined,
-                oldData: (Number(value.totalParkingAmount)).toString()
+                oldData: ((value.totalParkingAmount)).toString()
               }
 
               if(oldCdaData!=undefined)
@@ -1523,7 +1438,6 @@ export class BudgetApproverComponent implements OnInit {
         complete: () => console.info('complete'),
       });
   }
-
   saveCdaParkingData() {
     for(let cdaParking of this.multipleCdaParking){
       if(cdaParking.oldData!=undefined){
