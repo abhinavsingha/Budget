@@ -115,10 +115,13 @@ export class InboxComponent implements OnInit {
     }
     else if (li.isType == 'Budget Allocation') {
       debugger;
+      localStorage.setItem('notification','false');
       if (li.status == 'Approved') {
         this.sharedService.reject=false;
+
         this.router.navigate(['/budget-approved']);
       } else if (li.status == 'Fully Approved') {
+
         this.sharedService.reject=false;
         this.router.navigate(['/budget-approval']);
       } else if (li.status == 'Pending') {
@@ -134,6 +137,7 @@ export class InboxComponent implements OnInit {
     }
     else if (li.isType == 'Lower Unit Budget Allocation') {
       debugger;
+      localStorage.setItem('notification','true');
       this.finallyMoveArchive(li);
       if (li.status == 'Approved') {
 
@@ -176,6 +180,11 @@ export class InboxComponent implements OnInit {
       this.sharedService.redirectedFrom = 'inbox';
     }
     else if(li.isType == 'Budget Revision'||li.isType == 'Budget Revised By Lower Unit'){
+      if(li.isType == 'Budget Revision'){
+        localStorage.setItem('notification','false');
+      }else{
+        localStorage.setItem('notification','true');
+      }
       this.sharedService.revisionStatus=li.status;
       if(li.status=='Fully Approved')
         this.sharedService.status=true;

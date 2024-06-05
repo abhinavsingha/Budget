@@ -49,6 +49,7 @@ export class ApprovedComponent implements OnInit {
   }
 
   redirect(entry: any) {
+    localStorage.setItem('notification','false');
     // debugger;
     this.sharedService.isRevision = entry.isRevision;
     localStorage.setItem('isInboxOrOutbox', 'approved');

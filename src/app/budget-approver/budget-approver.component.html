@@ -97,7 +97,7 @@
                 </table>
 
               </div>
-              <div class="row mt-2" [formGroup]="formdata">
+              <div class="row mt-2" [formGroup]="formdata" *ngIf="isNotification=='false'">
                 <div class="col-md-3">
                   <div class="form-group" >
                     <select class="form-control select2bs4" style="width: 100%"

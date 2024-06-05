@@ -60,17 +60,26 @@ export class ArchiveComponent implements OnInit {
     if (entry.type == 'BG' || entry.type == 'BR' || entry.type == 'BGR') {
       if (entry.isType == 'Budget Revision' || entry.isType == 'Budget Revised By Lower Unit') {
         this.sharedService.revisionStatus = entry.status;
-        if (entry.isType == 'Budget Revision')
+        if (entry.isType == 'Budget Revision'){
+          localStorage.setItem('notification','false');
           localStorage.setItem('move', '0');
+        }
         else if (entry.isType == 'Budget Revised By Lower Unit') {
+          localStorage.setItem('notification','true');
           localStorage.setItem('move', '1');
           this.sharedService.msgId = entry.mangeInboxId;
         }
         this.router.navigate(['/revision-approval']);
-      } else
+      }
+      else{
+        localStorage.setItem('notification','false');
         this.router.navigate(['/budget-approval']);
 
+      }
+
+
     } else if (entry.isType == 'Lower Unit Budget Allocation') {
+      localStorage.setItem('notification','true');
       debugger;
       if (entry.status == 'Approved') {
 

@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import * as $ from "jquery";
 import {NgxSpinnerService} from "ngx-spinner";
 import {ConstantsService} from "../services/constants/constants.service";
@@ -17,13 +17,14 @@ import {DatePipe} from "@angular/common";
   templateUrl: './revision-approval.component.html',
   styleUrls: ['./revision-approval.component.scss']
 })
-export class RevisionApprovalComponent {
+export class RevisionApprovalComponent implements OnInit{
   @ViewChild('browseFileInput') browseFileInput: any;
   unitData: any;
   private userUnitId: any;
   currentUnit: any;
   browse: any;
   amountUnit: string='';
+  isNotification:string|null='true';
   constructor(
     // private matDialog: MatDialog,
     private SpinnerService: NgxSpinnerService,
@@ -63,6 +64,7 @@ export class RevisionApprovalComponent {
   filename:string='Select Document';
   oldBudgetDataLists: any;
   ngOnInit(): void {
+    this.isNotification=localStorage.getItem('notification');
     this.sharedService.updateInbox();
     if (
       localStorage.getItem('isInboxOrOutbox') != null ||

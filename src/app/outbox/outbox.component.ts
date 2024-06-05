@@ -79,6 +79,8 @@ export class OutboxComponent implements OnInit {
   ) {}
 
   redirect(li: InboxList) {
+    localStorage.setItem('notification','false');
+
     debugger;
     if (li.groupId != null || li.groupId != undefined) {
       localStorage.setItem('group_id', li.groupId);

@@ -54,7 +54,9 @@ export class BudgetApproverComponent implements OnInit {
   oldmultipleCdaParking: any[]=[];
   private totalExpWithAllocation: any;
   subUnitAllocation:number=0;
+  isNotification:string|null="true";
   ngOnInit(): void {
+    this.isNotification=localStorage.getItem('notification');
     this.sharedService.updateInbox();
     ////debugger;
 

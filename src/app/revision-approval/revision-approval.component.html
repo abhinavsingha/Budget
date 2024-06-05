@@ -134,7 +134,7 @@
 <!--                                  <td>{{}}</td>-->
                                 </tr>
                           </tbody>
-                          <tfoot *ngIf="sharedService.revisionStatus!='Rejected'">
+                          <tfoot *ngIf="sharedService.revisionStatus!='Rejected' && isNotification=='false'">
 
                             <button type="submit" class="btn btn-primary mr-2" (click)="downloadCsv1()"><i class="fas fa-download"></i> Download Csv</button>
                             <button type="submit" class="btn btn-primary mr-2" (click)="downloadPDF()"><i class="fas fa-download"></i>Download Pdf</button>
@@ -149,7 +149,7 @@
               <!-- /.row -->
               <div class="row" *ngIf="budgetDataLists!=undefined">
                 <div class="col-md-4" *ngIf="budgetDataLists[0]!=undefined">
-                  <div class="form-group" *ngIf="budgetDataLists[0].status!='Approved'">
+                  <div class="form-group" *ngIf="budgetDataLists[0].status!='Approved'&&isNotification=='false'">
                     <label>Return Remarks</label>
                     <input
                     type="text"

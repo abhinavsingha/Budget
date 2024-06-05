@@ -38,6 +38,7 @@ export class HeaderComponent {
 
   ngOnInit(): void {
     this.getDashBoardDta();
+    localStorage.setItem('notification','true');
     $.getScript('assets/js/adminlte.js');
     let nr = localStorage.getItem('userDetails');
   }
