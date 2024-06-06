@@ -12,54 +12,30 @@ export class ConstantsService {
   // serviceUrl = 'http://192.168.100.238:1111/';
   // serviceUrl = 'http://169.254.75.245:1111/';
   api = {
-    getDataBudgetAllocation:
-      this.serviceUrl + 'budgetAllocation/getDataBudgetAllocation',
-
-    getAvailableFund: this.serviceUrl + 'budgetAllocation/getAvailableFund',
-
     fileUpload: this.serviceUrl + 'fileUpload/uploadFile',
-
-    saveBudgetAllocation:
-      this.serviceUrl + 'budgetAllocation/saveBudgetAllocation',
-
-    saveBudgetAllocationUnitWise:
-      this.serviceUrl + 'budgetAllocation/saveBudgetAllocationUnitWise',
-
-    getUserNameApiUrl:
-      'http://localhost:8080/auth/realms/icgrms/protocol/openid-connect/userinfo',
-
+    // Budget Allocation
+    getDataBudgetAllocation:this.serviceUrl + 'budgetAllocation/getDataBudgetAllocation',
+    getAvailableFund: this.serviceUrl + 'budgetAllocation/getAvailableFund',
+    saveBudgetAllocationUnitWise: this.serviceUrl + 'budgetAllocation/saveBudgetAllocationUnitWise',
     getMajorData: this.serviceUrl + 'budgetAllocation/getMajorData',
-
     getBudgetFinYear: this.serviceUrl + 'budgetAllocation/getBudgetFinYear',
-
     getCgUnitData: this.serviceUrl + 'budgetAllocation/getCgUnitData',
-
-    getCgUnitWithoutMOD:
-      this.serviceUrl + 'budgetAllocation/getCgUnitWithoutMOD',
-
-    getAllSubHeadByMajorHead:
-      this.serviceUrl + 'budgetAllocation/getAllSubHeadByMajorHead',
-
+    getCgUnitWithoutMOD: this.serviceUrl + 'budgetAllocation/getCgUnitWithoutMOD',
+    getAllSubHeadByMajorHead:this.serviceUrl + 'budgetAllocation/getAllSubHeadByMajorHead',
     getSubHeadsData: this.serviceUrl + 'budgetAllocation/getSubHeadsData',
+    getAllocationTypeData:this.serviceUrl + 'budgetAllocation/getAllocationType',
+    // saveBudgetAllocation:
+    //   this.serviceUrl + 'budgetAllocation/saveBudgetAllocation',
+    // getUserNameApiUrl:
+    //   'http://localhost:8080/auth/realms/icgrms/protocol/openid-connect/userinfo',
 
-    getAllocationTypeData:
-      this.serviceUrl + 'budgetAllocation/getAllocationType',
-
+    // Dashboard
     getDashboardData: this.serviceUrl + 'dashBoard/getDashBoardDta',
-    saveContingentBill:
-      this.serviceUrl + 'contingentBillController/saveContingentBill',
 
-    updateContingentBill:
-      this.serviceUrl + 'contingentBillController/updateContingentBill',
+    // Contingent Bill
+    saveContingentBill:this.serviceUrl + 'contingentBillController/saveContingentBill',
+    updateContingentBill:this.serviceUrl + 'contingentBillController/updateContingentBill',
 
-    getCdaData: this.serviceUrl + 'cdaParkingController/getCdaData',
-
-    getCdaDataUnitWise: this.serviceUrl + 'cdaParkingController/getCdaDataunitwise',
-
-    saveCdaParkingData:
-      this.serviceUrl + 'cdaParkingController/saveCdaParkingData',
-
-    updateCdaParkingData:this.serviceUrl + 'cdaParkingController/updateCda',
       // this.serviceUrl + 'cdaParkingController/updateCdaParkingData',
 
     getAllUser: this.serviceUrl + 'mangeUser/getAllUser',
@@ -247,27 +223,38 @@ export class ConstantsService {
     getUnitRebaseNotificationData: this.serviceUrl+'unitRebaseController/getUnitRebaseNotificationData',
 
 
-    saveAuthDataRevision: this.serviceUrl+'budgetAllocation/saveAuthDataRevisionSaveCbAsAllocation',
+    // Revision
     saveBudgetRevisionData:this.serviceUrl + 'budgetAllocation/saveBudgetRevision',
     approveRevisionBudgetOrReject:this.serviceUrl + 'budgetAllocation/approveRevisionBudgetOrReject',
+    saveAuthDataRevision: this.serviceUrl+'budgetAllocation/saveAuthDataRevisionSaveCbAsAllocation',
+
+    // CDA Parking
+    getCdaData: this.serviceUrl + 'cdaParkingController/getCdaData',
+    getCdaDataUnitWise: this.serviceUrl + 'cdaParkingController/getCdaDataunitwise',
+    saveCdaParkingData:this.serviceUrl + 'cdaParkingController/saveCdaParkingData',
+    updateCdaParkingData:this.serviceUrl + 'cdaParkingController/updateCda',
     saveCdaParkingDataForRebase: this.serviceUrl+'cdaParkingController/saveCdaParkingDataForRebase',
-    updateMsgStatusMain: this.serviceUrl+'inboxOutbox/updateMsgStatusMain',
     getOldCdaDataForRebase: this.serviceUrl+'cdaParkingController/getOldCdaDataForRebase',
+    cdaHistoryData: this.serviceUrl+'cdaParkingController/getCdaHistoryData',
+    getAllBillCdaAndAllocationSummery: this.serviceUrl+'cdaParkingController/getAllBillCdaAndAllocationSummery',
+    getAllBillCdaAndAllocationSummeryUnit: this.serviceUrl+'cdaParkingController/getAllBillCdaAndAllocationSummeryunit',
+
+    // Manage Inbox Outbox
+    updateMsgStatusMain: this.serviceUrl+'inboxOutbox/updateMsgStatusMain',
+    moveToArchive: this.serviceUrl+'inboxOutbox/moveToArchive',
+    inboxListMain: this.serviceUrl + 'inboxOutbox/getInboxListMain',
+    outBoxListMain: this.serviceUrl + 'inboxOutbox/getOutBoxListMain',
+    archiveListMain: this.serviceUrl + 'inboxOutbox/getArchiveListMain',
+    approvedListMain: this.serviceUrl + 'inboxOutbox/getApprovedListMain',
+
+
     getAllSubHeadList: this.serviceUrl+'budgetAllocation/getAllSubHeadList',
     getIsShipCgUnit: this.serviceUrl+'unitRebaseController/getIsShipCgUnit',
     budgetApprove: this.serviceUrl + 'budgetAllocation/budgetApprove',
     budgetReject: this.serviceUrl + 'budgetAllocation/budgetReject',
-    moveToArchive: this.serviceUrl+'inboxOutbox/moveToArchive',
     getRevisionReportExcel: this.serviceUrl+'reportController/getRevisionReportExcel',
     getReceiptReportNew: this.serviceUrl+'reportController/getRevisedAllocationAprReportDoc',
     transferCbBill: this.serviceUrl+'contingentBillController/transferCbBill',
-    cdaHistoryData: this.serviceUrl+'cdaParkingController/getCdaHistoryData',
-    getAllBillCdaAndAllocationSummery: this.serviceUrl+'cdaParkingController/getAllBillCdaAndAllocationSummery',
-    getAllBillCdaAndAllocationSummeryUnit: this.serviceUrl+'cdaParkingController/getAllBillCdaAndAllocationSummeryunit',
-    inboxListMain: this.serviceUrl + 'inboxOutbox/getInboxListMain',
-    outBoxListMain: this.serviceUrl + 'inboxOutbox/getOutBoxListMain',
-    archiveListMain: this.serviceUrl + 'inboxOutbox/getArchiveListMain',
-    approvedListMain: this.serviceUrl + 'inboxOutbox/getApprovedListMain'
 
 
   };

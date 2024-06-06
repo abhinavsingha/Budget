@@ -149,7 +149,7 @@
               <!-- /.row -->
               <div class="row" *ngIf="budgetDataLists!=undefined">
                 <div class="col-md-4" *ngIf="budgetDataLists[0]!=undefined">
-                  <div class="form-group" *ngIf="budgetDataLists[0].status!='Approved'&&isNotification=='false'">
+                  <div class="form-group" *ngIf="budgetDataLists[0].status!='Approved'&&isNotification=='false'&&sharedService.redirectedFrom!='approved'">
                     <label>Return Remarks</label>
                     <input
                     type="text"

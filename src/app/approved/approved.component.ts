@@ -57,11 +57,10 @@ export class ApprovedComponent implements OnInit {
     localStorage.setItem('type', entry.isType);
     localStorage.setItem('group_id', entry.groupId);
     this.sharedService.sharedValue = entry.groupId;
-
-    this.sharedService.redirectedFrom = 'approved';
     // debugger;
     if (entry.type == 'BG' || entry.type == 'BR') {
       if (entry.isType == 'Budget Revision') {
+
         this.router.navigate(['/revision-approval']);
       } else
         this.router.navigate(['/budget-approval']);
