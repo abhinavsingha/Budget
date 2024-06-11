@@ -435,6 +435,10 @@ export class RevisionComponent {
       };
       this.budgetRevisionUnitList2.push(entry);
     }
+    this.budgetRevisionUnitList2.sort((a: any, b: any) =>parseFloat(a.manipulate) - parseFloat(b.manipulate));
+      // a.manipulate.localeCompare(b.manipulate));
+    this.budgetRevisionUnitList2.reverse();
+
     this.getTotalAmount();
   }
   tabledata: tableData[] = [];
@@ -858,6 +862,8 @@ export class RevisionComponent {
           if (result['message'] == 'success') {
             this.allRevisedUnits = result['response'];
 
+            // this.allRevisedUnits.sort((a: any, b: any) => a.allocationAmount.localeCompare(b.allocationAmount));
+            // this.allRevisedUnits.reverse();
             let alloc=0.0;
 
             for(let i=0;i<this.allRevisedUnits.length;i++){
