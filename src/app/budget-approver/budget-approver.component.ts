@@ -92,7 +92,7 @@ export class BudgetApproverComponent implements OnInit {
         }
       );
   }
-  getAllGroupIdAndUnitId(groupId: any) {
+  async getAllGroupIdAndUnitId(groupId: any) {
     this.SpinnerService.show();
     this.apiService
       .getApi(this.cons.api.getAllGroupIdAndUnitId + '/' + groupId)
@@ -129,7 +129,7 @@ export class BudgetApproverComponent implements OnInit {
 
   }
 
-  getAlGroupId(groupId: any) {
+  async getAlGroupId(groupId: any) {
     this.SpinnerService.show();
     this.apiService
       .getApi(this.cons.api.getAlGroupId + '/' + groupId)
@@ -301,7 +301,7 @@ export class BudgetApproverComponent implements OnInit {
   showSubmit: boolean = false;
   amountUnit: any;
   showSubHeadDataInNextPage: any;
-  addCDAParking(data: any, index: number) {
+  async addCDAParking(data: any, index: number) {
     this.currentIndex = index;
     ////debugger;
     this.getCurrentSubHeadData = data;
@@ -528,7 +528,7 @@ export class BudgetApproverComponent implements OnInit {
     debugger;
     this.saveCDAParking(this.cdaParkingListResponseData);
   }
-  saveCDAParking(data: any) {
+   saveCDAParking(data: any) {
     this.SpinnerService.show();
     var newSubmitJson = {
       totalExpenditure: this.budgetDataList[this.currentIndex].unallocatedAmount,
@@ -603,7 +603,7 @@ export class BudgetApproverComponent implements OnInit {
                   this.getAllGroupIdAndUnitIdRevisionCase(this.sharedService.sharedValue)
                 }
                 else {
-                  this.getAllGroupIdAndUnitId(localStorage.getItem('group_id'));
+                  this.getAllGroupIdAndUnitId(this.sharedService.sharedValue);
                 }
               }
               else {
@@ -624,7 +624,7 @@ export class BudgetApproverComponent implements OnInit {
   }
   authGroupIdFromBackend: any;
   showUpdate: boolean = false;
-  viewCDAParking(budgetData: any) {
+  async viewCDAParking(budgetData: any) {
     this.amountUnitData = budgetData.amountUnit;
     this.showUpdate = true;
     this.showSubmit = false;
@@ -1289,14 +1289,14 @@ export class BudgetApproverComponent implements OnInit {
 
 
   }
-  private getAllGroupIdAndUnitIdRevisionCase(sharedValue: string | undefined) {
+  async getAllGroupIdAndUnitIdRevisionCase(sharedValue: string | undefined) {
     this.SpinnerService.show();
     this.apiService
       .getApi(this.cons.api.getAllGroupIdAndUnitIdRevisionCase + '/' + sharedValue)
       .subscribe(async (res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
-          ////debugger;
+          debugger;
           this.budgetDataList = result['response'].budgetResponseist;
           //debugger;
           if(this.budgetDataList[0].isFlag=='1'||this.budgetDataList[0].isBudgetRevision=='1'||this.budgetDataList[0].allocationAmount=='0.0000'||this.budgetDataList[0].isCDAparking=='1'){
@@ -1314,7 +1314,7 @@ export class BudgetApproverComponent implements OnInit {
             if(this.budgetDataList[i].totalAllocationAmount!=undefined){
               // this.budgetDataList[i].allocationAmount1=((Number(this.budgetDataList[i].allocationAmount)*100000000-(Number(this.budgetDataList[i].totalAllocationAmount)/this.budgetDataList[i].amountUnit.amount)*100000000)/100000000).toString();
               let div=await this.common.divideDecimals(this.budgetDataList[i].totalAllocationAmount,this.budgetDataList[i].amountUnit.amount);
-              this.budgetDataList[i].allocationAmount1=this.common.subtractDecimals(this.budgetDataList[i].allocationAmount,div);
+              this.budgetDataList[i].allocationAmount1=await this.common.subtractDecimals(this.budgetDataList[i].allocationAmount,div);
             }
             else{
               this.budgetDataList[i].allocationAmount1=this.budgetDataList[i].allocationAmount;
