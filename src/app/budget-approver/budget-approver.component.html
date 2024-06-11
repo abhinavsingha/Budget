@@ -36,6 +36,7 @@
           <h3 class="card-title">Budget
             <span *ngIf="type=='BG'">Approval</span>
             <span *ngIf="type=='BR'">Receipt</span>
+            <span *ngIf="isNotification=='true'">: {{budgetDataList[0].fromUnit.descr}}</span>
           </h3>
           <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse">
