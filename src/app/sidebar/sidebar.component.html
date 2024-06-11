@@ -141,10 +141,11 @@
         <li class="nav-item" *ngIf=" userRole=='CB Creator'">
           <a href="#" class="nav-link" [routerLink]="['/new-contigent-bill']" [routerLinkActive]="['active']">
             <i class="fas fa-file-alt nav-icon"></i>
-            <p>New Contingent Bill<span *ngIf="sharedService.rejectedBillCount !== '0'&&sharedService.rejectedBillCount!=undefined"
+            <p>Contingent Bill<span *ngIf="sharedService.rejectedBillCount !== '0'&&sharedService.rejectedBillCount!=undefined"
                                         class="right badge badge-danger">{{this.sharedService.rejectedBillCount}}</span>
               <span *ngIf="rejectedBillCount !== '0'&&sharedService.rejectedBillCount==undefined"
                     class="right badge badge-danger">{{rejectedBillCount}}</span>
+            </p>
           </a>
         </li>
 
