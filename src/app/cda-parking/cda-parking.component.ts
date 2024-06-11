@@ -138,7 +138,6 @@ debugger;
       this.totalParking=Number(sum).toFixed(7);
 
     }
-
     debugger;
   }
 
@@ -188,8 +187,23 @@ debugger;
   }
 
   updateCdaParkingDataApi() {
+    let flag:boolean=true;
     this.cdaParkingListResponseData = [];
     debugger;
+    for(let cda of this.cdaList){
+      for(let cda2 of this.originalCda){
+        if(cda.cdaParkingUnit.ginNo==cda2.cdaParkingUnit.ginNo){
+          if(cda.amount!=cda2.balance){
+            flag=false;
+          }
+        }
+      }
+    }
+    if(flag){
+      this.common.faliureAlert('Cannot update with same values','Updated entries are same as old CDA entries','');
+      return;
+    }
+
     for (var i = 0; i < this.cdaList.length; i++) {
       this.cdaParkingListResponseData.push({
         amountTypeId: this.currentEntry.amountUnit.amountTypeId,
