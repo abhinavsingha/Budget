@@ -82,11 +82,11 @@ export class RevisionApprovalComponent implements OnInit{
     this.getDashBoardDta();
     $.getScript('assets/js/adminlte.js');
   }
-  getAlGroupId(groupId: any) {
+  async getAlGroupId(groupId: any) {
     this.SpinnerService.show();
     this.apiService
       .getApi(this.cons.api.getAllRevisionGroupId + '/' + groupId)
-      .subscribe((res) => {
+      .subscribe(async (res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
           if(localStorage.getItem('move')=='1'){
@@ -114,11 +114,11 @@ export class RevisionApprovalComponent implements OnInit{
             this.formdata.get('returnRemark')?.setValue(this.budgetDataLists[0].returnRemarks);
           this.amountUnit=this.budgetDataLists[0].amountUnit.amountType;
           for(let data of this.budgetDataLists){
-            data.bal=(parseFloat(data.allocationAmount)+parseFloat(data.revisedAmount)).toFixed(4);
+            data.bal=(await this.common.addDecimals(data.allocationAmount,data.revisedAmount));
           }
           this.oldBudgetDataLists=result['response'].oldBudgetRevision;
           for(let data of this.oldBudgetDataLists){
-            data.bal=(parseFloat(data.allocationAmount)+parseFloat(data.revisedAmount)).toFixed(4);
+            data.bal=(await this.common.addDecimals(data.allocationAmount,data.revisedAmount));
           }
           this.SpinnerService.hide();
         } else {

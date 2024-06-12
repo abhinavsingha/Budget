@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import * as $ from 'jquery';
 import { ConstantsService } from '../services/constants/constants.service';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -8,7 +8,6 @@ import { BudgetRevisionUnitList } from '../model/budget-revision-unit-list';
 import { UploadDocuments } from '../model/upload-documents';
 
 import {
-  FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
@@ -56,14 +55,12 @@ class revision {
   templateUrl: './revision.component.html',
   styleUrls: ['./revision.component.scss'],
 })
-export class RevisionComponent {
+export class RevisionComponent implements OnInit{
   budgetFinYears: any[] = [];
   subHeads: any[] = [];
   allunits: any[] = [];
-  selectedunits: any[] = [];
   budgetRevisionUnitList: any[] = [];
   allocationType: any[] = [];
-  budgetAllocationArray: any[] = [];
   submitted = false;
   p: number = 1;
   length: number = 0;
@@ -92,7 +89,7 @@ export class RevisionComponent {
   totalManipulate: any=0.0;
   totalManipulate2: any=0.0;
   loginIndex: any;
-  newRevisionAmount: number=0;
+  newRevisionAmount: string='0';
   private localIndex: any;
   cdaDetails: any;
   private flag: boolean=true;
@@ -162,7 +159,6 @@ export class RevisionComponent {
       .getApi(this.cons.api.showAllAmountUnit)
       .subscribe({
         next: (v: object) => {
-          this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
             this.amountType = result['response'];
@@ -172,7 +168,6 @@ export class RevisionComponent {
           }
         },
         error: (e) => {
-          this.SpinnerService.hide();
           console.error(e);
           this.common.faliureAlert('Error', e['error']['message'], 'error');
         },
@@ -216,7 +211,7 @@ export class RevisionComponent {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
-            this.formdata.get('fundAvailable')?.setValue(parseFloat(result['response'].fundAvailable).toFixed(4));
+            this.formdata.get('fundAvailable')?.setValue(parseFloat(result['response'].fundAvailable));
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
@@ -294,10 +289,10 @@ export class RevisionComponent {
     });
   }
 
-  moveDataToNextGrid(formDataValue: any) {
-    // this.subHeadWiseUnitList.push(new SubHeadWiseUnitList());
-    this.budgetRevisionUnitList.splice(0, 0, new BudgetRevisionUnitList());
-  }
+  // moveDataToNextGrid(formDataValue: any) {
+  //   // this.subHeadWiseUnitList.push(new SubHeadWiseUnitList());
+  //   this.budgetRevisionUnitList.splice(0, 0, new BudgetRevisionUnitList());
+  // }
 
   uploadDocuments: any[] = [];
   unitForDocuments: any[] = [];
@@ -311,11 +306,11 @@ export class RevisionComponent {
   }
   file: any;
 
-  onChangeFile(event: any) {
-    if (event.target.files.length > 0) {
-      this.file = event.target.files[0];
-    }
-  }
+  // onChangeFile(event: any) {
+  //   if (event.target.files.length > 0) {
+  //     this.file = event.target.files[0];
+  //   }
+  // }
   uploadFileResponse: any;
   uploadFile(index: any) {
     const formData = new FormData();
@@ -360,31 +355,31 @@ export class RevisionComponent {
     });
   }
 
-  deleteFieldValue(index: any) {
-    this.uploadDocuments.splice(index, 1);
-  }
+  // deleteFieldValue(index: any) {
+  //   this.uploadDocuments.splice(index, 1);
+  // }
+  //
+  // addFieldValue() {
+  //   this.uploadDocuments.push(new UploadDocuments());
+  // }
 
-  addFieldValue() {
-    this.uploadDocuments.push(new UploadDocuments());
-  }
-
-  revisionAmount(index: any) {
+  async revisionAmount(index: any) {
     debugger;
     this.localIndex=index;
     this.budgetRevisionUnitList2[this.loginIndex].revisionAmount=0.0;
     if(this.budgetRevisionUnitList2[index].revisionAmount==undefined)
-      this.budgetRevisionUnitList2[index].revisionAmount=0.0000.toFixed(4);
+      this.budgetRevisionUnitList2[index].revisionAmount=0.0000;
 
     debugger;
-    if(Number(this.budgetRevisionUnitList2[index].existingAmount)==0&&Number(this.budgetRevisionUnitList2[index].expenditure)>0&&(Number(this.budgetRevisionUnitList2[index].revisionAmount)*Number(this.formdata.get('amountType')?.value.amount))<Number(this.budgetRevisionUnitList2[index].expenditure))
+    if(Number(this.budgetRevisionUnitList2[index].existingAmount)==0&&Number(this.budgetRevisionUnitList2[index].expenditure)>0&&(Number(await this.common.multiplyDecimals(this.budgetRevisionUnitList2[index].revisionAmount,this.formdata.get('amountType')?.value.amount))<Number(this.budgetRevisionUnitList2[index].expenditure)))
     {
-      this.common.warningAlert('Allocation cannot be less than Expenditure','Allocation cannot be less than Expenditure: '+((parseFloat(this.budgetRevisionUnitList2[index].expenditure))/parseFloat(this.formdata.get('amountType')?.value.amount)).toFixed(4)+this.formdata.get('amountType')?.value.amountType,'')
+      this.common.warningAlert('Allocation cannot be less than Expenditure','Allocation cannot be less than Expenditure: '+(await this.common.divideDecimals(this.budgetRevisionUnitList2[index].expenditure,this.formdata.get('amountType')?.value.amount))+this.formdata.get('amountType')?.value.amountType,'')
       return;
 
     }
 
 
-    if((parseFloat(this.budgetRevisionUnitList2[index].remAmount)+parseFloat(this.budgetRevisionUnitList2[index].revisionAmount)<0)&&(Number(this.budgetRevisionUnitList2[index].existingAmount)!=0)){
+    if(Number(this.common.addDecimals(this.budgetRevisionUnitList2[index].remAmount,this.budgetRevisionUnitList2[index].revisionAmount))<0&&(Number(this.budgetRevisionUnitList2[index].existingAmount)!=0)){
       Swal.fire('Cannot withdraw more than existing amount');
       this.budgetRevisionUnitList2[index].revisionAmount=undefined;
       return;
@@ -397,13 +392,13 @@ export class RevisionComponent {
     if(this.budgetRevisionUnitList2[index].unit.unit==this.dasboardData.userDetails.unitId){
       this.userUnitRE=this.budgetRevisionUnitList2[index].revisionAmount;
     }
-    this.budgetRevisionUnitList2[index].revisiedAmount = (parseFloat(this.budgetRevisionUnitList2[index].existingAmount)+parseFloat(this.budgetRevisionUnitList2[index].revisionAmount)).toFixed(4);
-    this.budgetRevisionUnitList2[index].manipulate2 = (parseFloat(this.budgetRevisionUnitList2[index].manipulate)+parseFloat(this.budgetRevisionUnitList2[index].revisionAmount)).toFixed(4);
-    this.budgetRevisionUnitList2[index].revisionAmount=parseFloat(this.budgetRevisionUnitList2[index].revisionAmount).toFixed(4);
+    this.budgetRevisionUnitList2[index].revisiedAmount = await this.common.addDecimals(this.budgetRevisionUnitList2[index].existingAmount,this.budgetRevisionUnitList2[index].revisionAmount);
+    this.budgetRevisionUnitList2[index].manipulate2 = await this.common.addDecimals(this.budgetRevisionUnitList2[index].manipulate,this.budgetRevisionUnitList2[index].revisionAmount);
+    this.budgetRevisionUnitList2[index].revisionAmount=this.budgetRevisionUnitList2[index].revisionAmount;
     debugger;
-    if(parseFloat(this.budgetRevisionUnitList2[index].manipulate2)<parseFloat(this.budgetRevisionUnitList2[index].expenditure)/parseFloat(this.formdata.get('amountType')?.value.amount)){
+    if(parseFloat(this.budgetRevisionUnitList2[index].manipulate2)<parseFloat(await this.common.divideDecimals(this.budgetRevisionUnitList2[index].expenditure,this.formdata.get('amountType')?.value.amount))){
       this.budgetRevisionUnitList2[index].revisionAmount=0
-      this.common.warningAlert('Allocation cannot be less than Expenditure','Allocation cannot be less than Expenditure: '+((parseFloat(this.budgetRevisionUnitList2[index].expenditure))/parseFloat(this.formdata.get('amountType')?.value.amount)).toFixed(4)+this.formdata.get('amountType')?.value.amountType,'')
+      this.common.warningAlert('Allocation cannot be less than Expenditure','Allocation cannot be less than Expenditure: '+(await this.common.addDecimals(await this.common.divideDecimals(this.budgetRevisionUnitList2[index].expenditure,this.formdata.get('amountType')?.value.amount),this.formdata.get('amountType')?.value.amountType)),'')
       this.revisionAmount(index);
     }
     this.getTotalAmount();
@@ -415,35 +410,51 @@ export class RevisionComponent {
   totalRemainingAmount: any = 0.0;
 
 
-  private populateRevisionData() {
-    //debugger;
+  private async populateRevisionData() {
+    debugger;
     for (let i = 0; i < this.allRevisedUnits.length; i++) {
-      const entry: BudgetRevisionUnitList = {
-        expenditure:this.allRevisedUnits[i].expenditureAmount,
-        cdaTransData:this.allRevisedUnits[i].cdaTransData,
-        id: undefined,
-        unit: this.allRevisedUnits[i].unit,
-        existingAmount: (parseFloat(this.allRevisedUnits[i].allocationAmount)*parseFloat(this.allRevisedUnits[i].amountType.amount)/this.formdata.get('amountType')?.value.amount).toFixed(4),
-        revisionAmount: undefined,
-        revisiedAmount: (parseFloat(this.allRevisedUnits[i].allocationAmount)*parseFloat(this.allRevisedUnits[i].amountType.amount)/this.formdata.get('amountType')?.value.amount).toFixed(4),
-        isSelected: false,
-        amountType: this.allRevisedUnits[i].amountType,
-        remainingAmount:(parseFloat(this.allRevisedUnits[i].balAmount)*parseFloat(this.allRevisedUnits[i].amountType.amount)/this.formdata.get('amountType')?.value.amount).toFixed(4),
-        manipulate:this.allRevisedUnits[i].manipulate,
-        manipulate2:this.allRevisedUnits[i].manipulate,
-        remAmount:(parseFloat(this.allRevisedUnits[i].remainingAmount)*parseFloat(this.allRevisedUnits[i].amountType.amount)/this.formdata.get('amountType')?.value.amount).toFixed(4),
-      };
-      this.budgetRevisionUnitList2.push(entry);
+      debugger;
+      if(this.allRevisedUnits[i].allocationAmount!=undefined){
+
+        const entry: BudgetRevisionUnitList = {
+          expenditure:this.allRevisedUnits[i].expenditureAmount,
+          cdaTransData:this.allRevisedUnits[i].cdaTransData,
+          id: undefined,
+          unit: this.allRevisedUnits[i].unit,
+          // existingAmount: (parseFloat(this.allRevisedUnits[i].allocationAmount)*parseFloat(this.allRevisedUnits[i].amountType.amount)/this.formdata.get('amountType')?.value.amount).toFixed(4),
+
+          existingAmount: await this.common.divideDecimals(await this.common.multiplyDecimals((this.allRevisedUnits[i].allocationAmount),(this.allRevisedUnits[i].amountType.amount)),this.formdata.get('amountType')?.value.amount),
+          revisionAmount: undefined,
+          // revisiedAmount: (parseFloat(this.allRevisedUnits[i].allocationAmount)*parseFloat(this.allRevisedUnits[i].amountType.amount)/this.formdata.get('amountType')?.value.amount).toFixed(4),
+          revisiedAmount: await this.common.divideDecimals(await this.common.multiplyDecimals((this.allRevisedUnits[i].allocationAmount),(this.allRevisedUnits[i].amountType.amount)),this.formdata.get('amountType')?.value.amount),
+          isSelected: false,
+          amountType: this.allRevisedUnits[i].amountType,
+          // remainingAmount:(parseFloat(this.allRevisedUnits[i].balAmount)*parseFloat(this.allRevisedUnits[i].amountType.amount)/this.formdata.get('amountType')?.value.amount).toFixed(4),
+          remainingAmount:await this.common.divideDecimals(await this.common.multiplyDecimals((this.allRevisedUnits[i].balAmount),(this.allRevisedUnits[i].amountType.amount)),this.formdata.get('amountType')?.value.amount),
+          manipulate:this.allRevisedUnits[i].manipulate,
+          manipulate2:this.allRevisedUnits[i].manipulate,
+          remAmount:await this.common.divideDecimals(await this.common.multiplyDecimals((this.allRevisedUnits[i].remainingAmount),(this.allRevisedUnits[i].amountType.amount)),this.formdata.get('amountType')?.value.amount),
+        };
+        this.budgetRevisionUnitList2.push(entry);
+      }
+
     }
     this.budgetRevisionUnitList2.sort((a: any, b: any) =>parseFloat(a.manipulate) - parseFloat(b.manipulate));
       // a.manipulate.localeCompare(b.manipulate));
     this.budgetRevisionUnitList2.reverse();
+    for(let i=0;i<this.allRevisedUnits.length;i++){
 
+      if(this.budgetRevisionUnitList2[i].unit.unit==this.unitId){
+        this.loginIndex=i;
+      }
+    }
+    debugger;
     this.getTotalAmount();
   }
   tabledata: tableData[] = [];
   masterChecked: boolean = false;
-  saveDataToTable() {
+
+  async saveDataToTable() {
     if(this.tabledata.length!=0){
       return;
     }
@@ -495,18 +506,18 @@ export class RevisionComponent {
             subHead: this.formdata.get('subHead')?.value,
             allocationType: {allocationTypeId:this.formdata.get('allocationType')?.value.allocTypeId,allocationType:this.formdata.get('allocationType')?.value.allocType},
             amountType: this.budgetRevisionUnitList2[i].amountType,
-            amount: (parseFloat(this.budgetRevisionUnitList2[i].existingAmount)-parseFloat(this.budgetRevisionUnitList2[i].revisionAmount)).toFixed(4),
-            allocated: parseFloat(this.budgetRevisionUnitList2[i].existingAmount).toFixed(4),
-            revisedAmount: parseFloat(this.budgetRevisionUnitList2[i].revisionAmount).toFixed(4),
-            bal:parseFloat(this.budgetRevisionUnitList2[i].manipulate2).toFixed(4),
-            manipulate:parseFloat(this.budgetRevisionUnitList2[i].manipulate).toFixed(4),
-            manipulate2:parseFloat(this.budgetRevisionUnitList2[i].manipulate2).toFixed(4),
-            expenditure:parseFloat(this.budgetRevisionUnitList2[i].expenditure).toFixed(4),
+            amount: (await this.common.subtractDecimals(this.budgetRevisionUnitList2[i].existingAmount,this.budgetRevisionUnitList2[i].revisionAmount)),
+            allocated: (this.budgetRevisionUnitList2[i].existingAmount),
+            revisedAmount: (this.budgetRevisionUnitList2[i].revisionAmount),
+            bal:(this.budgetRevisionUnitList2[i].manipulate2),
+            manipulate:(this.budgetRevisionUnitList2[i].manipulate),
+            manipulate2:(this.budgetRevisionUnitList2[i].manipulate2),
+            expenditure:(this.budgetRevisionUnitList2[i].expenditure),
           };
         }
         else{
           data = {
-            expenditure:parseFloat(this.budgetRevisionUnitList2[i].expenditure).toFixed(4),
+            expenditure:(this.budgetRevisionUnitList2[i].expenditure),
             cdaDetails:this.budgetRevisionUnitList2[i].cdaTransData,
             isAllocated: 1,
             checked: false,
@@ -514,26 +525,22 @@ export class RevisionComponent {
             unit: this.budgetRevisionUnitList2[i].unit,
             subHead: this.formdata.get('subHead')?.value,
             allocationType: alloc,
-            allocated: parseFloat(this.budgetRevisionUnitList2[i].existingAmount).toFixed(4),
-            manipulate:parseFloat(this.budgetRevisionUnitList2[i].manipulate).toFixed(4),
-            manipulate2:parseFloat(this.budgetRevisionUnitList2[i].manipulate2).toFixed(4),
+            allocated: (this.budgetRevisionUnitList2[i].existingAmount),
+            manipulate:(this.budgetRevisionUnitList2[i].manipulate),
+            manipulate2:(this.budgetRevisionUnitList2[i].manipulate2),
             amountType: this.budgetRevisionUnitList2[i].amountType,
-            amount: (parseFloat(this.budgetRevisionUnitList2[i].existingAmount)-parseFloat(this.budgetRevisionUnitList2[i].revisionAmount)).toFixed(4),
-            revisedAmount: parseFloat(
-              this.budgetRevisionUnitList2[i].revisionAmount
-            ).toFixed(4),
-            bal:parseFloat(
-              this.budgetRevisionUnitList2[i].manipulate2
-            ).toFixed(4)
+            amount: (await this.common.subtractDecimals(this.budgetRevisionUnitList2[i].existingAmount,this.budgetRevisionUnitList2[i].revisionAmount)),
+            revisedAmount: (this.budgetRevisionUnitList2[i].revisionAmount),
+            bal:(this.budgetRevisionUnitList2[i].manipulate2)
           };
         }
-        let sum=0;
+        let sum='0';
         debugger;
         for(let cda of data.cdaDetails){
           if(cda.amount!=undefined)
-            sum+=parseFloat(cda.amount);
+            sum=await this.common.addDecimals(sum, cda.amount);
           else
-            cda.amount=0;
+            cda.amount='0';
         }
         if(sum!=data.revisedAmount&&this.unitId==this.budgetRevisionUnitList2[i].unit.unit)
         {
@@ -582,7 +589,8 @@ export class RevisionComponent {
   }
   allocation_withdrawl:any;
   userUnitRE:any;
-  getTotalAmount() {
+
+  async getTotalAmount() {
     this.totalManipulate=0.0;
     this.totalExistingAmount = 0.0;
     this.totlaRevisionAmount = 0.0;
@@ -594,61 +602,63 @@ export class RevisionComponent {
 
     for (let i = 0; i < this.budgetRevisionUnitList2.length; i++) {
       if (!this.budgetRevisionUnitList2[i].isSelected) {
-        this.totalRemainingAmount=(parseFloat(this.totalRemainingAmount) +
-          parseFloat(this.budgetRevisionUnitList2[i].remainingAmount)).toFixed(4);
-        this.totalExistingAmount =
-          (parseFloat(this.totalExistingAmount) +
-          parseFloat(this.budgetRevisionUnitList2[i].existingAmount)).toFixed(4);
-        this.totalRevisiedAmount =(
-          parseFloat(this.totalRevisiedAmount) +
-          parseFloat(this.budgetRevisionUnitList2[i].revisiedAmount)).toFixed(4);
-        this.totalManipulate=(parseFloat(this.totalManipulate)+parseFloat(this.budgetRevisionUnitList2[i].manipulate)).toFixed(4);
-        this.totalManipulate2=(parseFloat(this.totalManipulate2)+parseFloat(this.budgetRevisionUnitList2[i].manipulate2)).toFixed(4);
+        this.totalRemainingAmount=await this.common.addDecimals(this.totalRemainingAmount,this.budgetRevisionUnitList2[i].remainingAmount);
+        // this.totalExistingAmount =  (parseFloat(this.totalExistingAmount) + parseFloat(this.budgetRevisionUnitList2[i].existingAmount)).toFixed(4);
+        this.totalExistingAmount =  await this.common.addDecimals(this.totalExistingAmount,this.budgetRevisionUnitList2[i].existingAmount);
+        // this.totalRevisiedAmount =(parseFloat(this.totalRevisiedAmount) +parseFloat(this.budgetRevisionUnitList2[i].revisiedAmount)).toFixed(4);
+        this.totalRevisiedAmount =await this.common.addDecimals(this.totalRevisiedAmount,this.budgetRevisionUnitList2[i].revisiedAmount);
+        // this.totalManipulate=(parseFloat(this.totalManipulate)+parseFloat(this.budgetRevisionUnitList2[i].manipulate)).toFixed(4);
+        this.totalManipulate=await this.common.addDecimals(this.totalManipulate,this.budgetRevisionUnitList2[i].manipulate);
+        // this.totalManipulate2=(parseFloat(this.totalManipulate2)+parseFloat(this.budgetRevisionUnitList2[i].manipulate2)).toFixed(4);
+        this.totalManipulate2=await this.common.addDecimals(this.totalManipulate2,this.budgetRevisionUnitList2[i].manipulate2);
         if (this.budgetRevisionUnitList2[i].revisionAmount != undefined) {
-          this.totlaRevisionAmount =(
-            parseFloat(this.totlaRevisionAmount) +
-            parseFloat(this.budgetRevisionUnitList2[i].revisionAmount)).toFixed(4);
+          this.totlaRevisionAmount =await this.common.addDecimals(this.totlaRevisionAmount,this.budgetRevisionUnitList2[i].revisionAmount);
         }
       }
     }
-    this.totalExistingAmount=parseFloat(this.totalExistingAmount).toFixed(4);
+    this.totalExistingAmount=this.totalExistingAmount;
 
     if(this.userUnitRE!=undefined){
-      this.allocation_withdrawl=(parseFloat(this.totlaRevisionAmount)-parseFloat(this.userUnitRE)).toFixed(4);
+      this.allocation_withdrawl=await this.common.subtractDecimals(this.totlaRevisionAmount,this.userUnitRE);
     }else
-      this.allocation_withdrawl=(parseFloat(this.totlaRevisionAmount)).toFixed(4);
-    this.formdata.get('reallocateFund')?.setValue(parseFloat(this.allocation_withdrawl).toFixed(4));
-    if(((parseFloat(this.formdata.get('fundAvailable')?.value)-parseFloat(this.allocation_withdrawl)*parseFloat(this.formdata.get('amountType')?.value.amount)))<0){
+      this.allocation_withdrawl=(this.totlaRevisionAmount);
+    this.formdata.get('reallocateFund')?.setValue(this.allocation_withdrawl);
+    if(Number(await this.common.subtractDecimals(this.formdata.get('fundAvailable')?.value,(await this.common.multiplyDecimals(this.allocation_withdrawl,this.formdata.get('amountType')?.value.amount))))<0){
       this.common.warningAlert('Unit Out of Funds','Revision is exceeding unit funds','')
       this.flag=false;
     }
     else{
       this.flag=true;
     }
-    this.formdata.get('balanceFund')?.setValue((parseFloat(this.formdata.get('fundAvailable')?.value)-parseFloat(this.allocation_withdrawl)*parseFloat(this.formdata.get('amountType')?.value.amount)).toFixed(4));
+    this.formdata.get('balanceFund')?.setValue(await this.common.subtractDecimals(this.formdata.get('fundAvailable')?.value,await this.common.multiplyDecimals(this.allocation_withdrawl,this.formdata.get('amountType')?.value.amount)));
+    debugger;
     this.autoCalcHomeUnitRevision(this.localIndex);
   }
-  autoCalcHomeUnitRevision(index:any){
-    this.budgetRevisionUnitList2[this.loginIndex].revisionAmount=(parseFloat(this.totlaRevisionAmount)*-1).toFixed(4);
-    this.budgetRevisionUnitList2[this.loginIndex].manipulate2=(parseFloat(this.budgetRevisionUnitList2[this.loginIndex].revisionAmount)+parseFloat(this.budgetRevisionUnitList2[this.loginIndex].manipulate)).toFixed(4);
-
-    if(this.budgetRevisionUnitList2[this.loginIndex].manipulate2<0){
-      this.common.warningAlert('Unit out of Funds','Cannot withdraw more than available','');
-      this.budgetRevisionUnitList2[index].revisionAmount=0;
-      this.budgetRevisionUnitList2[this.loginIndex].manipulate2=this.budgetRevisionUnitList2[this.loginIndex].manipulate;
+  async autoCalcHomeUnitRevision(index:any){
+    if(index!=undefined){
       debugger;
-      this.revisionAmount(index);
+      this.budgetRevisionUnitList2[this.loginIndex].revisionAmount=await this.common.multiplyDecimals(this.totlaRevisionAmount,'-1');
+      this.budgetRevisionUnitList2[this.loginIndex].manipulate2=(await this.common.addDecimals(this.budgetRevisionUnitList2[this.loginIndex].revisionAmount,this.budgetRevisionUnitList2[this.loginIndex].manipulate));
 
+      if(this.budgetRevisionUnitList2[this.loginIndex].manipulate2<0){
+        this.common.warningAlert('Unit out of Funds','Cannot withdraw more than available','');
+        this.budgetRevisionUnitList2[index].revisionAmount=0;
+        this.budgetRevisionUnitList2[this.loginIndex].manipulate2=this.budgetRevisionUnitList2[this.loginIndex].manipulate;
+        debugger;
+        this.revisionAmount(index);
+
+      }
+      else{
+        this.totalManipulate2=await this.common.addDecimals(this.totalManipulate2,this.budgetRevisionUnitList2[this.loginIndex].revisionAmount);
+        this.newRevisionAmount=await this.common.addDecimals(this.totlaRevisionAmount,this.budgetRevisionUnitList2[this.loginIndex].revisionAmount);
+      }
+      this.totalManipulate2='0';
+      for (let i = 0; i < this.budgetRevisionUnitList2.length; i++) {
+        if (!this.budgetRevisionUnitList2[i].isSelected)
+          this.totalManipulate2=(await this.common.addDecimals(this.totalManipulate2,this.budgetRevisionUnitList2[i].manipulate2));
+      }
     }
-    else{
-      this.totalManipulate2=parseFloat(this.totalManipulate2)+parseFloat(this.budgetRevisionUnitList2[this.loginIndex].revisionAmount);
-      this.newRevisionAmount=parseFloat(this.totlaRevisionAmount)+parseFloat(this.budgetRevisionUnitList2[this.loginIndex].revisionAmount);
-    }
-    this.totalManipulate2=0.0;
-    for (let i = 0; i < this.budgetRevisionUnitList2.length; i++) {
-      if (!this.budgetRevisionUnitList2[i].isSelected)
-      this.totalManipulate2=(parseFloat(this.totalManipulate2)+parseFloat(this.budgetRevisionUnitList2[i].manipulate2)).toFixed(4);
-    }
+
   }
   getAllocationTypeData() {
     this.SpinnerService.show();
@@ -674,7 +684,8 @@ export class RevisionComponent {
       });
   }
   showSubmit:boolean=true;
-  saveRevisionData() {
+
+  async saveRevisionData() {
     this.showSubmit=false;
     const requestJson: revision[] = [];
     if(this.tabledata.length==0){
@@ -729,7 +740,7 @@ export class RevisionComponent {
           toUnitId: this.tabledata[i].unit.unit,
           subHeadId: this.tabledata[i].subHead.budgetCodeId,
           amount: this.tabledata[i].allocated,
-          revisedAmount: Number(Number(this.tabledata[i].allocated) + Number(this.tabledata[i].revisedAmount)),
+          revisedAmount: Number(await this.common.addDecimals(this.tabledata[i].allocated,this.tabledata[i].revisedAmount)),
           allocationTypeId: this.tabledata[i].allocationType.allocationTypeId,
           amountTypeId: this.formdata.get('amountType')?.value.amountTypeId,
           remark: this.formdata.get('remarks')?.value,
@@ -838,7 +849,7 @@ export class RevisionComponent {
       complete: () => console.info('complete'),
     });
   }
-  getBudgetRevisionData(formDataValue: any) {
+  async getBudgetRevisionData(formDataValue: any) {
     this.budgetRevisionUnitList2=[];
     this.tabledata=[];
     if(formDataValue.finYear==null||formDataValue.finYear==undefined||formDataValue.subHead==undefined||formDataValue.subHead==null||
@@ -855,22 +866,22 @@ export class RevisionComponent {
     this.apiService
       .postApi(this.cons.api.getBudgetRevisionData, submitJson)
       .subscribe({
-        next: (v: object) => {
+        next: async (v: object) => {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
 
           if (result['message'] == 'success') {
             this.allRevisedUnits = result['response'];
-
-            // this.allRevisedUnits.sort((a: any, b: any) => a.allocationAmount.localeCompare(b.allocationAmount));
-            // this.allRevisedUnits.reverse();
-            let alloc=0.0;
-
+            let alloc='0';
             for(let i=0;i<this.allRevisedUnits.length;i++){
-
               if(this.allRevisedUnits[i].unit.unit!=this.unitId){
-                alloc=alloc + (parseFloat(this.allRevisedUnits[i].allocationAmount)*parseFloat(this.allRevisedUnits[i].amountType.amount)/this.formdata.get('amountType')?.value.amount);
-                this.allRevisedUnits[i].manipulate=(parseFloat(this.allRevisedUnits[i].allocationAmount)*parseFloat(this.allRevisedUnits[i].amountType.amount)/this.formdata.get('amountType')?.value.amount).toFixed(4);
+
+                // alloc=alloc + (parseFloat(this.allRevisedUnits[i].allocationAmount)*parseFloat(this.allRevisedUnits[i].amountType.amount)/this.formdata.get('amountType')?.value.amount);
+                alloc= await this.common.addDecimals(alloc,await this.common.divideDecimals(await this.common.multiplyDecimals(this.allRevisedUnits[i].allocationAmount,this.allRevisedUnits[i].amountType.amount),this.formdata.get('amountType')?.value.amount));
+
+                // this.allRevisedUnits[i].manipulate=(parseFloat(this.allRevisedUnits[i].allocationAmount)*parseFloat(this.allRevisedUnits[i].amountType.amount)/this.formdata.get('amountType')?.value.amount).toFixed(4);
+                this.allRevisedUnits[i].manipulate=await this.common.multiplyDecimals(this.allRevisedUnits[i].allocationAmount,await this.common.divideDecimals(this.allRevisedUnits[i].amountType.amount,this.formdata.get('amountType')?.value.amount));
+
               }
             }
             for(let i=0;i<this.allRevisedUnits.length;i++){
@@ -880,24 +891,16 @@ export class RevisionComponent {
                 if(this.cdaDetails!=undefined){
                   for(let cdaIn of this.cdaDetails){
                     if(cdaIn.remainingCdaAmount!=undefined){
-                      cdaIn.remainingCdaAmount=Number(cdaIn.remainingCdaAmount).toFixed(4);
+                      cdaIn.remainingCdaAmount=cdaIn.remainingCdaAmount;
                     }
                   }
                 }
-                this.allRevisedUnits[i].manipulate=(parseFloat(this.allRevisedUnits[i].allocationAmount)*parseFloat(this.allRevisedUnits[i].amountType.amount)/this.formdata.get('amountType')?.value.amount-alloc).toFixed(4);
+                this.allRevisedUnits[i].manipulate=await this.common.subtractDecimals(await this.common.divideDecimals(await this.common.multiplyDecimals(this.allRevisedUnits[i].allocationAmount,this.allRevisedUnits[i].amountType.amount),this.formdata.get('amountType')?.value.amount),alloc);
                 this.loginIndex=i;
               }
             }
-
-            // this.subHeadFilterDatas = result['response'].subHeads;
-            // this.tableData.splice(indexValue, 1);
-            // if (this.subHeadFilterDatas != undefined) {
-            //   for (let i = 0; i < this.subHeadFilterDatas.length; i++) {
-            //     this.subHeadFilterDatas[i].amount = undefined;
-            //   }
-            // }
+            debugger;
             this.populateRevisionData();
-            //debugger;
             this.setAmountType()
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
@@ -910,6 +913,7 @@ export class RevisionComponent {
         },
         complete: () => console.info('complete'),
       });
+    debugger;
   }
   amountUnit:string='';
   setAmountType() {
@@ -957,20 +961,20 @@ export class RevisionComponent {
     this.totalRemainingAmount=0.0;
 
   }
-  dataManipulate(){
+  // dataManipulate(){
+  //
+  // }
 
-  }
-
-  checkTotal() {
+  async checkTotal() {
     //debugger;
     this.budgetRevisionUnitList2[this.loginIndex].cdaTransData;
-    let sum =0
+    let sum ='0';
     for(let cda of this.cdaDetails){
       if(cda.amount!=undefined){
-        sum =sum + parseFloat(cda.amount);
+        sum =await this.common.addDecimals(sum ,cda.amount);
       }
       else{
-        cda.amount=0;
+        cda.amount='0';
       }
     }
     if(sum!=this.budgetRevisionUnitList2[this.loginIndex].revisionAmount){
@@ -992,5 +996,4 @@ export class RevisionComponent {
       }
     });
   }
-
 }
