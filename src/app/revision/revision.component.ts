@@ -398,7 +398,7 @@ export class RevisionComponent implements OnInit{
     debugger;
     if(parseFloat(this.budgetRevisionUnitList2[index].manipulate2)<parseFloat(await this.common.divideDecimals(this.budgetRevisionUnitList2[index].expenditure,this.formdata.get('amountType')?.value.amount))){
       this.budgetRevisionUnitList2[index].revisionAmount=0
-      this.common.warningAlert('Allocation cannot be less than Expenditure','Allocation cannot be less than Expenditure: '+(await this.common.addDecimals(await this.common.divideDecimals(this.budgetRevisionUnitList2[index].expenditure,this.formdata.get('amountType')?.value.amount),this.formdata.get('amountType')?.value.amountType)),'')
+      this.common.warningAlert('Allocation cannot be less than Expenditure','Allocation cannot be less than Expenditure: '+(((this.budgetRevisionUnitList2[index].expenditure) ))+" Rupees",'')
       this.revisionAmount(index);
     }
     this.getTotalAmount();
