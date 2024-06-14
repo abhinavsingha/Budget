@@ -1323,7 +1323,6 @@ export class BudgetApproverComponent implements OnInit {
             //   this.budgetDataList[i].balanceAmount = parseFloat(this.budgetDataList[i].balanceAmount).toFixed(4);
             // }
           }
-          this.SpinnerService.hide();
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
@@ -1398,6 +1397,7 @@ export class BudgetApproverComponent implements OnInit {
   }
   private getOldCdaData(submitJson:any) {
 
+    this.olddataflag=false;
     this.apiService
       .postApi(this.cons.api.getAllBillCdaAndAllocationSummery, submitJson)
       .subscribe({
