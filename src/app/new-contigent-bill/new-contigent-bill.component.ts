@@ -1608,13 +1608,13 @@ export class NewContigentBillComponent implements OnInit {
   }
 
   checkSanction() {
-    if(Number(this.formdata.get('authority')?.value)==null){
-      this.common.warningAlert('Invalid Input','Sanction Number can only be Numeric','');
+    if((this.formdata.get('authority')?.value)==null){
+      this.common.warningAlert('Invalid Input','Sanction Number can not be blank','');
       this.formdata.get('authority')?.setValue(null);
     }
-    else if(Number(this.formdata.get('authority')?.value)<=0){
-      this.common.warningAlert('Invalid Input','Sanction Number should be greater than 0','');
-      this.formdata.get('authority')?.setValue(null);
-    }
+    // else if(Number(this.formdata.get('authority')?.value)<=0){
+    //   this.common.warningAlert('Invalid Input','Sanction Number should be greater than 0','');
+    //   this.formdata.get('authority')?.setValue(null);
+    // }
   }
 }
