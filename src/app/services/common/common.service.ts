@@ -105,11 +105,18 @@ export class CommonService {
     });
   }
   multiplyDecimals(num1: string, num2: string): Promise<string> {
+
+
     return new Promise((resolve) => {
-      const decimal1 = new Decimal(num1);
-      const decimal2 = new Decimal(num2);
-      const result = decimal1.times(decimal2).toString();
-      resolve(result);
+      if(num1==undefined||num2==undefined){
+        resolve('0');
+      }
+      else{
+        const decimal1 = new Decimal(num1);
+        const decimal2 = new Decimal(num2);
+        const result = decimal1.times(decimal2).toString();
+        resolve(result);
+      }
     });
   }
   divideDecimals(num1: string, num2: string): Promise<string> {
