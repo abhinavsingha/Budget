@@ -48,7 +48,6 @@ export class UnitRebaseReportComponent {
 
   ngOnInit(): void {
     this.sharedService.updateInbox();
-    this.getCgUnitData();
     $.getScript('assets/js/adminlte.js');
   }
 
@@ -83,15 +82,13 @@ export class UnitRebaseReportComponent {
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
             if(formdata.reprtType=='03'){
-
               this.generateReportCsv(result['response']);
-
             }
             else{ this.downloadPdf(
               result['response'][0].path,
               result['response'][0].fileName
-            );}
-
+            );
+            }
           } else {
             this.common.faliureAlert('Please try later', result['message'], '');
           }
@@ -247,11 +244,21 @@ export class UnitRebaseReportComponent {
     }
   }
   checkDate(formdata:any,field:string) {
+    debugger;
     const date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-    const cbDate = this.datePipe.transform(
-      new Date(formdata.authDate),
-      'yyyy-MM-dd'
-    );
+    let cbDate:string|null;
+    if(field=='fromDate'){
+      cbDate = this.datePipe.transform(
+        new Date(formdata.fromDate),
+        'yyyy-MM-dd'
+      );
+    }
+    else{
+      cbDate = this.datePipe.transform(
+        new Date(formdata.toDate),
+        'yyyy-MM-dd'
+      );
+    }
     if (cbDate != null && date != null) {
       if (cbDate > date) {
         Swal.fire('Date cannot be a future date');
@@ -264,27 +271,38 @@ export class UnitRebaseReportComponent {
       this.common.warningAlert('Invalid Date','Enter date of this fiscal year only','');
       this.formdata.get(field)?.reset();
     }
+    debugger;
+    if(this.formdata.get('fromDate')?.value!=undefined&&this.formdata.get('toDate')?.value!=undefined&&this.formdata.get('toDate')?.value!=""&&this.formdata.get('fromDate')?.value!=""){
+      debugger;
+      this.getRebasedUnits();
+    }
   }
-  getCgUnitData() {
-    this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getIsShipCgUnit).subscribe({
-      next: (v: object) => {
-        debugger;
-        this.SpinnerService.hide();
-        let result: { [key: string]: any } = v;
-        if (result['message'] == 'success') {
-          this.allunits = result['response'];
+
+  private getRebasedUnits() {
+    this.allunits=[];
+    let toDate=(this.formdata.get('toDate')?.value);
+    let fromDate=(this.formdata.get('fromDate')?.value);
+
+    debugger;
+      this.SpinnerService.show();
+      this.apiService.getApi(this.cons.api.rebasedUnits+'/'+fromDate+'/'+toDate).subscribe({
+        next: (v: object) => {
+          debugger;
           this.SpinnerService.hide();
-        } else {
-          this.common.faliureAlert('Please try later', result['message'], '');
-        }
-      },
-      error: (e) => {
-        this.SpinnerService.hide();
-        console.error(e);
-        this.common.faliureAlert('Error', e['error']['message'], 'error');
-      },
-      complete: () => console.info('complete'),
-    });
+          let result: { [key: string]: any } = v;
+          if (result['message'] == 'success') {
+            this.allunits = result['response'];
+            this.SpinnerService.hide();
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        },
+        error: (e) => {
+          this.SpinnerService.hide();
+          console.error(e);
+          this.common.faliureAlert('Error', e['error']['message'], 'error');
+        },
+        complete: () => console.info('complete'),
+      });
   }
 }
