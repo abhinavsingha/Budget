@@ -10,6 +10,7 @@ export class ConstantsService {
   serviceUrl = 'https://icg.net.in/cgbudget/'; //Production server
   // serviceUrl = 'https://icg.net.in/budget/'; //UAT server
   // serviceUrl = 'http://192.168.100.238:1111/';
+  // serviceUrl = 'http://192.168.137.236:1111/';
   // serviceUrl = 'http://169.254.75.245:1111/';
   api = {
     fileUpload: this.serviceUrl + 'fileUpload/uploadFile',
@@ -255,6 +256,7 @@ export class ConstantsService {
     getRevisionReportExcel: this.serviceUrl+'reportController/getRevisionReportExcel',
     getReceiptReportNew: this.serviceUrl+'reportController/getRevisedAllocationAprReportDoc',
     transferCbBill: this.serviceUrl+'contingentBillController/transferCbBill',
+    rebasedUnits: this.serviceUrl+'unitRebaseController/getIsShipRebaseUnits',
 
 
   };
