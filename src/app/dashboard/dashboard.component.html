@@ -65,7 +65,8 @@
                             <!-- </select> -->
                           </div>
                         </div>
-                        <div class="col-md-3">
+                       <!-- start of previous  div for option -->
+                        <!-- <div class="col-md-3">
                           <div class="form-group" [formGroup]="formdata">
                             <label>Unit</label>
                             <ng-select class="form-control select2bs4" style="width: 100%" [items]="allunits"
@@ -73,14 +74,39 @@
                               appendTo="body">
                             </ng-select>
                           </div>
+                        </div> -->
+                        <!-- End of previous div for option -->
+
+                         <!-- changes done to display the option on the click -->
+                        <div class="col-md-3">
+                          <div class="form-group" [formGroup]="formdata">
+                            <label>Unit</label>
+                            <ng-select 
+                              class="form-control select2bs4" 
+                              style="width: 100%" 
+                              [items]="allunits"
+                              bindLabel="descr" 
+                              placeholder="Select To Unit" 
+                              formControlName="unit"
+                              appendTo="body">
+                              
+                              <ng-template ng-option-tmp let-item="item">
+                                <div title="{{item.descr}}">
+                                  {{item.descr}}
+                                </div>
+                              </ng-template>
+                            </ng-select>
+                          </div>
                         </div>
+                        <!-- end of changes for the option -->
+                        
                         <div class="col-md-3">
                           <div class="form-group" [formGroup]="formdata">
                             <label>Sub Head Type<span class="text-danger"></span></label>
                             <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeadType"
                                        bindLabel="subType" placeholder="Select Subhead"
                                        formControlName="subHeadType"></ng-select>
-                          </div>
+                          </div>                                                
                         </div>
                         <div class="col-md-3">
                           <div class="form-group" [formGroup]="formdata">
@@ -92,12 +118,31 @@
                         </div>
 
                         <div class="col-md-3">
-                          <div class="form-group" [formGroup]="formdata">
+                          <!-- previous div for sub head  -->
+                          <!-- <div class="form-group" [formGroup]="formdata">
                             <label>Sub Head<span class="text-danger"></span></label>
                             <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeads"
                               bindLabel="subHeadDescr" placeholder="Select Amount Unit"
                               formControlName="subHead"  appendTo="body"></ng-select>
-                          </div>
+                          </div> -->
+                          <!-- previous div for sub head  -->
+
+                          <!-- start of the sub head changes to display full names  -->
+                          <div class="form-group" [formGroup]="formdata">
+                            <label>Sub Head<span class="text-danger"></span></label>
+                            <ng-select class="form-control select2bs4" style="width: 100%"
+                                       [items]="subHeads"
+                                       bindLabel="subHeadDescr"
+                                       placeholder="Select Amount Unit"
+                                       formControlName="subHead"
+                                       appendTo="body">
+                                <ng-template ng-option-tmp let-item="item">
+                                    <span title="{{item.subHeadDescr}}">{{item.subHeadDescr}}</span>
+                                </ng-template>
+                            </ng-select>
+                        </div>
+                        <!-- end of changes  -->
+                        
                         </div>
                         <div class="col-md-3">
                           <div class="form-group" [formGroup]="formdata">

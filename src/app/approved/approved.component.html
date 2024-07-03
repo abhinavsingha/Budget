@@ -67,9 +67,10 @@
                             <td>{{li.unit_sub}}</td>
                             <td *ngIf="li.status!='Rejected'">{{li.status}}</td>
                             <td *ngIf="li.status=='Rejected'">Returned</td>
-                            <td *ngIf="li.isType!= 'Budget Revised'"><button type="submit" class="btn btn-warning mr-2" (click)="redirect(li)"> <i
+                            <!-- btn btn info is added to the view button changes on 01-07-2024 -->
+                            <td *ngIf="li.isType!= 'Budget Revised'"><button type="submit" class="btn btn-primary mr-2" (click)="redirect(li)"> <i
                               class="fas fa-eye"></i> View</button>
-                              <button *ngIf="li.status== 'Fully Approved'||li.isType=='Budget Receipt'" type="button" class="btn btn-primary mr-2" (click)="getAuthDoc(li)">Auth Doc</button>
+                              <button *ngIf="li.status== 'Fully Approved'||li.isType=='Budget Receipt'" type="button" class="btn btn-info mr-2" (click)="getAuthDoc(li)">Auth Doc</button>
                             </td>
                             <td *ngIf="li.isType== 'Budget Revised'">
 
