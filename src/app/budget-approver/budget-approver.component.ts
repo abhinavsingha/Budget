@@ -55,6 +55,7 @@ export class BudgetApproverComponent implements OnInit {
   private totalExpWithAllocation: any;
   subUnitAllocation:number=0;
   isNotification:string|null="true";
+  isRevisionFlag: boolean=false;
   ngOnInit(): void {
     this.isNotification=localStorage.getItem('notification');
     this.sharedService.updateInbox();
@@ -600,6 +601,7 @@ export class BudgetApproverComponent implements OnInit {
                 //debugger;
                 if(this.sharedService.isRevision=='1')
                 {
+                  this.isRevisionFlag=true;
                   this.getAllGroupIdAndUnitIdRevisionCase(this.sharedService.sharedValue)
                 }
                 else {
@@ -1342,6 +1344,7 @@ export class BudgetApproverComponent implements OnInit {
     }
   }
   // oldDataFlag:boolean=false;
+
   checkOldDataChange(cdaParking: any) {
     if(cdaParking.oldData!=undefined){
       if(cdaParking.amount<cdaParking.oldData){

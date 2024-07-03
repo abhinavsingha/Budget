@@ -59,7 +59,8 @@
                     <th>Sub Head</th>
                     <th>Type</th>
                     <th>Allocated Fund</th>
-                    <th *ngIf="budgetDataList[0].revisedAmount!=0">Total Additional/Withdrawal</th>
+<!--                    <th *ngIf="budgetDataList[0].revisedAmount!=0">Total Additional/Withdrawal</th>-->
+                    <th *ngIf="isRevisionFlag">Total Additional/Withdrawal</th>
                     <!--                      <th-->
                     <!--                        *ngIf="isInboxAndOutbox!= 'Outbox' && type!='Budget Allocation' && userRole!='Budget Approver'">-->
                     <!--                        Rem. Amount-->
@@ -83,7 +84,10 @@
                     <td *ngIf="buggetData.balanceAmount!=undefined">{{buggetData.balanceAmount}}
                       {{buggetData.remeningBalanceUnit.amountType}}</td>
                     <td>{{buggetData.allocationAmount}} {{buggetData.amountUnit.amountType}}</td>
-                    <td *ngIf="budgetDataList[0].revisedAmount!=0">{{buggetData.revisedAmount}} {{buggetData.amountUnit.amountType}}</td>
+<!--                    <td *ngIf="budgetDataList[0].revisedAmount!=0">{{buggetData.revisedAmount}} {{buggetData.amountUnit.amountType}}</td>-->
+                    <td *ngIf="isRevisionFlag">{{buggetData.revisedAmount}} {{buggetData.amountUnit.amountType}}</td>
+
+
                     <td
                       *ngIf="showAction&&((isInboxAndOutbox== 'approved'||isInboxAndOutbox== 'inbox') && type!='Budget Allocation' && userRole!='Budget Approver')">
                       <button *ngIf="buggetData.allocationAmount!='0.0000' && buggetData.isCDAparking == '0' && buggetData.isFlag!='1' &&buggetData.isBudgetRevision!='1'" type="submit" class="btn btn-warning mr-2"
