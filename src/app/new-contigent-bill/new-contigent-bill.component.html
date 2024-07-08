@@ -313,9 +313,26 @@
                         <td *ngIf="cb.cbFilePath==null">{{cb.cbDate}}</td>
                         <td *ngIf="cb.cbFilePath==null">{{cb.status}}</td>
                         <td *ngIf="cb.cbFilePath==null">
-                          <button (click)="updateFormdata(cb)" *ngIf="cb.status !== 'Approved'" class="btn btn-primary"
+                          <!-- changes for colour button done on 01-07-2024 -->
+                          <button (click)="updateFormdata(cb)" *ngIf="cb.status == 'Pending'" class="btn btn-warning"
+                          type="button">View
+                        </button>
+
+                        <button (click)="updateFormdata(cb)" *ngIf="cb.status == 'Rejected'" class="btn btn-danger"
                             type="button">View
                           </button>
+                          <button (click)="updateFormdata(cb)" *ngIf="cb.status == 'Verified'" class="btn btn-danger"
+                            type="button">View
+                          </button>
+                           
+
+                          <!-- previous button before change  -->
+                          <!-- <button (click)="updateFormdata(cb)" *ngIf="cb.status !== 'Approved'" class="btn btn-primary"
+                            type="button">View
+                          </button> -->
+                          <!-- previous button end  -->
+
+                          <!-- End of colour changes for the button  -->
                           <button (click)="downloadBill(cb)" *ngIf="cb.status === 'Approved'" class="btn btn-primary"
                             type="button">Download
                           </button>
