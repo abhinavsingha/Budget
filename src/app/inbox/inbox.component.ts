@@ -188,12 +188,13 @@ export class InboxComponent implements OnInit {
       this.sharedService.revisionStatus=li.status;
       if(li.status=='Fully Approved')
         this.sharedService.status=true;
+      this.sharedService.msgId=li.mangeInboxId;
       if(li.isType == 'Budget Revision')
         localStorage.setItem('move','0');
       else if(li.isType == 'Budget Revised By Lower Unit')
       {
         localStorage.setItem('move','1');
-        this.sharedService.msgId=li.mangeInboxId;
+
       }
       this.router.navigate(['/revision-approval']);
 

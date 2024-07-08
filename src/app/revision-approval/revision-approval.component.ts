@@ -89,7 +89,8 @@ export class RevisionApprovalComponent implements OnInit{
       .subscribe(async (res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
-          if(localStorage.getItem('move')=='1'){
+          debugger;
+          if(localStorage.getItem('move')=='1'||result['response'].budgetResponseist[0].status=='Rejected'){
             localStorage.removeItem('move')
             this.finallyMoveArchive(this.sharedService.msgId);
           }
