@@ -365,7 +365,8 @@ export class BudgetApproverComponent implements OnInit {
                   cdaParkingUnit: value.ginNo,
                   amount: Number(value.totalParkingAmount).toString(),
                   balance: undefined,
-                  oldData: Number(value.totalParkingAmount).toString()
+                  oldData: Number(value.totalParkingAmount).toString(),
+                  oldCdaParkingUnit: undefined
                 }
 
                 if(oldCdaData!=undefined)
@@ -424,7 +425,8 @@ export class BudgetApproverComponent implements OnInit {
                   cdaParkingUnit: value.ginNo,
                   amount: value.totalParkingAmount,
                   balance: undefined,
-                  oldData: value.totalParkingAmount
+                  oldData: value.totalParkingAmount,
+                  oldCdaParkingUnit: undefined
                 }
                 this.multipleCdaParking.push(oldCdaData);
 
@@ -1419,7 +1421,8 @@ export class BudgetApproverComponent implements OnInit {
                 cdaParkingUnit: value.ginNo,
                 amount: ((value.totalParkingAmount)).toString(),
                 balance: undefined,
-                oldData: ((value.totalParkingAmount)).toString()
+                oldData: ((value.totalParkingAmount)).toString(),
+                oldCdaParkingUnit: undefined
               }
 
               if(oldCdaData!=undefined)

@@ -916,12 +916,13 @@ export class RecieptComponent {
     let sum:number=0;
     for(let cda of li.cdaParkingListData){
       sum=sum+Number(cda.remainingCdaAmount);
-      let entry:MultiCdaParking={
+      let entry:MultiCdaParking= {
         id: undefined,
         cdaParkingUnit: cda.ginNo,
         amount: undefined,
         balance: cda.remainingCdaAmount,
-        oldData: undefined
+        oldData: undefined,
+        oldCdaParkingUnit: undefined
       };
       // this.cdaList.push(entry);
     }

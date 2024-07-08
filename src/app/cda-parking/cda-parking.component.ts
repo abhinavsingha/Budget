@@ -84,7 +84,8 @@ export class CdaParkingComponent implements OnInit {
                 cdaParkingUnit: value.ginNo,
                 amount: value.totalParkingAmount,
                 balance: undefined,
-                oldData: value.totalParkingAmount
+                oldData: value.totalParkingAmount,
+                oldCdaParkingUnit:value.ginNo
               }
 
               if(oldCdaData!=undefined)
@@ -129,6 +130,7 @@ debugger;
       let entry:MultiCdaParking={
         id: undefined,
         cdaParkingUnit: cda.ginNo,
+        oldCdaParkingUnit: cda.ginNo,
         amount: undefined,
         balance: cda.remainingAmount,
         oldData: undefined
@@ -187,19 +189,22 @@ debugger;
   }
 
   updateCdaParkingDataApi() {
-    let flag:boolean=true;
+    // let flag:boolean=true;
+    // let allCdaDifferentFlag=true;
     this.cdaParkingListResponseData = [];
     debugger;
+    let originalCdaSize=this.originalCda.length;
+    let matchingCda=0;
     for(let cda of this.cdaList){
       for(let cda2 of this.originalCda){
-        if(cda.cdaParkingUnit.ginNo==cda2.cdaParkingUnit.ginNo){
-          if(cda.amount!=cda2.balance){
-            flag=false;
+        if(cda.cdaParkingUnit.ginNo==cda2.oldCdaParkingUnit.ginNo){
+          if(cda.amount==cda2.balance){
+            matchingCda++;
           }
         }
       }
     }
-    if(flag){
+    if(matchingCda==originalCdaSize){
       this.common.faliureAlert('Cannot update with same values','Updated entries are same as old CDA entries','');
       return;
     }
