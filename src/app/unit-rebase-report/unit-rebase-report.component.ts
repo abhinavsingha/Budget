@@ -73,7 +73,7 @@ export class UnitRebaseReportComponent {
           '/' +
           formdata.toDate +
         '/'+
-        formdata.toUnit.unit
+        formdata.toUnit.cbUnit
       )
       .subscribe({
         next: (v: object) => {
