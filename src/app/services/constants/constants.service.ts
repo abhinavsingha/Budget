@@ -9,7 +9,7 @@ export class ConstantsService {
   serverRedirectUrl = 'https://icg.net.in/'; //For Production Server
   serviceUrl = 'https://icg.net.in/cgbudget/'; //Production server
   // serviceUrl = 'https://icg.net.in/budget/'; //UAT server
-  // serviceUrl = 'http://192.168.100.238:1111/';
+  // serviceUrl = 'http://192.168.1.5:1111/';
   // serviceUrl = 'http://192.168.137.236:1111/';
   // serviceUrl = 'http://169.254.75.245:1111/';
   api = {
