@@ -95,6 +95,27 @@ export class ManageUserComponent {
     });
   }
 
+  convertEpochToIST(epoch: number): string {
+    // Convert epoch to milliseconds
+    const date = new Date(epoch);
+
+    // Create a new date object for IST (UTC+5:30)
+    const offset = 5.5 * 60 * 60 * 1000;
+    const istDate = new Date(date.getTime() + offset);
+
+    // Format the date as needed
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      // hour: '2-digit',
+      // minute: '2-digit',
+      // second: '2-digit',
+      // timeZone: 'Asia/Kolkata'
+    };
+
+    return istDate.toLocaleString('en-IN', options);
+  }
   getAllUser() {
     this.SpinnerService.show();
     this.apiService.getApi(this.cons.api.getAllUser).subscribe((res) => {
@@ -116,6 +137,7 @@ export class ManageUserComponent {
               roleId: valueFromAPI[i].role[j].roleId,
               isActive: 1,
               pid: valueFromAPI[i].pid,
+              adminCreatedOn:this.convertEpochToIST(valueFromAPI[i].adminCreatedOn)
             });
           }
         }
