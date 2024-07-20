@@ -77,6 +77,7 @@ export class CbVerificationComponent {
   FundAllotted: any;
   private unitId: any;
   cdaData: any;
+  availableAmount: boolean=true;
   constructor(
     private http: HttpClient,
     private apiService: ApiCallingServiceService,
@@ -138,66 +139,73 @@ export class CbVerificationComponent {
         let getCbList = result['response'];
 
         for (let i = 0; i < getCbList.length; i++) {
-          // console.log('interation :' + i);
-          if(getCbList[i].authoritiesList.length>0)
-          {
-            let cdaData=[];
-            for(let cda of getCbList[i].cdaData){
-              const cdaItr = {
-                cdacrDrId: cda.cdaCrdrId,
-                cdaParkingId:cda.cdaParkingTrans,
-                cdaAmount:cda.amount
+          // debugger;
+          if (getCbList[i].authoritiesList[0].authGroupId == this.sharedService.sharedValue){
+            if(getCbList[i].authoritiesList.length>0)
+            {
+              // debugger;
+              let cdaData=[];
+              for(let cda of getCbList[i].cdaData){
+                const cdaItr = {
+                  cdacrDrId: cda.cdaCrdrId,
+                  cdaParkingId:cda.cdaParkingTrans,
+                  cdaAmount:cda.amount,
+                  ginNo: cda.ginNo
+                };
+                cdaData.push(cdaItr);
+              }
+              const entry: cb = {
+                allocatedAmount:getCbList[i].allocatedAmount,
+                gst:getCbList[i].gst,
+                cdaParkingId:cdaData,
+                authGroupId: getCbList[i].authoritiesList[0].authGroupId,
+                onAccountOf: getCbList[i].onAccountOf,
+                authorityDetails: getCbList[i].authorityDetails,
+                authUnitId: getCbList[i].authoritiesList[0].authUnit,
+                unitId: getCbList[i].cbUnitId.unit,
+                uploadFileDate: getCbList[i].fileDate,
+                finSerialNo: getCbList[i].finYear.serialNo,
+                progressiveAmount: getCbList[i].progressiveAmount,
+                fileDate: getCbList[i].fileDate,
+                minorHead: getCbList[i].budgetHeadID.minorHead,
+                unit: getCbList[i].cbUnitId.descr,
+                finYearName: getCbList[i].finYear.finYear,
+                majorHead: getCbList[i].budgetHeadID.majorHead,
+                subHead: getCbList[i].budgetHeadID.subHeadDescr,
+                amount: getCbList[i].cbAmount,
+                cbNo: getCbList[i].cbNo,
+                cbDate: this.datePipe.transform(
+                  new Date(getCbList[i].cbDate),
+                  'yyyy-MM-dd'
+                ),
+                remarks: getCbList[i].remarks,
+                authority: getCbList[i].authoritiesList[0].authority,
+                authorityUnit: getCbList[i].authoritiesList[0].authUnit,
+                date: this.datePipe.transform(
+                  new Date(getCbList[i].authoritiesList[0].authDate),
+                  'yyyy-MM-dd'
+                ),
+                firmName: getCbList[i].vendorName,
+                invoiceNo: getCbList[i].invoiceNO,
+                invoiceDate: getCbList[i].invoiceDate,
+                invoiceFile: getCbList[i].invoiceUploadId.uploadID,
+                returnRemarks: getCbList[i].authoritiesList[0].remarks,
+                status: getCbList[i].status,
+                budgetAllocated: this.budgetAllotted,
+                checked: false,
+                fileNo: getCbList[i].fileID,
+                file: getCbList[i].authoritiesList[0].docId,
+                budgetHeadID: getCbList[i].budgetHeadID,
+                contingentBilId: getCbList[i].cbId,
               };
-              cdaData.push(cdaItr);
-            }
-            const entry: cb = {
-              allocatedAmount:getCbList[i].allocatedAmount,
-              gst:getCbList[i].gst,
-              cdaParkingId:cdaData,
-              authGroupId: getCbList[i].authoritiesList[0].authGroupId,
-              onAccountOf: getCbList[i].onAccountOf,
-              authorityDetails: getCbList[i].authorityDetails,
-              authUnitId: getCbList[i].authoritiesList[0].authUnit,
-              unitId: getCbList[i].cbUnitId.unit,
-              uploadFileDate: getCbList[i].fileDate,
-              finSerialNo: getCbList[i].finYear.serialNo,
-              progressiveAmount: getCbList[i].progressiveAmount,
-              fileDate: getCbList[i].fileDate,
-              minorHead: getCbList[i].budgetHeadID.minorHead,
-              unit: getCbList[i].cbUnitId.descr,
-              finYearName: getCbList[i].finYear.finYear,
-              majorHead: getCbList[i].budgetHeadID.majorHead,
-              subHead: getCbList[i].budgetHeadID.subHeadDescr,
-              amount: getCbList[i].cbAmount,
-              cbNo: getCbList[i].cbNo,
-              cbDate: this.datePipe.transform(
-                new Date(getCbList[i].cbDate),
-                'yyyy-MM-dd'
-              ),
-              remarks: getCbList[i].remarks,
-              authority: getCbList[i].authoritiesList[0].authority,
-              authorityUnit: getCbList[i].authoritiesList[0].authUnit,
-              date: this.datePipe.transform(
-                new Date(getCbList[i].authoritiesList[0].authDate),
-                'yyyy-MM-dd'
-              ),
-              firmName: getCbList[i].vendorName,
-              invoiceNo: getCbList[i].invoiceNO,
-              invoiceDate: getCbList[i].invoiceDate,
-              invoiceFile: getCbList[i].invoiceUploadId.uploadID,
-              returnRemarks: getCbList[i].authoritiesList[0].remarks,
-              status: getCbList[i].status,
-              budgetAllocated: this.budgetAllotted,
-              checked: false,
-              fileNo: getCbList[i].fileID,
-              file: getCbList[i].authoritiesList[0].docId,
-              budgetHeadID: getCbList[i].budgetHeadID,
-              contingentBilId: getCbList[i].cbId,
-            };
-            if (entry.authGroupId == this.sharedService.sharedValue)
+              // if (entry.authGroupId == this.sharedService.sharedValue){
+              //
+              // }
               this.cbList.push(entry);
-            // console.log(entry+"      ||     "+this.cbList);
+            }
           }
+          // console.log('interation :' + i);
+
 
         }
       },
@@ -321,14 +329,25 @@ export class CbVerificationComponent {
                             // this.formdata
                             //   .get('balance')
                             //   ?.setValue(parseFloat(this.FundAllotted.fundallocated)*this.FundAllotted.amountUnit.amount - parseFloat(this.FundAllotted.expenditure));
-                            this.cdaData=result['response'].cdaParkingTrans;
-                            for(let cda of this.cdaData){
-                              cda.remainingCdaAmount=parseFloat(cda.remainingCdaAmount)*parseFloat(cda.amountType.amount);
-                              for(let cbEntryItr of cbEntry.cdaParkingId){
-                                if(cda.cdaParkingId==cbEntryItr.cdaParkingId)
-                                  cda.amount=cbEntryItr.cdaAmount;
+
+
+
+                            // debugger;
+                            if(result['response'].cdaParkingTrans.length>0){
+                              this.availableAmount=true;
+                              this.cdaData=result['response'].cdaParkingTrans;
+                              for(let cda of this.cdaData){
+                                cda.remainingCdaAmount=parseFloat(cda.remainingCdaAmount)*parseFloat(cda.amountType.amount);
+                                for(let cbEntryItr of cbEntry.cdaParkingId){
+                                  if(cda.cdaParkingId==cbEntryItr.cdaParkingId)
+                                    cda.amount=cbEntryItr.cdaAmount;
+                                }
                               }
                             }
+                            else{
+                              this.populateCdaForRevisedAllocationBills();
+                            }
+
                           } else {
                             this.common.faliureAlert('Please try later', result['message'], '');
                           }
@@ -386,7 +405,7 @@ export class CbVerificationComponent {
     this.formdata.get('invoiceNo')?.setValue(cbEntry.invoiceNo);
     this.formdata.get('invoiceDate')?.setValue(cbEntry.invoiceDate);
     this.formdata.get('invoiceFile')?.setValue(cbEntry.invoiceFile);
-    debugger;
+    // debugger;
     if(cbEntry.returnRemarks==null)
       this.formdata.get('returnRemarks')?.setValue(cbEntry.remarks);
     else
@@ -432,6 +451,7 @@ export class CbVerificationComponent {
     // debugger;
     for(let list of this.cbList){
       for(let cda of list.cdaParkingId){
+
         const entry={
           cdacrDrId:cda.cdacrDrId,
           allocatedAmount:cda.cdaAmount,
@@ -653,5 +673,27 @@ export class CbVerificationComponent {
         console.error('Failed to download PDF:', error);
       }
     );
+  }
+
+  private populateCdaForRevisedAllocationBills() {
+    debugger;
+    this.availableAmount=false;
+    this.cdaData=[];
+
+    for(let cbCda of this.cbList[0].cdaParkingId){
+      // let ginNo=cbCda.ginNo
+      let cda={
+        amount: cbCda.cdaAmount,
+        ginNo: cbCda.ginNo
+      };
+      this.cdaData.push(cda);
+    }
+
+
+
+  }
+
+  debug() {
+    debugger;
   }
 }
