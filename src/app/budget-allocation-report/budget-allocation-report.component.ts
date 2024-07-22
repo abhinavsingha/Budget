@@ -1722,9 +1722,7 @@ export class BudgetAllocationReportComponent implements OnInit {
     this.generateCSV(tableData, columns, filename, column);
   }
 
-  getSubheadByMajorHead(formdata: any) {
 
-  }
 
   checkDate(formdata:any,field:string) {
     const date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
@@ -1746,5 +1744,30 @@ export class BudgetAllocationReportComponent implements OnInit {
       this.formdata.get(field)?.reset();
     }
 
+  }
+
+  setMajorHead(formdata: FormGroup<{
+    amountType: FormControl<any>;
+    subHeadType: FormControl<any>;
+    reprtType: FormControl<string | null>;
+    majorHead: FormControl<any>;
+    allocStatus: FormControl<string | null>;
+    toDate: FormControl<any>;
+    finYear: FormControl<any>;
+    toUnit: FormControl<any>;
+    allocationType: FormControl<any>;
+    reportType: FormControl<string | null>;
+    fromDate: FormControl<any>;
+    subHead: FormControl<any>;
+    allocationType3: FormControl<any>;
+    allocationType2: FormControl<any>
+  }>) {
+    debugger;
+    let majorhead=formdata.value.subHead.majorHead;
+    for(let head of this.majorHeadList){
+      if(head.majorHead==majorhead){
+        this.formdata.get('majorHead')?.setValue(head);
+      }
+    }
   }
 }

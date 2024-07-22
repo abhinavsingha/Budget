@@ -143,13 +143,13 @@
                 <div class="form-group">
                   <label>Sub Head <span class="text-danger">*</span></label>
                   <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeads"
-                    bindLabel="subHeadDescr" placeholder="Select Sub Head" formControlName="subHead"></ng-select>
+                    bindLabel="subHeadDescr" placeholder="Select Sub Head" (change)="setMajorHead(formdata)" formControlName="subHead"></ng-select>
                 </div>
               </div>
               <div class="col-md-3" *ngIf="showmajorHead">
                 <div class="form-group" [formGroup]="formdata">
                   <label>Major Head<span class="text-danger"></span></label>
-                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="majorHeadList" (change)="getSubheadByMajorHead(formdata.value)"
+                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="majorHeadList"
                              bindLabel="majorHead" placeholder="Select MajorHead"
                              formControlName="majorHead"></ng-select>
                 </div>
