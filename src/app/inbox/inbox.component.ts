@@ -87,7 +87,8 @@ export class InboxComponent implements OnInit {
 
   redirect(li: InboxList) {
     if(li.isRebase=='1'){
-      this.updateMsgStatusMain(li);
+      this.finallyMoveArchive(li);
+      // this.updateMsgStatusMain(li);
     }
     debugger;
     this.sharedService.isRevision=li.isRevision;
