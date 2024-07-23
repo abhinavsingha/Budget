@@ -1303,7 +1303,7 @@ export class BudgetApproverComponent implements OnInit {
           debugger;
           this.budgetDataList = result['response'].budgetResponseist;
           //debugger;
-          if(this.budgetDataList[0].isFlag=='1'||this.budgetDataList[0].isBudgetRevision=='1'||this.budgetDataList[0].allocationAmount=='0.0000'||this.budgetDataList[0].isCDAparking=='1'){
+          if(this.budgetDataList[0].isFlag=='1'||this.budgetDataList[0].allocationAmount=='0.0000'||this.budgetDataList[0].allocationAmount=='0.0'||this.budgetDataList[0].isCDAparking=='1'){
             this.updateMsgStatusMain(this.sharedService.msgId);
           }
           for (let i = 0; i < this.budgetDataList.length; i++) {
