@@ -196,6 +196,8 @@ export class ArchiveComponent implements OnInit {
               isType = 'Budget Revised By Lower Unit';
             }else if (list[i].isBgOrCg == "UR") {
               isType = 'Budget Revised';
+            }else if (list[i].isBgOrCg == "RR") {
+              isType = 'Budget Rebase';
             }
             const entry: InboxList = {
               serial: i + 1,
