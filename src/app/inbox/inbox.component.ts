@@ -342,7 +342,7 @@ export class InboxComponent implements OnInit {
    updateMsgStatusMain(li:any) {
     let msgId=li.mangeInboxId;
     this.apiService
-      .getApi(this.cons.api.updateMsgStatusMain +'/'+msgId)
+      .getApi(this.cons.api.moveToArchive +'/'+msgId)
       .subscribe(
         (res) => {
           let result: { [key: string]: any } = res;
