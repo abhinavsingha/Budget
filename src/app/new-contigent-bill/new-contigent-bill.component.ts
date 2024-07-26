@@ -1185,7 +1185,7 @@ export class NewContigentBillComponent implements OnInit {
           budgetHeadId: budgetId,
           budgetFinancialYearId: this.cbList[i].finSerialNo,
           cbAmount: this.cbList[i].amount,
-          cbNumber: this.cbList[i].cbNo,
+          cbNumber: undefined,
           unit: this.cbList[i].unitId,
           fileNumber: this.cbList[i].fileNo,
           progressiveAmount: this.cbList[i].progressiveAmount,
