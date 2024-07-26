@@ -390,8 +390,8 @@ export class CbVerificationComponent {
     this.formdata.get('budgetAllocated')?.setValue(Number(cbEntry.allocatedAmount));
 
     this.budgetAllotted= Number(cbEntry.allocatedAmount);
-    this.formdata.get('progressive')?.setValue(cbEntry.progressiveAmount);
-    this.formdata.get('balance')?.setValue(Number(cbEntry.allocatedAmount)-Number(cbEntry.progressiveAmount));
+    this.formdata.get('progressive')?.setValue(Number(cbEntry.progressiveAmount).toFixed(2));
+    this.formdata.get('balance')?.setValue((Number(cbEntry.allocatedAmount)-Number(cbEntry.progressiveAmount)).toFixed(2));
     this.formdata.get('onAccOf')?.setValue(cbEntry.onAccountOf)
     this.formdata.get('authDetail')?.setValue(cbEntry.authorityDetails)
     this.formdata.get('amount')?.setValue(cbEntry.amount);
@@ -611,7 +611,7 @@ export class CbVerificationComponent {
         if (result['message'] == 'success') {
           this.FundAllotted = result['response'];
           this.expenditure = this.FundAllotted.expenditure;
-          this.formdata.get('progressive')?.setValue(this.expenditure);
+          this.formdata.get('progressive')?.setValue(Number(this.expenditure).toFixed(2));
           if (result['response'].fundAvailable == 0) {
             this.budgetAllotted = 0;
             this.formdata.get('budgetAllocated')?.setValue(0);

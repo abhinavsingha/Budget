@@ -495,7 +495,7 @@ export class ContigentBillApproverComponent implements OnInit {
 
     this.budgetAllotted= Number(cbEntry.allocatedAmount);
     this.formdata.get('progressive')?.setValue(cbEntry.progressiveAmount);
-    this.formdata.get('balance')?.setValue(Number(cbEntry.allocatedAmount)-Number(cbEntry.progressiveAmount));
+    this.formdata.get('balance')?.setValue((Number(cbEntry.allocatedAmount)-Number(cbEntry.progressiveAmount)).toFixed(2));
     this.formdata.get('gst')?.setValue(cbEntry.gst);
     this.formdata.get('fileNo')?.setValue(cbEntry.fileNo);
     this.formdata.get('fileDate')?.setValue(cbEntry.fileDate);

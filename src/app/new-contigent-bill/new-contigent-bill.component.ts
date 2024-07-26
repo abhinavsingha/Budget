@@ -349,7 +349,7 @@ export class NewContigentBillComponent implements OnInit {
         if (result['message'] == 'success') {
           this.FundAllotted = result['response'];
           this.expenditure = parseFloat(this.FundAllotted.expenditure);
-          this.formdata.get('progressive')?.setValue(this.expenditure);
+          this.formdata.get('progressive')?.setValue(Number(this.expenditure).toFixed(2));
           // if (result['response'].fundAvailable == 0) {
             this.budgetAllotted = 0;
             this.formdata.get('budgetAllocated')?.setValue(0);
@@ -648,7 +648,7 @@ export class NewContigentBillComponent implements OnInit {
   updateExpenditure() {
     let amount = Number(this.formdata.get('amount')?.value).toFixed(2);
     this.formdata.get('amount')?.setValue(amount);
-    this.formdata.get('progressive')?.setValue(this.expenditure);
+    this.formdata.get('progressive')?.setValue(Number(this.expenditure).toFixed(2));
     if (
       this.formdata.get('amount')?.value >
       this.budgetAllotted - parseFloat(this.formdata.get('progressive')?.value)
@@ -671,15 +671,15 @@ export class NewContigentBillComponent implements OnInit {
       // this.expenditure = parseFloat(this.expenditure) + this.billAmount;
       this.formdata
         .get('progressive')
-        ?.setValue(
+        ?.setValue((
           this.expenditure + parseFloat(this.formdata.get('amount')?.value)
-        );
+        ).toFixed(2));
       this.formdata
         .get('balance')
-        ?.setValue(
+        ?.setValue((
           parseFloat(this.formdata.get('budgetAllocated')?.value) -
             (this.expenditure + parseFloat(this.formdata.get('amount')?.value))
-        );
+        ).toFixed(2));
     }
   }
 
@@ -800,10 +800,10 @@ export class NewContigentBillComponent implements OnInit {
                           this.expenditure = parseFloat(this.FundAllotted.expenditure);
                           this.budgetAllotted = Number((parseFloat(result['response'].fundAvailable) * parseFloat(result['response'].amountUnit.amount))+parseFloat(result['response'].expenditure)).toFixed(4);
                           this.formdata.get('budgetAllocated')?.setValue((Number((parseFloat(result['response'].fundAvailable) *parseFloat(result['response'].amountUnit.amount))+parseFloat(result['response'].expenditure)).toFixed(4)));
-                          this.formdata.get('progressive')?.setValue(this.expenditure);
-                          this.formdata.get('progressive')?.setValue((Number(this.FundAllotted.expenditure)+Number(cbEntry.amount)));
+                          this.formdata.get('progressive')?.setValue(Number(this.expenditure).toFixed(2));
+                          this.formdata.get('progressive')?.setValue((Number(this.FundAllotted.expenditure)+Number(cbEntry.amount)).toFixed(2));
                           // this.formdata.get('balance')?.setValue((parseFloat(this.FundAllotted.fundAvailable) * this.FundAllotted.amountUnit.amount) -parseFloat(this.FundAllotted.expenditure));
-                          this.formdata.get('balance')?.setValue((parseFloat(this.FundAllotted.fundAvailable) * this.FundAllotted.amountUnit.amount) -parseFloat(cbEntry.amount));
+                          this.formdata.get('balance')?.setValue(((parseFloat(this.FundAllotted.fundAvailable) * this.FundAllotted.amountUnit.amount) -parseFloat(cbEntry.amount)).toFixed(2));
                           this.cdaData=result['response'].cdaParkingTrans;
                           for(let cda of this.cdaData){
                             cda.remainingCdaAmount=Number(parseFloat(cda.remainingCdaAmount)*parseFloat(cda.amountType.amount)).toFixed(4);
@@ -858,7 +858,7 @@ export class NewContigentBillComponent implements OnInit {
                       );
                       this.formdata
                         .get('progressive')
-                        ?.setValue(this.expenditure);
+                        ?.setValue(Number(this.expenditure).toFixed(2));
                       this.formdata
                         .get('budgetAllocated')
                         ?.setValue(
@@ -868,14 +868,14 @@ export class NewContigentBillComponent implements OnInit {
                       this.budgetAllotted = cbEntry.budgetAllocated;
                       this.formdata
                         .get('progressive')
-                        ?.setValue(parseFloat(this.FundAllotted.expenditure));
+                        ?.setValue((parseFloat(this.FundAllotted.expenditure).toFixed(2)));
                       this.formdata
                         .get('balance')
-                        ?.setValue(
+                        ?.setValue((
                           parseFloat(this.FundAllotted.fundAvailable) *
                             this.FundAllotted.amountUnit.amount -
                             parseFloat(this.FundAllotted.expenditure)
-                        );
+                        ).toFixed(2));
                       this.cdaData=result['response'].cdaParkingTrans;
                       for(let cda of this.cdaData){
                         cda.remainingCdaAmount=Number(parseFloat(cda.remainingCdaAmount)*parseFloat(cda.amountType.amount)).toFixed(4);
