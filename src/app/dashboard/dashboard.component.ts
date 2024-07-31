@@ -152,6 +152,7 @@ export class DashboardComponent implements OnInit {
             this.userAuthorised=true;
             this.getMajorDataNew();
             this.getDashBoardDta();
+            this.getCgUnitData();
             this.getBudgetFinYear();
             this.getSubHeadsData();
             this.getinbox();
@@ -198,7 +199,7 @@ export class DashboardComponent implements OnInit {
   }
   getCgUnitData() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe({
+    this.apiService.getApi(this.cons.api.getCgUnitHierarchy).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -270,12 +271,7 @@ export class DashboardComponent implements OnInit {
           this.sharedService.outbox = result['response'].outBox;
           this.sharedService.archive = result['response'].archived;
           this.sharedService.approve = result['response'].approved;
-          if(result['response'].userDetails.unitId=='001321')
-          {
-            this.getAllCgUnitData();
-          }
-          else
-            this.getCgUnitData();
+            // this.getCgUnitData();
           var roles = result['response'].userDetails.role[0].roleName;
           if (localStorage.getItem('user_role') != roles) {
             window.location.reload();

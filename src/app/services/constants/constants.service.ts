@@ -7,10 +7,10 @@ export class ConstantsService {
   constructor() {}
 
   serverRedirectUrl = 'https://icg.net.in/'; //For Production Server
-  serviceUrl = 'https://icg.net.in/cgbudget/'; //Production server
-  // serviceUrl = 'https://icg.net.in/budget/'; //UAT server
-  // serviceUrl = 'http://192.168.1.4:1111/';
-  // serviceUrl = 'http://192.168.137.236:1111/';
+  // serviceUrl = 'https://icg.net.in/cgbudget/'; //Production server
+  serviceUrl = 'https://icg.net.in/budget/'; //UAT server
+  // serviceUrl = 'http://192.168.1.3:1111/';
+  // serviceUrl = 'http://172.20.10.2:1111/';
   // serviceUrl = 'http://169.254.75.245:1111/';
   // serviceUrl = 'http://127.0.0.1:1111/';
   api = {
@@ -22,6 +22,7 @@ export class ConstantsService {
     getMajorData: this.serviceUrl + 'budgetAllocation/getMajorData',
     getBudgetFinYear: this.serviceUrl + 'budgetAllocation/getBudgetFinYear',
     getCgUnitData: this.serviceUrl + 'budgetAllocation/getCgUnitData',
+    getCgUnitHierarchy:  this.serviceUrl + 'budgetAllocation/getAllCgUnitHierarchy',
     getCgUnitWithoutMOD: this.serviceUrl + 'budgetAllocation/getCgUnitWithoutMOD',
     getAllSubHeadByMajorHead:this.serviceUrl + 'budgetAllocation/getAllSubHeadByMajorHead',
     getSubHeadsData: this.serviceUrl + 'budgetAllocation/getSubHeadsData',
@@ -258,6 +259,7 @@ export class ConstantsService {
     getReceiptReportNew: this.serviceUrl+'reportController/getRevisedAllocationAprReportDoc',
     transferCbBill: this.serviceUrl+'contingentBillController/transferCbBill',
     rebasedUnits: this.serviceUrl+'unitRebaseController/getIsShipRebaseUnits',
+
 
 
   };
