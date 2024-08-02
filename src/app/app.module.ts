@@ -59,12 +59,12 @@ function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        // url: 'http://localhost:8080/auth',
-        url: 'https://icg.net.in/auth/',
-        realm: 'icgrms', // PRODUCTION
-        // realm: 'uat',
-        clientId: 'cgbudget', // For Production
-        // clientId: 'budget', // For UAT Server
+        url: 'http://localhost:8080/auth',
+        // url: 'https://icg.net.in/auth/',
+        // realm: 'icgrms', // PRODUCTION
+         realm: 'uat',
+        // clientId: 'cgbudget', // For Production
+         clientId: 'budget', // For UAT Server
       },
       initOptions: {
         onLoad: 'login-required',
