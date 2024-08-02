@@ -597,10 +597,13 @@ export class NewContigentBillComponent implements OnInit {
               label: '',
               cbFilePath: getCbList[i].cbFilePath
             };
-            if (entry.status == 'Approved')
+            if (entry.status == 'Approved') {
               this.approvedPresent = true;
+              continue;
+            }
             // else if(entry.status=='Pending'||entry.status=='Rejected')
               // this.showUpdate=true;
+
             this.cbList.push(entry);
           }
 
