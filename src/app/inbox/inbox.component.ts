@@ -294,6 +294,9 @@ export class InboxComponent implements OnInit {
       isType='BG';
     else if(li.isType=='Budget Receipt')
       isType='BR';
+    else if(li.isType=="Budget Rebase"){
+      isType='RR';
+    }
     else
       isType='CB';
 
