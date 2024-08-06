@@ -45,6 +45,7 @@ export class OutboxComponent implements OnInit {
   inboxList: InboxList[] = [];
 
   p: number = 1;
+  filteredInboxList: InboxList[] =[];
 
   ngOnInit(): void {
     this.sharedService.updateInbox();
@@ -178,6 +179,7 @@ export class OutboxComponent implements OnInit {
             };
             this.inboxList.push(entry);
           }
+          this.filteredInboxList = [...this.inboxList];
         }
       } else {
         this.common.faliureAlert('Please try later', result['message'], '');
@@ -242,5 +244,25 @@ export class OutboxComponent implements OnInit {
   }
   openPdfUrlInNewTab(pdfUrl: string): void {
     window.open(pdfUrl, '_blank');
+  }
+
+
+  // Filter Implemented for search option
+
+  filterInbox(event: any) {
+    const searchTerm = event.target.value.toLowerCase();
+    
+    if (searchTerm.trim() === '') {
+      // No search term, show the original list
+      this.filteredInboxList = [...this.inboxList];
+    } else {
+      // Perform the search
+      this.filteredInboxList = this.inboxList.filter(item =>
+        (item.isType?.toLowerCase() || '').includes(searchTerm) ||
+        (item.createDate?.toLowerCase() || '').includes(searchTerm) ||
+        (item.type?.toLowerCase() || '').includes(searchTerm) ||
+        (item.status?.toLowerCase() || '').includes(searchTerm)
+      );
+    }
   }
 }

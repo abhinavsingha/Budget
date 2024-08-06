@@ -30,16 +30,16 @@
           <div class="card-header">
             <h3 class="card-title">Outbox</h3>
 
-            <!-- <div class="card-tools">
+             <div class="card-tools">
               <div class="input-group input-group-sm">
-                <input type="text" class="form-control" placeholder="Search Requests">
+                <input type="text" class="form-control" placeholder="Search Requests" (input)="filterInbox($event)">
                 <div class="input-group-append">
                   <div class="btn btn-primary">
                     <i class="fas fa-search"></i>
                   </div>
                 </div>
               </div>
-            </div> -->
+            </div> 
             <!-- /.card-tools -->
           </div>
           <!-- /.card-header -->
@@ -58,7 +58,7 @@
                   <th>Action</th>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let li of inboxList| paginate :{itemsPerPage:20,currentPage:p}; let i = index"
+                  <tr *ngFor="let li of filteredInboxList | paginate :{itemsPerPage:20,currentPage:p}; let i = index"
                     id="htmlData" >
                     <td>{{20 *(p-1)+i+1}}</td>
                     <td>{{li.isType}}</td>
