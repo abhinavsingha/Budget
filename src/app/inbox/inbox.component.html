@@ -29,6 +29,17 @@
         <div class="card card-primary card-outline">
           <div class="card-header">
             <h3 class="card-title">Inbox</h3>
+            <div class="card-tools">
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control" placeholder="Search Requests" (input)="filterInbox($event)">
+                <div class="input-group-append">
+                  <div class="btn btn-primary">
+                    <i class="fas fa-search"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
 
             <!-- <div class="card-tools">
               <div class="input-group input-group-sm">
@@ -66,7 +77,7 @@
                       <td>CGHQ</td>
                       <td>Approved</td>
                     </tr> -->
-                  <tr *ngFor="let li of inboxList| paginate :{itemsPerPage:20,currentPage:p}; let i = index" [ngClass]="{ 'ng-star-inserted new': li.isCda == false }"
+                  <tr *ngFor="let li of filteredInboxList | paginate :{itemsPerPage:20,currentPage:p}; let i = index" [ngClass]="{ 'ng-star-inserted new': li.isCda == false }"
                     id="htmlData" >
                     <td>{{20 *(p-1)+i+1}}</td>
                     <td>{{li.isType}}</td>

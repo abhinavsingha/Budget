@@ -18,7 +18,7 @@ class InboxList {
   isRebase:string|undefined;
   isType:string|undefined;
   serial: number | undefined;
-  type: undefined;
+  type:string|undefined;
   createDate: string | undefined | null;
   // createBy: string | undefined;
   unitName: string | undefined;
@@ -45,11 +45,13 @@ import {error} from "jquery";
   styleUrls: ['./inbox.component.scss'],
 })
 export class InboxComponent implements OnInit {
+  
   public userRole: any;
-
   inboxList: InboxList[] = [];
-
   p: number = 1;
+  filteredInboxList: InboxList[] =[];
+  originalModalList: any[] = []; // Original list for modal
+  filteredModalList: any[] = []; // Filtered list for modal
 
   // inboxList: any[] = [];
 
@@ -84,6 +86,9 @@ export class InboxComponent implements OnInit {
     private datePipe: DatePipe,
     private sharedService: SharedService
   ) {}
+
+  
+  
 
   redirect(li: InboxList) {
     if(li.isRebase=='1'){
@@ -267,6 +272,7 @@ export class InboxComponent implements OnInit {
             this.inboxList.push(entry);
             // debugger;
           }
+          this.filteredInboxList = [...this.inboxList];
         }
       } else {
         this.common.faliureAlert('Please try later', result['message'], '');
@@ -423,4 +429,25 @@ export class InboxComponent implements OnInit {
         }
       );
   }
+  
+
+  // Filter Method implemented 
+  
+  filterInbox(event: any) {
+    const searchTerm = event.target.value.toLowerCase();
+    
+    if (searchTerm.trim() === '') {
+      // No search term, show the original list
+      this.filteredInboxList = [...this.inboxList];
+    } else {
+      // Perform the search
+      this.filteredInboxList = this.inboxList.filter(item =>
+        (item.isType?.toLowerCase() || '').includes(searchTerm) ||
+        (item.createDate?.toLowerCase() || '').includes(searchTerm) ||
+        (item.type?.toLowerCase() || '').includes(searchTerm) ||
+        (item.status?.toLowerCase() || '').includes(searchTerm)
+      );
+    }
+  }
+ 
 }
