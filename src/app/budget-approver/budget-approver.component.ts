@@ -59,8 +59,6 @@ export class BudgetApproverComponent implements OnInit {
   ngOnInit(): void {
     this.isNotification=localStorage.getItem('notification');
     this.sharedService.updateInbox();
-    ////debugger;
-
     this.authGroupId=localStorage.getItem('group_id');
     this.getCdaUnitList();
     this.multipleCdaParking.push(new MultiCdaParking());
@@ -105,9 +103,9 @@ export class BudgetApproverComponent implements OnInit {
           if(this.budgetDataList[0].isFlag=='1'||this.budgetDataList[0].isBudgetRevision=='1'){
             this.updateMsgStatusMain(this.sharedService.msgId);
           }
-          if(this.budgetDataList[0].isTYpe=='REBASE'){
-            this.updateMsgStatusMain(this.sharedService.msgId);
-          }
+          // if(this.budgetDataList[0].isTYpe=='REBASE'){
+          //   this.updateMsgStatusMain(this.sharedService.msgId);
+          // }
           for (let i = 0; i < this.budgetDataList.length; i++) {
             if(this.budgetDataList[i].unallocatedAmount!=undefined&&this.budgetDataList[i].isTYpe!='REBASE') {
               // this.budgetDataList[i].allocationAmount1 = ((Number(this.budgetDataList[i].allocationAmount)*100000000 + Number(this.budgetDataList[i].unallocatedAmount)*100000000)/100000000).toString();
@@ -406,47 +404,64 @@ export class BudgetApproverComponent implements OnInit {
     this.getCDAParkingAllocatedAmount();
     // put rebase condition
     //debugger;
-    if(this.budgetDataList[this.currentIndex].isTYpe=='REBASE'){
-      this.olddataflag=false;
-      this.apiService
-        .postApi(this.cons.api.getOldCdaDataForRebase, submitJson)
-        .subscribe({
-          next: (v: object) => {
-            this.SpinnerService.hide();
-            let result: { [key: string]: any } = v;
-            if (result['message'] == 'success') {
-              this.olddataflag=true;
-              const keys = Object.keys(result['response'].subHeadData);
-              for (const key of keys) {
-                const value = result['response'].subHeadData[key];
-                console.log(`${key}: ${value}`);
-                let oldCdaData:MultiCdaParking= {
-                  id: undefined,
-                  cdaParkingUnit: value.ginNo,
-                  amount: value.totalParkingAmount,
-                  balance: undefined,
-                  oldData: value.totalParkingAmount,
-                  oldCdaParkingUnit: undefined
-                }
-                this.multipleCdaParking.push(oldCdaData);
-
-                this.getCDAParkingAllocatedAmount();
-              }
 
 
-            } else {
-              this.common.faliureAlert('Please try later', result['message'], '');
-            }
-          },
-          error: (e) => {
-            this.SpinnerService.hide();
-            console.error(e);
-            this.common.faliureAlert('Error', e['error']['message'], 'error');
-          },
-          complete: () => console.info('complete'),
-        });
 
-    }
+
+
+
+
+
+
+
+
+    // if(this.budgetDataList[this.currentIndex].isTYpe=='REBASE'){
+    //   this.olddataflag=false;
+    //   this.apiService
+    //     .postApi(this.cons.api.getOldCdaDataForRebase, submitJson)
+    //     .subscribe({
+    //       next: (v: object) => {
+    //         this.SpinnerService.hide();
+    //         let result: { [key: string]: any } = v;
+    //         if (result['message'] == 'success') {
+    //           this.olddataflag=true;
+    //           const keys = Object.keys(result['response'].subHeadData);
+    //           for (const key of keys) {
+    //             const value = result['response'].subHeadData[key];
+    //             console.log(`${key}: ${value}`);
+    //             let oldCdaData:MultiCdaParking= {
+    //               id: undefined,
+    //               cdaParkingUnit: value.ginNo,
+    //               amount: value.totalParkingAmount,
+    //               balance: undefined,
+    //               oldData: value.totalParkingAmount,
+    //               oldCdaParkingUnit: undefined
+    //             }
+    //             this.multipleCdaParking.push(oldCdaData);
+    //
+    //             this.getCDAParkingAllocatedAmount();
+    //           }
+    //
+    //
+    //         } else {
+    //           this.common.faliureAlert('Please try later', result['message'], '');
+    //         }
+    //       },
+    //       error: (e) => {
+    //         this.SpinnerService.hide();
+    //         console.error(e);
+    //         this.common.faliureAlert('Error', e['error']['message'], 'error');
+    //       },
+    //       complete: () => console.info('complete'),
+    //     });
+    //
+    // }
+
+
+
+
+
+
 
   }
 
