@@ -1205,8 +1205,9 @@ export class NewContigentBillComponent implements OnInit {
           contingentBilId: undefined,
           allocationTypeId: this.allocation.allocTypeId,
         };
-        if (this.cbList[i].status == 'Pending for Submission')
+        if (this.cbList[i].status == 'Pending for Submission'){
           submitList.push(cb);
+        }
       }
     }
     if (submitList.length == 0) {
@@ -1226,13 +1227,15 @@ export class NewContigentBillComponent implements OnInit {
                 'success'
               );
               this.getDashboardData();
-              for (let i = 0; i < submitList.length; i++) {
-                for (let j = 0; j < this.cbList.length; j++) {
-                  if (submitList[i].cbNumber == this.cbList[j].cbNo) {
-                    this.cbList[j].status = 'Pending';
-                  }
-                }
-              }
+              this.cbList=[];
+              this.getCBData();
+              // for (let i = 0; i < submitList.length; i++) {
+              //   for (let j = 0; j < this.cbList.length; j++) {
+              //     if (submitList[i].cbNumber == this.cbList[j].cbNo) {
+              //       this.cbList[j].status = 'Pending';
+              //     }
+              //   }
+              // }
             } else {
               this.common.faliureAlert(
                 'Please try later',
