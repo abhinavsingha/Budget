@@ -92,40 +92,44 @@ export class BudgetApproverComponent implements OnInit {
       );
   }
   async getAllGroupIdAndUnitId(groupId: any) {
-    this.SpinnerService.show();
-    this.apiService
-      .getApi(this.cons.api.getAllGroupIdAndUnitId + '/' + groupId)
-      .subscribe(async (res) => {
-        let result: { [key: string]: any } = res;
-        if (result['message'] == 'success') {
-          debugger;
-          this.budgetDataList = result['response'].budgetResponseist;
-          if(this.budgetDataList[0].isFlag=='1'||this.budgetDataList[0].isBudgetRevision=='1'){
-            this.updateMsgStatusMain(this.sharedService.msgId);
-          }
-          // if(this.budgetDataList[0].isTYpe=='REBASE'){
-          //   this.updateMsgStatusMain(this.sharedService.msgId);
-          // }
-          for (let i = 0; i < this.budgetDataList.length; i++) {
-            if(this.budgetDataList[i].unallocatedAmount!=undefined&&this.budgetDataList[i].isTYpe!='REBASE') {
-              // this.budgetDataList[i].allocationAmount1 = ((Number(this.budgetDataList[i].allocationAmount)*100000000 + Number(this.budgetDataList[i].unallocatedAmount)*100000000)/100000000).toString();
-              this.budgetDataList[i].allocationAmount1 = await this.common.addDecimals(this.budgetDataList[i].allocationAmount,this.budgetDataList[i].unallocatedAmount);
-            }
-            else{
-              this.budgetDataList[i].allocationAmount1 = (this.budgetDataList[i].allocationAmount);
-            }
-            // if (this.budgetDataList[i].balanceAmount != undefined) {
-            //   this.budgetDataList[i].balanceAmount = parseFloat(
-            //     this.budgetDataList[i].balanceAmount
-            //   ).toFixed(4);
-            // }
-          }
-          this.SpinnerService.hide();
-        } else {
-          this.common.faliureAlert('Please try later', result['message'], '');
-        }
-      });
+    if(groupId!=undefined) {
 
+      this.SpinnerService.show();
+      this.apiService
+        .getApi(this.cons.api.getAllGroupIdAndUnitId + '/' + groupId)
+        .subscribe(async (res) => {
+          let result: { [key: string]: any } = res;
+          if (result['message'] == 'success') {
+            debugger;
+            this.budgetDataList = result['response'].budgetResponseist;
+            if (this.budgetDataList[0].isFlag == '1' || this.budgetDataList[0].isBudgetRevision == '1') {
+              this.updateMsgStatusMain(this.sharedService.msgId);
+            }
+            // if(this.budgetDataList[0].isTYpe=='REBASE'){
+            //   this.updateMsgStatusMain(this.sharedService.msgId);
+            // }
+            for (let i = 0; i < this.budgetDataList.length; i++) {
+              if (this.budgetDataList[i].unallocatedAmount != undefined && this.budgetDataList[i].isTYpe != 'REBASE') {
+                // this.budgetDataList[i].allocationAmount1 = ((Number(this.budgetDataList[i].allocationAmount)*100000000 + Number(this.budgetDataList[i].unallocatedAmount)*100000000)/100000000).toString();
+                this.budgetDataList[i].allocationAmount1 = await this.common.addDecimals(this.budgetDataList[i].allocationAmount, this.budgetDataList[i].unallocatedAmount);
+              } else {
+                this.budgetDataList[i].allocationAmount1 = (this.budgetDataList[i].allocationAmount);
+              }
+              // if (this.budgetDataList[i].balanceAmount != undefined) {
+              //   this.budgetDataList[i].balanceAmount = parseFloat(
+              //     this.budgetDataList[i].balanceAmount
+              //   ).toFixed(4);
+              // }
+            }
+            this.SpinnerService.hide();
+          } else {
+            this.common.faliureAlert('Please try later', result['message'], '');
+          }
+        });
+    }
+    else{
+      this.router.navigate(['dashboard']);
+    }
   }
 
   async getAlGroupId(groupId: any) {
