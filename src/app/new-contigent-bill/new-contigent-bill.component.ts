@@ -535,7 +535,10 @@ export class NewContigentBillComponent implements OnInit {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = res;
         // console.log(result['response']);
-        let getCbList = result['response'];
+        let getCbList:any[] = result['response'];
+        getCbList.sort((a, b) => {
+          return b.createdOn - a.createdOn  ;
+        });
         debugger;
         for (let i = 0; i < getCbList.length; i++) {
           if(getCbList[i].authoritiesList.length>0) {
