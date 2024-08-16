@@ -262,7 +262,9 @@ export class InboxComponent implements OnInit {
               isCda: list[i].isCda,
               serial: i + 1,
               isType: isType,
-              createDate: this.convertEpochToDateTime(list[i].createdOn),
+              // createDate: this.convertEpochToDateTime(list[i].createdOn),
+              // New CerateDate function is added to sort the date as DD-MM-YYYY format 
+              createDate: formatDateTime(this.convertEpochToDateTime(list[i].createdOn)), // Custom formatting function
               unitName: list[i].toUnit.descr,
               groupId: list[i].groupId,
               status: list[i].status,
@@ -278,6 +280,21 @@ export class InboxComponent implements OnInit {
         this.common.faliureAlert('Please try later', result['message'], '');
       }
     });
+    // New Function for showing the date format as DD-MM-YYYY.
+    // Function to format date and time
+    function formatDateTime(dateTimeStr: string) {
+      // Separate the date and time parts
+      const [datePart, timePart] = dateTimeStr.split(' ');
+      
+      // Split the date part
+      const [year, month, day] = datePart.split('-');
+      
+      // Format the date as dd-mm-yyyy
+      const formattedDate = `${day}-${month}-${year}`;
+      
+      // Combine the formatted date with the time part
+      return `${formattedDate} ${timePart}`;
+    }
   }
 
   convertEpochToDateTime(epochTime: number): string {
