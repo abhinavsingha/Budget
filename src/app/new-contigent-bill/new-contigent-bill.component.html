@@ -394,6 +394,12 @@
         <div class="modal-body">
           <div class="row">
             <div class="col-sm-12 mt-4">
+              <!-- Amount is shown in the pop window of withdraw of cb amount as per the user requirement 28.08.2024 -->
+              <div class="form-group">
+                <label>Withdrawl CB Amount</label>
+                <input class="form-control" [value]="formdata.get('amount')?.value" readonly type="text" />
+              </div>
+              <!-- end of change -->
               <div class="card-body table-responsive p-0">
                 <table class="table table-hover text-nowrap">
                   <thead>
