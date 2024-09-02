@@ -125,7 +125,7 @@ export class CdaParkingReportComponent implements OnInit {
     this.getSubHeadsData();
     this.majorDataNew();
     this.getAmountType();
-    this.getAllocationTypeData();
+    // this.getAllocationTypeData();
     this.getDashboardData();
     this.getSubHeadType();
     this.getAllCda();
@@ -220,7 +220,7 @@ export class CdaParkingReportComponent implements OnInit {
           this.sharedService.finYear=result['response'].budgetFinancialYear;
           if(this.sharedService.finYear!=undefined)
             this.formdata.get('finYear')?.setValue(this.sharedService.finYear);
-
+          this.getAllocationTypeData();
 
           this.sharedService.inbox = result['response'].inbox;
           this.sharedService.outbox = result['response'].outBox;
@@ -360,14 +360,29 @@ export class CdaParkingReportComponent implements OnInit {
       complete: () => console.info('complete'),
     });
   }
+  allocType:any[]=[]
   getAllocationTypeData() {
-    this.SpinnerService.show();
+    // this.SpinnerService.show();
+    this.allocType=[];
     this.apiService
       .getApi(this.cons.api.getAllocationTypeData)
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
+          // debugger;
+
           this.allocationType = result['response'];
+          let i=0;
+          for(let i=0;i< this.allocationType.length;i++){
+            // debugger;
+
+            if(this.allocationType[i].finYear!=this.formdata.get('finYear')?.value.serialNo){
+              debugger;
+              this.allocationType.splice(i,1);
+              i--;
+            }
+          }
+
           this.SpinnerService.hide();
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
