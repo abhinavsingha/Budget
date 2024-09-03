@@ -187,7 +187,7 @@ export class NewContigentBillComponent implements OnInit {
     this.getMajorHead();
     this.getFinancialYear();
     this.getCgUnitData();
-    this.getCBData();
+    // this.getCBData();
     this.getDashBoardDta();
     this.getSubHeadType();
 
@@ -516,6 +516,7 @@ export class NewContigentBillComponent implements OnInit {
           this.sharedService.archive = result['response'].archived;
           this.sharedService.approve = result['response'].approved;
           // console.log('DATA>>>>>>>' + this.dasboardData);
+          this.getCBData();
         } else {
           this.common.faliureAlert('Please try later', result['message'], '');
         }
@@ -530,6 +531,7 @@ export class NewContigentBillComponent implements OnInit {
   }
 
   private getCBData() {
+    this.cbList=[];
     this.apiService.getApi(this.cons.api.getCb).subscribe(
       (res) => {
         this.SpinnerService.hide();
@@ -606,8 +608,11 @@ export class NewContigentBillComponent implements OnInit {
             }
             // else if(entry.status=='Pending'||entry.status=='Rejected')
               // this.showUpdate=true;
+            if(entry.status=='Rejected'&&entry.finSerialNo==this.formdata.get('finYearName')?.value.serialNo){
+              debugger;
+              this.cbList.push(entry);
+            }
 
-            this.cbList.push(entry);
           }
 
           //     this.SpinnerService.hide();
@@ -1229,9 +1234,9 @@ export class NewContigentBillComponent implements OnInit {
                 result['response']['msg'],
                 'success'
               );
-              this.getDashboardData();
+              this.getDashBoardDta();
               this.cbList=[];
-              this.getCBData();
+              // this.getCBData();
               // for (let i = 0; i < submitList.length; i++) {
               //   for (let j = 0; j < this.cbList.length; j++) {
               //     if (submitList[i].cbNumber == this.cbList[j].cbNo) {
