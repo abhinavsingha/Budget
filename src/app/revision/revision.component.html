@@ -249,7 +249,7 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">CDA Details</h4>
+          <h4 class="modal-title">CDA Details <span *ngIf="loginIndex!=undefined"> ({{this.budgetRevisionUnitList2[this.loginIndex].revisionAmount}} {{amountUnit}})</span></h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
