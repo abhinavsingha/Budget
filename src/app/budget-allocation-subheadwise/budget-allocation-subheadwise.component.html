@@ -6,12 +6,14 @@
       <div class="row mb-2">
         <div class="col-sm-6">
           <h1 class="m-0">Budget Allocation Subhead Wise</h1>
+          
         </div>
         <!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="#">Home</a></li>
             <li class="breadcrumb-item"><a href="#">Budget Allocation</a></li>
+            
           </ol>
         </div>
         <!-- /.col -->
@@ -128,7 +130,16 @@
               </form>
             </div>
             <div class="col-md-6">
+              <div class="input-group input-group-sm mb-2 ml-1" style="width: 100%;">
+                <input type="text" class="form-control" placeholder="Search Units" (input)="filterUnits($event)">
+                <div class="input-group-append">
+                  <div class="btn btn-primary">
+                    <i class="fas fa-search"></i>
+                  </div>
+                </div>
+                </div>
               <div class="card-body table-responsive p-0" style="height: 289px;">
+                
                 <table class="table table-hover text-nowrap" style="height: 262px;">
                   <thead>
                     <tr>
@@ -139,12 +150,17 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let subHeadWiseUnit of subHeadWiseUnitList; let i = index">
+                    <tr *ngFor="let subHeadWiseUnit of filteredUnits; let i = index">
 
                       <td>
                         <div class="form-group">
 <!--                          <span [(ngModel)]="subHeadWiseUnit.unit">{{subHeadWiseUnit.unit.descr}}</span>-->
-                          <input type="text" class="form-control" id="qwe" placeholder="Unit Name" [(ngModel)]="subHeadWiseUnit.unit.descr" (change)="allocatedAmount(i)" [readOnly]="true"  />
+                          
+                          <input type="text" class="form-control"   
+                          id="qwe" placeholder="Unit Name" 
+                          [(ngModel)]="subHeadWiseUnit.unit.descr" (change)="allocatedAmount(i)" 
+                          [readOnly]="true" style="font-weight: bold;" />
+                          
                         </div>
                       </td>
                       <td><input type="number" class="form-control" id="Aallocationamount"

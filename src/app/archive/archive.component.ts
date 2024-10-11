@@ -31,6 +31,7 @@ export class ArchiveComponent implements OnInit {
   p: number = 1;
   searchKey: string = '';
   private authDocPath: any;
+  itemsPerPage: number | string = 20; // Initialize with default value 20
 
   constructor(
     private SpinnerService: NgxSpinnerService,

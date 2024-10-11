@@ -46,6 +46,7 @@ export class OutboxComponent implements OnInit {
 
   p: number = 1;
   filteredInboxList: InboxList[] =[];
+  itemsPerPage: number | string = 20; // Initialize with default value 20
 
   ngOnInit(): void {
     this.sharedService.updateInbox();
@@ -270,7 +271,7 @@ export class OutboxComponent implements OnInit {
 
   // Filter Implemented for search option
 
-  filterInbox(event: any) {
+  filterOutbox(event: any) {
     const searchTerm = event.target.value.toLowerCase();
     
     if (searchTerm.trim() === '') {

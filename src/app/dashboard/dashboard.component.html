@@ -182,7 +182,7 @@
           <!-- /.card -->
         </section>
         <!-- Left col -->
-        <section class="col-lg-6 connectedSortable">
+        <section class="col-lg-12 connectedSortable" *ngIf="formdata.get('subHead')?.value">
           <div class="card">
             <div class="card-header">
               <h3 class="card-title">
@@ -199,7 +199,9 @@
               <div class="tab-content p-0" *ngIf="showSubheadGraph">
                 <h6>{{selectedSubhead.subHeadDescr}}</h6>
                 <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;">
-                  <canvas id="my-chart" height="300" style="height: 300px; width: 550px;" baseChart
+                  <!-- <canvas id="my-chart" height="300" style="height: 300px; width: 550px;" baseChart -->
+                   <!-- previous it was 300px and width was 550px now it is changed as per user guidance (Shriom Sir) -->
+                  <canvas id="my-chart" height="300" style="height: 300px; width: 1100px;" baseChart
                           [data]="barChartData"
                           [options]="barChartOptions"
                           [plugins]="barChartPlugins"
@@ -211,122 +213,7 @@
             </div>
           </div>
         </section>
-        <!-- /.Left col -->
-        <!-- right col (We are only adding the ID to make the widgets sortable)-->
-         <section class="col-lg-6 connectedSortable">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">
-                <i class="fas fa-chart-pie mr-1"></i>
-                Unit Wise Expenditure
-              </h3>
-              <div class="card-tools">
-                <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
-                  <i class="fas fa-minus"></i>
-                </button>
-              </div>
-            </div>
-            <div class="card-body">
-<!--              <input type="range" min="100" max="500" [(ngModel)]="graphHeight" class="slider">-->
-              <div class="tab-content p-0" *ngIf="showUnitGraph">
-                <h6>
-                  {{tableData[0].cgUnit.descr}}
-                </h6>
-                <div class="chart tab-pane active" id="revenue-chart2" style="position: relative; height: 300px;">
-<!--                  <canvas id="my-chart2" height="300" style="height: 300px;"></canvas>-->
-                  <canvas id="my-chart2" height="300" style="height: 300px; width: 550px;" baseChart
-                          [data]="barChartDataUnitwise"
-                          [options]="barChartOptions"
-                          [plugins]="barChartPlugins"
-                          [legend]="barChartLegend"
-                          [type]="'bar'">
-                  </canvas>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        <!-- right col -->
-        <section class="col-lg-12 connectedSortable">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">
-                <i class="ion ion-clipboard mr-1"></i>
-                Unit Wise Expenditure
-              </h3>
-              <div class="card-tools">
-                <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
-                  <i class="fas fa-minus"></i>
-                </button>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="tab-content p-0">
-                <div class="chart tab-pane active" id="revenue-chrt3" style="position: relative;">
-                  <div class="row">
-                    <div class="col-sm-12">
-                      <div class="card-body table-responsive p-0">
-                        <table class="table table-hover text-nowrap" *ngIf="tableData!=undefined">
-                          <thead>
-                            <tr>
-                              <th>Sr. No.</th>
-                              <th>Unit</th>
-                              <th>F.Y.</th>
-                              <th>Sub Head</th>
-                              <th>Allocated (in {{unitwiseUnit}})</th>
-                              <th>Expenditure (in {{unitwiseUnit}})</th>
-                              <th>Balance (in {{unitwiseUnit}})</th>
-                              <th>Last CB Date</th>
-                              <th>Expenditure %</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr
-                              *ngFor="let entry of tableData| paginate :{id: 'pagination1',itemsPerPage:15,currentPage:p} ; let i = index">
-                              <td>{{15 *(p-1)+i+1}}</td>
-                              <td>{{entry.cgUnit.descr}}</td>
-                              <td>{{entry.budgetFinancialYear.finYear}}</td>
-                              <td>{{entry.budgetHead.subHeadDescr}}</td>
-                              <td>{{entry.allocatedAmount}}</td>
-                              <td>{{entry.expenditureAmount}}</td>
-                              <td>{{entry.balAmount}}</td>
-                              <td>{{entry.lastCBDate}}</td>
-                              <td>{{entry.perAmount}} %</td>
-                            </tr>
-                          </tbody>
-                          <tfoot>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>Grand Total</td>
-                            <td>{{totalUAllocated}}</td>
-                            <td>{{totalUExpenditure}}</td>
-                            <td>{{totalUBalance}}</td>
-                            <td></td>
-                            <td>{{totalUExpenditurePer}}%</td>
-                          </tfoot>
-                        </table>
-                      </div>
-                      <div class="row mt-2">
-                        <div class="col-sm-12 col-md-5">
-                          <div class="dataTables_info" id="exmple2_info" role="status" aria-live="polite">
-                          </div>
-                        </div>
-                        <div class="col-sm-12 col-md-7">
-                          <div class="dataTables_paginate paging_simple_numbers" id="exmple2_paginate">
-                            <pagination-controls id="pagination1" class="pagination float-right"
-                              (pageChange)="p = $event"></pagination-controls>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section class="col-lg-12 connectedSortable">
+        <section class="col-lg-12 connectedSortable" *ngIf="formdata.get('subHead')?.value">
           <div class="card">
             <div class="card-header">
               <h3 class="card-title">
@@ -408,6 +295,123 @@
             </div>
           </div>
         </section>
+        <!-- /.Left col -->
+        <!-- right col (We are only adding the ID to make the widgets sortable)-->
+         <section class="col-lg-12 connectedSortable" *ngIf="formdata.get('unit')?.value">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fas fa-chart-pie mr-1"></i>
+                Unit Wise Expenditure
+              </h3>
+              <div class="card-tools">
+                <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="card-body">
+<!--              <input type="range" min="100" max="500" [(ngModel)]="graphHeight" class="slider">-->
+              <div class="tab-content p-0" *ngIf="showUnitGraph">
+                <h6>
+                  {{tableData[0].cgUnit.descr}}
+                </h6>
+                <div class="chart tab-pane active" id="revenue-chart2" style="position: relative; height: 300px;">
+<!--                  <canvas id="my-chart2" height="300" style="height: 300px;"></canvas>-->
+                      <!-- <canvas id="my-chart2" height="300" style="height: 300px; width: 550px;" -->
+                  <canvas id="my-chart2" height="300" style="height: 300px; width: 1100px;" baseChart
+                          [data]="barChartDataUnitwise"
+                          [options]="barChartOptions"
+                          [plugins]="barChartPlugins"
+                          [legend]="barChartLegend"
+                          [type]="'bar'">
+                  </canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- right col -->
+        <section class="col-lg-12 connectedSortable" *ngIf="formdata.get('unit')?.value">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="ion ion-clipboard mr-1"></i>
+                Unit Wise Expenditure
+              </h3>
+              <div class="card-tools">
+                <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="tab-content p-0">
+                <div class="chart tab-pane active" id="revenue-chrt3" style="position: relative;">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="card-body table-responsive p-0">
+                        <table class="table table-hover text-nowrap" *ngIf="tableData!=undefined">
+                          <thead>
+                            <tr>
+                              <th>Sr. No.</th>
+                              <th>Unit</th>
+                              <th>F.Y.</th>
+                              <th>Sub Head</th>
+                              <th>Allocated (in {{unitwiseUnit}})</th>
+                              <th>Expenditure (in {{unitwiseUnit}})</th>
+                              <th>Balance (in {{unitwiseUnit}})</th>
+                              <th>Last CB Date</th>
+                              <th>Expenditure %</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr
+                              *ngFor="let entry of tableData| paginate :{id: 'pagination1',itemsPerPage:15,currentPage:p} ; let i = index">
+                              <td>{{15 *(p-1)+i+1}}</td>
+                              <td>{{entry.cgUnit.descr}}</td>
+                              <td>{{entry.budgetFinancialYear.finYear}}</td>
+                              <td>{{entry.budgetHead.subHeadDescr}}</td>
+                              <td>{{entry.allocatedAmount}}</td>
+                              <td>{{entry.expenditureAmount}}</td>
+                              <td>{{entry.balAmount}}</td>
+                              <td>{{entry.lastCBDate}}</td>
+                              <td>{{entry.perAmount}} %</td>
+                            </tr>
+                          </tbody>
+                          <tfoot>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>Grand Total</td>
+                            <td>{{totalUAllocated}}</td>
+                            <td>{{totalUExpenditure}}</td>
+                            <td>{{totalUBalance}}</td>
+                            <td></td>
+                            <td>{{totalUExpenditurePer}}%</td>
+                          </tfoot>
+                        </table>
+                      </div>
+                      <div class="row mt-2">
+                        <div class="col-sm-12 col-md-5">
+                          <div class="dataTables_info" id="exmple2_info" role="status" aria-live="polite">
+                          </div>
+                        </div>
+                        <div class="col-sm-12 col-md-7">
+                          <div class="dataTables_paginate paging_simple_numbers" id="exmple2_paginate">
+                            <pagination-controls id="pagination1" class="pagination float-right"
+                              (pageChange)="p = $event"></pagination-controls>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        
       </div>
       <!-- /.row (main row) -->
     </div>

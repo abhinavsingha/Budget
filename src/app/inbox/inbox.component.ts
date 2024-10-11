@@ -52,6 +52,7 @@ export class InboxComponent implements OnInit {
   filteredInboxList: InboxList[] =[];
   originalModalList: any[] = []; // Original list for modal
   filteredModalList: any[] = []; // Filtered list for modal
+  itemsPerPage: number | string = 20; // Initialize with default value 20
 
   // inboxList: any[] = [];
 
