@@ -3,15 +3,17 @@ col-width{
 }
 .tfoot{
   position: absolute;
-  bottom: 5px;
+  bottom: 0px;
   background-color: #f6f9fc;
-  width: 97%;
+  width: 97.5%;
   border: 1px solid #dee2e6;
   border-radius: 0 0px 5px 5px;
 }
+.containerCenter {
+  background-color : #f6f9fc;
+  text-align: center; /* Center child elements horizontally */
+}
 
-
-
-
-
-
+span {
+  display: inline-block; /* Inline block allows for padding and margins if needed */
+}

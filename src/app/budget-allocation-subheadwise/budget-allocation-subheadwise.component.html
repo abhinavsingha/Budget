@@ -6,14 +6,14 @@
       <div class="row mb-2">
         <div class="col-sm-6">
           <h1 class="m-0">Budget Allocation Subhead Wise</h1>
-          
+
         </div>
         <!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="#">Home</a></li>
             <li class="breadcrumb-item"><a href="#">Budget Allocation</a></li>
-            
+
           </ol>
         </div>
         <!-- /.col -->
@@ -139,7 +139,7 @@
                 </div>
                 </div>
               <div class="card-body table-responsive p-0" style="height: 289px;">
-                
+
                 <table class="table table-hover text-nowrap" style="height: 262px;">
                   <thead>
                     <tr>
@@ -154,13 +154,10 @@
 
                       <td>
                         <div class="form-group">
-<!--                          <span [(ngModel)]="subHeadWiseUnit.unit">{{subHeadWiseUnit.unit.descr}}</span>-->
-                          
-                          <input type="text" class="form-control"   
-                          id="qwe" placeholder="Unit Name" 
-                          [(ngModel)]="subHeadWiseUnit.unit.descr" (change)="allocatedAmount(i)" 
-                          [readOnly]="true" style="font-weight: bold;" />
-                          
+                          <span><b>{{subHeadWiseUnit.unit.descr}}</b></span>
+
+<!--                          <input type="text" class="form-control"-->
+<!--                          id="qwe" placeholder="Unit Name" [(ngModel)]="subHeadWiseUnit.unit.descr" [readOnly]="true" style="font-weight: bold;" />-->
                         </div>
                       </td>
                       <td><input type="number" class="form-control" id="Aallocationamount"
@@ -175,7 +172,7 @@
 <!--                          (click)="deleteSubHeadWiseUnitList(i)">Delete</button></td>-->
                     </tr>
                   </tbody>
-                  <tfoot class="tfoot" style="float: right; padding-right: 102px"><tr ><td>Total:</td><td> {{totalAlloc}}</td></tr></tfoot>
+<!--                  <tfoot class="tfoot" style="float: right; padding-right: 102px"><tr ><td>Total:</td><td> {{totalAlloc}}</td></tr></tfoot>-->
 <!--                  <tfoot>-->
 <!--                    <tr>-->
 <!--                      <td></td>-->
@@ -185,7 +182,9 @@
 <!--                    </tr>-->
 <!--                  </tfoot>-->
                 </table>
-              </div>
+
+              </div >
+              <div class="containerCenter"><span ><b>Total:</b> {{totalAlloc}}</span></div>
             </div>
           </div>
           <div class="row">
