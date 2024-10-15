@@ -46,7 +46,7 @@ export class OutboxComponent implements OnInit {
 
   p: number = 1;
   filteredInboxList: InboxList[] =[];
-  itemsPerPage: number | string = 20; // Initialize with default value 20
+  itemsPerPage: any = 20; // Initialize with default value 20
 
   ngOnInit(): void {
     this.sharedService.updateInbox();
@@ -175,7 +175,7 @@ export class OutboxComponent implements OnInit {
               // // ),
               // createBy: list[i].userData.fullName,
 
-              // New CerateDate function is added to sort the date as DD-MM-YYYY format 
+              // New CerateDate function is added to sort the date as DD-MM-YYYY format
               createDate: formatDateTime(this.convertEpochToDateTime(list[i].createdOn)), // Custom formatting function
               unitName: list[i].toUnit.descr,
               groupId: list[i].groupId,
@@ -197,13 +197,13 @@ export class OutboxComponent implements OnInit {
     function formatDateTime(dateTimeStr: string) {
       // Separate the date and time parts
       const [datePart, timePart] = dateTimeStr.split(' ');
-      
+
       // Split the date part
       const [year, month, day] = datePart.split('-');
-      
+
       // Format the date as dd-mm-yyyy
       const formattedDate = `${day}-${month}-${year}`;
-      
+
       // Combine the formatted date with the time part
       return `${formattedDate} ${timePart}`;
     }
@@ -273,7 +273,7 @@ export class OutboxComponent implements OnInit {
 
   filterOutbox(event: any) {
     const searchTerm = event.target.value.toLowerCase();
-    
+
     if (searchTerm.trim() === '') {
       // No search term, show the original list
       this.filteredInboxList = [...this.inboxList];
