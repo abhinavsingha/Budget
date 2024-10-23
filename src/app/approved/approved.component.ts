@@ -198,4 +198,5 @@ export class ApprovedComponent implements OnInit {
   }
 
   protected readonly Number = Number;
+    protected readonly localStorage = localStorage;
 }

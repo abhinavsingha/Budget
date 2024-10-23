@@ -157,4 +157,6 @@ export class BudgetDeleteComponent {
         complete: () => console.info('complete'),
       });
   }
+
+  protected readonly localStorage = localStorage;
 }

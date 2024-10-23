@@ -287,4 +287,6 @@ export class OutboxComponent implements OnInit {
       );
     }
   }
+
+    protected readonly localStorage = localStorage;
 }

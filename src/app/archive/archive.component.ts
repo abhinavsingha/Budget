@@ -237,4 +237,6 @@ export class ArchiveComponent implements OnInit {
       return `${formattedDate} ${timePart}`;
     }
   }
+
+    protected readonly localStorage = localStorage;
 }

@@ -391,4 +391,6 @@ export class ManageUserComponent {
     }
 
   }
+
+  protected readonly localStorage = localStorage;
 }

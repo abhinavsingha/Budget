@@ -599,4 +599,6 @@ export class CdaParkingReportComponent implements OnInit {
     this.formdata.get('subHead')?.reset();
     this.subHeadData=[];
   }
+
+    protected readonly localStorage = localStorage;
 }

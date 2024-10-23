@@ -1476,4 +1476,6 @@ export class BudgetApproverComponent implements OnInit {
     }
     this.saveCdaParkingData1();
   }
+
+    protected readonly localStorage = localStorage;
 }

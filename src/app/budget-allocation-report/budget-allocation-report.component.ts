@@ -1770,4 +1770,6 @@ export class BudgetAllocationReportComponent implements OnInit {
       }
     }
   }
+
+    protected readonly localStorage = localStorage;
 }

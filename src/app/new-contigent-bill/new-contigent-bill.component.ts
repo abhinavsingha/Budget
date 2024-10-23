@@ -1631,4 +1631,6 @@ export class NewContigentBillComponent implements OnInit {
     //   this.formdata.get('authority')?.setValue(null);
     // }
   }
+
+    protected readonly localStorage = localStorage;
 }

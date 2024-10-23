@@ -468,4 +468,5 @@ export class InboxComponent implements OnInit {
     }
   }
 
+    protected readonly localStorage = localStorage;
 }

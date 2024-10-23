@@ -159,4 +159,6 @@ debugger;
       });
 
   }
+
+    protected readonly localStorage = localStorage;
 }

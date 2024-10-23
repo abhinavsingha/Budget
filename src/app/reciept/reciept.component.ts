@@ -1000,4 +1000,6 @@ export class RecieptComponent {
           complete: () => console.info('complete'),
         });
     }
+
+    protected readonly localStorage = localStorage;
 }

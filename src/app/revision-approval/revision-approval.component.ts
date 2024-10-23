@@ -675,4 +675,6 @@ export class RevisionApprovalComponent implements OnInit{
         }
       );
   }
+
+    protected readonly localStorage = localStorage;
 }

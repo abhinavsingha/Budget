@@ -1,5 +1,5 @@
 <!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
+<div class="content-wrapper" *ngIf="localStorage.getItem('userRole')=='120'||localStorage.getItem('userRole')=='119'||localStorage.getItem('userRole')=='118'||localStorage.getItem('userRole')=='117'||localStorage.getItem('userRole')=='116'||localStorage.getItem('userRole')=='115'||localStorage.getItem('userRole')=='114'">
 
   <!-- Content Header (Page header) -->
   <div class="content-header" *ngIf="userAuthorised">
@@ -81,15 +81,15 @@
                         <div class="col-md-3">
                           <div class="form-group" [formGroup]="formdata">
                             <label>Unit</label>
-                            <ng-select 
-                              class="form-control select2bs4" 
-                              style="width: 100%" 
+                            <ng-select
+                              class="form-control select2bs4"
+                              style="width: 100%"
                               [items]="allunits"
-                              bindLabel="descr" 
-                              placeholder="Select To Unit" 
+                              bindLabel="descr"
+                              placeholder="Select To Unit"
                               formControlName="unit"
                               appendTo="body">
-                              
+
                               <ng-template ng-option-tmp let-item="item">
                                 <div title="{{item.descr}}">
                                   {{item.descr}}
@@ -99,14 +99,14 @@
                           </div>
                         </div>
                         <!-- end of changes for the option -->
-                        
+
                         <div class="col-md-3">
                           <div class="form-group" [formGroup]="formdata">
                             <label>Sub Head Type<span class="text-danger"></span></label>
                             <ng-select class="form-control select2bs4" style="width: 100%" [items]="subHeadType"
                                        bindLabel="subType" placeholder="Select Subhead"
                                        formControlName="subHeadType"></ng-select>
-                          </div>                                                
+                          </div>
                         </div>
                         <div class="col-md-3">
                           <div class="form-group" [formGroup]="formdata">
@@ -142,7 +142,7 @@
                             </ng-select>
                         </div>
                         <!-- end of changes  -->
-                        
+
                         </div>
                         <div class="col-md-3">
                           <div class="form-group" [formGroup]="formdata">
@@ -411,7 +411,7 @@
             </div>
           </div>
         </section>
-        
+
       </div>
       <!-- /.row (main row) -->
     </div>

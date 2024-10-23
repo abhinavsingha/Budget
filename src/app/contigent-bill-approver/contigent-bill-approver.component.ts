@@ -779,4 +779,6 @@ export class ContigentBillApproverComponent implements OnInit {
   debug() {
     debugger;
   }
+
+    protected readonly localStorage = localStorage;
 }

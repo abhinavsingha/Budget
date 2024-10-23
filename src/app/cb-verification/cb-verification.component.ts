@@ -696,4 +696,6 @@ export class CbVerificationComponent {
   debug() {
     debugger;
   }
+
+    protected readonly localStorage = localStorage;
 }

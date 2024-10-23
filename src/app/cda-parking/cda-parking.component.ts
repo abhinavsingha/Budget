@@ -254,4 +254,6 @@ debugger;
         complete: () => console.log('complete'),
       });
   }
+
+  protected readonly localStorage = localStorage;
 }

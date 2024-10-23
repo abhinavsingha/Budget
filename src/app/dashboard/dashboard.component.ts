@@ -110,7 +110,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     // ngOnInit(): void {
-
+    debugger;
     this.userExit();
 
     $.getScript('assets/main.js');
@@ -770,4 +770,6 @@ export class DashboardComponent implements OnInit {
       }
     }
   }
+
+  protected readonly localStorage = localStorage;
 }

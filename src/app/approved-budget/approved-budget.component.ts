@@ -467,4 +467,5 @@ export class ApprovedBudgetComponent implements OnInit {
   }
 
 
+    protected readonly localStorage = localStorage;
 }

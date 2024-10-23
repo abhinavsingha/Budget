@@ -1,5 +1,5 @@
 <!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
+<div class="content-wrapper" *ngIf="localStorage.getItem('userRole')=='119'">
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
@@ -45,14 +45,14 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>User Name</label>
-                                    <input type="text" class="form-control" id="fundAvailable" value="{{userName}}"
+                                    <input type="text" class="form-control"  value="{{userName}}"
                                         formControlName="userName" readonly />
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Rank</label>
-                                    <input type="text" class="form-control" id="rank" value="{{rank}}"
+                                    <input type="text" class="form-control"  value="{{rank}}"
                                         formControlName="rank" readonly />
                                 </div>
                             </div>
@@ -67,7 +67,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>From Date</label>
-                                    <input type="date" class="form-control" id="Date" placeholder="Enter From Date"
+                                    <input type="date" class="form-control"  placeholder="Enter From Date"
                                         formControlName="fromDate" (change)="checkDate(formdata.value,'fromDate')" />
                                 </div>
                             </div>

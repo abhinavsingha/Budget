@@ -19,7 +19,7 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit{
   name: any;
 
   roles: any[] = [];
@@ -38,9 +38,9 @@ export class HeaderComponent {
 
   ngOnInit(): void {
     this.getDashBoardDta();
-    localStorage.setItem('notification','true');
-    $.getScript('assets/js/adminlte.js');
-    let nr = localStorage.getItem('userDetails');
+    // localStorage.setItem('notification','true');
+    // $.getScript('assets/js/adminlte.js');
+    // let nr = localStorage.getItem('userDetails');
   }
 
   constructor(
@@ -136,6 +136,7 @@ export class HeaderComponent {
 
   logout() {
     // this.confirmModelForLogout(null);
+    localStorage.removeItem('userRole');
     localStorage.removeItem('userCurrentUnit');
     localStorage.removeItem('userCurrentUnitName');
     localStorage.removeItem('token');
@@ -176,6 +177,7 @@ export class HeaderComponent {
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
             this.roles = result['response'].userDetails.role;
+            localStorage.setItem('userRole',this.roles[0].roleId);
             if (this.roles[0].roleId == '113') {
               this.redirectUri();
             }

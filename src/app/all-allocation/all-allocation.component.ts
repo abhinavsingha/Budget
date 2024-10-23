@@ -119,4 +119,6 @@ export class AllAllocationComponent implements OnInit {
       complete: () => window.location.reload(),
     });
   }
+
+    protected readonly localStorage = localStorage;
 }

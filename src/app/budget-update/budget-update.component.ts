@@ -203,4 +203,6 @@ export class BudgetUpdateComponent {
 
     this.confirmModel(submitJson);
   }
+
+  protected readonly localStorage = localStorage;
 }

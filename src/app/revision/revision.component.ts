@@ -996,4 +996,6 @@ export class RevisionComponent implements OnInit{
       }
     });
   }
+
+    protected readonly localStorage = localStorage;
 }

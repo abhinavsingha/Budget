@@ -30,7 +30,7 @@ export class BudgetAllocationSubheadwiseComponent {
   subHeadWiseUnitList: any[] = [];
   allocationType: any[] = [];
   filteredUnits: any[]=[];
-  
+
 
   budgetAllocationArray: any[] = [];
 
@@ -58,7 +58,7 @@ export class BudgetAllocationSubheadwiseComponent {
     amountType: new FormControl(),
   });
   private subHeadData: any;
-  
+
 
   ngOnInit(): void {
     this.filteredUnits = this.subHeadWiseUnitList;  // Initially display all units
@@ -992,11 +992,11 @@ currentIndex:any;
     });
   }
 
- // Method to filter units based on search input as directed by user(shriom sir) 
+ // Method to filter units based on search input as directed by user(shriom sir)
  filterUnits(event: any) {
   const searchTerm = event.target.value.toLowerCase();
   if (searchTerm) {
-    this.filteredUnits = this.subHeadWiseUnitList.filter(unit => 
+    this.filteredUnits = this.subHeadWiseUnitList.filter(unit =>
       unit.unit.descr.toLowerCase().includes(searchTerm)
     );
   } else {
@@ -1005,8 +1005,5 @@ currentIndex:any;
 }
 
 
-
-
-
-
+    protected readonly localStorage = localStorage;
 }

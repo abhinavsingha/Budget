@@ -1302,4 +1302,5 @@ export class BudgetAllocationComponent implements OnInit {
       this.confirmModel(this.submitJson);
     }
 
+    protected readonly localStorage = localStorage;
 }

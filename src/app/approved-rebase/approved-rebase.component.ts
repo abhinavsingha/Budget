@@ -140,4 +140,6 @@ export class ApprovedRebaseComponent implements OnInit {
       }
     );
   }
+
+    protected readonly localStorage = localStorage;
 }

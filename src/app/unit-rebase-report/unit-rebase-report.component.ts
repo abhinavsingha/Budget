@@ -305,4 +305,6 @@ export class UnitRebaseReportComponent {
         complete: () => console.info('complete'),
       });
   }
+
+    protected readonly localStorage = localStorage;
 }

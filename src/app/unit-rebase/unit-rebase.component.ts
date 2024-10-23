@@ -489,4 +489,6 @@ export class UnitRebaseComponent {
       this.formdata.get(field)?.reset();
     }
   }
+
+    protected readonly localStorage = localStorage;
 }

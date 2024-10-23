@@ -428,4 +428,6 @@ export class ManageUserRoleComponent {
       });
     this.transfer=false;
   }
+
+  protected readonly localStorage = localStorage;
 }
