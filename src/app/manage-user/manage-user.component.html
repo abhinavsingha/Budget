@@ -213,4 +213,16 @@
 
   <!-- /.content -->
 </div>
+<div class="content-wrapper" *ngIf="(localStorage.getItem('userRole')!='120')&&localStorage.getItem('userRole')!=undefined">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-12">
+          <h1 class="m-0">You are not authorised to access this URL. Please navigate to <a [routerLink]="['/dashboard']" [routerLinkActive]="['active']">Dashboard</a></h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- /.content-wrapper -->

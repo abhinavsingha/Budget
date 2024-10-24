@@ -1,5 +1,5 @@
 <!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper" *ngIf="localStorage.getItem('userRole')=='115'">
+<div class="content-wrapper" *ngIf="localStorage.getItem('userRole')=='115'||localStorage.getItem('userRole')=='114'||localStorage.getItem('userRole')=='116'">
   <!-- Content Header (Page header) -->
   <div class="content-header">
     <div class="container-fluid">
@@ -259,7 +259,7 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Firm Name</label>
-                  <input type="text" class="form-control" readonly id="FirmName" placeholder="Enter Firm Name"
+                  <input type="text" class="form-control" readonly  placeholder="Enter Firm Name"
                          formControlName="firmName" />
                 </div>
               </div>
@@ -298,21 +298,21 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label>File Number</label>
-                  <input type="text" class="form-control" readonly id="FirmName" placeholder="Enter Firm Name"
+                  <input type="text" class="form-control" readonly  placeholder="Enter Firm Name"
                          formControlName="fileNo" />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>File Date</label>
-                  <input type="date" class="form-control" readonly id="FirmName" placeholder="Enter Firm Name"
+                  <input type="date" class="form-control" readonly placeholder="Enter Firm Name"
                          formControlName="fileDate" />
                 </div>
               </div>
               <div class="col-md-4" *ngIf="sharedService.redirectedFrom === 'inbox'&&  sharedService.roleHeading != 'CB Creator'">
                 <div class="form-group">
                   <label>Return Remarks</label>
-                  <input type="text" class="form-control" id="ReturnRemarks" placeholder="Return Remarks"
+                  <input type="text" class="form-control"  placeholder="Return Remarks"
                          formControlName="returnRemarks" />
                 </div>
               </div>
@@ -406,5 +406,17 @@
     <!-- /.modal-dialog -->
   </div>
   <!-- /.content -->
+</div>
+<div class="content-wrapper" *ngIf="(localStorage.getItem('userRole')!='114'||localStorage.getItem('userRole')!='115'||localStorage.getItem('userRole')!='116')&&localStorage.getItem('userRole')!=undefined">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-12">
+          <h1 class="m-0">You are not authorised to access this URL. Please navigate to <a [routerLink]="['/dashboard']" [routerLinkActive]="['active']">Dashboard</a></h1>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 <!-- /.content-wrapper -->
