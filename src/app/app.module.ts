@@ -54,26 +54,30 @@ import { FilterPipe } from './filter.pipe';
 import {ApprovedRebaseComponent} from "./approved-rebase/approved-rebase.component";
 import { CdaParkingHistoryComponent } from './cda-parking-history/cda-parking-history.component';
 import {NgChartsModule} from "ng2-charts";
+import {AuthService} from "./services/auth-service/AuthService";
+//
+// function initializeKeycloak(keycloak: KeycloakService) {
+//   return () =>
+//     keycloak.init({
+//       config: {
+//         // url: 'http://localhost:8080/auth',
+//         url: 'https://icg.net.in/auth/',
+//         realm: 'icgrms', // PRODUCTION
+//           // realm: 'uat',
+//         // clientId: 'cgbudget', // For Production
+//           clientId: 'budget', // For UAT Server
+//       },
+//       initOptions: {
+//         onLoad: 'login-required',
+//         flow: 'standard',
+//         checkLoginIframe: false,
+//       },
+//     });
+// }
 
-function initializeKeycloak(keycloak: KeycloakService) {
-  return () =>
-    keycloak.init({
-      config: {
-        url: 'http://localhost:8080/auth',
-        // url: 'https://icg.net.in/auth/',
-        // realm: 'icgrms', // PRODUCTION
-          realm: 'uat',
-        // clientId: 'cgbudget', // For Production
-          clientId: 'budget', // For UAT Server
-      },
-      initOptions: {
-        onLoad: 'login-required',
-        flow: 'standard',
-        checkLoginIframe: false,
-      },
-    });
+function initializeKeycloak(authService: AuthService) {
+  return () => authService.init();
 }
-
 @NgModule({
   declarations: [
     AllAllocationComponent,
@@ -140,12 +144,13 @@ function initializeKeycloak(keycloak: KeycloakService) {
     DatePipe,
     SearchPipePipe,
     SearchPipeRecieptPipe,
+
     SearchUserPipePipe,
     {
       provide: APP_INITIALIZER,
       useFactory: initializeKeycloak,
       multi: true,
-      deps: [KeycloakService],
+      deps: [AuthService],
     },
     {
       provide: LocationStrategy,

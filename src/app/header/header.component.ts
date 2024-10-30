@@ -13,6 +13,7 @@ import { KeycloakService } from 'keycloak-angular';
 import { SharedService } from '../services/shared/shared.service';
 import * as FileSaver from 'file-saver';
 import { HttpClient } from '@angular/common/http';
+import {AuthService} from "../services/auth-service/AuthService";
 
 @Component({
   selector: 'app-header',
@@ -51,6 +52,7 @@ export class HeaderComponent implements OnInit{
     private formBuilder: FormBuilder,
     private common: CommonService,
     private keycloakService: KeycloakService,
+    private authService:AuthService,
     private sharedService: SharedService,
     private router: Router
   ) {}
@@ -141,7 +143,8 @@ export class HeaderComponent implements OnInit{
     localStorage.removeItem('userCurrentUnitName');
     localStorage.removeItem('token');
     localStorage.removeItem('cgwwaUserDetails');
-    this.keycloakService.logout();
+    // this.keycloakService.logout();
+    this.authService.logout(this.cons.endSessionUrl);
   }
 
   confirmModelForLogout(data: any) {
