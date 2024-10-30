@@ -7,8 +7,9 @@ export class ConstantsService {
   constructor() {}
 
   serverRedirectUrl = 'https://icg.net.in/'; //For Production Server
-   serviceUrl = 'https://icg.net.in/cgbudget/'; //Production server
-  // serviceUrl = 'https://icg.net.in/budget/'; //UAT server
+  endSessionUrl='https://icg.net.in/auth/realms/icgrms/protocol/openid-connect/logout'
+   // serviceUrl = 'https://icg.net.in/cgbudget/'; //Production server
+  serviceUrl = 'https://icg.net.in/budget/'; //UAT server
 
   // serviceUrl = 'http://192.168.100.238:1111/';
   // serviceUrl = 'http://172.20.10.2:1111/';
