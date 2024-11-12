@@ -934,8 +934,11 @@ export class NewContigentBillComponent implements OnInit {
     this.formdata.get('firmName')?.setValue(cbEntry.firmName);
     this.formdata.get('invoiceNo')?.setValue(cbEntry.invoiceNo);
     this.formdata.get('invoiceDate')?.setValue(cbEntry.invoiceDate);
-    this.viewFile(cbEntry.file);
-    this.openPdfUrlInNewTab(cbEntry.invoicePath);
+    if(cbEntry.status!='Rejected'){
+      this.viewFile(cbEntry.file);
+      this.openPdfUrlInNewTab(cbEntry.invoicePath);
+
+    }
 
     this.formdata.get('returnRemarks')?.setValue(cbEntry.returnRemarks);
     for (let i = 0; i < this.minorHeadData.length; i++) {
