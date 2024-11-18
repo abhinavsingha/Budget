@@ -390,6 +390,8 @@ export class RevisionApprovalComponent implements OnInit{
   }
 
   save(formDataValue: any) {
+
+    this.SpinnerService.show();
     let newSubmitJson = {
       authDate: formDataValue.authDate,
       remark: formDataValue.returnRemark,
@@ -404,6 +406,7 @@ export class RevisionApprovalComponent implements OnInit{
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
+            this.SpinnerService.hide();
             this.router.navigate(['/dashboard']);
             this.getDashBoardDta();
           } else {
