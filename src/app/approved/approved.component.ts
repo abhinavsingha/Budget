@@ -46,6 +46,7 @@ export class ApprovedComponent implements OnInit {
   ngOnInit(): void {
     this.sharedService.updateInbox();
     this.getApproved();
+    this.sharedService.msgId=undefined;
 
   }
 

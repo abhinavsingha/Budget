@@ -235,6 +235,7 @@ export class ApprovedBudgetComponent implements OnInit {
   }
 
   save(formDataValue: any) {
+    this.SpinnerService.show();
     let newSubmitJson = {
       authDate: formDataValue.date,
       remark: formDataValue.remarks,
@@ -246,13 +247,15 @@ export class ApprovedBudgetComponent implements OnInit {
       .postApi(this.cons.api.saveAuthData, newSubmitJson)
       .subscribe({
         next: (v: object) => {
-          this.SpinnerService.hide();
+
           let result: { [key: string]: any } = v;
           if (result['message'] == 'success') {
             // this.router.navigate(['/dashboard']);
             this.router.navigateByUrl('/inbox');
+            this.SpinnerService.hide();
             this.getDashBoardDta();
           } else {
+            this.SpinnerService.hide();
             this.common.faliureAlert('Please try later', result['message'], '');
           }
         },
