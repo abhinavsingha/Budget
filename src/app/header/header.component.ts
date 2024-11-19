@@ -143,8 +143,8 @@ export class HeaderComponent implements OnInit{
     localStorage.removeItem('userCurrentUnitName');
     localStorage.removeItem('token');
     localStorage.removeItem('cgwwaUserDetails');
-    // this.keycloakService.logout();
-    this.authService.logout(this.cons.endSessionUrl);
+    this.keycloakService.logout();
+    // this.authService.logout(this.cons.endSessionUrl);
   }
 
   confirmModelForLogout(data: any) {
