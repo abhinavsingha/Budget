@@ -9,7 +9,7 @@ import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { BudgetAllocationComponent } from './budget-allocation/budget-allocation.component';
-import { BudgetUpdateComponent } from './budget-update/budget-update.component';
+// import { BudgetUpdateComponent } from './budget-update/budget-update.component';
 import { BudgetDeleteComponent } from './budget-delete/budget-delete.component';
 import { InboxComponent } from './inbox/inbox.component';
 import { OutboxComponent } from './outbox/outbox.component';
@@ -88,7 +88,7 @@ function initializeKeycloak(authService: AuthService) {
     SidebarComponent,
     DashboardComponent,
     BudgetAllocationComponent,
-    BudgetUpdateComponent,
+    // BudgetUpdateComponent,
     BudgetDeleteComponent,
     InboxComponent,
     OutboxComponent,

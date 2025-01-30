@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { BudgetAllocationComponent } from './budget-allocation/budget-allocation.component';
-import { BudgetUpdateComponent } from './budget-update/budget-update.component';
+// import { BudgetUpdateComponent } from './budget-update/budget-update.component';
 import { BudgetDeleteComponent } from './budget-delete/budget-delete.component';
 import { InboxComponent } from './inbox/inbox.component';
 import { OutboxComponent } from './outbox/outbox.component';
@@ -36,7 +36,7 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: '', component: DashboardComponent },
   { path: 'budget-allocation', component: BudgetAllocationComponent },
-  { path: 'budget-update', component: BudgetUpdateComponent },
+  // { path: 'budget-update', component: BudgetUpdateComponent },
   { path: 'budget-delete', component: BudgetDeleteComponent },
   { path: 'inbox', component: InboxComponent },
   { path: 'outbox', component: OutboxComponent },
