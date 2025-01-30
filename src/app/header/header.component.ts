@@ -181,6 +181,8 @@ export class HeaderComponent implements OnInit{
           if (result['message'] == 'success') {
             this.roles = result['response'].userDetails.role;
             localStorage.setItem('userRole',this.roles[0].roleId);
+            localStorage.setItem('unitId',result['response'].userDetails.unitId);
+            debugger;
             if (this.roles[0].roleId == '113') {
               this.redirectUri();
             }

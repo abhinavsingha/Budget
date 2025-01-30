@@ -2,12 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { BudgetAllocationComponent } from './budget-allocation/budget-allocation.component';
-// import { BudgetUpdateComponent } from './budget-update/budget-update.component';
 import { BudgetDeleteComponent } from './budget-delete/budget-delete.component';
 import { InboxComponent } from './inbox/inbox.component';
 import { OutboxComponent } from './outbox/outbox.component';
 import { BudgetApproverComponent } from './budget-approver/budget-approver.component';
-import { LoginComponent } from './login/login.component';
 import { NewContigentBillComponent } from './new-contigent-bill/new-contigent-bill.component';
 import { ManageUserComponent } from './manage-user/manage-user.component';
 import { BudgetAllocationReportComponent } from './budget-allocation-report/budget-allocation-report.component';
@@ -31,12 +29,9 @@ import {ApprovedRebaseComponent} from "./approved-rebase/approved-rebase.compone
 import { CdaParkingHistoryComponent } from './cda-parking-history/cda-parking-history.component';
 
 const routes: Routes = [
-  // { path: '', component: LoginComponent },
-  // { path: '', component: DashboardComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: '', component: DashboardComponent },
   { path: 'budget-allocation', component: BudgetAllocationComponent },
-  // { path: 'budget-update', component: BudgetUpdateComponent },
   { path: 'budget-delete', component: BudgetDeleteComponent },
   { path: 'inbox', component: InboxComponent },
   { path: 'outbox', component: OutboxComponent },
@@ -44,46 +39,15 @@ const routes: Routes = [
   { path: 'new-contigent-bill', component: NewContigentBillComponent },
   { path: 'manage-users', component: ManageUserComponent },
   { path: 'approved', component: ApprovedComponent },
-  {
-    path: 'budget-allocation-report',
-    component: BudgetAllocationReportComponent,
-  },
-  {
-    path: 'contingent-bill-aprover',
-    component: ContigentBillApproverComponent,
-  },
-  {
-    path: 'cb-verification',
-    component: CbVerificationComponent,
-  },
-  {
-    path: 'budget-allocation-subheadwise',
-    component: BudgetAllocationSubheadwiseComponent,
-  },
-  {
-    path: 'revision',
-    component: RevisionComponent,
-  },
-  {
-    path: 'revision-approval',
-    component: RevisionApprovalComponent,
-  },
-  {
-    path: 'cda-parking',
-    component: CdaParkingComponent,
-  },
-  // {
-  //   path: '',
-  //   component: RecieptComponent,
-  // },
-  {
-    path: 'reciept',
-    component: RecieptComponent,
-  },
-  {
-    path: 'unit-rebase',
-    component: UnitRebaseComponent,
-  },
+  { path: 'budget-allocation-report', component: BudgetAllocationReportComponent},
+  { path: 'contingent-bill-aprover', component: ContigentBillApproverComponent},
+  { path: 'cb-verification', component: CbVerificationComponent},
+  { path: 'budget-allocation-subheadwise', component: BudgetAllocationSubheadwiseComponent},
+  { path: 'revision', component: RevisionComponent},
+  { path: 'revision-approval', component: RevisionApprovalComponent},
+  { path: 'cda-parking', component: CdaParkingComponent},
+  { path: 'reciept',component: RecieptComponent},
+  { path: 'unit-rebase', component: UnitRebaseComponent},
   { path: 'cda-parking-report', component: CdaParkingReportComponent },
   { path: 'budget-approved', component: ApprovedBudgetComponent },
   { path: 'budget-rebase', component: ApprovedRebaseComponent },
@@ -92,7 +56,6 @@ const routes: Routes = [
   { path: 'archive', component: ArchiveComponent },
   { path: 'unit-rebase-report', component: UnitRebaseReportComponent },
   { path: 'cda-parking-history', component: CdaParkingHistoryComponent },
-  // { path: 'view-form', component: ViewFormComponent },
 ];
 
 @NgModule({
