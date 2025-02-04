@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
+import {AuthService} from "../auth-service/AuthService";
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiCallingServiceService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,private authService: AuthService) {}
 
   postApi(url: any, jsonPayload: any) {
     return this.http.post(url, jsonPayload).pipe(

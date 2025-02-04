@@ -37,7 +37,9 @@ export class HeaderComponent implements OnInit{
   private path: any;
   private filename: any;
 
+
   ngOnInit(): void {
+    console.log(this.authService.getUsername())
     this.getDashBoardDta();
     // localStorage.setItem('notification','true');
     // $.getScript('assets/js/adminlte.js');
@@ -143,7 +145,9 @@ export class HeaderComponent implements OnInit{
     localStorage.removeItem('userCurrentUnitName');
     localStorage.removeItem('token');
     localStorage.removeItem('cgwwaUserDetails');
-    this.keycloakService.logout();
+    this.keycloakService.logout("https://icg.net.in/admin/realms/icgrms/users/"+this.authService.getUsername()+"/logout");
+    // this.router.navigate(["/https://icg.net.in/admin/realms/icgrms/users/"+this.username+"/logout"]);
+    // /admin/realms/{realm}/users/{user-id}/logout
     // this.authService.logout(this.cons.endSessionUrl);
   }
 
@@ -182,10 +186,12 @@ export class HeaderComponent implements OnInit{
             this.roles = result['response'].userDetails.role;
             localStorage.setItem('userRole',this.roles[0].roleId);
             localStorage.setItem('unitId',result['response'].userDetails.unitId);
+            // localStorage.setItem('username',result['response'].unitName);
             debugger;
             if (this.roles[0].roleId == '113') {
               this.redirectUri();
             }
+            // this.username=result['response'].userName;
             this.name = result['response'].userDetails.fullName;
             this.roleHeading = result['response'].userDetails.role[0].roleName;
             this.sharedService.roleHeading = this.roleHeading;
