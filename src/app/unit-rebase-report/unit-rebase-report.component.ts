@@ -51,7 +51,7 @@ export class UnitRebaseReportComponent {
     $.getScript('assets/js/adminlte.js');
   }
 
-  downloadRebaseReport(formdata: any) {
+  async downloadRebaseReport(formdata: any) {
     if(formdata.toUnit==undefined||formdata.toDate==undefined||formdata.fromDate==undefined){
       this.common.faliureAlert('Missing Required Values','Please select all required values','')
       return;
@@ -64,17 +64,18 @@ export class UnitRebaseReportComponent {
     if(formdata.reprtType=='02')
       url=url+'Doc';
     else if(formdata.reprtType=='03')
-      url=url+'Excel'
-    this.apiService
+      url=url+'Excel';
+
+    (await this.apiService
       .getApi(
         url +
-          '/' +
-          formdata.fromDate +
-          '/' +
-          formdata.toDate +
-        '/'+
+        '/' +
+        formdata.fromDate +
+        '/' +
+        formdata.toDate +
+        '/' +
         formdata.toUnit.cbUnit
-      )
+      ))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -278,14 +279,14 @@ export class UnitRebaseReportComponent {
     }
   }
 
-  private getRebasedUnits() {
+  private async getRebasedUnits() {
     this.allunits=[];
     let toDate=(this.formdata.get('toDate')?.value);
     let fromDate=(this.formdata.get('fromDate')?.value);
 
     debugger;
       this.SpinnerService.show();
-      this.apiService.getApi(this.cons.api.rebasedUnits+'/'+fromDate+'/'+toDate).subscribe({
+      (await this.apiService.getApi(this.cons.api.rebasedUnits + '/' + fromDate + '/' + toDate)).subscribe({
         next: (v: object) => {
           debugger;
           this.SpinnerService.hide();

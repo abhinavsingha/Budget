@@ -138,9 +138,10 @@ export class RevisionComponent implements OnInit{
   getNewEmptyEntries() {
     this.budgetRevisionUnitList.push(new BudgetRevisionUnitList());
   }
-  getBudgetFinYear() {
+
+  async getBudgetFinYear() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getBudgetFinYear).subscribe((res) => {
+    (await this.apiService.getApi(this.cons.api.getBudgetFinYear)).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.budgetFinYears = result['response'];
@@ -154,9 +155,10 @@ export class RevisionComponent implements OnInit{
     });
   }
   amountType: any;
-  getAmountType(){
-    this.apiService
-      .getApi(this.cons.api.showAllAmountUnit)
+
+  async getAmountType(){
+    (await this.apiService
+      .getApi(this.cons.api.showAllAmountUnit))
       .subscribe({
         next: (v: object) => {
           let result: { [key: string]: any } = v;
@@ -174,7 +176,8 @@ export class RevisionComponent implements OnInit{
         complete: () => console.info('complete'),
       });
   }
-  getAvailableFundData(data:any) {
+
+  async getAvailableFundData(data:any) {
     this.formdata.get('amountType')?.reset();
     this.tabledata=[];
     this.budgetRevisionUnitList2=[];
@@ -201,11 +204,11 @@ export class RevisionComponent implements OnInit{
       allocationTypeId: data.allocationType.allocTypeId,
     };
 
-    this.apiService
+    (await this.apiService
       .postApi(
         this.cons.api.getAvailableFundFindByUnitIdAndFinYearId,
         submitJson
-      )
+      ))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -225,7 +228,7 @@ export class RevisionComponent implements OnInit{
       });
   }
 
-  getSubHeadsData() {
+  async getSubHeadsData() {
     this.formdata.get('subHead')?.reset();
     this.formdata.get('amountType')?.reset();
     this.formdata.get('fundAvailable')?.reset();
@@ -242,7 +245,8 @@ export class RevisionComponent implements OnInit{
       budgetHeadType:this.formdata.get('subHeadType')?.value.subHeadTypeId,
       majorHead:this.formdata.get('majorHead')?.value.majorHead
     }
-    this.apiService.postApi(this.cons.api.getAllSubHeadByMajorHead,json).subscribe((res) => {
+     ;
+    (await this.apiService.postApi(this.cons.api.getAllSubHeadByMajorHead, json)).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.subHeads = result['response'];
@@ -253,9 +257,9 @@ export class RevisionComponent implements OnInit{
     });
   }
 
-  getCgUnitData() {
+  async getCgUnitData() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
+    (await this.apiService.getApi(this.cons.api.getCgUnitData)).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.allunits = result['response'];
@@ -266,10 +270,10 @@ export class RevisionComponent implements OnInit{
     });
   }
 
-  private getMajorHead() {
+  private async getMajorHead() {
     // const userJson = {userRoleId: "ICGS Delhi", userName: "kya hai ye", userUnitId: "000015"}
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getMajorData).subscribe({
+    (await this.apiService.getApi(this.cons.api.getMajorData)).subscribe({
       next: (v: object) => {
         let result: { [key: string]: any } = v;
         if (result['message'] == 'success') {
@@ -296,9 +300,10 @@ export class RevisionComponent implements OnInit{
 
   uploadDocuments: any[] = [];
   unitForDocuments: any[] = [];
-  getUnitDatas() {
+
+  async getUnitDatas() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
+    (await this.apiService.getApi(this.cons.api.getCgUnitData)).subscribe((res) => {
       this.SpinnerService.hide();
       let result: { [key: string]: any } = res;
       this.unitForDocuments = result['response'];
@@ -312,13 +317,14 @@ export class RevisionComponent implements OnInit{
   //   }
   // }
   uploadFileResponse: any;
-  uploadFile(index: any) {
+
+  async uploadFile(index: any) {
     const formData = new FormData();
     formData.append('file', this.file);
 
     this.SpinnerService.show();
 
-    this.apiService.postApi(this.cons.api.fileUpload, formData).subscribe({
+    (await this.apiService.postApi(this.cons.api.fileUpload, formData)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -660,10 +666,11 @@ export class RevisionComponent implements OnInit{
     }
 
   }
-  getAllocationTypeData() {
+
+  async getAllocationTypeData() {
     this.SpinnerService.show();
-    this.apiService
-      .getApi(this.cons.api.getAllocationTypeData)
+    (await this.apiService
+      .getApi(this.cons.api.getAllocationTypeData))
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
@@ -756,8 +763,8 @@ export class RevisionComponent implements OnInit{
     };
     debugger;
 
-      this.apiService
-        .postApi(this.cons.api.saveBudgetRevisionData, req)
+      (await this.apiService
+        .postApi(this.cons.api.saveBudgetRevisionData, req))
         .subscribe({
           next: (v: object) => {
             this.SpinnerService.hide();
@@ -794,9 +801,10 @@ export class RevisionComponent implements OnInit{
 
 
   }
-  updateInbox(){
-    this.apiService
-      .getApi(this.cons.api.updateInboxOutBox)
+
+  async updateInbox(){
+    (await this.apiService
+      .getApi(this.cons.api.updateInboxOutBox))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -817,10 +825,11 @@ export class RevisionComponent implements OnInit{
       });
   }
   dasboardData:any;
-  getDashBoardDta() {
+
+  async getDashBoardDta() {
     this.SpinnerService.show();
 
-    this.apiService.postApi(this.cons.api.getDashBoardDta, null).subscribe({
+    (await this.apiService.postApi(this.cons.api.getDashBoardDta, null)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -863,8 +872,8 @@ export class RevisionComponent implements OnInit{
       subHead: formDataValue.subHead.budgetCodeId,
       allocTypeId: formDataValue.allocationType.allocTypeId,
     };
-    this.apiService
-      .postApi(this.cons.api.getBudgetRevisionData, submitJson)
+    (await this.apiService
+      .postApi(this.cons.api.getBudgetRevisionData, submitJson))
       .subscribe({
         next: async (v: object) => {
           this.SpinnerService.hide();
@@ -924,9 +933,10 @@ export class RevisionComponent implements OnInit{
     this.formdata.get('allocationType')?.reset();
   }
   subHeadType: any;
-  getSubHeadType(){
-    this.apiService
-      .getApi(this.cons.api.getSubHeadType)
+
+  async getSubHeadType(){
+    (await this.apiService
+      .getApi(this.cons.api.getSubHeadType))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();

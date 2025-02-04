@@ -91,11 +91,12 @@ export class SidebarComponent {
 
   unitId: any;
   rejectedBillCount: any;
-  getDashBoardDta() {
+
+  async getDashBoardDta() {
     this.SpinnerService.show();
     var newSubmitJson = null;
-    this.apiService
-      .postApi(this.cons.api.getDashBoardDta, newSubmitJson)
+    (await this.apiService
+      .postApi(this.cons.api.getDashBoardDta, newSubmitJson))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();

@@ -84,8 +84,8 @@ export class RevisionApprovalComponent implements OnInit{
   }
   async getAlGroupId(groupId: any) {
     this.SpinnerService.show();
-    this.apiService
-      .getApi(this.cons.api.getAllRevisionGroupId + '/' + groupId)
+    (await this.apiService
+      .getApi(this.cons.api.getAllRevisionGroupId + '/' + groupId))
       .subscribe(async (res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
@@ -127,11 +127,12 @@ export class RevisionApprovalComponent implements OnInit{
         }
       });
   }
-  getDashBoardDta() {
+
+  async getDashBoardDta() {
     this.SpinnerService.show();
     var newSubmitJson = null;
-    this.apiService
-      .postApi(this.cons.api.getDashBoardDta, newSubmitJson)
+    (await this.apiService
+      .postApi(this.cons.api.getDashBoardDta, newSubmitJson))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -171,15 +172,16 @@ export class RevisionApprovalComponent implements OnInit{
       }
     });
   }
-  approveFormFinally(formDataValue: any) {
+
+  async approveFormFinally(formDataValue: any) {
     this.SpinnerService.show();
     let submitJson = {
       authGroupId: this.budgetDataLists[0].authGroupId,
       status: 'Approved',
       remarks: formDataValue.returnRemark,
     };
-    this.apiService
-      .postApi(this.cons.api.approveRevisionBudgetOrReject, submitJson)
+    (await this.apiService
+      .postApi(this.cons.api.approveRevisionBudgetOrReject, submitJson))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -207,15 +209,15 @@ export class RevisionApprovalComponent implements OnInit{
       });
   }
 
-  returnFormFinally(formDataValue: any) {
+  async returnFormFinally(formDataValue: any) {
     this.SpinnerService.show();
     let submitJson = {
       authGroupId: this.budgetDataLists[0].authGroupId,
       status: 'Rejected',
       remarks: formDataValue.returnRemark,
     };
-    this.apiService
-      .postApi(this.cons.api.approveRevisionBudgetOrReject, submitJson)
+    (await this.apiService
+      .postApi(this.cons.api.approveRevisionBudgetOrReject, submitJson))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -241,9 +243,10 @@ export class RevisionApprovalComponent implements OnInit{
         complete: () => console.info('complete'),
       });
   }
-  updateInbox(){
-    this.apiService
-      .getApi(this.cons.api.updateInboxOutBox)
+
+  async updateInbox(){
+    (await this.apiService
+      .getApi(this.cons.api.updateInboxOutBox))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -263,17 +266,18 @@ export class RevisionApprovalComponent implements OnInit{
         complete: () => console.info('complete'),
       });
   }
-  getCgUnitData() {
+
+  async getCgUnitData() {
     this.SpinnerService.show();
     var comboJson = null;
-    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe(
+    (await this.apiService.getApi(this.cons.api.getCgUnitData)).subscribe(
       (res) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = res;
         this.unitData = result['response'];
         // if(this.userUnitId==undefined){
         //   var newSubmitJson = null;
-        //   this.apiService
+        //   await this.apiService
         //     .postApi(this.cons.api.getDashBoardDta, newSubmitJson)
         //     .subscribe({
         //       next: (v: object) => {
@@ -317,7 +321,8 @@ export class RevisionApprovalComponent implements OnInit{
       }
     );
   }
-  upload() {
+
+  async upload() {
       const file: File = this.browseFileInput.nativeElement.files[0];
       // console.log(file);
       const formData = new FormData();
@@ -325,7 +330,7 @@ export class RevisionApprovalComponent implements OnInit{
       formData.append('file', file);
       debugger;
       this.SpinnerService.show();
-      this.apiService.postApi(this.cons.api.fileUpload, formData).subscribe({
+      (await this.apiService.postApi(this.cons.api.fileUpload, formData)).subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
@@ -352,8 +357,9 @@ export class RevisionApprovalComponent implements OnInit{
       });
 
   }
-  viewFile(file: string) {
-    this.apiService.getApi(this.cons.api.fileDownload + file).subscribe(
+
+  async viewFile(file: string) {
+    (await this.apiService.getApi(this.cons.api.fileDownload + file)).subscribe(
       (res) => {
         let result: { [key: string]: any } = res;
         this.openPdfUrlInNewTab(result['response'].pathURL);
@@ -389,7 +395,7 @@ export class RevisionApprovalComponent implements OnInit{
     });
   }
 
-  save(formDataValue: any) {
+  async save(formDataValue: any) {
 
     this.SpinnerService.show();
     let newSubmitJson = {
@@ -399,8 +405,8 @@ export class RevisionApprovalComponent implements OnInit{
       authDocId: this.browse,
       authGroupId: localStorage.getItem('group_id'),
     };
-    this.apiService
-      .postApi(this.cons.api.saveAuthDataRevision, newSubmitJson)
+    (await this.apiService
+      .postApi(this.cons.api.saveAuthDataRevision, newSubmitJson))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -579,9 +585,9 @@ export class RevisionApprovalComponent implements OnInit{
     this.filename=this.browseFileInput.nativeElement.value;
   }
 
-  downloadPDF() {
-    this.apiService
-      .getApi(this.cons.api.getRevisedAllocationReport+'/'+localStorage.getItem('group_id'))
+  async downloadPDF() {
+    (await this.apiService
+      .getApi(this.cons.api.getRevisedAllocationReport + '/' + localStorage.getItem('group_id')))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -594,7 +600,7 @@ export class RevisionApprovalComponent implements OnInit{
             // console.log(result['response']);
           }
           // else if(result['message'] =='PENDING RECORD NOT FOUND'){
-          //   this.apiService.getApi(this.cons.api.getRevisedAllocationAprReport+'/'+localStorage.getItem('group_id'))
+          //   await this.apiService.getApi(this.cons.api.getRevisedAllocationAprReport+'/'+localStorage.getItem('group_id'))
           //     .subscribe({
           //       next: (v: object) => {
           //         this.SpinnerService.hide();
@@ -664,9 +670,9 @@ export class RevisionApprovalComponent implements OnInit{
       this.formdata.get(field)?.reset();
     }
   }
-  private finallyMoveArchive(msgId:string) {
-    this.apiService
-      .getApi(this.cons.api.moveToArchive +'/'+msgId)
+  private async finallyMoveArchive(msgId:string) {
+    (await this.apiService
+      .getApi(this.cons.api.moveToArchive + '/' + msgId))
       .subscribe(
         (res) => {
           let result: { [key: string]: any } = res;

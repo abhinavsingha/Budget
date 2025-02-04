@@ -10,7 +10,8 @@ import {AuthService} from "../auth-service/AuthService";
 export class ApiCallingServiceService {
   constructor(private http: HttpClient,private authService: AuthService) {}
 
-  postApi(url: any, jsonPayload: any) {
+  async postApi(url: any, jsonPayload: any) {
+    const token = await this.authService.getToken();
     return this.http.post(url, jsonPayload).pipe(
       map((results) => results),
       catchError(this.handleError)
@@ -25,7 +26,8 @@ export class ApiCallingServiceService {
     );
   }
 
-  getApi(url: any) {
+  async getApi(url: any) {
+    const token = await this.authService.getToken();
     return this.http.get(url).pipe(
       map((results) => results),
       catchError(this.handleError)

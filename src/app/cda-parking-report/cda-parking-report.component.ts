@@ -131,10 +131,11 @@ export class CdaParkingReportComponent implements OnInit {
     this.getAllCda();
     this.getCgUnitData();
   }
-  getCgUnitData() {
+
+  async getCgUnitData() {
     this.SpinnerService.show();
     var comboJson = null;
-    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe(
+    (await this.apiService.getApi(this.cons.api.getCgUnitData)).subscribe(
       (res) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = res;
@@ -146,8 +147,9 @@ export class CdaParkingReportComponent implements OnInit {
       }
     );
   }
-  getSubHeadType() {
-    this.apiService.getApi(this.cons.api.getSubHeadType).subscribe({
+
+  async getSubHeadType() {
+    (await this.apiService.getApi(this.cons.api.getSubHeadType)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -166,8 +168,9 @@ export class CdaParkingReportComponent implements OnInit {
       complete: () => console.info('complete'),
     });
   }
-  getAllCda() {
-    this.apiService.getApi(this.cons.api.getAllCda).subscribe({
+
+  async getAllCda() {
+    (await this.apiService.getApi(this.cons.api.getAllCda)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -198,9 +201,12 @@ export class CdaParkingReportComponent implements OnInit {
     private http: HttpClient,
     private common: CommonService // private select :NgSelectModule
   ) {}
-  private getDashboardData() {
+  private async getDashboardData() {
     // this.SpinnerService.show();
-    this.apiService.postApi(this.cons.api.getDashboardData, null).subscribe(
+    (await
+        // this.SpinnerService.show();
+        this.apiService.postApi(this.cons.api.getDashboardData, null)
+    ).subscribe(
       (results) => {
         //
         this.SpinnerService.hide();
@@ -213,12 +219,12 @@ export class CdaParkingReportComponent implements OnInit {
           this.formdata.patchValue({
             allocationType: result['response'].allocationType,
           });
-          this.sharedService.finYear=result['response'].budgetFinancialYear;
-          if(this.sharedService.finYear!=undefined)
+          this.sharedService.finYear = result['response'].budgetFinancialYear;
+          if (this.sharedService.finYear != undefined)
             this.formdata.get('finYear')?.setValue(this.sharedService.finYear);
 
-          this.sharedService.finYear=result['response'].budgetFinancialYear;
-          if(this.sharedService.finYear!=undefined)
+          this.sharedService.finYear = result['response'].budgetFinancialYear;
+          if (this.sharedService.finYear != undefined)
             this.formdata.get('finYear')?.setValue(this.sharedService.finYear);
           this.getAllocationTypeData();
 
@@ -232,9 +238,10 @@ export class CdaParkingReportComponent implements OnInit {
       }
     );
   }
-  getBudgetFinYear() {
+
+  async getBudgetFinYear() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getBudgetFinYear).subscribe((res) => {
+    (await this.apiService.getApi(this.cons.api.getBudgetFinYear)).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.budgetFinYears = result['response'];
@@ -247,9 +254,10 @@ export class CdaParkingReportComponent implements OnInit {
       }
     });
   }
-  getSubHeadsData() {
+
+  async getSubHeadsData() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getSubHeadsData).subscribe((res) => {
+    (await this.apiService.getApi(this.cons.api.getSubHeadsData)).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.subHeads = result['response'];
@@ -259,9 +267,10 @@ export class CdaParkingReportComponent implements OnInit {
       }
     });
   }
-  majorDataNew() {
+
+  async majorDataNew() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getMajorData).subscribe((res) => {
+    (await this.apiService.getApi(this.cons.api.getMajorData)).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.majorHeadList = result['response'].subHead;
@@ -273,14 +282,15 @@ export class CdaParkingReportComponent implements OnInit {
   }
   nType: any;
   subHead: any;
-  setSubHead() {
+
+  async setSubHead() {
     this.SpinnerService.show();
     let json = {
       budgetHeadType: this.formdata.get('subHeadType')?.value.subHeadTypeId,
       majorHead: this.formdata.get('majorHead')?.value.majorHead,
     };
-    this.apiService
-      .postApi(this.cons.api.getAllSubHeadByMajorHead, json)
+    (await this.apiService
+      .postApi(this.cons.api.getAllSubHeadByMajorHead, json))
       .subscribe(
         (res) => {
           let result: { [key: string]: any } = res;
@@ -293,10 +303,11 @@ export class CdaParkingReportComponent implements OnInit {
         }
       );
   }
-  getCdaParkingReport() {
+
+  async getCdaParkingReport() {
     this.SpinnerService.show();
 
-    this.apiService.postApi(this.cons.api.getCdaParkingReport, null).subscribe({
+    (await this.apiService.postApi(this.cons.api.getCdaParkingReport, null)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -338,8 +349,9 @@ export class CdaParkingReportComponent implements OnInit {
       complete: () => console.info('complete'),
     });
   }
-  getAmountType() {
-    this.apiService.getApi(this.cons.api.showAllAmountUnit).subscribe({
+
+  async getAmountType() {
+    (await this.apiService.getApi(this.cons.api.showAllAmountUnit)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -361,11 +373,12 @@ export class CdaParkingReportComponent implements OnInit {
     });
   }
   allocType:any[]=[]
-  getAllocationTypeData() {
+
+  async getAllocationTypeData() {
     // this.SpinnerService.show();
     this.allocType=[];
-    this.apiService
-      .getApi(this.cons.api.getAllocationTypeData)
+    (await this.apiService
+      .getApi(this.cons.api.getAllocationTypeData))
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
@@ -389,7 +402,8 @@ export class CdaParkingReportComponent implements OnInit {
         }
       });
   }
-  downloadCDAParkingReport(formdata: any) {
+
+  async downloadCDAParkingReport(formdata: any) {
     if (
       formdata.finYear == null ||
       formdata.cdas == null ||
@@ -440,8 +454,8 @@ export class CdaParkingReportComponent implements OnInit {
       };
     }
       this.SpinnerService.show();
-    this.apiService
-      .postApi(this.cons.api.getCdaParkingReport, submitJson)
+    (await this.apiService
+      .postApi(this.cons.api.getCdaParkingReport, submitJson))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -511,7 +525,7 @@ export class CdaParkingReportComponent implements OnInit {
     return(this.data[key]);
   }
 
-  report(formdata:any) {
+  async report(formdata:any) {
     debugger;
     if(formdata.reprtType=='01')
     this.downloadPdf(this.downloadPath,this.downloadFilename)
@@ -554,8 +568,8 @@ export class CdaParkingReportComponent implements OnInit {
           subHeadType:formdata.subHeadType.subHeadTypeId,
         };
       }
-      this.apiService
-        .postApi(this.cons.api.getCdaParkingReportDoc, submitJson)
+      (await this.apiService
+        .postApi(this.cons.api.getCdaParkingReportDoc, submitJson))
         .subscribe({
           next: (v: object) => {
             this.SpinnerService.hide();

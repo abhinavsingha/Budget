@@ -89,9 +89,9 @@ export class RecieptComponent {
     private datePipe: DatePipe
   ) {}
 
-  getBudgetFinYear() {
+  async getBudgetFinYear() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getBudgetFinYear).subscribe({
+    (await this.apiService.getApi(this.cons.api.getBudgetFinYear)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -115,9 +115,10 @@ export class RecieptComponent {
   }
 
   subHeadType: any[] = [];
-  getSubHeadType() {
+
+  async getSubHeadType() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getSubHeadType).subscribe({
+    (await this.apiService.getApi(this.cons.api.getSubHeadType)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -136,9 +137,9 @@ export class RecieptComponent {
     });
   }
 
-  majorDataNew() {
+  async majorDataNew() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getMajorData).subscribe({
+    (await this.apiService.getApi(this.cons.api.getMajorData)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -157,9 +158,9 @@ export class RecieptComponent {
     });
   }
 
-  getUnitDatas() {
+  async getUnitDatas() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe({
+    (await this.apiService.getApi(this.cons.api.getCgUnitData)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -178,10 +179,10 @@ export class RecieptComponent {
     });
   }
 
-  getBudgetRecipt() {
+  async getBudgetRecipt() {
     // debugger;
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getBudgetRecipt).subscribe((res) => {
+    (await this.apiService.getApi(this.cons.api.getBudgetRecipt)).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.finalTableData = result['response'].budgetResponseist;
@@ -210,9 +211,9 @@ export class RecieptComponent {
     });
   }
 
-  getAllocationTypeData() {
+  async getAllocationTypeData() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getAllocationTypeData).subscribe({
+    (await this.apiService.getApi(this.cons.api.getAllocationTypeData)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
 
@@ -300,7 +301,8 @@ export class RecieptComponent {
     }
   }
   uploadFileResponse: any;
-  uploadFile(index: any) {
+
+  async uploadFile(index: any) {
     debugger;
     const formData = new FormData();
     formData.append('file', this.file);
@@ -308,7 +310,7 @@ export class RecieptComponent {
 
     this.SpinnerService.show();
 
-    this.apiService.postApi(this.cons.api.fileUpload, formData).subscribe({
+    (await this.apiService.postApi(this.cons.api.fileUpload, formData)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -340,8 +342,9 @@ export class RecieptComponent {
     });
     debugger;
   }
-  viewFile(file: string) {
-    this.apiService.getApi(this.cons.api.fileDownload + file).subscribe(
+
+  async viewFile(file: string) {
+    (await this.apiService.getApi(this.cons.api.fileDownload + file)).subscribe(
       (res) => {
         let result: { [key: string]: any } = res;
         this.openPdfUrlInNewTab(result['response'].pathURL);
@@ -366,7 +369,8 @@ export class RecieptComponent {
 
   selectedFinYear: any;
   previousRecieptData:any[]=[];
-  getAllSubHeadByMajorHead(formData: any, formdataValue: any) {
+
+  async getAllSubHeadByMajorHead(formData: any, formdataValue: any) {
     this.SpinnerService.show();
     let submitJson = {
       budgetHeadType: formdataValue.subHeadType.subHeadTypeId,
@@ -376,8 +380,8 @@ export class RecieptComponent {
 
     this.selectedFinYear = formdataValue.finYear.serialNo;
 
-    this.apiService
-      .postApi(this.cons.api.getBudgetReciptFilter, submitJson)
+    (await this.apiService
+      .postApi(this.cons.api.getBudgetReciptFilter, submitJson))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -544,15 +548,15 @@ export class RecieptComponent {
     });
   }
 
-  finallySubmit(data: any) {
+  async finallySubmit(data: any) {
     this.SpinnerService.show();
     // var newSubmitJson = this.submitJson;
     var newSubmitJson = data;
 
     // console.log(JSON.stringify(newSubmitJson) + ' =submitJson for save budget');
 
-    this.apiService
-      .postApi(this.cons.api.budgetRecipetSave, newSubmitJson)
+    (await this.apiService
+      .postApi(this.cons.api.budgetRecipetSave, newSubmitJson))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -601,8 +605,9 @@ export class RecieptComponent {
   isUpdate: boolean = false;
   amountType: any;
   defaultAmountType2: any;
-  getAmountType() {
-    this.apiService.getApi(this.cons.api.showAllAmountUnit).subscribe({
+
+  async getAmountType() {
+    (await this.apiService.getApi(this.cons.api.showAllAmountUnit)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -622,7 +627,8 @@ export class RecieptComponent {
       complete: () => console.info('complete'),
     });
   }
-  updateReciept(data: any) {
+
+  async updateReciept(data: any) {
     this.SpinnerService.show();
     this.isUpdate = true;
 
@@ -648,8 +654,8 @@ export class RecieptComponent {
       budgetHeadType: data.subHead.subHeadTypeId,
     };
 
-    this.apiService
-      .postApi(this.cons.api.getBudgetReciptFilter, submitJson)
+    (await this.apiService
+      .postApi(this.cons.api.getBudgetReciptFilter, submitJson))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -724,9 +730,9 @@ export class RecieptComponent {
     }
   }
 
-  getModData() {
+  async getModData() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getModData).subscribe({
+    (await this.apiService.getApi(this.cons.api.getModData)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -789,7 +795,7 @@ export class RecieptComponent {
     this.getBudgetRecipt();
   }
 
-  updateRecipetSave(data: any) {
+  async updateRecipetSave(data: any) {
     this.SpinnerService.show();
     let submitJson = {
       budgetFinancialYearId: data.finYear.serialNo,
@@ -799,8 +805,8 @@ export class RecieptComponent {
       allocationAmount: data.allocationAmount,
     };
 
-    this.apiService
-      .postApi(this.cons.api.updateRecipetSave, submitJson)
+    (await this.apiService
+      .postApi(this.cons.api.updateRecipetSave, submitJson))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -821,9 +827,10 @@ export class RecieptComponent {
         complete: () => console.info('complete'),
       });
   }
-  updateInbox(){
-    this.apiService
-      .getApi(this.cons.api.updateInboxOutBox)
+
+  async updateInbox(){
+    (await this.apiService
+      .getApi(this.cons.api.updateInboxOutBox))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -865,9 +872,9 @@ export class RecieptComponent {
       this.uploadDocuments[i].authorityData=undefined;
     }
   }
-  private getCdaUnitList() {
+  private async getCdaUnitList() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getCdaUnitList).subscribe((res) => {
+    (await this.apiService.getApi(this.cons.api.getCdaUnitList)).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.cdaUnitList = result['response'];
@@ -947,7 +954,7 @@ export class RecieptComponent {
     debugger;
   }
 
-  updateCdaPark() {
+  async updateCdaPark() {
     this.cdaList;
     this.currentEntry;
     debugger;
@@ -977,9 +984,9 @@ export class RecieptComponent {
         alterAmount:(Number(this.currentEntry.allocationAmount)-Number(this.currentEntry.allocationAmountBackup)).toString(),
 
         cdaRequest:cdaReq
-      }
-      this.apiService
-        .postApi(this.cons.api.updateRecipetSave, json)
+      };
+    (await this.apiService
+        .postApi(this.cons.api.updateRecipetSave, json))
         .subscribe({
           next: (v: object) => {
             this.SpinnerService.hide();

@@ -10,7 +10,6 @@ export class ConstantsService {
   endSessionUrl='https://icg.net.in/auth/realms/icgrms/protocol/openid-connect/logout'
    // serviceUrl = 'https://icg.net.in/cgbudget/'; //Production server
   serviceUrl = 'https://icg.net.in/budget/'; //UAT server
-
   // serviceUrl = 'http://192.168.100.238:1111/';
   // serviceUrl = 'http://172.20.10.2:1111/';
   // serviceUrl = 'http://169.254.75.245:1111/';

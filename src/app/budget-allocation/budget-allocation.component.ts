@@ -24,9 +24,10 @@ import { SharedService } from '../services/shared/shared.service';
 })
 export class BudgetAllocationComponent implements OnInit {
   budgetFinYearsNew: any[] = [];
-  getBudgetFinYear() {
+
+  async getBudgetFinYear() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getBudgetFinYear).subscribe({
+    (await this.apiService.getApi(this.cons.api.getBudgetFinYear)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -49,9 +50,10 @@ export class BudgetAllocationComponent implements OnInit {
   }
 
   allunitsNew: any[] = [];
-  getCgUnitDataNew() {
+
+  async getCgUnitDataNew() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getCgUnitWithoutMOD).subscribe({
+    (await this.apiService.getApi(this.cons.api.getCgUnitWithoutMOD)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -72,9 +74,10 @@ export class BudgetAllocationComponent implements OnInit {
   }
 
   allocationType: any[] = [];
-  getAllocationTypeData() {
+
+  async getAllocationTypeData() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getAllocationTypeData).subscribe({
+    (await this.apiService.getApi(this.cons.api.getAllocationTypeData)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -96,9 +99,10 @@ export class BudgetAllocationComponent implements OnInit {
 
   subHeadType: any[] = [];
   amountUnits: any;
-  getSubHeadType() {
+
+  async getSubHeadType() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getSubHeadType).subscribe({
+    (await this.apiService.getApi(this.cons.api.getSubHeadType)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -124,9 +128,10 @@ export class BudgetAllocationComponent implements OnInit {
   }
 
   majorDataNew: any[] = [];
-  getMajorDataNew() {
+
+  async getMajorDataNew() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getMajorData).subscribe({
+    (await this.apiService.getApi(this.cons.api.getMajorData)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -155,9 +160,10 @@ export class BudgetAllocationComponent implements OnInit {
   }
 
   unitForDocuments: any[] = [];
-  getUnitDatas() {
+
+  async getUnitDatas() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe({
+    (await this.apiService.getApi(this.cons.api.getCgUnitData)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -176,9 +182,9 @@ export class BudgetAllocationComponent implements OnInit {
     });
   }
 
-  deleteDataByPid() {
+  async deleteDataByPid() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.deleteDataByPid).subscribe({
+    (await this.apiService.getApi(this.cons.api.deleteDataByPid)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -198,9 +204,10 @@ export class BudgetAllocationComponent implements OnInit {
   }
 
   amountType: any;
-  getAmountType() {
+
+  async getAmountType() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.showAllAmountUnit).subscribe({
+    (await this.apiService.getApi(this.cons.api.showAllAmountUnit)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -412,12 +419,12 @@ export class BudgetAllocationComponent implements OnInit {
     }
   }
 
-  getFinancialYear() {
+  async getFinancialYear() {
     const tokenValueHeader = localStorage.getItem('newToken');
     this.SpinnerService.show();
     var comboJson = null;
     // console.log(JSON.stringify(comboJson) + ' ======');
-    this.apiService.getApi(this.cons.api.getBudgetFinYear).subscribe((res) => {
+    (await this.apiService.getApi(this.cons.api.getBudgetFinYear)).subscribe((res) => {
       this.SpinnerService.hide();
 
       let result: { [key: string]: any } = res;
@@ -425,15 +432,15 @@ export class BudgetAllocationComponent implements OnInit {
     });
   }
 
-  getAvailableFund(cgUnit: any) {
+  async getAvailableFund(cgUnit: any) {
     // Only for demo
 
     // Only for demo
     this.SpinnerService.show();
     var comboJson = null;
     // console.log(JSON.stringify(comboJson) + ' ======');
-    this.apiService
-      .getApi(this.cons.api.getAvailableFund + '/' + cgUnit.unit)
+    (await this.apiService
+      .getApi(this.cons.api.getAvailableFund + '/' + cgUnit.unit))
       .subscribe((res) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = res;
@@ -491,10 +498,11 @@ export class BudgetAllocationComponent implements OnInit {
       this.file = event.target.files[0];
     }
   }
-  getDashBoardDta() {
+
+  async getDashBoardDta() {
     this.SpinnerService.show();
 
-    this.apiService.postApi(this.cons.api.getDashBoardDta, null).subscribe({
+    (await this.apiService.postApi(this.cons.api.getDashBoardDta, null)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -579,15 +587,15 @@ export class BudgetAllocationComponent implements OnInit {
     });
   }
 
-  finallySubmit(data: any) {
+  async finallySubmit(data: any) {
     this.SpinnerService.show();
     var newSubmitJson = data;
     let url=this.cons.api.saveBudgetAllocationUnitWise;
     if(this.sharedService.reject)
       url=url+'Edit';
     // console.log(JSON.stringify(newSubmitJson) + ' =submitJson for save budget');
-    this.apiService
-      .postApi(url, newSubmitJson)
+    (await this.apiService
+      .postApi(url, newSubmitJson))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -724,7 +732,8 @@ export class BudgetAllocationComponent implements OnInit {
 
   tableData: any[] = [];
   finalData: any[] = [];
-  addSubHeadValue(data: any, formDataValue: any, subHeadIndex: any) {
+
+  async addSubHeadValue(data: any, formDataValue: any, subHeadIndex: any) {
     if (
       data.amount == undefined ||
       formDataValue.finYearId == null ||
@@ -766,8 +775,8 @@ export class BudgetAllocationComponent implements OnInit {
     this.cdaDetail = undefined;
 
     this.finalData.push(finalTableData);
-    this.apiService
-      .postApi(this.cons.api.saveFilterData, submitJson)
+    (await this.apiService
+      .postApi(this.cons.api.saveFilterData, submitJson))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -883,7 +892,7 @@ export class BudgetAllocationComponent implements OnInit {
   subHeadFilterDatas: any[] = [];
 
   // minorHeadAutoSelect: any;
-  getAllSubHeadByFinYearMajorHeadAndUnit(formdataValue: any) {
+  async getAllSubHeadByFinYearMajorHeadAndUnit(formdataValue: any) {
     this.count = 1;
     this.countFinYear = 1;
 
@@ -938,7 +947,7 @@ export class BudgetAllocationComponent implements OnInit {
       subHeadTypeId: formdataValue.subHeadType.subHeadTypeId,
     };
 
-    this.apiService.postApi(this.cons.api.getFilterData, submitJson).subscribe({
+    (await this.apiService.postApi(this.cons.api.getFilterData, submitJson)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -1003,7 +1012,7 @@ export class BudgetAllocationComponent implements OnInit {
     this.subHeadFilterDatas = [];
   }
 
-  deleteRowFromTableData(tableSingleData: any, indexValue: any) {
+  async deleteRowFromTableData(tableSingleData: any, indexValue: any) {
     this.SpinnerService.show();
 
     this.finalData.splice(indexValue, 1);
@@ -1015,7 +1024,7 @@ export class BudgetAllocationComponent implements OnInit {
       allocationType: tableSingleData.allocationType.allocTypeId,
     };
 
-    this.apiService.postApi(this.cons.api.deleteData, submitJson).subscribe({
+    (await this.apiService.postApi(this.cons.api.deleteData, submitJson)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -1133,8 +1142,8 @@ export class BudgetAllocationComponent implements OnInit {
     }
   }
 
-  updateInbox() {
-    this.apiService.getApi(this.cons.api.updateInboxOutBox).subscribe({
+  async updateInbox() {
+    (await this.apiService.getApi(this.cons.api.updateInboxOutBox)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;

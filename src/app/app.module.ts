@@ -150,7 +150,7 @@ function initializeKeycloak(authService: AuthService) {
       provide: APP_INITIALIZER,
       useFactory: initializeKeycloak,
       multi: true,
-      deps: [AuthService],
+      deps: [AuthService,KeycloakService],
     },
     {
       provide: LocationStrategy,

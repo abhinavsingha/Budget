@@ -44,9 +44,9 @@ export class CdaParkingComponent implements OnInit {
   }
 
 
-  getSubheadData() {
+  async getSubheadData() {
       this.SpinnerService.show();
-      this.apiService.getApi(this.cons.api.getAllSubHeadList).subscribe(
+      (await this.apiService.getApi(this.cons.api.getAllSubHeadList)).subscribe(
         (results) => {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = results;
@@ -64,10 +64,10 @@ export class CdaParkingComponent implements OnInit {
 
 
   oldmultipleCdaParking:any[]=[];
-  private getOldCdaData(submitJson:any) {
+  private async getOldCdaData(submitJson:any) {
     this.oldmultipleCdaParking=[];
-    this.apiService
-      .postApi(this.cons.api.getAllBillCdaAndAllocationSummery, submitJson)
+    (await this.apiService
+      .postApi(this.cons.api.getAllBillCdaAndAllocationSummery, submitJson))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -143,9 +143,9 @@ debugger;
     debugger;
   }
 
-  private getCdaUnitList() {
+  private async getCdaUnitList() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getCdaUnitList).subscribe((res) => {
+    (await this.apiService.getApi(this.cons.api.getCdaUnitList)).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.cdaUnitList = result['response'];
@@ -224,15 +224,16 @@ debugger;
     debugger;
     this.updateCdaParkingData(this.cdaParkingListResponseData);
   }
-  updateCdaParkingData(data: any) {
+
+  async updateCdaParkingData(data: any) {
     this.SpinnerService.show();
     var newSubmitJson = {
       cdaRequest: data,
       authGroupId: this.currentEntry.authGroupId,
     };
 
-    this.apiService
-      .postApi(this.cons.api.updateCdaParkingData, newSubmitJson)
+    (await this.apiService
+      .postApi(this.cons.api.updateCdaParkingData, newSubmitJson))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();

@@ -212,9 +212,9 @@ export class InboxComponent implements OnInit {
     }
   }
 
-  private inboxlist() {
+  private async inboxlist() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.inboxListMain).subscribe((res) => {
+    (await this.apiService.getApi(this.cons.api.inboxListMain)).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.SpinnerService.hide();
@@ -310,7 +310,8 @@ export class InboxComponent implements OnInit {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   }
   authDocPath:any;
-  getAuthDoc(li: InboxList) {
+
+  async getAuthDoc(li: InboxList) {
     let isType;
     if(li.isType=='Budget Allocation')
       isType='BG';
@@ -324,7 +325,7 @@ export class InboxComponent implements OnInit {
     else
       isType='CB';
 
-    this.apiService.getApi(this.cons.api.getApprovedFilePath+'/'+li.groupId+'/'+isType).subscribe((res) => {
+    (await this.apiService.getApi(this.cons.api.getApprovedFilePath + '/' + li.groupId + '/' + isType)).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.SpinnerService.hide();
@@ -347,9 +348,10 @@ export class InboxComponent implements OnInit {
 
 
   }
-  viewFile(file: string) {
-    this.apiService
-      .getApi(this.cons.api.fileDownload +file)
+
+  async viewFile(file: string) {
+    (await this.apiService
+      .getApi(this.cons.api.fileDownload + file))
       .subscribe(
         (res) => {
           let result: { [key: string]: any } = res;
@@ -366,10 +368,10 @@ export class InboxComponent implements OnInit {
     window.open(pdfUrl, '_blank');
   }
 
-   updateMsgStatusMain(li:any) {
+  async updateMsgStatusMain(li:any) {
     let msgId=li.mangeInboxId;
-    this.apiService
-      .getApi(this.cons.api.moveToArchive +'/'+msgId)
+    (await this.apiService
+      .getApi(this.cons.api.moveToArchive + '/' + msgId))
       .subscribe(
         (res) => {
           let result: { [key: string]: any } = res;
@@ -401,9 +403,9 @@ export class InboxComponent implements OnInit {
     });
   }
 
-  private finallyMoveApprove(li: InboxList) {
-    this.apiService
-      .getApi(this.cons.api.updateMsgStatusMain +'/'+li.mangeInboxId)
+  private async finallyMoveApprove(li: InboxList) {
+    (await this.apiService
+      .getApi(this.cons.api.updateMsgStatusMain + '/' + li.mangeInboxId))
       .subscribe(
         (res) => {
           let result: { [key: string]: any } = res;
@@ -433,9 +435,9 @@ export class InboxComponent implements OnInit {
 
   }
 
-  private finallyMoveArchive(li: InboxList) {
-    this.apiService
-      .getApi(this.cons.api.moveToArchive +'/'+li.mangeInboxId)
+  private async finallyMoveArchive(li: InboxList) {
+    (await this.apiService
+      .getApi(this.cons.api.moveToArchive + '/' + li.mangeInboxId))
       .subscribe(
         (res) => {
           let result: { [key: string]: any } = res;

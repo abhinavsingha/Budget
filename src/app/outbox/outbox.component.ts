@@ -138,9 +138,9 @@ export class OutboxComponent implements OnInit {
     }
   }
 
-  private outboxlist() {
+  private async outboxlist() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.outBoxListMain).subscribe((res) => {
+    (await this.apiService.getApi(this.cons.api.outBoxListMain)).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.SpinnerService.hide();
@@ -221,7 +221,8 @@ export class OutboxComponent implements OnInit {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   }
   authDocPath:any;
-  getAuthDoc(li: InboxList) {
+
+  async getAuthDoc(li: InboxList) {
     let isType;
     if(li.isType=='Budget Allocation')
       isType='BG';
@@ -233,9 +234,9 @@ export class OutboxComponent implements OnInit {
       isType='RR'
     }
     else
-      isType='CB'
+      isType='CB';
 
-    this.apiService.getApi(this.cons.api.getApprovedFilePath+'/'+li.groupId+'/'+isType).subscribe((res) => {
+    (await this.apiService.getApi(this.cons.api.getApprovedFilePath + '/' + li.groupId + '/' + isType)).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.SpinnerService.hide();
@@ -249,9 +250,10 @@ export class OutboxComponent implements OnInit {
 
 
   }
-  viewFile(file: string) {
-    this.apiService
-      .getApi(this.cons.api.fileDownload +file)
+
+  async viewFile(file: string) {
+    (await this.apiService
+      .getApi(this.cons.api.fileDownload + file))
       .subscribe(
         (res) => {
           let result: { [key: string]: any } = res;

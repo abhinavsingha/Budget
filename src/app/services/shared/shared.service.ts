@@ -36,8 +36,8 @@ export class SharedService {
     private SpinnerService: NgxSpinnerService,
     private common: CommonService,
   ) {}
-  public inboxOutbox(){
-    this.apiService.getApi(this.cons.api.updateInboxOutBox).subscribe({
+  public async inboxOutbox(){
+    (await this.apiService.getApi(this.cons.api.updateInboxOutBox)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -60,9 +60,9 @@ export class SharedService {
     });
     return this.outboxResponse;
   }
-  public getAllocationTypeData() {
+  public async getAllocationTypeData() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getAllocationTypeData).subscribe({
+    (await this.apiService.getApi(this.cons.api.getAllocationTypeData)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -82,9 +82,10 @@ export class SharedService {
     });
     return this.allocationType;
   }
-  updateInbox(){
-    this.apiService
-      .getApi(this.cons.api.updateInboxOutBox)
+
+  async updateInbox(){
+    (await this.apiService
+      .getApi(this.cons.api.updateInboxOutBox))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();

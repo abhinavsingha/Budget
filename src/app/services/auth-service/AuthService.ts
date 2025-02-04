@@ -2,20 +2,26 @@ import { Injectable } from '@angular/core';
 import { KeycloakService, KeycloakOptions } from 'keycloak-angular';
 import {from, Observable, switchMap} from "rxjs";
 import {catchError, map} from "rxjs/operators";
+import {HttpClient, HttpParams} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private keycloakService: KeycloakService) {}
+  private keycloakUrl = 'https://icg.net.in/auth/'; // Change this to your Keycloak base URL
+  private realm = 'icgrms';
+  private clientId = 'budget';
+  private clientSecret = '7bpt0mo2sfBdwbs8TDMYtQbui78RFY1h'; // Required if client authentication is enabled
+
+  constructor(public keycloakService: KeycloakService, private http: HttpClient) {}
 
   init() {
     return this.keycloakService.init({
     config: {
-            url: 'http://localhost:8080/auth',
-            // url: 'https://icg.net.in/auth/',
-            // realm: 'icgrms', // PRODUCTION
-              realm: 'uat',
+            // url: 'http://localhost:8080/auth',
+            url: 'https://icg.net.in/auth/',
+            realm: 'icgrms', // PRODUCTION
+              // realm: 'uat',
             // clientId: 'cgbudget', // For Production
               clientId: 'budget', // For UAT Server
           },
@@ -58,34 +64,26 @@ export class AuthService {
       return undefined;
     }
   }
-  // getToken(): Observable<string | null> {
-  //   return from(this.keycloakService.isLoggedIn()).pipe(
-  //     switchMap((loggedIn) => {
-  //       if (!loggedIn) {
-  //         console.log('User not logged in');
-  //         return from([null]);
-  //       }
-  //
-  //       return from(this.keycloakService.getToken()).pipe(
-  //         switchMap((token) => {
-  //           const keycloakInstance = this.keycloakService.getKeycloakInstance();
-  //
-  //           if (keycloakInstance.isTokenExpired(30)) {
-  //             console.log('Token expired, attempting refresh...');
-  //             return from(keycloakInstance.updateToken(30)).pipe(
-  //               map(() => keycloakInstance.token) // Return refreshed token
-  //             );
-  //           }
-  //
-  //           return from([token]); // Return existing token
-  //         }),
-  //         catchError((error) => {
-  //           console.error('Error getting token:', error);
-  //           return from([null]);
-  //         })
-  //       );
-  //     })
-  //   );
-  // }
+
+  revokeToken(): Observable<any> {
+    const keycloakInstance = this.keycloakService.getKeycloakInstance();
+    const refreshToken = keycloakInstance.refreshToken; // Get the refresh token
+
+    if (!refreshToken) {
+      console.error('No refresh token available.');
+      return new Observable((observer) => observer.complete());
+    }
+
+    const body = new HttpParams()
+      .set('client_id', this.clientId)
+      .set('client_secret', this.clientSecret) // Optional if not confidential client
+      .set('token', refreshToken);
+
+    const url = `${this.keycloakUrl}/realms/${this.realm}/protocol/openid-connect/revoke`;
+
+    return this.http.post(url, body.toString(), {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    });
+  }
 
 }

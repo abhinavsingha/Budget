@@ -74,9 +74,12 @@ export class ApprovedComponent implements OnInit {
       this.router.navigate(['/contingent-bill-aprover'])
   }
 
-  getAuthDoc(entry: any) {
+  async getAuthDoc(entry: any) {
     // debugger;
-    this.apiService.getApi(this.cons.api.getApprovedFilePath + '/' + entry.groupId + '/' + entry.type).subscribe((res) => {
+    (await
+        // debugger;
+        await this.apiService.getApi(this.cons.api.getApprovedFilePath + '/' + entry.groupId + '/' + entry.type)
+    ).subscribe((res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
           this.SpinnerService.hide();
@@ -90,9 +93,9 @@ export class ApprovedComponent implements OnInit {
     );
   }
 
-  viewFile(file: string) {
-    this.apiService
-      .getApi(this.cons.api.fileDownload + file)
+  async viewFile(file: string) {
+    (await this.apiService
+      .getApi(this.cons.api.fileDownload + file))
       .subscribe(
         (res) => {
 
@@ -128,9 +131,9 @@ export class ApprovedComponent implements OnInit {
 
   }
 
-  private getApproved() {
+  private async getApproved() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.approvedListMain).subscribe((res) => {
+    (await this.apiService.getApi(this.cons.api.approvedListMain)).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.SpinnerService.hide();

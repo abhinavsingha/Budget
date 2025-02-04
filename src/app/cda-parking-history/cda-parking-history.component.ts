@@ -39,9 +39,9 @@ export class CdaParkingHistoryComponent implements OnInit {
       this.getCdaHistoryData();
   }
 
-  private getCdaHistoryData() {
+  private async getCdaHistoryData() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.cdaHistoryData+'/'+this.sharedService.sharedValue+'/'+localStorage.getItem('cdaUnitId')).subscribe(
+    (await this.apiService.getApi(this.cons.api.cdaHistoryData + '/' + this.sharedService.sharedValue + '/' + localStorage.getItem('cdaUnitId'))).subscribe(
       (results) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = results;
@@ -70,9 +70,9 @@ export class CdaParkingHistoryComponent implements OnInit {
       }
     );
   }
-  private finallyMoveArchive(msgId:string) {
-    this.apiService
-      .getApi(this.cons.api.moveToArchive +'/'+msgId)
+  private async finallyMoveArchive(msgId:string) {
+    (await this.apiService
+      .getApi(this.cons.api.moveToArchive + '/' + msgId))
       .subscribe(
         (res) => {
           let result: { [key: string]: any } = res;
@@ -85,10 +85,10 @@ export class CdaParkingHistoryComponent implements OnInit {
       );
   }
 
-  private getCdaData() {
+  private async getCdaData() {
     this.newSum=0;
-    this.apiService
-      .getApi(this.cons.api.getCdaDataUnitWise +'/'+this.sharedService.sharedValue+'/'+localStorage.getItem('cdaUnitId'))
+    (await this.apiService
+      .getApi(this.cons.api.getCdaDataUnitWise + '/' + this.sharedService.sharedValue + '/' + localStorage.getItem('cdaUnitId')))
       .subscribe(
         (res) => {
           let result: { [key: string]: any } = res;
@@ -116,7 +116,7 @@ export class CdaParkingHistoryComponent implements OnInit {
       );
   }
 
-  private getPreviousCdaExpenditure(data: any[]) {
+  private async getPreviousCdaExpenditure(data: any[]) {
 debugger;
     let json={
       financialYearId:data[0].finYearId.serialNo,
@@ -125,7 +125,7 @@ debugger;
       allocationTypeId:data[0].allocationType.allocTypeId,
       unitId:data[0].unitId,
     };
-    this.apiService.postApi(this.cons.api.getAllBillCdaAndAllocationSummeryUnit, json).subscribe({
+    (await this.apiService.postApi(this.cons.api.getAllBillCdaAndAllocationSummeryUnit, json)).subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;

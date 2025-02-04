@@ -37,10 +37,10 @@ export class AllAllocationComponent implements OnInit {
     this.getFinancialYear();
   }
 
-  getAllocationTypeData(formdata: any) {
+  async getAllocationTypeData(formdata: any) {
     debugger;
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getAllocationByFinYear + '/' + formdata.finyear.serialNo).subscribe({
+    (await this.apiService.getApi(this.cons.api.getAllocationByFinYear + '/' + formdata.finyear.serialNo)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -76,9 +76,9 @@ export class AllAllocationComponent implements OnInit {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   }
 
-  getFinancialYear() {
+  async getFinancialYear() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getBudgetFinYear).subscribe((res) => {
+    (await this.apiService.getApi(this.cons.api.getBudgetFinYear)).subscribe((res) => {
       this.SpinnerService.hide();
       let result: { [key: string]: any } = res;
       this.budgetFinYears = result['response'];
@@ -92,7 +92,7 @@ export class AllAllocationComponent implements OnInit {
     this.createdOn = this.allocationType[i].createdOn;
   }
 
-  saveData() {
+  async saveData() {
     debugger;
     this.SpinnerService.show();
     let json = {
@@ -100,7 +100,7 @@ export class AllAllocationComponent implements OnInit {
       allocDesc: this.allocDesc
     };
     debugger;
-    this.apiService.postApi(this.cons.api.updateAllocation, json).subscribe({
+    (await this.apiService.postApi(this.cons.api.updateAllocation, json)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;

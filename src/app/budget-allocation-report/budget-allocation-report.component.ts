@@ -101,10 +101,11 @@ export class BudgetAllocationReportComponent implements OnInit {
     private http: HttpClient,
     private common: CommonService
   ) {}
-  getDashBoardDta() {
+
+  async getDashBoardDta() {
     this.SpinnerService.show();
 
-    this.apiService.postApi(this.cons.api.getDashBoardDta, null).subscribe({
+    (await this.apiService.postApi(this.cons.api.getDashBoardDta, null)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -129,10 +130,11 @@ export class BudgetAllocationReportComponent implements OnInit {
       complete: () => console.info('complete'),
     });
   }
-  getAllCgUnitData() {
+
+  async getAllCgUnitData() {
     this.SpinnerService.show();
 
-    this.apiService.getApi(this.cons.api.getAllCgUnitData).subscribe((res) => {
+    (await this.apiService.getApi(this.cons.api.getAllCgUnitData)).subscribe((res) => {
       let result: { [key: string]: any } = res;
       // debugger;
       if (result['message'] == 'success') {
@@ -143,9 +145,10 @@ export class BudgetAllocationReportComponent implements OnInit {
       }
     });
   }
-  getBudgetFinYear() {
+
+  async getBudgetFinYear() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getBudgetFinYear).subscribe((res) => {
+    (await this.apiService.getApi(this.cons.api.getBudgetFinYear)).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.budgetFinYears = result['response'];
@@ -158,10 +161,11 @@ export class BudgetAllocationReportComponent implements OnInit {
       }
     });
   }
-  getCgUnitData() {
+
+  async getCgUnitData() {
     this.SpinnerService.show();
 
-    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
+    (await this.apiService.getApi(this.cons.api.getCgUnitData)).subscribe((res) => {
       let result: { [key: string]: any } = res;
       // debugger;
       if (result['message'] == 'success') {
@@ -172,9 +176,10 @@ export class BudgetAllocationReportComponent implements OnInit {
       }
     });
   }
-  majorDataNew() {
+
+  async majorDataNew() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getMajorData).subscribe((res) => {
+    (await this.apiService.getApi(this.cons.api.getMajorData)).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.majorHeadList = result['response'].subHead;
@@ -184,9 +189,10 @@ export class BudgetAllocationReportComponent implements OnInit {
       }
     });
   }
-  getSubHeadsData() {
+
+  async getSubHeadsData() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getSubHeadsData).subscribe((res) => {
+    (await this.apiService.getApi(this.cons.api.getSubHeadsData)).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.subHeads = result['response'];
@@ -196,12 +202,13 @@ export class BudgetAllocationReportComponent implements OnInit {
       }
     });
   }
-  getAllocationType(formdata:any) {
+
+  async getAllocationType(formdata:any) {
     if(formdata.finYear==undefined)
       return;
     this.SpinnerService.show();
-    this.apiService
-      .getApi(this.cons.api.getAllocationByFinYear+'/'+formdata.finYear.serialNo)
+    (await this.apiService
+      .getApi(this.cons.api.getAllocationByFinYear + '/' + formdata.finYear.serialNo))
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
@@ -212,11 +219,12 @@ export class BudgetAllocationReportComponent implements OnInit {
         }
       });
   }
-  getAllocationReportRevised() {
+
+  async getAllocationReportRevised() {
     this.SpinnerService.show();
 
-    this.apiService
-      .postApi(this.cons.api.getAllocationReportRevised, null)
+    (await this.apiService
+      .postApi(this.cons.api.getAllocationReportRevised, null))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -263,15 +271,16 @@ export class BudgetAllocationReportComponent implements OnInit {
         complete: () => console.info('complete'),
       });
   }
-  searchData(data: any) {
+
+  async searchData(data: any) {
     this.allocationRepoList = [];
     this.SpinnerService.show();
     let submitJson = {
       budgetFinancialYearId: data.finYear.serialNo,
       unitId: data.toUnit.unit,
     };
-    this.apiService
-      .postApi(this.cons.api.getAllocationReportRevised, submitJson)
+    (await this.apiService
+      .postApi(this.cons.api.getAllocationReportRevised, submitJson))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -335,9 +344,10 @@ export class BudgetAllocationReportComponent implements OnInit {
   draw() {
     throw new Error('Method not implemented.');
   }
-  getMajorDataNew() {
+
+  async getMajorDataNew() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getMajorData).subscribe({
+    (await this.apiService.getApi(this.cons.api.getMajorData)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -356,7 +366,8 @@ export class BudgetAllocationReportComponent implements OnInit {
       complete: () => console.info('complete'),
     });
   }
-  downloadReport(formdata: any) {
+
+  async downloadReport(formdata: any) {
     this.SpinnerService.show();
     if (
       formdata.finYear == null ||
@@ -400,8 +411,8 @@ export class BudgetAllocationReportComponent implements OnInit {
         url=url+'Excel'
       }
       // debugger;
-      this.apiService
-        .postApi(url, submitJson)
+      (await this.apiService
+        .postApi(url, submitJson))
         .subscribe({
           next: (v: object) => {
             this.SpinnerService.hide();
@@ -458,8 +469,8 @@ export class BudgetAllocationReportComponent implements OnInit {
         url=url+'Doc';
       }
       // debugger;
-      this.apiService
-        .postApi(url, submitJson)
+      (await this.apiService
+        .postApi(url, submitJson))
         .subscribe({
           next: (v: object) => {
             this.SpinnerService.hide();
@@ -516,8 +527,8 @@ export class BudgetAllocationReportComponent implements OnInit {
         url=url+'Excel'
       }
       // debugger;
-      this.apiService
-        .postApi(url, submitJson)
+      (await this.apiService
+        .postApi(url, submitJson))
         .subscribe({
           next: (v: object) => {
             this.SpinnerService.hide();
@@ -557,17 +568,17 @@ export class BudgetAllocationReportComponent implements OnInit {
       else if(formdata.reprtType=='03'){
         url=url+'Excel'
       }
-      this.apiService
+       (await this.apiService
         .getApi(
           url +
-            '/' +
-            formdata.finYear.serialNo +
-            '/'+
+          '/' +
+          formdata.finYear.serialNo +
+          '/' +
           formdata.allocationType.allocTypeId +
-            '/' +
-            formdata.amountType.amountTypeId +'/' +
-          formdata.allocStatus+'/'+formdata.majorHead.majorHead
-        )
+          '/' +
+          formdata.amountType.amountTypeId + '/' +
+          formdata.allocStatus + '/' + formdata.majorHead.majorHead
+        ))
         .subscribe({
           next: (v: object) => {
             this.SpinnerService.hide();
@@ -607,15 +618,15 @@ export class BudgetAllocationReportComponent implements OnInit {
         url=url+'Doc';
       else if(formdata.reprtType=='03')
         url=this.cons.api.getRevisionReportExcel;
-      this.apiService
+       (await this.apiService
         .getApi(
           url +
-            '/' +
-            formdata.finYear.serialNo +'/'+
+          '/' +
+          formdata.finYear.serialNo + '/' +
           formdata.allocationType.allocTypeId +
-            '/' +
-            formdata.amountType.amountTypeId+'/'+formdata.majorHead.majorHead
-        )
+          '/' +
+          formdata.amountType.amountTypeId + '/' + formdata.majorHead.majorHead
+        ))
         .subscribe({
           next: (v: object) => {
             this.SpinnerService.hide();
@@ -658,16 +669,16 @@ export class BudgetAllocationReportComponent implements OnInit {
       }
       //It is for Revised BE & RE report
       // debugger;
-      this.apiService
+       (await this.apiService
         .getApi(
           url +
-            '/' +
-            formdata.finYear.serialNo +
-            '/' +formdata.allocationType.allocTypeId+
-            '/' +formdata.allocationType2.allocTypeId+
-          '/'+
-            formdata.amountType.amountTypeId+'/'+formdata.majorHead.majorHead
-        )
+          '/' +
+          formdata.finYear.serialNo +
+          '/' + formdata.allocationType.allocTypeId +
+          '/' + formdata.allocationType2.allocTypeId +
+          '/' +
+          formdata.amountType.amountTypeId + '/' + formdata.majorHead.majorHead
+        ))
         .subscribe({
           next: (v: object) => {
             this.SpinnerService.hide();
@@ -712,7 +723,7 @@ export class BudgetAllocationReportComponent implements OnInit {
       else if(formdata.reprtType=='03')
         url=url+'Excel';
       if (formdata.reprtType=='03'){
-        this.apiService.getApi(url +'/'+formdata.finYear.serialNo +'/'+formdata.allocationType.allocTypeId+'/' +formdata.amountType.amountTypeId+'/'+formdata.toDate+'/'+formdata.fromDate+'/'+formdata.majorHead.majorHead)
+        (await this.apiService.getApi(url + '/' + formdata.finYear.serialNo + '/' + formdata.allocationType.allocTypeId + '/' + formdata.amountType.amountTypeId + '/' + formdata.toDate + '/' + formdata.fromDate + '/' + formdata.majorHead.majorHead))
           .subscribe({
             next: (v: object) => {
               this.SpinnerService.hide();
@@ -737,17 +748,17 @@ export class BudgetAllocationReportComponent implements OnInit {
           });
       }
       else{
-        this.apiService
+         (await this.apiService
           .getApi(
             url +
             '/' +
             formdata.finYear.serialNo +
             '/' +
-            formdata.allocationType.allocTypeId+
+            formdata.allocationType.allocTypeId +
 
             '/' +
-            formdata.amountType.amountTypeId+'/'+formdata.toDate+'/'+formdata.fromDate+'/'+formdata.majorHead.majorHead
-          )
+            formdata.amountType.amountTypeId + '/' + formdata.toDate + '/' + formdata.fromDate + '/' + formdata.majorHead.majorHead
+          ))
           .subscribe({
             next: (v: object) => {
               this.SpinnerService.hide();
@@ -785,14 +796,14 @@ export class BudgetAllocationReportComponent implements OnInit {
       if(formdata.reprtType=='02')
         url=url+'Doc';
 
-      this.apiService
+       (await this.apiService
         .getApi(
           url + '/' +
           formdata.finYear.serialNo + '/' +
-          formdata.allocationType.allocTypeId+'/' +
-          formdata.allocationType2.allocTypeId+'/' +
-          formdata.allocationType3.allocTypeId+ '/' +
-          formdata.amountType.amountTypeId+'/'+formdata.majorHead.majorHead)
+          formdata.allocationType.allocTypeId + '/' +
+          formdata.allocationType2.allocTypeId + '/' +
+          formdata.allocationType3.allocTypeId + '/' +
+          formdata.amountType.amountTypeId + '/' + formdata.majorHead.majorHead))
         .subscribe({
           next: (v: object) => {
             this.SpinnerService.hide();
@@ -831,12 +842,12 @@ export class BudgetAllocationReportComponent implements OnInit {
         this.gt=true;
       else
         this.gt=false;
-      this.apiService
+       (await this.apiService
         .getApi(
           url + '/' +
           formdata.finYear.serialNo + '/' +
-          formdata.allocationType.allocTypeId+'/' +
-          formdata.amountType.amountTypeId)
+          formdata.allocationType.allocTypeId + '/' +
+          formdata.amountType.amountTypeId))
         .subscribe({
           next: (v: object) => {
             this.SpinnerService.hide();
@@ -882,8 +893,9 @@ export class BudgetAllocationReportComponent implements OnInit {
       }
     );
   }
-  getAmountType() {
-    this.apiService.getApi(this.cons.api.showAllAmountUnit).subscribe({
+
+  async getAmountType() {
+    (await this.apiService.getApi(this.cons.api.showAllAmountUnit)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -994,8 +1006,9 @@ export class BudgetAllocationReportComponent implements OnInit {
       this.showDate=false;
     }
   }
-  getSubHeadType() {
-    this.apiService.getApi(this.cons.api.getSubHeadType).subscribe({
+
+  async getSubHeadType() {
+    (await this.apiService.getApi(this.cons.api.getSubHeadType)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;

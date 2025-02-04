@@ -151,9 +151,9 @@ export class BudgetAllocationSubheadwiseComponent implements OnInit {
     });
   }
 
-  getBudgetFinYear() {
+  async getBudgetFinYear() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getBudgetFinYear).subscribe({
+    (await this.apiService.getApi(this.cons.api.getBudgetFinYear)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -175,9 +175,9 @@ export class BudgetAllocationSubheadwiseComponent implements OnInit {
     });
   }
 
-  getSubHeadsData() {
+  async getSubHeadsData() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getSubHeadsData).subscribe({
+    (await this.apiService.getApi(this.cons.api.getSubHeadsData)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -196,9 +196,9 @@ export class BudgetAllocationSubheadwiseComponent implements OnInit {
     });
   }
 
-  getCgUnitData() {
+  async getCgUnitData() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getCgUnitWithoutMOD).subscribe({
+    (await this.apiService.getApi(this.cons.api.getCgUnitWithoutMOD)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -219,9 +219,9 @@ export class BudgetAllocationSubheadwiseComponent implements OnInit {
     });
   }
 
-  getAllocationTypeData() {
+  async getAllocationTypeData() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getAllocationTypeData).subscribe({
+    (await this.apiService.getApi(this.cons.api.getAllocationTypeData)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -360,8 +360,8 @@ export class BudgetAllocationSubheadwiseComponent implements OnInit {
       !this.budgetAllocationArray[index].isChecked;
   }
 
-  getAmountType() {
-    this.apiService.getApi(this.cons.api.showAllAmountUnit).subscribe({
+  async getAmountType() {
+    (await this.apiService.getApi(this.cons.api.showAllAmountUnit)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -443,7 +443,7 @@ export class BudgetAllocationSubheadwiseComponent implements OnInit {
     });
   }
 
-  finallySubmit(data: any) {
+  async finallySubmit(data: any) {
     this.SpinnerService.show();
     // var newSubmitJson = this.submitJson;
     var newSubmitJson = data;
@@ -451,8 +451,8 @@ export class BudgetAllocationSubheadwiseComponent implements OnInit {
     let url = this.cons.api.saveBudgetAllocationSubHeadWise;
     if (this.sharedService.reject)
       url = this.cons.api.saveBudgetAllocationSubHeadWiseEdit;
-    this.apiService
-      .postApi(url, newSubmitJson)
+    (await this.apiService
+      .postApi(url, newSubmitJson))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -510,7 +510,7 @@ export class BudgetAllocationSubheadwiseComponent implements OnInit {
     }
   }
 
-  getFundAvailableBuFinYearAndSubHeadAndAllocationType(
+  async getFundAvailableBuFinYearAndSubHeadAndAllocationType(
     data: any,
     subhead: any
   ) {
@@ -547,11 +547,11 @@ export class BudgetAllocationSubheadwiseComponent implements OnInit {
       allocationTypeId: data.allocationType.allocTypeId,
     };
 
-    this.apiService
+    (await this.apiService
       .postApi(
         this.cons.api.getAvailableFundFindByUnitIdAndFinYearId,
         submitJson
-      )
+      ))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -645,8 +645,8 @@ export class BudgetAllocationSubheadwiseComponent implements OnInit {
     this.calcTotal();
   }
 
-  updateInbox() {
-    this.apiService.getApi(this.cons.api.updateInboxOutBox).subscribe({
+  async updateInbox() {
+    (await this.apiService.getApi(this.cons.api.updateInboxOutBox)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -824,10 +824,10 @@ export class BudgetAllocationSubheadwiseComponent implements OnInit {
   }
 
 
-  getDashBoardDta() {
+  async getDashBoardDta() {
     this.SpinnerService.show();
 
-    this.apiService.postApi(this.cons.api.getDashBoardDta, null).subscribe({
+    (await this.apiService.postApi(this.cons.api.getDashBoardDta, null)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;

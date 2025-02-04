@@ -77,10 +77,10 @@ export class BudgetApproverComponent implements OnInit {
     private router: Router,
     public sharedService: SharedService
   ) {}
-  private updateMsgStatusMain(msgId: any) {
+  private async updateMsgStatusMain(msgId: any) {
 
-    this.apiService
-      .getApi(this.cons.api.updateMsgStatusMain +'/'+msgId)
+    (await this.apiService
+      .getApi(this.cons.api.updateMsgStatusMain + '/' + msgId))
       .subscribe(
         (res) => {
           let result: { [key: string]: any } = res;
@@ -95,8 +95,8 @@ export class BudgetApproverComponent implements OnInit {
     if(groupId!=undefined) {
 
       this.SpinnerService.show();
-      this.apiService
-        .getApi(this.cons.api.getAllGroupIdAndUnitId + '/' + groupId)
+      (await this.apiService
+        .getApi(this.cons.api.getAllGroupIdAndUnitId + '/' + groupId))
         .subscribe(async (res) => {
           let result: { [key: string]: any } = res;
           if (result['message'] == 'success') {
@@ -134,8 +134,8 @@ export class BudgetApproverComponent implements OnInit {
 
   async getAlGroupId(groupId: any) {
     this.SpinnerService.show();
-    this.apiService
-      .getApi(this.cons.api.getAlGroupId + '/' + groupId)
+    (await this.apiService
+      .getApi(this.cons.api.getAlGroupId + '/' + groupId))
       .subscribe(async (res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
@@ -157,9 +157,10 @@ export class BudgetApproverComponent implements OnInit {
   }
 
   cdaUnitList: any[] = [];
-  getCdaUnitList() {
+
+  async getCdaUnitList() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getCdaUnitList).subscribe((res) => {
+    (await this.apiService.getApi(this.cons.api.getCdaUnitList)).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.cdaUnitList = result['response'];
@@ -205,7 +206,7 @@ export class BudgetApproverComponent implements OnInit {
     });
   }
 
-  approveFormFinally(formDataValue: any) {
+  async approveFormFinally(formDataValue: any) {
     this.SpinnerService.show();
     let cdapark: any[] = [];
     // for (let list of this.budgetDataList) {
@@ -224,8 +225,8 @@ export class BudgetApproverComponent implements OnInit {
       remarks: formDataValue.remarks,
       // cdaParkingId: cdapark,
     };
-    this.apiService
-      .postApi(this.cons.api.budgetApprove, submitJson)
+    (await this.apiService
+      .postApi(this.cons.api.budgetApprove, submitJson))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -252,7 +253,7 @@ export class BudgetApproverComponent implements OnInit {
       });
   }
 
-  returnFormFinally(formDataValue: any) {
+  async returnFormFinally(formDataValue: any) {
     this.SpinnerService.show();
     let cdapark: any[] = [];
     for (let list of this.budgetDataList) {
@@ -271,8 +272,8 @@ export class BudgetApproverComponent implements OnInit {
       remarks: formDataValue.remarks,
       cdaParkingId: cdapark,
     };
-    this.apiService
-      .postApi(this.cons.api.budgetReject, submitJson)
+    (await this.apiService
+      .postApi(this.cons.api.budgetReject, submitJson))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -341,8 +342,8 @@ export class BudgetApproverComponent implements OnInit {
       };
       this.olddataflag=false;
       this.subUnitAllocation=0;
-      this.apiService
-        .postApi(this.cons.api.getAllBillCdaAndAllocationSummery, json)
+      (await this.apiService
+        .postApi(this.cons.api.getAllBillCdaAndAllocationSummery, json))
         .subscribe({
           next: async (v: object) => {
             this.SpinnerService.hide();
@@ -421,7 +422,7 @@ export class BudgetApproverComponent implements OnInit {
 
     // if(this.budgetDataList[this.currentIndex].isTYpe=='REBASE'){
     //   this.olddataflag=false;
-    //   this.apiService
+    //   await this.apiService
     //     .postApi(this.cons.api.getOldCdaDataForRebase, submitJson)
     //     .subscribe({
     //       next: (v: object) => {
@@ -550,7 +551,8 @@ export class BudgetApproverComponent implements OnInit {
     debugger;
     this.saveCDAParking(this.cdaParkingListResponseData);
   }
-   saveCDAParking(data: any) {
+
+  async saveCDAParking(data: any) {
     this.SpinnerService.show();
     var newSubmitJson = {
       totalExpenditure: this.budgetDataList[this.currentIndex].unallocatedAmount,
@@ -562,8 +564,8 @@ export class BudgetApproverComponent implements OnInit {
       url=this.cons.api.saveCdaParkingDataForRebase;
     }
     //debugger;
-    this.apiService
-      .postApi(url, newSubmitJson)
+    (await this.apiService
+      .postApi(url, newSubmitJson))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -589,11 +591,12 @@ export class BudgetApproverComponent implements OnInit {
       });
   }
   public userRole: any;
-  getDashBoardDta() {
+
+  async getDashBoardDta() {
     this.SpinnerService.show();
     var newSubmitJson = null;
-    this.apiService
-      .postApi(this.cons.api.getDashBoardDta, newSubmitJson)
+    (await this.apiService
+      .postApi(this.cons.api.getDashBoardDta, newSubmitJson))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -674,8 +677,8 @@ export class BudgetApproverComponent implements OnInit {
       budgetHeadId: budgetData.subHead.budgetCodeId,
       allocationTypeId: budgetData.allocTypeId.allocTypeId,
     };
-    this.apiService
-      .postApi(this.cons.api.getCdaDataList, submitJson)
+    (await this.apiService
+      .postApi(this.cons.api.getCdaDataList, submitJson))
       .subscribe({
         next: async (v: object) => {
           this.SpinnerService.hide();
@@ -793,15 +796,16 @@ export class BudgetApproverComponent implements OnInit {
 
     this.updateCdaParkingData(this.cdaParkingListResponseData);
   }
-  updateCdaParkingData(data: any) {
+
+  async updateCdaParkingData(data: any) {
     this.SpinnerService.show();
     var newSubmitJson = {
       cdaRequest: data,
       authGroupId: this.authGroupIdFromBackend,
     };
 
-    this.apiService
-      .postApi(this.cons.api.updateCdaParkingData, newSubmitJson)
+    (await this.apiService
+      .postApi(this.cons.api.updateCdaParkingData, newSubmitJson))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -822,8 +826,9 @@ export class BudgetApproverComponent implements OnInit {
         complete: () => console.info('complete'),
       });
   }
-  updateInbox() {
-    this.apiService.getApi(this.cons.api.updateInboxOutBox).subscribe({
+
+  async updateInbox() {
+    (await this.apiService.getApi(this.cons.api.updateInboxOutBox)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -1094,11 +1099,12 @@ export class BudgetApproverComponent implements OnInit {
   resetCdaList() {
     this.cdaData = [];
   }
-  getAllocationReport(authGroupId: any) {
+
+  async getAllocationReport(authGroupId: any) {
     this.SpinnerService.show();
     // ////debugger;
-    this.apiService
-      .getApi(this.cons.api.getAllocationReport + '/' + authGroupId)
+    (await this.apiService
+      .getApi(this.cons.api.getAllocationReport + '/' + authGroupId))
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
         // ////debugger;
@@ -1117,7 +1123,8 @@ export class BudgetApproverComponent implements OnInit {
         }
       });
   }
-  getreAllocationReport(data: any) {
+
+  async getreAllocationReport(data: any) {
     //debugger;
 
 
@@ -1126,9 +1133,9 @@ export class BudgetApproverComponent implements OnInit {
     // ////debugger;
     let url=this.cons.api.getRevisedAllocationReport+data;
     // let url=this.cons.api.getReceiptReportRevision+data;
-    // this.apiService
+    // await this.apiService
     //   .getApi(url+'/'+localStorage.getItem('group_id'))
-    this.apiService.getApi(url+'/'+localStorage.getItem('group_id'))
+    (await this.apiService.getApi(url + '/' + localStorage.getItem('group_id')))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -1140,7 +1147,7 @@ export class BudgetApproverComponent implements OnInit {
             );
           }
             // else if(result['message'] =='PENDING RECORD NOT FOUND'){
-            //   this.apiService.getApi(this.cons.api.getRevisedAllocationAprReport+data+'/'+localStorage.getItem('group_id'))
+            //   await this.apiService.getApi(this.cons.api.getRevisedAllocationAprReport+data+'/'+localStorage.getItem('group_id'))
             //     .subscribe({
             //       next: (v: object) => {
             //         this.SpinnerService.hide();
@@ -1183,11 +1190,12 @@ export class BudgetApproverComponent implements OnInit {
         complete: () => console.info('complete'),
       });
   }
-  getAllocationReportDocx(authGroupId: any) {
+
+  async getAllocationReportDocx(authGroupId: any) {
     this.SpinnerService.show();
     // ////debugger;
-    this.apiService
-      .getApi(this.cons.api.getAllocationReportDoc + '/' + authGroupId)
+    (await this.apiService
+      .getApi(this.cons.api.getAllocationReportDoc + '/' + authGroupId))
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
         // ////debugger;
@@ -1279,12 +1287,12 @@ export class BudgetApproverComponent implements OnInit {
     }
 
   }
-  private getRecieptReport(data: string) {
+  private async getRecieptReport(data: string) {
     this.SpinnerService.show();
     // ////debugger;
     let url=this.cons.api.getReceiptReport+data;
-    this.apiService
-      .getApi(url+'/'+localStorage.getItem('group_id'))
+    (await this.apiService
+      .getApi(url + '/' + localStorage.getItem('group_id')))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -1314,8 +1322,8 @@ export class BudgetApproverComponent implements OnInit {
   }
   async getAllGroupIdAndUnitIdRevisionCase(sharedValue: string | undefined) {
     this.SpinnerService.show();
-    this.apiService
-      .getApi(this.cons.api.getAllGroupIdAndUnitIdRevisionCase + '/' + sharedValue)
+    (await this.apiService
+      .getApi(this.cons.api.getAllGroupIdAndUnitIdRevisionCase + '/' + sharedValue))
       .subscribe(async (res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
@@ -1386,12 +1394,12 @@ export class BudgetApproverComponent implements OnInit {
     }
 
   }
-  private getreAllocationReportnew() {
+  private async getreAllocationReportnew() {
     this.SpinnerService.show();
     // ////debugger;
     let url=this.cons.api.getReceiptReportNew;
-    this.apiService
-      .getApi(url+'/'+localStorage.getItem('group_id'))
+    (await this.apiService
+      .getApi(url + '/' + localStorage.getItem('group_id')))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -1419,11 +1427,11 @@ export class BudgetApproverComponent implements OnInit {
 
 
   }
-  private getOldCdaData(submitJson:any) {
+  private async getOldCdaData(submitJson:any) {
 
     this.olddataflag=false;
-    this.apiService
-      .postApi(this.cons.api.getAllBillCdaAndAllocationSummery, submitJson)
+    (await this.apiService
+      .postApi(this.cons.api.getAllBillCdaAndAllocationSummery, submitJson))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();

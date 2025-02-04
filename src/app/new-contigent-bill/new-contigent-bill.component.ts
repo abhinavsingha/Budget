@@ -309,8 +309,8 @@ export class NewContigentBillComponent implements OnInit {
     }
   }
 
-  getSubHeadType() {
-    this.apiService.getApi(this.cons.api.getSubHeadType).subscribe({
+  async getSubHeadType() {
+    (await this.apiService.getApi(this.cons.api.getSubHeadType)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -330,7 +330,7 @@ export class NewContigentBillComponent implements OnInit {
     });
   }
 
-  getAvailableFundData() {
+  async getAvailableFundData() {
     if(this.formdata.get('subHead')?.value==undefined)
     {
       this.common.warningAlert('Enter Subhead','Sub Head cannot be blank','');
@@ -342,7 +342,7 @@ export class NewContigentBillComponent implements OnInit {
       budgetFinancialYearId:this.formdata.get('finYearName')?.value.serialNo,
       unitId:this.unitId
     };
-    this.apiService.postApi(this.cons.api.getAvailableFund, json).subscribe({
+    (await this.apiService.postApi(this.cons.api.getAvailableFund, json)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -413,10 +413,10 @@ export class NewContigentBillComponent implements OnInit {
     });
   }
 
-  getCgUnitData() {
+  async getCgUnitData() {
     this.SpinnerService.show();
     var comboJson = null;
-    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe(
+    (await this.apiService.getApi(this.cons.api.getCgUnitData)).subscribe(
       (res) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = res;
@@ -429,10 +429,10 @@ export class NewContigentBillComponent implements OnInit {
     );
   }
 
-  getFinancialYear() {
+  async getFinancialYear() {
     const tokenValueHeader = localStorage.getItem('newToken');
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getBudgetFinYear).subscribe(
+    (await this.apiService.getApi(this.cons.api.getBudgetFinYear)).subscribe(
       (results) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = results;
@@ -446,10 +446,10 @@ export class NewContigentBillComponent implements OnInit {
     );
   }
 
-  private getMajorHead() {
+  private async getMajorHead() {
     // const userJson = {userRoleId: "ICGS Delhi", userName: "kya hai ye", userUnitId: "000015"}
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getMajorData).subscribe({
+    (await this.apiService.getApi(this.cons.api.getMajorData)).subscribe({
       next: (v: object) => {
         let result: { [key: string]: any } = v;
         if (result['message'] == 'success') {
@@ -470,8 +470,8 @@ export class NewContigentBillComponent implements OnInit {
   }
   unitId: any;
   unitName: any;
-  private getDashboardData() {
-    this.apiService.postApi(this.cons.api.getDashboardData, null).subscribe(
+  private async getDashboardData() {
+    (await this.apiService.postApi(this.cons.api.getDashboardData, null)).subscribe(
       (results) => {
         this.SpinnerService.hide();
         // $.getScript('assets/js/adminlte.js');
@@ -491,10 +491,11 @@ export class NewContigentBillComponent implements OnInit {
       }
     );
   }
-  getDashBoardDta() {
+
+  async getDashBoardDta() {
     this.SpinnerService.show();
 
-    this.apiService.postApi(this.cons.api.getDashBoardDta, null).subscribe({
+    (await this.apiService.postApi(this.cons.api.getDashBoardDta, null)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -530,9 +531,9 @@ export class NewContigentBillComponent implements OnInit {
     });
   }
 
-  private getCBData() {
+  private async getCBData() {
     this.cbList=[];
-    this.apiService.getApi(this.cons.api.getCb).subscribe(
+    (await this.apiService.getApi(this.cons.api.getCb)).subscribe(
       (res) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = res;
@@ -631,7 +632,7 @@ export class NewContigentBillComponent implements OnInit {
     );
   }
 
-  setSubHead() {
+  async setSubHead() {
     this.showSave=true;
     this.showUpdate=false;
     this.SpinnerService.show();
@@ -641,8 +642,8 @@ export class NewContigentBillComponent implements OnInit {
       budgetHeadType: this.formdata.get('subHeadType')?.value.subHeadTypeId,
       majorHead: this.formdata.get('majorHead')?.value.majorHead,
     };
-    this.apiService
-      .postApi(this.cons.api.getAllSubHeadByMajorHead, json)
+    (await this.apiService
+      .postApi(this.cons.api.getAllSubHeadByMajorHead, json))
       .subscribe(
         (res) => {
           let result: { [key: string]: any } = res;
@@ -694,7 +695,7 @@ export class NewContigentBillComponent implements OnInit {
     }
   }
 
-  upload(key: string) {
+  async upload(key: string) {
     if (key == 'invoice') {
       const file: File = this.invoiceFileInput.nativeElement.files[0];
       // console.log(file);
@@ -702,7 +703,7 @@ export class NewContigentBillComponent implements OnInit {
       // console.log(this.formdata.get('file')?.value);
       formData.append('file', file);
       this.SpinnerService.show();
-      this.apiService.postApi(this.cons.api.fileUpload, formData).subscribe({
+      (await this.apiService.postApi(this.cons.api.fileUpload, formData)).subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
@@ -735,7 +736,7 @@ export class NewContigentBillComponent implements OnInit {
       // console.log(this.formdata.get('file')?.value);
       formData.append('file', file);
       this.SpinnerService.show();
-      this.apiService.postApi(this.cons.api.fileUpload, formData).subscribe({
+      (await this.apiService.postApi(this.cons.api.fileUpload, formData)).subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = v;
@@ -768,7 +769,8 @@ export class NewContigentBillComponent implements OnInit {
     }
   }
   cdaDatacb:any;
-  updateFormdata(cbEntry: newCb) {
+
+  async updateFormdata(cbEntry: newCb) {
     this.showUpdate=true;
     this.showSave=false;
     debugger;
@@ -789,7 +791,7 @@ export class NewContigentBillComponent implements OnInit {
                 budgetHeadType:this.formdata.get('subHeadType')?.value.subHeadTypeId,
                 majorHead: cbEntry.majorHead,
               };
-              this.apiService.postApi(this.cons.api.getAllSubHeadByMajorHead, json).subscribe((res) => {
+              (await this.apiService.postApi(this.cons.api.getAllSubHeadByMajorHead, json)).subscribe(async (res) => {
                 let result: { [key: string]: any } = res;
                 this.subHeadData = result['response'];
                 for (let i = 0; i < this.subHeadData.length; i++) {
@@ -802,7 +804,7 @@ export class NewContigentBillComponent implements OnInit {
                       budgetFinancialYearId:this.formdata.get('finYearName')?.value.serialNo,
                       unitId:this.unitId
                     };
-                    this.apiService.postApi(this.cons.api.getAvailableFund, json).subscribe({
+                    (await this.apiService.postApi(this.cons.api.getAvailableFund, json)).subscribe({
                       next: (v: object) => {
                         this.SpinnerService.hide();
                         let result: { [key: string]: any } = v;
@@ -856,8 +858,8 @@ export class NewContigentBillComponent implements OnInit {
                 budgetFinancialYearId:this.formdata.get('finYearName')?.value.serialNo,
                 unitId:this.unitId
               };
-              this.apiService
-                .postApi(this.cons.api.getAvailableFund, json)
+              (await this.apiService
+                .postApi(this.cons.api.getAvailableFund, json))
                 .subscribe({
                   next: (v: object) => {
                     this.SpinnerService.hide();
@@ -956,7 +958,7 @@ export class NewContigentBillComponent implements OnInit {
     this.formdata.get('authDetail')?.setValue(cbEntry.authDetail);
   }
 
-  updateList() {
+  async updateList() {
     let flag=false;
     for (let i = 0; i < this.cbList.length; i++) {
       if (this.formdata.get('cbNo')?.value == this.cbList[i].cbNo) {
@@ -1047,8 +1049,8 @@ export class NewContigentBillComponent implements OnInit {
             };
             let updateList = [updateCb];
             debugger;
-            this.apiService
-              .postApi(this.cons.api.updateContingentBill, updateList)
+          (await this.apiService
+            .postApi(this.cons.api.updateContingentBill, updateList))
               .subscribe({
                 next: (v: object) => {
                   let result: { [key: string]: any } = v;
@@ -1158,7 +1160,7 @@ export class NewContigentBillComponent implements OnInit {
       );
   }
 
-  submitList() {
+  async submitList() {
     const submitList: submitCb[] = [];
     for (let i = 0; i < this.cbList.length; i++) {
       if (
@@ -1225,8 +1227,8 @@ export class NewContigentBillComponent implements OnInit {
       this.common.warningAlert('Add more Data','Add more Data','')
     } else {
       this.SpinnerService.show();
-      this.apiService
-        .postApi(this.cons.api.saveContingentBill, submitList)
+      (await this.apiService
+        .postApi(this.cons.api.saveContingentBill, submitList))
         .subscribe({
           next: (v: object) => {
             let result: { [key: string]: any } = v;
@@ -1283,14 +1285,14 @@ export class NewContigentBillComponent implements OnInit {
     });
   }
 
-  downloadBill(cb: any) {
+  async downloadBill(cb: any) {
     // console.log(cb);
     let json = {
       cbId: cb.cbId,
     };
     this.SpinnerService.show();
-    this.apiService
-      .postApi(this.cons.api.getContingentBillReport, json)
+    (await this.apiService
+      .postApi(this.cons.api.getContingentBillReport, json))
       .subscribe(
         (results) => {
           let result: { [key: string]: any } = results;
@@ -1303,15 +1305,16 @@ export class NewContigentBillComponent implements OnInit {
       );
   }
   docId: any;
-  uploadBill(cb: any) {
+
+  async uploadBill(cb: any) {
     const file: File = this.uploadFileInput.nativeElement.files[0];
     // console.log(file);
     const formData = new FormData();
     // console.log(this.formdata.get('file')?.value);
     formData.append('file', file);
     this.SpinnerService.show();
-    this.apiService.postApi(this.cons.api.fileUpload, formData).subscribe({
-      next: (v: object) => {
+    (await this.apiService.postApi(this.cons.api.fileUpload, formData)).subscribe({
+      next: async (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
 
@@ -1326,8 +1329,8 @@ export class NewContigentBillComponent implements OnInit {
             docId: result['response'].uploadDocId,
             groupId: cb.authGroupId,
           };
-          this.apiService
-            .postApi(this.cons.api.updateFinalStatus, json)
+          (await this.apiService
+            .postApi(this.cons.api.updateFinalStatus, json))
             .subscribe({
               next: (v: object) => {
                 this.SpinnerService.hide();
@@ -1377,8 +1380,8 @@ export class NewContigentBillComponent implements OnInit {
     });
   }
 
-  viewFile(file: string) {
-    this.apiService.getApi(this.cons.api.fileDownload + file).subscribe(
+  async viewFile(file: string) {
+     (await this.apiService.getApi(this.cons.api.fileDownload + file)).subscribe(
       (res) => {
         let result: { [key: string]: any } = res;
         this.openPdfUrlInNewTab(result['response'].pathURL);
@@ -1547,8 +1550,8 @@ export class NewContigentBillComponent implements OnInit {
     this.formdata.get('cbNo')?.setValue(cbNo);
   }
 
-  updateInbox() {
-    this.apiService.getApi(this.cons.api.updateInboxOutBox).subscribe({
+  async updateInbox() {
+    (await this.apiService.getApi(this.cons.api.updateInboxOutBox)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -1587,11 +1590,11 @@ export class NewContigentBillComponent implements OnInit {
       this.amountEqualCda=false;
   }
 
-   getSanctionNumber(formdata:any) {
+  async getSanctionNumber(formdata:any) {
     let json={
       budgetId:formdata.subHead.budgetCodeId
-    }
-    this.apiService.postApi(this.cons.api.getMaxSectionNumber,json).subscribe({
+    };
+    (await this.apiService.postApi(this.cons.api.getMaxSectionNumber, json)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;

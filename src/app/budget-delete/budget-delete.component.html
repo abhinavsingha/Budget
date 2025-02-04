@@ -1,125 +1,125 @@
-<!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper" *ngIf="localStorage.getItem('userRole')=='118'">
-  <!-- Content Header (Page header) -->
-  <div class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-6">
-          <h1 class="m-0">Budget Delete</h1>
-        </div>
-        <!-- /.col -->
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item"><a href="#">Budget Delete</a></li>
-          </ol>
-        </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
-    </div>
-    <!-- /.container-fluid -->
-  </div>
-  <!-- /.content-header -->
+<!--&lt;!&ndash; Content Wrapper. Contains page content &ndash;&gt;-->
+<!--<div class="content-wrapper" *ngIf="localStorage.getItem('userRole')=='118'">-->
+<!--  &lt;!&ndash; Content Header (Page header) &ndash;&gt;-->
+<!--  <div class="content-header">-->
+<!--    <div class="container-fluid">-->
+<!--      <div class="row mb-2">-->
+<!--        <div class="col-sm-6">-->
+<!--          <h1 class="m-0">Budget Delete</h1>-->
+<!--        </div>-->
+<!--        &lt;!&ndash; /.col &ndash;&gt;-->
+<!--        <div class="col-sm-6">-->
+<!--          <ol class="breadcrumb float-sm-right">-->
+<!--            <li class="breadcrumb-item"><a href="#">Home</a></li>-->
+<!--            <li class="breadcrumb-item"><a href="#">Budget Delete</a></li>-->
+<!--          </ol>-->
+<!--        </div>-->
+<!--        &lt;!&ndash; /.col &ndash;&gt;-->
+<!--      </div>-->
+<!--      &lt;!&ndash; /.row &ndash;&gt;-->
+<!--    </div>-->
+<!--    &lt;!&ndash; /.container-fluid &ndash;&gt;-->
+<!--  </div>-->
+<!--  &lt;!&ndash; /.content-header &ndash;&gt;-->
 
-  <!-- Main content -->
-  <section class="content">
-    <div class="container-fluid">
-      <div class="card card-default">
-        <div class="card-header">
-          <h3 class="card-title">Budget Delete</h3>
+<!--  &lt;!&ndash; Main content &ndash;&gt;-->
+<!--  <section class="content">-->
+<!--    <div class="container-fluid">-->
+<!--      <div class="card card-default">-->
+<!--        <div class="card-header">-->
+<!--          <h3 class="card-title">Budget Delete</h3>-->
 
-          <div class="card-tools">
-            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-              <i class="fas fa-minus"></i>
-              <!-- <i class="fas fa-minus"></i> -->
-            </button>
-          </div>
-        </div>
-        <!-- /.card-header -->
-        <div class="card-body">
-          <form [formGroup]="formdata" (ngSubmit)="searchData(formdata.value)">
-            <div class="row">
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Financial Year</label>
-                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="budgetFinYears"
-                    bindLabel="finYear" placeholder="Select Financial Year" formControlName="finYear">
-                  </ng-select>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>To Unit</label>
-                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="allunits" bindLabel="descr"
-                    appendTo="body" placeholder="Select To Unit" formControlName="toUnit">
-                  </ng-select>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label style="opacity:0">.</label>
-                  <br>
-                  <button type="submit" class="btn btn-primary mr-2"><i class="fas fa-search"></i> Search</button>
-                </div>
-              </div>
-            </div>
-          </form>
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap">
-                  <thead>
-                    <tr>
-                      <th>Sr. No.</th>
-                      <th>F.Y.</th>
-                      <th>Unit</th>
-                      <th>Sub Head</th>
-                      <th>Type</th>
-                      <th>Previous</th>
-                      <th>Amount</th>
-                      <th>Remarks</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr
-                      *ngFor="let bugetData of budgetListData  | paginate :{itemsPerPage:10,currentPage:p} ; let i = index">
-                      <td>{{10 *(p-1)+i+1}}</td>
-                      <td>{{bugetData.finYear.finYear}}</td>
-                      <td>{{bugetData.toUnit.cgUnitShort}}</td>
-                      <td>{{bugetData.subHead.subHeadDescr}}</td>
-                      <td>{{bugetData.allocTypeId.allocDesc}}</td>
-                      <td>{{bugetData.allocationAmount}}</td>
-                      <td>{{bugetData.allocationAmount}}</td>
-                      <td>{{bugetData.remarks}}</td>
-                      <td><button type="submit" class="btn btn-primary mr-2" (click)="deleteSelectedBudget(i,
-                        bugetData.toUnit.unit, bugetData.transactionId)"><i class="fas fa-trash"></i>
-                          Delete</button></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="row mt-2">
-                <div class="col-sm-12 col-md-5">
-                  <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
+<!--          <div class="card-tools">-->
+<!--            <button type="button" class="btn btn-tool" data-card-widget="collapse">-->
+<!--              <i class="fas fa-minus"></i>-->
+<!--              &lt;!&ndash; <i class="fas fa-minus"></i> &ndash;&gt;-->
+<!--            </button>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        &lt;!&ndash; /.card-header &ndash;&gt;-->
+<!--        <div class="card-body">-->
+<!--          <form [formGroup]="formdata" (ngSubmit)="searchData(formdata.value)">-->
+<!--            <div class="row">-->
+<!--              <div class="col-md-4">-->
+<!--                <div class="form-group">-->
+<!--                  <label>Financial Year</label>-->
+<!--                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="budgetFinYears"-->
+<!--                    bindLabel="finYear" placeholder="Select Financial Year" formControlName="finYear">-->
+<!--                  </ng-select>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--              <div class="col-md-4">-->
+<!--                <div class="form-group">-->
+<!--                  <label>To Unit</label>-->
+<!--                  <ng-select class="form-control select2bs4" style="width: 100%" [items]="allunits" bindLabel="descr"-->
+<!--                    appendTo="body" placeholder="Select To Unit" formControlName="toUnit">-->
+<!--                  </ng-select>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--              <div class="col-md-4">-->
+<!--                <div class="form-group">-->
+<!--                  <label style="opacity:0">.</label>-->
+<!--                  <br>-->
+<!--                  <button type="submit" class="btn btn-primary mr-2"><i class="fas fa-search"></i> Search</button>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </form>-->
+<!--          <div class="row">-->
+<!--            <div class="col-sm-12">-->
+<!--              <div class="card-body table-responsive p-0">-->
+<!--                <table class="table table-hover text-nowrap">-->
+<!--                  <thead>-->
+<!--                    <tr>-->
+<!--                      <th>Sr. No.</th>-->
+<!--                      <th>F.Y.</th>-->
+<!--                      <th>Unit</th>-->
+<!--                      <th>Sub Head</th>-->
+<!--                      <th>Type</th>-->
+<!--                      <th>Previous</th>-->
+<!--                      <th>Amount</th>-->
+<!--                      <th>Remarks</th>-->
+<!--                      <th>Action</th>-->
+<!--                    </tr>-->
+<!--                  </thead>-->
+<!--                  <tbody>-->
+<!--                    <tr-->
+<!--                      *ngFor="let bugetData of budgetListData  | paginate :{itemsPerPage:10,currentPage:p} ; let i = index">-->
+<!--                      <td>{{10 *(p-1)+i+1}}</td>-->
+<!--                      <td>{{bugetData.finYear.finYear}}</td>-->
+<!--                      <td>{{bugetData.toUnit.cgUnitShort}}</td>-->
+<!--                      <td>{{bugetData.subHead.subHeadDescr}}</td>-->
+<!--                      <td>{{bugetData.allocTypeId.allocDesc}}</td>-->
+<!--                      <td>{{bugetData.allocationAmount}}</td>-->
+<!--                      <td>{{bugetData.allocationAmount}}</td>-->
+<!--                      <td>{{bugetData.remarks}}</td>-->
+<!--                      <td><button type="submit" class="btn btn-primary mr-2" (click)="deleteSelectedBudget(i,-->
+<!--                        bugetData.toUnit.unit, bugetData.transactionId)"><i class="fas fa-trash"></i>-->
+<!--                          Delete</button></td>-->
+<!--                    </tr>-->
+<!--                  </tbody>-->
+<!--                </table>-->
+<!--              </div>-->
+<!--              <div class="row mt-2">-->
+<!--                <div class="col-sm-12 col-md-5">-->
+<!--                  <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">-->
 
-                  </div>
-                </div>
-                <div class="col-sm-12 col-md-7">
-                  <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
-                    <pagination-controls class="pagination float-right" (pageChange)="p = $event"></pagination-controls>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- /.container-fluid -->
-  </section>
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <div class="col-sm-12 col-md-7">-->
+<!--                  <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">-->
+<!--                    <pagination-controls class="pagination float-right" (pageChange)="p = $event"></pagination-controls>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    &lt;!&ndash; /.container-fluid &ndash;&gt;-->
+<!--  </section>-->
 
-  <!-- /.content -->
-</div>
-<!-- /.content-wrapper -->
+<!--  &lt;!&ndash; /.content &ndash;&gt;-->
+<!--</div>-->
+<!--&lt;!&ndash; /.content-wrapper &ndash;&gt;-->

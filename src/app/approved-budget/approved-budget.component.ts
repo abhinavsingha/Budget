@@ -90,11 +90,11 @@ export class ApprovedBudgetComponent implements OnInit {
     $.getScript('assets/js/adminlte.js');
   }
 
-  getDashBoardDta() {
+  async getDashBoardDta() {
     this.SpinnerService.show();
     var newSubmitJson = null;
-    this.apiService
-      .postApi(this.cons.api.getDashBoardDta, newSubmitJson)
+    (await this.apiService
+      .postApi(this.cons.api.getDashBoardDta, newSubmitJson))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -122,10 +122,10 @@ export class ApprovedBudgetComponent implements OnInit {
       });
   }
 
-  getAlGroupId(groupId: any) {
+  async getAlGroupId(groupId: any) {
     this.SpinnerService.show();
-    this.apiService
-      .getApi(this.cons.api.getAlGroupId + '/' + groupId)
+    (await this.apiService
+      .getApi(this.cons.api.getAlGroupId + '/' + groupId))
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
@@ -141,9 +141,9 @@ export class ApprovedBudgetComponent implements OnInit {
       });
   }
 
-  getCgUnitData() {
+  async getCgUnitData() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe(
+    (await this.apiService.getApi(this.cons.api.getCgUnitData)).subscribe(
       (res) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = res;
@@ -180,8 +180,8 @@ export class ApprovedBudgetComponent implements OnInit {
     );
   }
 
-  viewFile(file: string) {
-    this.apiService.getApi(this.cons.api.fileDownload + file).subscribe(
+  async viewFile(file: string) {
+    (await this.apiService.getApi(this.cons.api.fileDownload + file)).subscribe(
       (res) => {
         let result: { [key: string]: any } = res;
         this.openPdfUrlInNewTab(result['response'].pathURL);
@@ -198,14 +198,14 @@ export class ApprovedBudgetComponent implements OnInit {
     window.open(pdfUrl, '_blank');
   }
 
-  upload() {
+  async upload() {
     const file: File = this.invoiceFileInput.nativeElement.files[0];
     // console.log(file);
     const formData = new FormData();
     // console.log(this.formdata.get('file')?.value);
     formData.append('file', file);
     this.SpinnerService.show();
-    this.apiService.postApi(this.cons.api.fileUpload, formData).subscribe({
+    (await this.apiService.postApi(this.cons.api.fileUpload, formData)).subscribe({
       next: (v: object) => {
         // debugger;
         this.SpinnerService.hide();
@@ -234,7 +234,7 @@ export class ApprovedBudgetComponent implements OnInit {
     });
   }
 
-  save(formDataValue: any) {
+  async save(formDataValue: any) {
     this.SpinnerService.show();
     let newSubmitJson = {
       authDate: formDataValue.date,
@@ -243,8 +243,8 @@ export class ApprovedBudgetComponent implements OnInit {
       authDocId: this.invoice,
       authGroupId: localStorage.getItem('group_id'),
     };
-    this.apiService
-      .postApi(this.cons.api.saveAuthData, newSubmitJson)
+     (await this.apiService
+      .postApi(this.cons.api.saveAuthData, newSubmitJson))
       .subscribe({
         next: (v: object) => {
 
@@ -280,10 +280,10 @@ export class ApprovedBudgetComponent implements OnInit {
     }
   }
 
-  getAllocationReport(authGroupId: any) {
+  async getAllocationReport(authGroupId: any) {
     this.SpinnerService.show();
-    this.apiService
-      .getApi(this.cons.api.getAllocationReport + '/' + authGroupId)
+    (await this.apiService
+      .getApi(this.cons.api.getAllocationReport + '/' + authGroupId))
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
@@ -300,10 +300,10 @@ export class ApprovedBudgetComponent implements OnInit {
       });
   }
 
-  getAllocationReportDocx(authGroupId: any) {
+  async getAllocationReportDocx(authGroupId: any) {
     this.SpinnerService.show();
-    this.apiService
-      .getApi(this.cons.api.getAllocationReportDoc + '/' + authGroupId)
+    (await this.apiService
+      .getApi(this.cons.api.getAllocationReportDoc + '/' + authGroupId))
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {

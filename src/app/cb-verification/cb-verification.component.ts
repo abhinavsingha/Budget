@@ -130,9 +130,9 @@ export class CbVerificationComponent {
     this.getSubHeadType();
     this.updateInbox();
   }
-  private getContingentBill() {
+  private async getContingentBill() {
     this.cbList = [];
-    this.apiService.getApi(this.cons.api.getCb).subscribe(
+    (await this.apiService.getApi(this.cons.api.getCb)).subscribe(
       (res) => {
         let result: { [key: string]: any } = res;
         // console.log(result['response']);
@@ -214,26 +214,28 @@ export class CbVerificationComponent {
       }
     );
   }
-  getFinancialYear() {
+
+  async getFinancialYear() {
     this.SpinnerService.show();
-    this.apiService
-      .getApi(this.cons.api.getBudgetFinYear)
+    (await this.apiService
+      .getApi(this.cons.api.getBudgetFinYear))
       .subscribe((results) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = results;
         this.finYearData = result['response'];
       });
   }
-  getCgUnitData() {
+  async getCgUnitData() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
+    (await this.apiService.getApi(this.cons.api.getCgUnitData)).subscribe((res) => {
       this.SpinnerService.hide();
       let result: { [key: string]: any } = res;
       this.unitData = result['response'];
     });
   }
-  getMajorHead() {
-    this.apiService.getApi(this.cons.api.getMajorData).subscribe({
+
+  async getMajorHead() {
+    (await this.apiService.getApi(this.cons.api.getMajorData)).subscribe({
       next: (v: object) => {
         let result: { [key: string]: any } = v;
         if (result['message'] == 'success') {
@@ -258,9 +260,10 @@ export class CbVerificationComponent {
         cbEntry.checked = false;
     });
   }
-  getSubHeadType(){
-    this.apiService
-      .getApi(this.cons.api.getSubHeadType)
+
+  async getSubHeadType(){
+    (await this.apiService
+      .getApi(this.cons.api.getSubHeadType))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -280,7 +283,8 @@ export class CbVerificationComponent {
         complete: () => console.info('complete'),
       });
   }
-  updateFormdata(cbEntry: cb) {
+
+  async updateFormdata(cbEntry: cb) {
     let subHeadType:any;
     // console.log('cbentry' + cbEntry);
     for (let i = 0; i < this.majorHeadData.length; i++) {
@@ -300,7 +304,8 @@ export class CbVerificationComponent {
                 budgetHeadType:subHeadType.subHeadTypeId,
                 majorHead:cbEntry.majorHead
               }
-              this.apiService.postApi(this.cons.api.getAllSubHeadByMajorHead,json).subscribe((res) => {
+               ;
+              (await this.apiService.postApi(this.cons.api.getAllSubHeadByMajorHead, json)).subscribe(async (res) => {
                   let result: { [key: string]: any } = res;
                   this.subHeadData = result['response'];
                   for (let i = 0; i < this.subHeadData.length; i++) {
@@ -312,7 +317,7 @@ export class CbVerificationComponent {
                         budgetFinancialYearId:this.formdata.get('finYearName')?.value.serialNo,
                         unitId:this.unitId
                       };
-                      this.apiService.postApi(this.cons.api.getAvailableFund, json).subscribe({
+                      (await this.apiService.postApi(this.cons.api.getAvailableFund, json)).subscribe({
                         next: (v: object) => {
                           this.SpinnerService.hide();
                           let result: { [key: string]: any } = v;
@@ -442,7 +447,8 @@ export class CbVerificationComponent {
       }
     });
   }
-  approveCb() {
+
+  async approveCb() {
     for (let i = 0; i < this.cbList.length; i++) {
       // if(this.cbList[i].cbNo==this.formdata.get('cbNo')?.value){
       this.cbList[i].status = 'Verified';
@@ -465,8 +471,8 @@ export class CbVerificationComponent {
       remarks: undefined,
       cdaParkingId:cdapark
     };
-    this.apiService
-      .postApi(this.cons.api.verifyContingentBill, update)
+    (await this.apiService
+      .postApi(this.cons.api.verifyContingentBill, update))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -506,7 +512,8 @@ export class CbVerificationComponent {
       }
     });
   }
-  returnCb() {
+
+  async returnCb() {
     debugger;
     if(this.formdata.get('returnRemarks')?.value==undefined){
       this.common.faliureAlert('Return Remark cannot be blank','Return Remark cannot be blank','');
@@ -533,8 +540,8 @@ export class CbVerificationComponent {
       remarks: this.formdata.get('returnRemarks')?.value,
       cdaParkingId: cdapark
     };
-    this.apiService
-      .postApi(this.cons.api.verifyContingentBill, update)
+    (await this.apiService
+      .postApi(this.cons.api.verifyContingentBill, update))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -558,9 +565,10 @@ export class CbVerificationComponent {
     // }
 
   }
-  viewFile(file: string) {
-    this.apiService
-      .getApi(this.cons.api.fileDownload + this.formdata.get(file)?.value)
+
+  async viewFile(file: string) {
+    (await this.apiService
+      .getApi(this.cons.api.fileDownload + this.formdata.get(file)?.value))
       .subscribe(
         (res) => {
           let result: { [key: string]: any } = res;
@@ -576,9 +584,10 @@ export class CbVerificationComponent {
   openPdfUrlInNewTab(pdfUrl: string): void {
     window.open(pdfUrl, '_blank');
   }
-  updateInbox(){
-    this.apiService
-      .getApi(this.cons.api.updateInboxOutBox)
+
+  async updateInbox(){
+    (await this.apiService
+      .getApi(this.cons.api.updateInboxOutBox))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -599,12 +608,13 @@ export class CbVerificationComponent {
         complete: () => console.info('complete'),
       });
   }
-  getAvailableFundData() {
+
+  async getAvailableFundData() {
     this.SpinnerService.show();
     let json = {
       budgetHeadId: this.formdata.get('subHead')?.value.budgetCodeId,
     };
-    this.apiService.postApi(this.cons.api.getAvailableFund, json).subscribe({
+    (await this.apiService.postApi(this.cons.api.getAvailableFund, json)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -638,7 +648,8 @@ export class CbVerificationComponent {
       complete: () => console.info('complete'),
     });
   }
-  downloadBill(cb: any) {
+
+  async downloadBill(cb: any) {
     if(cb.status=='Rejected')if(cb.status=='Rejected'){
       this.common.faliureAlert('Cannot Download','Rejected Bill Cannot be Downloaded','');
       return
@@ -648,8 +659,8 @@ export class CbVerificationComponent {
       cbId: cb.contingentBilId,
     };
     this.SpinnerService.show();
-    this.apiService
-      .postApi(this.cons.api.getContingentBillAll, json)
+    (await this.apiService
+      .postApi(this.cons.api.getContingentBillAll, json))
       .subscribe(
         (results) => {
           let result: { [key: string]: any } = results;

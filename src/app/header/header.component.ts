@@ -83,12 +83,12 @@ export class HeaderComponent implements OnInit{
 
   serverRedirectUrl = this.cons.serverRedirectUrl;
 
-  finallySubmit(data: any) {
+  async finallySubmit(data: any) {
     // this.SpinnerService.show();
     var newSubmitJson = data;
 
-    this.apiService
-      .getApi(this.cons.api.getUiData + '/' + data.roleId)
+    (await this.apiService
+      .getApi(this.cons.api.getUiData + '/' + data.roleId))
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
@@ -109,7 +109,7 @@ export class HeaderComponent implements OnInit{
         }
       });
     // ;
-    // this.apiService
+    // await this.apiService
     //   .postApi(this.cons.api.updateBudgetAllocation, newSubmitJson)
     //   .subscribe({
     //     next: (v: object) => {
@@ -145,7 +145,15 @@ export class HeaderComponent implements OnInit{
     localStorage.removeItem('userCurrentUnitName');
     localStorage.removeItem('token');
     localStorage.removeItem('cgwwaUserDetails');
-    this.keycloakService.logout("https://icg.net.in/admin/realms/icgrms/users/"+this.authService.getUsername()+"/logout");
+    this.authService.revokeToken().subscribe({
+      next: () => {
+        console.log('Token revoked successfully');
+        this.authService.keycloakService.logout();
+        this.router.navigate(['https://icg.net.in/BMS/'])
+      },
+      error: (err) => console.error('Error revoking token:', err),
+    });;
+    // this.keycloakService.logout("https://icg.net.in/admin/realms/icgrms/users/"+this.authService.getUsername()+"/logout");
     // this.router.navigate(["/https://icg.net.in/admin/realms/icgrms/users/"+this.username+"/logout"]);
     // /admin/realms/{realm}/users/{user-id}/logout
     // this.authService.logout(this.cons.endSessionUrl);
@@ -172,12 +180,12 @@ export class HeaderComponent implements OnInit{
     this.keycloakService.logout();
   }
 
-  getDashBoardDta() {
+  async getDashBoardDta() {
     this.SpinnerService.show();
     var newSubmitJson = null;
 
-    this.apiService
-      .postApi(this.cons.api.getDashBoardDta, newSubmitJson)
+    (await this.apiService
+      .postApi(this.cons.api.getDashBoardDta, newSubmitJson))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -216,13 +224,13 @@ export class HeaderComponent implements OnInit{
 
   redirectUri() {
     this.router.navigate([
-      '/https://icg.net.in/auth/realms/icgrms/protocol/openid-connect/logout?redirect_uri=https://icg.net.in/CGBMS/',
+      '/https://icg.net.in/auth/realms/icgrms/protocol/openid-connect/logout?redirect_uri=https://icg.net.in/BMS/',
     ]);
   }
 
-  downloadManual() {
+  async downloadManual() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getUserManual).subscribe({
+    (await this.apiService.getApi(this.cons.api.getUserManual)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;

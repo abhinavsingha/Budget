@@ -130,15 +130,16 @@ export class ContigentBillApproverComponent implements OnInit {
     this.cbList[i].label = formValue.uploadFile;
   }
   docId: any;
-  uploadBill(cb: any) {
+
+  async uploadBill(cb: any) {
     const file: File = this.uploadFileInput.nativeElement.files[0];
     // console.log(file);
     const formData = new FormData();
     // console.log(this.formdata.get('file')?.value);
     formData.append('file', file);
     this.SpinnerService.show();
-    this.apiService.postApi(this.cons.api.fileUpload, formData).subscribe({
-      next: (v: object) => {
+    (await this.apiService.postApi(this.cons.api.fileUpload, formData)).subscribe({
+      next: async (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
 
@@ -153,8 +154,8 @@ export class ContigentBillApproverComponent implements OnInit {
             docId: result['response'].uploadDocId,
             groupId: cb.authGroupId,
           };
-          this.apiService
-            .postApi(this.cons.api.updateFinalStatus, json)
+          (await this.apiService
+            .postApi(this.cons.api.updateFinalStatus, json))
             .subscribe({
               next: (v: object) => {
                 this.SpinnerService.hide();
@@ -218,7 +219,7 @@ export class ContigentBillApproverComponent implements OnInit {
   // getDashBoardDta() {
   //   this.SpinnerService.show();
   //
-  //   this.apiService.postApi(this.cons.api.getDashBoardDta, null).subscribe({
+  //   await this.apiService.postApi(this.cons.api.getDashBoardDta, null).subscribe({
   //     next: (v: object) => {
   //       this.SpinnerService.hide();
   //       let result: { [key: string]: any } = v;
@@ -238,9 +239,9 @@ export class ContigentBillApproverComponent implements OnInit {
   //     complete: () => console.info('complete'),
   //   });
   // }
-  getSubHeadType(){
-    this.apiService
-      .getApi(this.cons.api.getSubHeadType)
+  async getSubHeadType(){
+    (await this.apiService
+      .getApi(this.cons.api.getSubHeadType))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -260,9 +261,9 @@ export class ContigentBillApproverComponent implements OnInit {
         complete: () => console.info('complete'),
       });
   }
-  private getContingentBill() {
+  private async getContingentBill() {
     this.cbList = [];
-    this.apiService.getApi(this.cons.api.getCb).subscribe(
+    (await this.apiService.getApi(this.cons.api.getCb)).subscribe(
       (res) => {
         let result: { [key: string]: any } = res;
         // console.log(result['response']);
@@ -337,26 +338,29 @@ export class ContigentBillApproverComponent implements OnInit {
       }
     );
   }
-  getFinancialYear() {
+
+  async getFinancialYear() {
     this.SpinnerService.show();
-    this.apiService
-      .getApi(this.cons.api.getBudgetFinYear)
+    (await this.apiService
+      .getApi(this.cons.api.getBudgetFinYear))
       .subscribe((results) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = results;
         this.finYearData = result['response'];
       });
   }
-  getCgUnitData() {
+
+  async getCgUnitData() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe((res) => {
+    (await this.apiService.getApi(this.cons.api.getCgUnitData)).subscribe((res) => {
       this.SpinnerService.hide();
       let result: { [key: string]: any } = res;
       this.unitData = result['response'];
     });
   }
-  getMajorHead() {
-    this.apiService.getApi(this.cons.api.getMajorData).subscribe({
+
+  async getMajorHead() {
+    (await this.apiService.getApi(this.cons.api.getMajorData)).subscribe({
       next: (v: object) => {
         let result: { [key: string]: any } = v;
         if (result['message'] == 'success') {
@@ -382,7 +386,8 @@ export class ContigentBillApproverComponent implements OnInit {
       // if (cbEntry.checked) console.log(cbEntry.cbNo + ' ');
     });
   }
-  updateFormdata(cbEntry: cb) {
+
+  async updateFormdata(cbEntry: cb) {
     let subHeadType:any;
     // console.log('cbentry' + cbEntry);
     for (let i = 0; i < this.majorHeadData.length; i++) {
@@ -401,8 +406,8 @@ export class ContigentBillApproverComponent implements OnInit {
               let json={
                 budgetHeadType:subHeadType.subHeadTypeId,
                 majorHead:cbEntry.majorHead
-              }
-              this.apiService.postApi(this.cons.api.getAllSubHeadByMajorHead,json).subscribe((res) => {
+              };
+              (await this.apiService.postApi(this.cons.api.getAllSubHeadByMajorHead, json)).subscribe(async (res) => {
                   let result: { [key: string]: any } = res;
                   this.subHeadData = result['response'];
                   for (let i = 0; i < this.subHeadData.length; i++) {
@@ -411,15 +416,14 @@ export class ContigentBillApproverComponent implements OnInit {
                       this.formdata.get('subHead')?.setValue(sub);
                       let json = {
                         budgetHeadId: this.formdata.get('subHead')?.value.budgetCodeId,
-                        budgetFinancialYearId:this.formdata.get('finYearName')?.value.serialNo,
-                        unitId:this.unitId
+                        budgetFinancialYearId: this.formdata.get('finYearName')?.value.serialNo,
+                        unitId: this.unitId
                       };
 
 
-
-
-                     //start
-                      this.apiService.postApi(this.cons.api.getAvailableFund, json).subscribe({
+                      //start
+                      (await this.apiService.postApi(this.cons.api.getAvailableFund, json)
+                      ).subscribe({
                         next: (v: object) => {
                           this.SpinnerService.hide();
                           let result: { [key: string]: any } = v;
@@ -437,18 +441,17 @@ export class ContigentBillApproverComponent implements OnInit {
                             // this.formdata
                             //   .get('balance')
                             //   ?.setValue(parseFloat(this.FundAllotted.fundallocated)*this.FundAllotted.amountUnit.amount - parseFloat(this.FundAllotted.expenditure));
-                            if(result['response'].cdaParkingTrans.length>0){
-                              this.availableAmount=true;
-                              this.cdaData=result['response'].cdaParkingTrans;
-                              for(let cda of this.cdaData){
-                                cda.remainingCdaAmount=Number(parseFloat(cda.remainingCdaAmount)*parseFloat(cda.amountType.amount)).toFixed(4);
-                                for(let cbEntryItr of cbEntry.cdaParkingId){
-                                  if(cda.cdaParkingId==cbEntryItr.cdaParkingId)
-                                    cda.amount=cbEntryItr.cdaAmount;
+                            if (result['response'].cdaParkingTrans.length > 0) {
+                              this.availableAmount = true;
+                              this.cdaData = result['response'].cdaParkingTrans;
+                              for (let cda of this.cdaData) {
+                                cda.remainingCdaAmount = Number(parseFloat(cda.remainingCdaAmount) * parseFloat(cda.amountType.amount)).toFixed(4);
+                                for (let cbEntryItr of cbEntry.cdaParkingId) {
+                                  if (cda.cdaParkingId == cbEntryItr.cdaParkingId)
+                                    cda.amount = cbEntryItr.cdaAmount;
                                 }
                               }
-                            }
-                            else{
+                            } else {
                               this.populateCdaForRevisedAllocationBills();
                             }
 
@@ -463,7 +466,7 @@ export class ContigentBillApproverComponent implements OnInit {
                         },
                         complete: () => console.info('complete'),
                       });
-                    //end
+                      //end
                     }
                   }
                   this.SpinnerService.hide();
@@ -569,7 +572,8 @@ export class ContigentBillApproverComponent implements OnInit {
       }
     });
   }
-  approveCb() {
+
+  async approveCb() {
     for (let i = 0; i < this.cbList.length; i++) {
       // if(this.cbList[i].cbNo==this.formdata.get('cbNo')?.value){
       this.cbList[i].status = 'Approved';
@@ -591,8 +595,8 @@ export class ContigentBillApproverComponent implements OnInit {
       remarks: this.formdata.get('returnRemarks')?.value,
       cdaParkingId:cdapark
     };
-    this.apiService
-      .postApi(this.cons.api.approveContingentBill, update)
+    (await this.apiService
+      .postApi(this.cons.api.approveContingentBill, update))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -633,7 +637,8 @@ export class ContigentBillApproverComponent implements OnInit {
       }
     });
   }
-  returnCb() {
+
+  async returnCb() {
     if(this.formdata.get('returnRemarks')?.value==undefined){
       Swal.fire('Return Remarks cannot be blank');
       return;
@@ -659,8 +664,8 @@ export class ContigentBillApproverComponent implements OnInit {
       remarks: this.formdata.get('returnRemarks')?.value,
       cdaParkingId:cdapark
     };
-    this.apiService
-      .postApi(this.cons.api.approveContingentBill, update)
+    (await this.apiService
+      .postApi(this.cons.api.approveContingentBill, update))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -680,9 +685,10 @@ export class ContigentBillApproverComponent implements OnInit {
         complete: () => this.router.navigate(['/inbox']),
       });
   }
-  updateInbox(){
-    this.apiService
-      .getApi(this.cons.api.updateInboxOutBox)
+
+  async updateInbox(){
+    (await this.apiService
+      .getApi(this.cons.api.updateInboxOutBox))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -703,9 +709,10 @@ export class ContigentBillApproverComponent implements OnInit {
         complete: () => console.info('complete'),
       });
   }
-  viewFile(file: string) {
-    this.apiService
-      .getApi(this.cons.api.fileDownload + this.formdata.get(file)?.value)
+
+  async viewFile(file: string) {
+    (await this.apiService
+      .getApi(this.cons.api.fileDownload + this.formdata.get(file)?.value))
       .subscribe(
         (res) => {
           let result: { [key: string]: any } = res;
@@ -721,7 +728,8 @@ export class ContigentBillApproverComponent implements OnInit {
   openPdfUrlInNewTab(pdfUrl: string): void {
     window.open(pdfUrl, '_blank');
   }
-  downloadBill(cb: any) {
+
+  async downloadBill(cb: any) {
     if(cb.status=='Rejected'){
       this.common.faliureAlert('Cannot Download','Rejected Bill Cannot be Downloaded','');
       return
@@ -732,8 +740,8 @@ export class ContigentBillApproverComponent implements OnInit {
       cbId: cb.contingentBilId,
     };
     this.SpinnerService.show();
-    this.apiService
-      .postApi(this.cons.api.getContingentBillAll, json)
+    (await this.apiService
+      .postApi(this.cons.api.getContingentBillAll, json))
       .subscribe(
         (results) => {
           let result: { [key: string]: any } = results;

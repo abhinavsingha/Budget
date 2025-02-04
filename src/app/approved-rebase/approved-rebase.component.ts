@@ -67,11 +67,11 @@ export class ApprovedRebaseComponent implements OnInit {
     $.getScript('assets/js/adminlte.js');
   }
 
-  getDashBoardDta() {
+  async getDashBoardDta() {
     this.SpinnerService.show();
     var newSubmitJson = null;
-    this.apiService
-      .postApi(this.cons.api.getDashBoardDta, newSubmitJson)
+    (await this.apiService
+      .postApi(this.cons.api.getDashBoardDta, newSubmitJson))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -96,9 +96,9 @@ export class ApprovedRebaseComponent implements OnInit {
       });
   }
 
-  getCgUnitData() {
+  async getCgUnitData() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe(
+    (await this.apiService.getApi(this.cons.api.getCgUnitData)).subscribe(
       (res) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = res;
@@ -112,9 +112,9 @@ export class ApprovedRebaseComponent implements OnInit {
     );
   }
 
-  private getUnitRebaseNotificationData(item: string | null) {
+  private async getUnitRebaseNotificationData(item: string | null) {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getUnitRebaseNotificationData + '/' + item).subscribe(
+    (await this.apiService.getApi(this.cons.api.getUnitRebaseNotificationData + '/' + item)).subscribe(
       (res) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = res;

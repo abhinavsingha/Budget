@@ -81,10 +81,11 @@ export class UnitRebaseComponent {
       fromUnitRHQ: new FormControl(),
     });
   }
-  getDashBoardDta() {
+
+  async getDashBoardDta() {
     this.SpinnerService.show();
 
-    this.apiService.postApi(this.cons.api.getDashBoardDta, null).subscribe({
+    (await this.apiService.postApi(this.cons.api.getDashBoardDta, null)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -111,9 +112,10 @@ export class UnitRebaseComponent {
       complete: () => console.info('complete'),
     });
   }
-  getBudgetFinYear() {
+
+  async getBudgetFinYear() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getBudgetFinYear).subscribe((res) => {
+    (await this.apiService.getApi(this.cons.api.getBudgetFinYear)).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.budgetFinYears = result['response'];
@@ -127,9 +129,9 @@ export class UnitRebaseComponent {
     });
   }
 
-  getCgUnitData() {
+  async getCgUnitData() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getAllIsShipCgUnitData).subscribe({
+    (await this.apiService.getApi(this.cons.api.getAllIsShipCgUnitData)).subscribe({
       next: (v: object) => {
         debugger;
         this.SpinnerService.hide();
@@ -150,10 +152,10 @@ export class UnitRebaseComponent {
     });
   }
 
-  getAllStation() {
+  async getAllStation() {
     this.SpinnerService.show();
 
-    this.apiService.getApi(this.cons.api.getAllStation).subscribe((res) => {
+    (await this.apiService.getApi(this.cons.api.getAllStation)).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.allStationsList = result['response'];
@@ -164,7 +166,7 @@ export class UnitRebaseComponent {
     });
   }
 
-  searchData(formData: any) {
+  async searchData(formData: any) {
     this.SpinnerService.show();
 
     let submitJson = {
@@ -173,8 +175,8 @@ export class UnitRebaseComponent {
       subHead: null,
     };
 
-    this.apiService
-      .postApi(this.cons.api.budgetAllocationReport, submitJson)
+    (await this.apiService
+      .postApi(this.cons.api.budgetAllocationReport, submitJson))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -223,12 +225,12 @@ export class UnitRebaseComponent {
     });
   }
 
-  finallySubmit(data: any) {
+  async finallySubmit(data: any) {
     this.SpinnerService.show();
     var newSubmitJson = data;
 
-    this.apiService
-      .postApi(this.cons.api.saveUnitRebase, newSubmitJson)
+    (await this.apiService
+      .postApi(this.cons.api.saveUnitRebase, newSubmitJson))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -269,8 +271,9 @@ export class UnitRebaseComponent {
       this.file = event.target.files[0];
     }
   }
-  viewFile(file: string) {
-    this.apiService.getApi(this.cons.api.fileDownload + file).subscribe(
+
+  async viewFile(file: string) {
+    (await this.apiService.getApi(this.cons.api.fileDownload + file)).subscribe(
       (res) => {
         let result: { [key: string]: any } = res;
         this.openPdfUrlInNewTab(result['response'].pathURL);
@@ -286,13 +289,13 @@ export class UnitRebaseComponent {
     window.open(pdfUrl, '_blank');
   }
 
-  uploadFile() {
+  async uploadFile() {
     const formData = new FormData();
     formData.append('file', this.file);
 
     this.SpinnerService.show();
 
-    this.apiService.postApi(this.cons.api.fileUpload, formData).subscribe({
+    (await this.apiService.postApi(this.cons.api.fileUpload, formData)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -400,21 +403,21 @@ export class UnitRebaseComponent {
   tableDataList: any[] = [];
   showNODataFound: Boolean = true;
 
-  showList(data: any) {
+  async showList(data: any) {
     // ;
     // data.finYear.serialNo;
     // data.toUnit.unit;
     // getAllUnitRebaseData/{finYear}/{unit}
     this.SpinnerService.show();
     debugger;
-    this.apiService
+    (await (this.apiService
       .getApi(
         this.cons.api.getAllUnitRebaseData +
-          '/' +
-          data.finYear.serialNo +
-          '/' +
-          data.toUnit.unit
-      )
+        '/' +
+        data.finYear.serialNo +
+        '/' +
+        data.toUnit.unit
+      )))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -449,10 +452,11 @@ export class UnitRebaseComponent {
       toUnitRHQ: data.rhqId,
     });
   }
-  getaCgUnitData() {
+
+  async getaCgUnitData() {
     this.SpinnerService.show();
     var comboJson = null;
-    this.apiService.getApi(this.cons.api.getCgUnitData).subscribe(
+    (await this.apiService.getApi(this.cons.api.getCgUnitData)).subscribe(
       (res) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = res;

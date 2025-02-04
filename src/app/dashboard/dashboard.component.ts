@@ -125,9 +125,9 @@ export class DashboardComponent implements OnInit {
   ) {}
   // vaibhav
 
-  getBudgetFinYear() {
+  async getBudgetFinYear() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getBudgetFinYear).subscribe((res) => {
+    (await this.apiService.getApi(this.cons.api.getBudgetFinYear)).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.budgetFinYears = result['response'];
@@ -140,9 +140,9 @@ export class DashboardComponent implements OnInit {
   unitwiseUnit='';
   subheadwiseUnit='';
 
-  userExit() {
+  async userExit() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.userExit).subscribe({
+    (await this.apiService.getApi(this.cons.api.userExit)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -175,9 +175,10 @@ export class DashboardComponent implements OnInit {
       complete: () => console.info('complete'),
     });
   }
-  getAmountType() {
+
+  async getAmountType() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.showAllAmountUnit).subscribe({
+    (await this.apiService.getApi(this.cons.api.showAllAmountUnit)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -197,9 +198,10 @@ export class DashboardComponent implements OnInit {
       complete: () => console.info('complete'),
     });
   }
-  getCgUnitData() {
+
+  async getCgUnitData() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getCgUnitHierarchy).subscribe({
+    (await this.apiService.getApi(this.cons.api.getCgUnitHierarchy)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -220,9 +222,9 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  getAllCgUnitData() {
+  async getAllCgUnitData() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getAllCgUnitData).subscribe((res) => {
+    (await this.apiService.getApi(this.cons.api.getAllCgUnitData)).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.allunits = result['response'];
@@ -233,9 +235,9 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  getSubHeadsData() {
+  async getSubHeadsData() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getSubHeadsData).subscribe({
+    (await this.apiService.getApi(this.cons.api.getSubHeadsData)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -255,10 +257,10 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  getDashBoardDta() {
+  async getDashBoardDta() {
     this.SpinnerService.show();
 
-    this.apiService.postApi(this.cons.api.getDashBoardDta, null).subscribe({
+    (await this.apiService.postApi(this.cons.api.getDashBoardDta, null)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -346,10 +348,10 @@ export class DashboardComponent implements OnInit {
     await new Promise<void>((resolve) => setTimeout(resolve, milliseconds));
   }
 
-  getinbox() {
+  async getinbox() {
     this.SpinnerService.show();
 
-    this.apiService.getApi(this.cons.api.updateInboxOutBox).subscribe({
+    (await this.apiService.getApi(this.cons.api.updateInboxOutBox)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -369,11 +371,12 @@ export class DashboardComponent implements OnInit {
       complete: () => console.info('complete'),
     });
   }
-  searchData() {
+
+  async searchData() {
     this.unitWiseExpenditureList = [];
     this.SpinnerService.show();
 
-    this.apiService.postApi(this.cons.api.getDashBoardDta, null).subscribe({
+    (await this.apiService.postApi(this.cons.api.getDashBoardDta, null)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -471,10 +474,10 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  finallySubmit(data: any) {
+  async finallySubmit(data: any) {
     this.SpinnerService.show();
-    this.apiService
-      .postApi(this.cons.api.getDashBoardDta, data)
+    (await this.apiService
+      .postApi(this.cons.api.getDashBoardDta, data))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -521,8 +524,9 @@ export class DashboardComponent implements OnInit {
 
     this.confirmModel(submitJson);
   }
-  getSubHeadType() {
-    this.apiService.getApi(this.cons.api.getSubHeadType).subscribe({
+
+  async getSubHeadType() {
+    (await this.apiService.getApi(this.cons.api.getSubHeadType)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -541,23 +545,24 @@ export class DashboardComponent implements OnInit {
       complete: () => console.info('complete'),
     });
   }
-  getTableData(formDataValue: any) {
+
+  async getTableData(formDataValue: any) {
 
     this.SpinnerService.show();
     this.tableData=undefined;
-    this.apiService
+    (await this.apiService
       .getApi(
         this.cons.api
           .getSubHeadWiseExpenditureByUnitIdFinYearIdAllocationTypeIdSubHeadTypeId +
-          '/' +
-          formDataValue.unit.unit +
-          '/' +
-          formDataValue.finYear.serialNo +
-          '/' +
-          formDataValue.subHeadType.subHeadTypeId +
-          '/' +
-          formDataValue.allocationType.allocTypeId +'/'+ formDataValue.rupeeUnit.amountTypeId+'/'+formDataValue.majorHead.majorHead
-      )
+        '/' +
+        formDataValue.unit.unit +
+        '/' +
+        formDataValue.finYear.serialNo +
+        '/' +
+        formDataValue.subHeadType.subHeadTypeId +
+        '/' +
+        formDataValue.allocationType.allocTypeId + '/' + formDataValue.rupeeUnit.amountTypeId + '/' + formDataValue.majorHead.majorHead
+      ))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
@@ -597,9 +602,10 @@ export class DashboardComponent implements OnInit {
   totalSExpenditure: any;
   totalSBalance: any;
   totalSExpenditurePer: any;
-  getMajorDataNew() {
+
+  async getMajorDataNew() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getMajorData).subscribe({
+    (await this.apiService.getApi(this.cons.api.getMajorData)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -619,9 +625,9 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  getAllocationTypeData() {
+  async getAllocationTypeData() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getAllocationTypeData).subscribe({
+    (await this.apiService.getApi(this.cons.api.getAllocationTypeData)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -645,14 +651,15 @@ export class DashboardComponent implements OnInit {
       complete: () => console.info('complete'),
     });
   }
-  getSubHead(formdata: any) {
+
+  async getSubHead(formdata: any) {
     this.SpinnerService.show();
     let json={
       majorHead:formdata.majorHead.majorHead,
       budgetHeadType:formdata.subHeadType.subHeadTypeId
     };
     let url =this.cons.api.getAllSubHeadByMajorHead;
-    this.apiService.postApi(url,json).subscribe(
+    (await this.apiService.postApi(url, json)).subscribe(
       (results) => {
         let result: { [key: string]: any } = results;
         this.subHeads = result['response'];
@@ -665,7 +672,7 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-  getSubheadWiseTableData(formdata: any) {
+  async getSubheadWiseTableData(formdata: any) {
     this.selectedSubhead=formdata.subHead;
     this.subHeadsResponse=undefined;
     let json={
@@ -676,7 +683,7 @@ export class DashboardComponent implements OnInit {
     }
     let url =this.cons.api.getDashBordSubHeadwiseExpenditure;
     debugger;
-    this.apiService.postApi(url,json).subscribe(
+    (await this.apiService.postApi(url, json)).subscribe(
       (results) => {
         let result: { [key: string]: any } = results;
         debugger;

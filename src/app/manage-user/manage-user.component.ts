@@ -82,9 +82,9 @@ export class ManageUserComponent {
     private _location: Location
   ) {}
 
-  getAllRole() {
+  async getAllRole() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getAllRole).subscribe((res) => {
+    (await this.apiService.getApi(this.cons.api.getAllRole)).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         this.allRoles = result['response'];
@@ -116,9 +116,10 @@ export class ManageUserComponent {
 
     return istDate.toLocaleString('en-IN', options);
   }
-  getAllUser() {
+
+  async getAllUser() {
     this.SpinnerService.show();
-    this.apiService.getApi(this.cons.api.getAllUser).subscribe((res) => {
+    (await this.apiService.getApi(this.cons.api.getAllUser)).subscribe((res) => {
       let result: { [key: string]: any } = res;
       if (result['message'] == 'success') {
         // this.usersWithRole = result['response'];
@@ -149,12 +150,12 @@ export class ManageUserComponent {
     });
   }
 
-  getUserInfo() {
+  async getUserInfo() {
     debugger;
     this.SpinnerService.show();
     // if (event.unit == '001321') {
-      this.apiService
-        .getApi('https://icg.net.in/cghrdata/getAllData/getAllUserInfo')
+      (await this.apiService
+        .getApi('https://icg.net.in/cghrdata/getAllData/getAllUserInfo'))
         .subscribe((res) => {
           this.SpinnerService.hide();
           let result: { [key: string]: any } = res;
@@ -176,7 +177,7 @@ export class ManageUserComponent {
     //     unitId: event.unit,
     //     userName: '',
     //   };
-    //   this.apiService.postApi(this.cons.api.getUserInfo, submitJson).subscribe({
+    //   await this.apiService.postApi(this.cons.api.getUserInfo, submitJson).subscribe({
     //     next: (v: object) => {
     //       this.SpinnerService.hide();
     //       let result: { [key: string]: any } = v;
@@ -202,11 +203,11 @@ export class ManageUserComponent {
     // }
   }
 
-  getCgUnitDataWithPurposeCode() {
+  async getCgUnitDataWithPurposeCode() {
     this.SpinnerService.show();
 
-    this.apiService
-      .getApi(this.cons.api.getCgUnitDataWithPurposeCode)
+    (await this.apiService
+      .getApi(this.cons.api.getCgUnitDataWithPurposeCode))
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
 
@@ -270,10 +271,10 @@ export class ManageUserComponent {
     });
   }
 
-  finallySubmit(data: any, formDataValue: any) {
+  async finallySubmit(data: any, formDataValue: any) {
     this.SpinnerService.show();
     var newSubmitJson = data;
-    this.apiService.postApi(this.cons.api.createUser, newSubmitJson).subscribe({
+    (await this.apiService.postApi(this.cons.api.createUser, newSubmitJson)).subscribe({
       next: (v: object) => {
         this.SpinnerService.hide();
         let result: { [key: string]: any } = v;
@@ -327,11 +328,11 @@ export class ManageUserComponent {
     });
   }
 
-  deactivateUserRoleFinallySubmit(data: any, indexValue: any) {
+  async deactivateUserRoleFinallySubmit(data: any, indexValue: any) {
     this.SpinnerService.show();
     debugger;
-    this.apiService
-      .getApi(this.cons.api.deActivateUser + '/' + data.pid+'/'+data.roleId)
+    (await this.apiService
+      .getApi(this.cons.api.deActivateUser + '/' + data.pid + '/' + data.roleId))
       .subscribe((res) => {
         let result: { [key: string]: any } = res;
         if (result['message'] == 'success') {
@@ -343,11 +344,11 @@ export class ManageUserComponent {
       });
   }
 
-  getDashBoardDta() {
+  async getDashBoardDta() {
     this.SpinnerService.show();
     var newSubmitJson = null;
-    this.apiService
-      .postApi(this.cons.api.getDashBoardDta, newSubmitJson)
+    (await this.apiService
+      .postApi(this.cons.api.getDashBoardDta, newSubmitJson))
       .subscribe({
         next: (v: object) => {
           this.SpinnerService.hide();
