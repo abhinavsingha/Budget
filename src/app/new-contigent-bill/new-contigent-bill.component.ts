@@ -194,6 +194,7 @@ export class NewContigentBillComponent implements OnInit {
   }
 
   addToList() {
+    debugger;
     const undefinedValues: string[] = [];
     Object.keys(this.formdata.controls).forEach((key) => {
       const control = this.formdata.get(key);
@@ -215,6 +216,10 @@ export class NewContigentBillComponent implements OnInit {
     }
     if (this.invoice == undefined) {
       undefinedValues.push('invoiceFile');
+    }
+    if(undefinedValues.length != 0){
+      this.common.warningAlert('Enter Missing Data','Please Enter All the required feilds','');
+      return;
     }
     let cdatabledata=[];
     for(let cda of this.cdaData){
@@ -304,7 +309,8 @@ export class NewContigentBillComponent implements OnInit {
       } else {
         this.common.warningAlert("Duplicate Entry","Select Update to update previously entered CB'",'')
       }
-    } else {
+    }
+    else {
       this.common.warningAlert('Enter Missing Data','Please Enter All the required feilds','');
     }
   }

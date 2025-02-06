@@ -22,8 +22,8 @@ export class AuthService {
             url: 'https://icg.net.in/auth/',
             realm: 'icgrms', // PRODUCTION
               // realm: 'uat',
-            // clientId: 'cgbudget', // For Production
-              clientId: 'budget', // For UAT Server
+            clientId: 'cgbudget', // For Production
+              // clientId: 'budget', // For UAT Server
           },
       initOptions: {
         onLoad: 'login-required',
